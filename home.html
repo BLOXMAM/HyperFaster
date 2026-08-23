@@ -7,35 +7,35 @@
     <style>
         @font-face {
             font-family: 'PK jCZ';
-            src: url('font/PK jCZ~') format('truetype');
+            src: url('file:///android_asset/PK jCZ~') format('truetype');
         }
         @font-face {
             font-family: 'SCE-PS3-CP-R-KANA';
-            src: url('SCE-PS3-CP-R-KANA.TTF') format('truetype');
+            src: url('file:///android_asset/SCE-PS3-CP-R-KANA.TTF') format('truetype');
         }
         @font-face {
             font-family: 'SCE-PS3-DH-R-CGB';
-            src: url('SCE-PS3-DH-R-CGB.TTF') format('truetype');
+            src: url('file:///android_asset/SCE-PS3-DH-R-CGB.TTF') format('truetype');
         }
         @font-face {
             font-family: 'SCE-PS3-MT-B-LATIN';
-            src: url('SCE-PS3-MT-B-LATIN.TTF') format('truetype');
+            src: url('file:///android_asset/SCE-PS3-MT-B-LATIN.TTF') format('truetype');
         }
         @font-face {
             font-family: 'SCE-PS3-MT-BI-LATIN';
-            src: url('SCE-PS3-MT-BI-LATIN.TTF') format('truetype');
+            src: url('file:///android_asset/SCE-PS3-MT-BI-LATIN.TTF') format('truetype');
         }
         @font-face {
             font-family: 'SCE-PS3-MT-I-LATIN';
-            src: url('SCE-PS3-MT-I-LATIN.TTF') format('truetype');
+            src: url('file:///android_asset/SCE-PS3-MT-I-LATIN.TTF') format('truetype');
         }
         @font-face {
             font-family: 'SCE-PS3-MT-R-LATIN';
-            src: url('SCE-PS3-MT-R-LATIN.TTF') format('truetype');
+            src: url('file:///android_asset/SCE-PS3-MT-R-LATIN.TTF') format('truetype');
         }
         @font-face {
             font-family: 'SCE-PS3-NR-B-JPN';
-            src: url('SCE-PS3-NR-B-JPN.TTF') format('truetype');
+            src: url('file:///android_asset/SCE-PS3-NR-B-JPN.TTF') format('truetype');
         }
 
         :root {
@@ -62,7 +62,7 @@
 
         header {
             text-align: center;
-            margin-bottom: 40px;
+            margin-bottom: 30px;
             padding: 20px;
             background: var(--card-bg);
             border-radius: 12px;
@@ -79,6 +79,33 @@
         header p {
             color: #94a3b8;
             margin: 0;
+        }
+
+        .global-controls {
+            background: var(--card-bg);
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 24px;
+            border: 1px solid var(--border-color);
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .global-controls input {
+            flex-grow: 1;
+            background: #0f172a;
+            border: 1px solid var(--border-color);
+            color: var(--text-color);
+            padding: 12px;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 1rem;
+            outline: none;
+        }
+
+        .global-controls input:focus {
+            border-color: var(--accent-color);
         }
 
         .font-card {
@@ -129,6 +156,7 @@
             word-break: break-all;
             margin-bottom: 15px;
             min-height: 60px;
+            outline: none;
         }
 
         .controls {
@@ -163,22 +191,27 @@
     <div class="container">
         <header>
             <h1>عارض خطوط منصة PS3</h1>
-            <p>صفحة HTML لتطبيق Android WebView لاستعراض واختبار خطوط النظام الداخلية (Assets)</p>
+            <p>مباشرة من مجلد الأصول (Android Assets)</p>
         </header>
+
+        <!-- حقل تجريبي موحد لكل الخطوط -->
+        <div class="global-controls">
+            <input type="text" id="global-text-input" placeholder="اكتب نصاً تجريبياً هنا ليطبق على كافة الخطوط دفعة واحدة..." oninput="updateAllText(this.value)">
+        </div>
 
         <div id="fonts-container">
             <!-- Font 1 -->
             <div class="font-card">
                 <div class="font-info">
                     <span class="font-name">PK jCZ</span>
-                    <span class="font-path">font/PK jCZ~</span>
+                    <span class="font-path">file:///android_asset/PK jCZ~</span>
                 </div>
                 <div class="preview-text" style="font-family: 'PK jCZ', sans-serif;" contenteditable="true">
                     أبجد هوز حطي كلمن - PlayStation 3 System Font ABC 123
                 </div>
                 <div class="controls">
                     <label>حجم الخط:</label>
-                    <input type="range" min="12" max="60" value="24" oninput="updateFontSize(this, event)">
+                    <input type="range" min="12" max="60" value="24" oninput="updateFontSize(this)">
                     <span>24px</span>
                 </div>
             </div>
@@ -187,14 +220,14 @@
             <div class="font-card">
                 <div class="font-info">
                     <span class="font-name">SCE-PS3-CP-R-KANA</span>
-                    <span class="font-path">font/SCE-PS3-CP-R-KANA.TTF</span>
+                    <span class="font-path">file:///android_asset/SCE-PS3-CP-R-KANA.TTF</span>
                 </div>
                 <div class="preview-text" style="font-family: 'SCE-PS3-CP-R-KANA', sans-serif;" contenteditable="true">
                     أبجد هوز حطي كلمن - PlayStation 3 System Font ABC 123
                 </div>
                 <div class="controls">
                     <label>حجم الخط:</label>
-                    <input type="range" min="12" max="60" value="24" oninput="updateFontSize(this, event)">
+                    <input type="range" min="12" max="60" value="24" oninput="updateFontSize(this)">
                     <span>24px</span>
                 </div>
             </div>
@@ -203,14 +236,14 @@
             <div class="font-card">
                 <div class="font-info">
                     <span class="font-name">SCE-PS3-DH-R-CGB</span>
-                    <span class="font-path">font/SCE-PS3-DH-R-CGB.TTF</span>
+                    <span class="font-path">file:///android_asset/SCE-PS3-DH-R-CGB.TTF</span>
                 </div>
                 <div class="preview-text" style="font-family: 'SCE-PS3-DH-R-CGB', sans-serif;" contenteditable="true">
                     أبجد هوز حطي كلمن - PlayStation 3 System Font ABC 123
                 </div>
                 <div class="controls">
                     <label>حجم الخط:</label>
-                    <input type="range" min="12" max="60" value="24" oninput="updateFontSize(this, event)">
+                    <input type="range" min="12" max="60" value="24" oninput="updateFontSize(this)">
                     <span>24px</span>
                 </div>
             </div>
@@ -219,14 +252,14 @@
             <div class="font-card">
                 <div class="font-info">
                     <span class="font-name">SCE-PS3-MT-B-LATIN</span>
-                    <span class="font-path">font/SCE-PS3-MT-B-LATIN.TTF</span>
+                    <span class="font-path">file:///android_asset/SCE-PS3-MT-B-LATIN.TTF</span>
                 </div>
                 <div class="preview-text" style="font-family: 'SCE-PS3-MT-B-LATIN', sans-serif;" contenteditable="true">
                     أبجد هوز حطي كلمن - PlayStation 3 System Font ABC 123
                 </div>
                 <div class="controls">
                     <label>حجم الخط:</label>
-                    <input type="range" min="12" max="60" value="24" oninput="updateFontSize(this, event)">
+                    <input type="range" min="12" max="60" value="24" oninput="updateFontSize(this)">
                     <span>24px</span>
                 </div>
             </div>
@@ -235,14 +268,14 @@
             <div class="font-card">
                 <div class="font-info">
                     <span class="font-name">SCE-PS3-MT-BI-LATIN</span>
-                    <span class="font-path">font/SCE-PS3-MT-BI-LATIN.TTF</span>
+                    <span class="font-path">file:///android_asset/SCE-PS3-MT-BI-LATIN.TTF</span>
                 </div>
                 <div class="preview-text" style="font-family: 'SCE-PS3-MT-BI-LATIN', sans-serif;" contenteditable="true">
                     أبجد هوز حطي كلمن - PlayStation 3 System Font ABC 123
                 </div>
                 <div class="controls">
                     <label>حجم الخط:</label>
-                    <input type="range" min="12" max="60" value="24" oninput="updateFontSize(this, event)">
+                    <input type="range" min="12" max="60" value="24" oninput="updateFontSize(this)">
                     <span>24px</span>
                 </div>
             </div>
@@ -251,14 +284,14 @@
             <div class="font-card">
                 <div class="font-info">
                     <span class="font-name">SCE-PS3-MT-I-LATIN</span>
-                    <span class="font-path">font/SCE-PS3-MT-I-LATIN.TTF</span>
+                    <span class="font-path">file:///android_asset/SCE-PS3-MT-I-LATIN.TTF</span>
                 </div>
                 <div class="preview-text" style="font-family: 'SCE-PS3-MT-I-LATIN', sans-serif;" contenteditable="true">
                     أبجد هوز حطي كلمن - PlayStation 3 System Font ABC 123
                 </div>
                 <div class="controls">
                     <label>حجم الخط:</label>
-                    <input type="range" min="12" max="60" value="24" oninput="updateFontSize(this, event)">
+                    <input type="range" min="12" max="60" value="24" oninput="updateFontSize(this)">
                     <span>24px</span>
                 </div>
             </div>
@@ -267,14 +300,14 @@
             <div class="font-card">
                 <div class="font-info">
                     <span class="font-name">SCE-PS3-MT-R-LATIN</span>
-                    <span class="font-path">font/SCE-PS3-MT-R-LATIN.TTF</span>
+                    <span class="font-path">file:///android_asset/SCE-PS3-MT-R-LATIN.TTF</span>
                 </div>
                 <div class="preview-text" style="font-family: 'SCE-PS3-MT-R-LATIN', sans-serif;" contenteditable="true">
                     أبجد هوز حطي كلمن - PlayStation 3 System Type Font ABC 123
                 </div>
                 <div class="controls">
                     <label>حجم الخط:</label>
-                    <input type="range" min="12" max="60" value="24" oninput="updateFontSize(this, event)">
+                    <input type="range" min="12" max="60" value="24" oninput="updateFontSize(this)">
                     <span>24px</span>
                 </div>
             </div>
@@ -283,14 +316,14 @@
             <div class="font-card">
                 <div class="font-info">
                     <span class="font-name">SCE-PS3-NR-B-JPN</span>
-                    <span class="font-path">font/SCE-PS3-NR-B-JPN.TTF</span>
+                    <span class="font-path">file:///android_asset/SCE-PS3-NR-B-JPN.TTF</span>
                 </div>
                 <div class="preview-text" style="font-family: 'SCE-PS3-NR-B-JPN', sans-serif;" contenteditable="true">
                     أبجد هوز حطي كلمن - PlayStation 3 System Font ABC 123
                 </div>
                 <div class="controls">
                     <label>حجم الخط:</label>
-                    <input type="range" min="12" max="60" value="24" oninput="updateFontSize(this, event)">
+                    <input type="range" min="12" max="60" value="24" oninput="updateFontSize(this)">
                     <span>24px</span>
                 </div>
             </div>
@@ -298,12 +331,23 @@
     </div>
 
     <script>
-        function updateFontSize(slider, event) {
+        function updateFontSize(slider) {
             const card = slider.closest('.font-card');
             const preview = card.querySelector('.preview-text');
             const span = card.querySelector('.controls span');
             preview.style.fontSize = slider.value + 'px';
             span.textContent = slider.value + 'px';
+        }
+
+        function updateAllText(newText) {
+            const previews = document.querySelectorAll('.preview-text');
+            previews.forEach(preview => {
+                if (newText.trim() === "") {
+                    preview.textContent = "أبجد هوز حطي كلمن - PlayStation 3 System Font ABC 123";
+                } else {
+                    preview.textContent = newText;
+                }
+            });
         }
     </script>
 </body>
