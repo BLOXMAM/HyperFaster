@@ -44,6 +44,7 @@
             --text-color: #f8fafc;
             --accent-color: #38bdf8;
             --border-color: #334155;
+            --success-color: #10b981;
         }
 
         body {
@@ -62,7 +63,7 @@
 
         header {
             text-align: center;
-            margin-bottom: 30px;
+            margin-bottom: 25px;
             padding: 20px;
             background: var(--card-bg);
             border-radius: 12px;
@@ -81,19 +82,19 @@
             margin: 0;
         }
 
-        .global-controls {
+        .controls-section {
             background: var(--card-bg);
-            padding: 15px;
+            padding: 20px;
             border-radius: 12px;
-            margin-bottom: 24px;
+            margin-bottom: 25px;
             border: 1px solid var(--border-color);
             display: flex;
+            flex-direction: column;
             gap: 15px;
-            align-items: center;
         }
 
-        .global-controls input {
-            flex-grow: 1;
+        .global-controls input[type="text"] {
+            width: 100%;
             background: #0f172a;
             border: 1px solid var(--border-color);
             color: var(--text-color);
@@ -102,10 +103,51 @@
             font-family: inherit;
             font-size: 1rem;
             outline: none;
+            box-sizing: border-box;
         }
 
-        .global-controls input:focus {
+        .global-controls input[type="text"]:focus {
             border-color: var(--accent-color);
+        }
+
+        .upload-box {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #111827;
+            padding: 12px 15px;
+            border-radius: 8px;
+            border: 1px dashed var(--border-color);
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .upload-box label {
+            color: #cbd5e1;
+            font-weight: 500;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .upload-box input[type="file"] {
+            display: none;
+        }
+
+        .upload-btn {
+            background: var(--success-color);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: bold;
+            transition: opacity 0.2s;
+        }
+
+        .upload-btn:hover {
+            opacity: 0.9;
         }
 
         .font-card {
@@ -116,6 +158,10 @@
             margin-bottom: 24px;
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
             transition: transform 0.2s, border-color 0.2s;
+        }
+
+        .font-card.custom-uploaded {
+            border-color: var(--success-color);
         }
 
         .font-card:hover {
@@ -138,6 +184,10 @@
             font-size: 1.25rem;
             font-weight: bold;
             color: var(--accent-color);
+        }
+
+        .font-card.custom-uploaded .font-name {
+            color: var(--success-color);
         }
 
         .font-path {
@@ -191,12 +241,21 @@
     <div class="container">
         <header>
             <h1>عارض خطوط منصة PS3</h1>
-            <p>مباشرة من مجلد الأصول (Android Assets)</p>
+            <p>مباشرة من مجلد الأصول (Android Assets) مع إمكانية رفع خط مخصص</p>
         </header>
 
-        <!-- حقل تجريبي موحد لكل الخطوط -->
-        <div class="global-controls">
-            <input type="text" id="global-text-input" placeholder="اكتب نصاً تجريبياً هنا ليطبق على كافة الخطوط دفعة واحدة..." oninput="updateAllText(this.value)">
+        <!-- لوحة التحكم العامة ورفع الخطوط -->
+        <div class="controls-section">
+            <div class="global-controls">
+                <input type="text" id="global-text-input" placeholder="اكتب نصاً تجريبياً هنا ليطبق على كافة الخطوط دفعة واحدة..." oninput="updateAllText(this.value)">
+            </div>
+            <div class="upload-box">
+                <label for="font-file-input">
+                    📂 اختر ملف خط مخصص (.ttf أو .otf) لمعاينته:
+                </label>
+                <label class="upload-btn" for="font-file-input">رفع خط جديد</label>
+                <input type="file" id="font-file-input" accept=".ttf,.otf" onchange="loadCustomFont(event)">
+            </div>
         </div>
 
         <div id="fonts-container">
@@ -341,13 +400,58 @@
 
         function updateAllText(newText) {
             const previews = document.querySelectorAll('.preview-text');
+            const currentText = newText.trim() === "" ? "أبجد هوز حطي كلمن - PlayStation 3 System Font ABC 123" : newText;
             previews.forEach(preview => {
-                if (newText.trim() === "") {
-                    preview.textContent = "أبجد هوز حطي كلمن - PlayStation 3 System Font ABC 123";
-                } else {
-                    preview.textContent = newText;
-                }
+                preview.textContent = currentText;
             });
+        }
+
+        function loadCustomFont(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const fontName = "CustomFont_" + Date.now();
+            const fontUrl = URL.createObjectURL(file);
+
+            // حقن قاعدة @font-face جديدة ديناميكياً في الصفحة
+            const styleSheet = document.styleSheets[0];
+            const fontFaceRule = `@font-face { font-family: '${fontName}'; src: url('${fontUrl}') format('truetype'); }`;
+            try {
+                styleSheet.insertRule(fontFaceRule, styleSheet.cssRules.length);
+            } catch (e) {
+                const style = document.createElement('style');
+                style.innerHTML = fontFaceRule;
+                document.head.appendChild(style);
+            }
+
+            // جلب النص التجريبي الحالي لكي يطابق النص المكتوب في باقي الحقول
+            const globalInput = document.getElementById('global-text-input');
+            const previewString = globalInput.value.trim() === "" ? "أبجد هوز حطي كلمن - PlayStation 3 System Font ABC 123" : globalInput.value;
+
+            // إنشاء بطاقة جديدة للخط المرفع
+            const container = document.getElementById('fonts-container');
+            const card = document.createElement('div');
+            card.className = 'font-card custom-uploaded';
+            card.innerHTML = `
+                <div class="font-info">
+                    <span class="font-name">✨ ${file.name} (خط مخصص)</span>
+                    <span class="font-path">Local Uploaded File</span>
+                </div>
+                <div class="preview-text" style="font-family: '${fontName}', sans-serif;" contenteditable="true">
+                    ${previewString}
+                </div>
+                <div class="controls">
+                    <label>حجم الخط:</label>
+                    <input type="range" min="12" max="60" value="24" oninput="updateFontSize(this)">
+                    <span>24px</span>
+                </div>
+            `;
+
+            // إدراج البطاقة الجديدة في أعلى القائمة لتكون واضحة للمستخدم
+            container.insertBefore(card, container.firstChild);
+
+            // تصفير حقل الرفع للسماح برفع نفس الملف مرتين إذا لزم الأمر
+            event.target.value = '';
         }
     </script>
 </body>
