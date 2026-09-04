@@ -1,0 +1,44 @@
+[
+  {
+    "file": "home.html",
+    "title": "home",
+    "icon": "fa-solid fa-file",
+    "hidden": true
+  },
+  {
+    "file": "k.html",
+    "title": "k",
+    "icon": "fa-solid fa-file",
+    "hidden": true
+  },
+  {
+    "file": "m.html",
+    "title": "m",
+    "icon": "fa-solid fa-file",
+    "hidden": true
+  },
+  {
+    "file": "o.html",
+    "title": "o",
+    "icon": "fa-solid fa-file",
+    "hidden": true
+  },
+  {
+    "file": "دو.html",
+    "title": "دو",
+    "icon": "fa-solid fa-file",
+    "hidden": true
+  },
+  {
+    "file": "رث.html",
+    "title": "رث",
+    "icon": "fa-solid fa-file",
+    "hidden": true
+  },
+  {
+    "file": "ي.html",
+    "title": "ي",
+    "icon": "fa-solid fa-file",
+    "hidden": true
+  }
+]
