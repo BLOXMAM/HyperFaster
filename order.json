@@ -3,7 +3,13 @@
     "file": "home.html",
     "title": "الرئيسية",
     "icon": "fa-solid fa-file",
-    "hidden": true
+    "hidden": false
+  },
+  {
+    "file": "index.html",
+    "title": "index",
+    "icon": "fa-solid fa-file",
+    "hidden": false
   },
   {
     "file": "k.html",
