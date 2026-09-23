@@ -11,7 +11,7 @@
     "file": "index.html",
     "title": "index",
     "icon": "fa-solid fa-file",
-    "hidden": false,
+    "hidden": true,
     "searchEnabled": true,
     "searchNames": []
   },
