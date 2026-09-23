@@ -3,48 +3,64 @@
     "file": "home.html",
     "title": "الرئيسية",
     "icon": "fa-solid fa-file",
-    "hidden": false
+    "hidden": false,
+    "searchEnabled": true,
+    "searchNames": []
   },
   {
     "file": "index.html",
     "title": "index",
     "icon": "fa-solid fa-file",
-    "hidden": false
+    "hidden": false,
+    "searchEnabled": true,
+    "searchNames": []
   },
   {
     "file": "k.html",
     "title": "k",
     "icon": "fa-solid fa-file",
-    "hidden": true
+    "hidden": true,
+    "searchEnabled": true,
+    "searchNames": []
   },
   {
     "file": "m.html",
     "title": "m",
     "icon": "fa-solid fa-file",
-    "hidden": true
+    "hidden": true,
+    "searchEnabled": true,
+    "searchNames": []
   },
   {
     "file": "o.html",
     "title": "o",
     "icon": "fa-solid fa-file",
-    "hidden": true
+    "hidden": true,
+    "searchEnabled": true,
+    "searchNames": []
   },
   {
     "file": "دو.html",
     "title": "دو",
     "icon": "fa-solid fa-file",
-    "hidden": true
+    "hidden": true,
+    "searchEnabled": true,
+    "searchNames": []
   },
   {
     "file": "رث.html",
     "title": "رث",
     "icon": "fa-solid fa-file",
-    "hidden": true
+    "hidden": true,
+    "searchEnabled": true,
+    "searchNames": []
   },
   {
     "file": "ي.html",
     "title": "ي",
     "icon": "fa-solid fa-file",
-    "hidden": true
+    "hidden": true,
+    "searchEnabled": true,
+    "searchNames": []
   }
 ]
