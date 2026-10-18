@@ -1,5 +1,0 @@
-/* ملحق تجريبي: يغيّر خلفية الصفحة ويلوّن العنوان والزر */
-body { background: #0f172a; color: #e2e8f0; font-family: sans-serif; text-align: center; padding: 40px 16px; }
-h1 { color: #38bdf8; }
-#extras-test-btn { background: #22c55e; color: #fff; border: 0; border-radius: 10px; padding: 12px 24px; font-size: 1.1rem; }
-#extras-test-msg { margin-top: 20px; font-size: 1.2rem; }
