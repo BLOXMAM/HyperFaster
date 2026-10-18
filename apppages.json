@@ -7,10 +7,6 @@
     "op": "update",
     "timestamp": 1790942853894
   },
-  "test-extras.css": {
-    "op": "add",
-    "timestamp": 1791918581692
-  },
   "test-extras.js": {
     "op": "add",
     "timestamp": 1791918589456
