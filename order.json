@@ -1,18 +1,1 @@
-[
-  {
-    "file": "home.html",
-    "title": "الرئيسية",
-    "icon": "fa-solid fa-file",
-    "hidden": false,
-    "searchEnabled": true,
-    "searchNames": []
-  },
-  {
-    "file": "o.html",
-    "title": "o",
-    "icon": "fa-solid fa-file",
-    "hidden": true,
-    "searchEnabled": true,
-    "searchNames": []
-  }
-]
+[]
