@@ -16,7 +16,7 @@
   td{padding:6px 8px;border-bottom:1px solid rgba(120,150,145,.3)}
   td:last-child{text-align:left;direction:ltr;white-space:nowrap}
   .ok{color:#1a9a52;font-weight:700}.no{color:#c0392b;font-weight:700}.off{color:#c27a00;font-weight:700}
-  #log{font:12px/1.6 ui-monospace,monospace;direction:ltr;text-align:left;background:rgba(0,0,0,.1);padding:10px;border-radius:10px;height:230px;overflow:auto;white-space:pre-wrap;margin-top:12px;position:sticky;bottom:8px}
+  #log{font:12px/1.6 ui-monospace,monospace;direction:ltr;text-align:left;background:rgba(0,0,0,.1);padding:10px;border-radius:10px;height:230px;overflow:auto;white-space:pre-wrap;margin-top:12px}
   code{direction:ltr;unicode-bidi:embed;background:rgba(0,0,0,.08);padding:1px 5px;border-radius:5px}
 </style>
 </head>
@@ -125,7 +125,7 @@ function mkLink(){
   var s=($('sch').value||'').trim(), p=($('pg').value||'').trim();
   var u=s+'://open/'+(p||'test')+'?id=7&from=test';
   $('lnk').value=u; $('lnk').select();
-  try{navigator.clipboard.writeText(u).then(function(){log('نُسخ: '+u);},function(){log('انسخه يدوياً: '+u);});}catch(e){log('انسخه يدوياً: '+u);}
+  try{navigator.clipboard.writeText(u).then(function(){log('نُسخ: '+u);},function(){log('الرابط (اضغط مطولاً على الصندوق وانسخ): '+u);});}catch(e){log('الرابط (اضغط مطولاً على الصندوق وانسخ): '+u);}
 }
 function readInit(){ if(!window.RosTrickLinks)return log('❌ RosTrickLinks غير موجود'); log('getInitial → '+JSON.stringify(RosTrickLinks.getInitial())); }
 var tPages=safe(async function(){
