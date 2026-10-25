@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>اختبار Deep Link</title>
+<style>
+:root{--bg:#0f172a;--card:#1e293b;--ac:#38bdf8;--ok:#22c55e;--bad:#ef4444;--tx:#f1f5f9}
+*{box-sizing:border-box;margin:0}
+body{font-family:system-ui,sans-serif;background:var(--bg);color:var(--tx);padding:16px;font-size:16px;line-height:1.6}
+h1{font-size:22px;margin:8px 0 14px}
+.card{background:var(--card);border-radius:14px;padding:16px;margin-bottom:14px}
+button{width:100%;min-height:48px;border:0;border-radius:12px;background:var(--ac);color:#04283a;font-size:16px;font-weight:700;margin-top:8px;font-family:inherit}
+button.sec{background:#334155;color:var(--tx)}
+input{width:100%;min-height:46px;border-radius:10px;border:1px solid #475569;background:#0f172a;color:var(--tx);padding:0 12px;font-size:16px;margin-top:6px;font-family:inherit;direction:ltr;text-align:left}
+#log{background:#020617;border-radius:10px;padding:10px;font-family:monospace;font-size:13px;direction:ltr;text-align:left;white-space:pre-wrap;max-height:220px;overflow:auto;margin-top:10px}
+a.back{display:inline-block;color:var(--ac);margin-bottom:12px;text-decoration:none}
+label{font-size:14px;color:#94a3b8}
+#link{background:#020617;border-radius:10px;padding:12px;margin-top:10px;direction:ltr;text-align:left;word-break:break-all;font-family:monospace;font-size:14px;min-height:44px}
+#qr{display:flex;justify-content:center;margin-top:12px;background:#fff;border-radius:10px;padding:12px}
+.note{color:#94a3b8;font-size:14px}
+</style>
+</head>
+<body>
+<a class="back" href="home.html">← مركز الاختبار</a>
+<h1>🔗 اختبار Deep Link</h1>
+
+<div class="card">
+<p class="note">الصيغة: ‎<code>packageId://page</code>‎ — يعمل مع أي تطبيق RosTrick بدون أي إعداد داخل الصفحة.</p>
+<label>معرّف الحزمة (Package ID)</label>
+<input id="pkg" placeholder="com.example.myapp">
+<label>مسار الصفحة</label>
+<input id="page" value="test-share.html">
+<button id="build">إنشاء الرابط</button>
+<div id="link"></div>
+<button class="sec" id="copy">نسخ الرابط</button>
+<button class="sec" id="open">فتح الرابط الآن (اختبار)</button>
+<button class="sec" id="share">مشاركة الرابط</button>
+<div id="qr"></div>
+<div id="log"></div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script>
+function log(m){var l=document.getElementById('log');l.textContent+=m+'\n';l.scrollTop=l.scrollHeight}
+var cur='';
+try{var s=localStorage.getItem('rt_pkg');if(s)document.getElementById('pkg').value=s}catch(e){}
+function build(){
+  var p=document.getElementById('pkg').value.trim();
+  var pg=document.getElementById('page').value.trim().replace(/^\/+/,'');
+  if(!p||!pg){log('أدخل معرّف الحزمة والصفحة');return false}
+  try{localStorage.setItem('rt_pkg',p)}catch(e){}
+  cur=p+'://'+pg;
+  document.getElementById('link').textContent=cur;
+  var q=document.getElementById('qr');q.innerHTML='';
+  try{new QRCode(q,{text:cur,width:180,height:180})}catch(e){q.textContent='تعذر رسم QR (يتطلب إنترنت)'}
+  log('تم إنشاء: '+cur);
+  return true;
+}
+document.getElementById('build').onclick=build;
+document.getElementById('copy').onclick=async function(){
+  if(!cur&&!build())return;
+  try{await navigator.clipboard.writeText(cur);log('تم النسخ')}catch(e){log('تعذر النسخ تلقائياً، انسخه يدوياً من الأعلى')}
+};
+document.getElementById('open').onclick=function(){
+  if(!cur&&!build())return;
+  log('جارٍ الفتح...');
+  location.href=cur;
+};
+document.getElementById('share').onclick=function(){
+  if(!cur&&!build())return;
+  try{
+    if(window.RosTrickShare){RosTrickShare.share({text:cur,title:'رابط مباشر'});log('تمت المشاركة')}
+    else log('RosTrickShare غير متاح خارج التطبيق');
+  }catch(e){log('خطأ: '+e.message)}
+};
+</script>
+</body>
+</html>
