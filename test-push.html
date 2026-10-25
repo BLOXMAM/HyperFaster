@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>اختبار الإشعارات</title>
+<style>
+:root{--bg:#0f172a;--card:#1e293b;--ac:#38bdf8;--ok:#22c55e;--bad:#ef4444;--tx:#f1f5f9}
+*{box-sizing:border-box;margin:0}
+body{font-family:system-ui,sans-serif;background:var(--bg);color:var(--tx);padding:16px;font-size:16px;line-height:1.6}
+h1{font-size:22px;margin:8px 0 14px}
+.card{background:var(--card);border-radius:14px;padding:16px;margin-bottom:14px}
+button{width:100%;min-height:48px;border:0;border-radius:12px;background:var(--ac);color:#04283a;font-size:16px;font-weight:700;margin-top:8px;font-family:inherit}
+button.sec{background:#334155;color:var(--tx)}
+input{width:100%;min-height:46px;border-radius:10px;border:1px solid #475569;background:#0f172a;color:var(--tx);padding:0 12px;font-size:16px;margin-top:6px;font-family:inherit}
+#log{background:#020617;border-radius:10px;padding:10px;font-family:monospace;font-size:13px;direction:ltr;text-align:left;white-space:pre-wrap;max-height:240px;overflow:auto;margin-top:10px}
+#token{background:#020617;border-radius:10px;padding:10px;font-family:monospace;font-size:12px;direction:ltr;text-align:left;word-break:break-all;margin-top:8px;min-height:40px}
+a.back{display:inline-block;color:var(--ac);margin-bottom:12px;text-decoration:none}
+label{font-size:14px;color:#94a3b8}
+.note{color:#94a3b8;font-size:14px}
+</style>
+</head>
+<body>
+<a class="back" href="home.html">← مركز الاختبار</a>
+<h1>🔔 اختبار الإشعارات (Push)</h1>
+
+<div class="card">
+<p class="note">يعمل فقط إذا ضبطت Firebase للتطبيق. الإشعار عندما يكون التطبيق في الخلفية يظهر من النظام، وعندما يكون مفتوحاً يصل للصفحة كحدث rostrick-push (يظهر في السجل بالأسفل).</p>
+<button id="perm">طلب إذن الإشعارات</button>
+<button id="tok">جلب التوكن (FCM Token)</button>
+<div id="token"></div>
+<button class="sec" id="cp">نسخ التوكن</button>
+</div>
+
+<div class="card">
+<label>اسم الموضوع (Topic)</label>
+<input id="topic" value="news" dir="ltr">
+<button id="sub">اشتراك في الموضوع</button>
+<button class="sec" id="unsub">إلغاء الاشتراك</button>
+</div>
+
+<div class="card">
+<b>السجل</b>
+<div id="log"></div>
+</div>
+
+<script>
+function log(m){var l=document.getElementById('log');l.textContent+=m+'\n';l.scrollTop=l.scrollHeight}
+var tokenVal='';
+log('RosTrickPush: '+(window.RosTrickPush?'متاح ✅':'غير متاح ❌ (خارج التطبيق)'));
+function guard(){if(!window.RosTrickPush){log('غير متاح خارج تطبيق RosTrick');return false}return true}
+document.getElementById('perm').onclick=async function(){
+  if(!guard())return;
+  try{log('requestPermission ← '+JSON.stringify(await RosTrickPush.requestPermission()))}catch(e){log('خطأ: '+e.message)}
+};
+document.getElementById('tok').onclick=async function(){
+  if(!guard())return;
+  try{
+    tokenVal=await RosTrickPush.getToken();
+    document.getElementById('token').textContent=tokenVal||'(فارغ)';
+    log('تم جلب التوكن');
+  }catch(e){log('خطأ: '+e.message)}
+};
+document.getElementById('cp').onclick=async function(){
+  if(!tokenVal){log('اجلب التوكن أولاً');return}
+  try{await navigator.clipboard.writeText(tokenVal);log('تم النسخ')}catch(e){log('تعذر النسخ تلقائياً')}
+};
+document.getElementById('sub').onclick=async function(){
+  if(!guard())return;
+  var t=document.getElementById('topic').value.trim();
+  try{await RosTrickPush.subscribe(t);log('اشتركت في: '+t)}catch(e){log('خطأ: '+e.message)}
+};
+document.getElementById('unsub').onclick=async function(){
+  if(!guard())return;
+  var t=document.getElementById('topic').value.trim();
+  try{await RosTrickPush.unsubscribe(t);log('ألغيت الاشتراك في: '+t)}catch(e){log('خطأ: '+e.message)}
+};
+addEventListener('rostrick-push',function(e){
+  var d=e.detail||{};
+  log('📩 إشعار وصل: '+(d.title||'')+' — '+(d.body||'')+' | data='+JSON.stringify(d.data||{}));
+});
+</script>
+</body>
+</html>
