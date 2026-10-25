@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>اختبار التقييم</title>
+<style>
+:root{--bg:#0f172a;--card:#1e293b;--ac:#38bdf8;--ok:#22c55e;--bad:#ef4444;--tx:#f1f5f9}
+*{box-sizing:border-box;margin:0}
+body{font-family:system-ui,sans-serif;background:var(--bg);color:var(--tx);padding:16px;font-size:16px;line-height:1.6}
+h1{font-size:22px;margin:8px 0 14px}
+.card{background:var(--card);border-radius:14px;padding:16px;margin-bottom:14px}
+button{width:100%;min-height:48px;border:0;border-radius:12px;background:var(--ac);color:#04283a;font-size:16px;font-weight:700;margin-top:8px;font-family:inherit}
+#log{background:#020617;border-radius:10px;padding:10px;font-family:monospace;font-size:13px;direction:ltr;text-align:left;white-space:pre-wrap;max-height:220px;overflow:auto;margin-top:10px}
+a.back{display:inline-block;color:var(--ac);margin-bottom:12px;text-decoration:none}
+.note{color:#94a3b8;font-size:14px}
+</style>
+</head>
+<body>
+<a class="back" href="home.html">← مركز الاختبار</a>
+<h1>⭐ اختبار التقييم</h1>
+
+<div class="card">
+<p class="note">جوجل هي من يقرر إن كانت نافذة التقييم ستظهر أم لا (توجد حدود لعدد مرات الظهور). النتيجة true تعني أن الطلب اكتمل بدون خطأ فقط، وليس أن النافذة ظهرت بالضرورة. وعلى الأغلب لن تظهر النافذة إلا إذا كان التطبيق منشوراً على Google Play (ولو في اختبار داخلي).</p>
+<button id="go">طلب نافذة التقييم</button>
+<div id="log"></div>
+</div>
+
+<script>
+function log(m){var l=document.getElementById('log');l.textContent+=m+'\n';l.scrollTop=l.scrollHeight}
+log('RosTrickReview: '+(window.RosTrickReview?'متاح ✅':'غير متاح ❌ (خارج التطبيق)'));
+document.getElementById('go').onclick=async function(){
+  try{
+    if(!window.RosTrickReview){log('غير متاح خارج تطبيق RosTrick');return}
+    var r=await RosTrickReview.requestReview();
+    log('النتيجة: '+r);
+  }catch(e){log('خطأ: '+e.message)}
+};
+</script>
+</body>
+</html>
