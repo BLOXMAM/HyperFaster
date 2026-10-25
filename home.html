@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>مركز اختبار RosTrick</title>
+<style>
+:root{--bg:#0f172a;--card:#1e293b;--ac:#38bdf8;--ok:#22c55e;--bad:#ef4444;--tx:#f1f5f9}
+*{box-sizing:border-box;margin:0}
+body{font-family:system-ui,sans-serif;background:var(--bg);color:var(--tx);padding:16px;font-size:16px;line-height:1.6}
+h1{font-size:22px;margin:8px 0 14px}
+.card{background:var(--card);border-radius:14px;padding:16px;margin-bottom:14px}
+a.btn{display:block;min-height:48px;line-height:48px;text-align:center;border-radius:12px;background:var(--ac);color:#04283a;font-weight:700;text-decoration:none;margin-top:8px}
+.row{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #334155}
+.row:last-child{border:0}
+.ok{color:var(--ok)}.no{color:var(--bad)}
+small{color:#94a3b8}
+</style>
+</head>
+<body>
+<h1>🧪 مركز اختبار RosTrick</h1>
+
+<div class="card">
+<b>حالة الجسور (Bridges)</b><br><small>داخل التطبيق تظهر ✅ للمتاح، وفي المتصفح العادي ستظهر ❌ لأنها غير معرّفة</small>
+<div id="status" style="margin-top:8px"></div>
+</div>
+
+<div class="card">
+<b>صفحات الاختبار</b>
+<a class="btn" href="test-share.html">📤 المشاركة (RosTrickShare)</a>
+<a class="btn" href="test-review.html">⭐ التقييم (RosTrickReview)</a>
+<a class="btn" href="test-deeplink.html">🔗 رابط Deep Link</a>
+<a class="btn" href="test-ads.html">📺 الإعلانات (AdMob / Unity / Facebook)</a>
+<a class="btn" href="test-push.html">🔔 الإشعارات (RosTrickPush)</a>
+<a class="btn" href="test-billing.html">💳 المشتريات (RosTrickBilling)</a>
+<a class="btn" href="test-pages.html">📥 تحميل الصفحات عند الطلب (RosTrickPages)</a>
+</div>
+
+<script>
+var names=['RosTrickAds','RosTrickUnityAds','RosTrickFbAds','RosTrickPush','RosTrickBilling','RosTrickPages','RosTrickShare','RosTrickReview'];
+var html='';
+names.forEach(function(n){
+  var ok=typeof window[n]!=='undefined';
+  html+='<div class="row"><span>'+n+'</span><span class="'+(ok?'ok':'no')+'">'+(ok?'✅ متاح':'❌ غير متاح')+'</span></div>';
+});
+document.getElementById('status').innerHTML=html;
+</script>
+</body>
+</html>
