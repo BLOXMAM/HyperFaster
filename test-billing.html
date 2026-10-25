@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>اختبار المشتريات</title>
+<style>
+:root{--bg:#0f172a;--card:#1e293b;--ac:#38bdf8;--ok:#22c55e;--bad:#ef4444;--tx:#f1f5f9}
+*{box-sizing:border-box;margin:0}
+body{font-family:system-ui,sans-serif;background:var(--bg);color:var(--tx);padding:16px;font-size:16px;line-height:1.6}
+h1{font-size:22px;margin:8px 0 14px}
+.card{background:var(--card);border-radius:14px;padding:16px;margin-bottom:14px}
+button{width:100%;min-height:48px;border:0;border-radius:12px;background:var(--ac);color:#04283a;font-size:16px;font-weight:700;margin-top:8px;font-family:inherit}
+button.sec{background:#334155;color:var(--tx)}
+input,select{width:100%;min-height:46px;border-radius:10px;border:1px solid #475569;background:#0f172a;color:var(--tx);padding:0 12px;font-size:16px;margin-top:6px;font-family:inherit;direction:ltr;text-align:left}
+#log{background:#020617;border-radius:10px;padding:10px;font-family:monospace;font-size:13px;direction:ltr;text-align:left;white-space:pre-wrap;max-height:260px;overflow:auto}
+a.back{display:inline-block;color:var(--ac);margin-bottom:12px;text-decoration:none}
+label{font-size:14px;color:#94a3b8}
+.note{color:#94a3b8;font-size:14px}
+</style>
+</head>
+<body>
+<a class="back" href="home.html">← مركز الاختبار</a>
+<h1>💳 اختبار المشتريات (Billing)</h1>
+
+<div class="card">
+<p class="note">يتطلب تفعيل المشتريات داخل التطبيق وإنشاء منتجات مطابقة في Google Play Console. استخدم حساب اختبار مرخّص. هذه الصفحة تعرض الاستجابات الخام لكل دالة.</p>
+<label>معرّف المنتج (Product ID)</label>
+<input id="pid" placeholder="premium">
+<label>نوع الشراء</label>
+<select id="kind">
+<option value="once">لمرة واحدة (non-consumable)</option>
+<option value="cons">قابل للتكرار (consumable)</option>
+<option value="subs">اشتراك (subscription)</option>
+</select>
+<button id="prod">جلب تفاصيل المنتج (getProducts)</button>
+<button id="buy">شراء (buy)</button>
+<button class="sec" id="own">مشترياتي (getPurchases)</button>
+<label style="display:block;margin-top:10px">purchaseToken (لاستهلاك عنصر)</label>
+<input id="tk" placeholder="يُملأ تلقائياً بعد شراء ناجح">
+<button class="sec" id="con">استهلاك (consume)</button>
+</div>
+
+<div class="card">
+<b>السجل</b>
+<div id="log" style="margin-top:8px"></div>
+</div>
+
+<script>
+function log(m){var l=document.getElementById('log');l.textContent+=m+'\n\n';l.scrollTop=l.scrollHeight}
+log('RosTrickBilling: '+(window.RosTrickBilling?'متاح ✅':'غير متاح ❌ (خارج التطبيق)'));
+function g(){if(!window.RosTrickBilling){log('غير متاح خارج تطبيق RosTrick');return false}return true}
+function pid(){var v=document.getElementById('pid').value.trim();if(!v)log('أدخل معرّف المنتج');return v}
+document.getElementById('prod').onclick=async function(){
+  if(!g())return;var p=pid();if(!p)return;
+  try{log('getProducts ← '+JSON.stringify(await RosTrickBilling.getProducts([p]),null,1))}catch(e){log('خطأ: '+e.message)}
+};
+document.getElementById('buy').onclick=async function(){
+  if(!g())return;var p=pid();if(!p)return;
+  var k=document.getElementById('kind').value,opt;
+  if(k==='cons')opt={consumable:true};else if(k==='subs')opt={type:'subs'};
+  try{
+    var r=opt?await RosTrickBilling.buy(p,opt):await RosTrickBilling.buy(p);
+    log('buy ← '+JSON.stringify(r,null,1));
+    if(r&&r.ok&&r.purchaseToken)document.getElementById('tk').value=r.purchaseToken;
+  }catch(e){log('خطأ: '+e.message)}
+};
+document.getElementById('own').onclick=async function(){
+  if(!g())return;
+  try{log('getPurchases ← '+JSON.stringify(await RosTrickBilling.getPurchases(),null,1))}catch(e){log('خطأ: '+e.message)}
+};
+document.getElementById('con').onclick=async function(){
+  if(!g())return;var t=document.getElementById('tk').value.trim();
+  if(!t){log('أدخل purchaseToken');return}
+  try{log('consume ← '+JSON.stringify(await RosTrickBilling.consume(t),null,1))}catch(e){log('خطأ: '+e.message)}
+};
+</script>
+</body>
+</html>
