@@ -1195,6 +1195,9 @@ function updBodyHtml(cfg){
         .rt-color-item span { font-size: 0.74rem; flex: 1; min-width: 0; }
         .rt-color-item input[type="color"] { width: 34px; height: 34px; padding: 0; border: 1px solid var(--border-color, #ccc); border-radius: 6px; background: none; flex-shrink: 0; }
         .rt-color-item input[type="text"] { width: 84px; padding: 6px; font-size: 0.74rem; direction: ltr; text-align: left; flex-shrink: 0; }
+        .rt-hw-t { flex:1; min-width:0; line-height:1.8; font-weight:normal; }
+        .rt-hw-t code { word-break:break-all; font-size:.78rem; }
+        .rt-hw-d { display:block; font-size:.8rem; color:var(--text-muted); }
         .rt-icon-preview { width: 64px; height: 64px; border-radius: 14px; object-fit: cover; background: var(--item-hover); border: 1px solid var(--border-color, #ddd); }
         .rt-status { background: rgba(41,128,185,0.08); border-right: 4px solid #2980b9; border-radius: 8px; padding: 12px 14px; font-size: 0.85rem; line-height: 1.9; margin-bottom: 14px; white-space: pre-line; }
         .rt-status.rt-err { background: rgba(231,76,60,0.08); border-right-color: #e74c3c; color: #c0392b; }
@@ -2181,7 +2184,7 @@ html[data-theme^="bp-"] .card{padding:16px; border-radius:12px}}
 
             <div class="form-group">
                 <label class="opt-checkbox" style="display:flex; align-items:center; gap:8px; cursor:pointer; font-weight:bold;">
-                    <input type="checkbox" id="rt-links-on" onchange="rtLinksGate()"> <i class="fa-solid fa-link"></i> الروابط العميقة (Deep Links) 👑
+                    <input type="checkbox" id="rt-links-on" onchange="rtLinksGate()"> <i class="fa-solid fa-link"></i> الروابط العميقة (Deep Links) <span class="sm-pro-badge-inline"><i class="fa-solid fa-crown"></i> <bdi class="rt-pro-l">PRO</bdi></span>
                 </label>
                 <small class="rt-hint">اختياري. تجعل روابط معيّنة تفتح تطبيقك مباشرة (من واتساب أو المتصفح...)، وقد تفتح صفحة محددة فيه.</small>
                 <div id="rt-links-box" style="display:none; margin-top:10px; padding:12px; border:1px dashed var(--border-color); border-radius:10px;">
@@ -2234,13 +2237,13 @@ html[data-theme^="bp-"] .card{padding:16px; border-radius:12px}}
                 <label style="display:flex; align-items:center; gap:8px; font-weight:bold;"><i class="fa-brands fa-usb"></i> واجهات العتاد (اختيارية)</label>
                 <small class="rt-hint">تضيف دعم أجهزة خارجية بالواجهات القياسية في المتصفح. اختر ما تحتاجه فقط، فكل واحدة تُضاف للتطبيق عند تفعيلها.</small>
                 <label class="opt-checkbox" style="display:flex; align-items:center; gap:8px; cursor:pointer; margin-top:8px;">
-                    <input type="checkbox" id="rt-hw-bluetooth" onchange="rtServicesChanged()"> <i class="fa-brands fa-bluetooth-b"></i> Web Bluetooth <code dir="ltr">navigator.bluetooth</code> — أجهزة بلوتوث منخفض الطاقة (BLE)
+                    <input type="checkbox" id="rt-hw-bluetooth" onchange="rtServicesChanged()"> <span class="rt-hw-t"><i class="fa-brands fa-bluetooth-b"></i> Web Bluetooth <code dir="ltr">navigator.bluetooth</code><span class="rt-hw-d">— أجهزة بلوتوث منخفض الطاقة (BLE)</span></span>
                 </label>
                 <label class="opt-checkbox" style="display:flex; align-items:center; gap:8px; cursor:pointer; margin-top:6px;">
-                    <input type="checkbox" id="rt-hw-usb" onchange="rtServicesChanged()"> <i class="fa-brands fa-usb"></i> WebUSB <code dir="ltr">navigator.usb</code> — أجهزة USB (كابل OTG)
+                    <input type="checkbox" id="rt-hw-usb" onchange="rtServicesChanged()"> <span class="rt-hw-t"><i class="fa-brands fa-usb"></i> WebUSB <code dir="ltr">navigator.usb</code><span class="rt-hw-d">— أجهزة USB (كابل OTG)</span></span>
                 </label>
                 <label class="opt-checkbox" style="display:flex; align-items:center; gap:8px; cursor:pointer; margin-top:6px;">
-                    <input type="checkbox" id="rt-hw-serial" onchange="rtServicesChanged()"> <i class="fa-solid fa-plug"></i> Web Serial <code dir="ltr">navigator.serial</code> — منافذ تسلسلية عبر USB
+                    <input type="checkbox" id="rt-hw-serial" onchange="rtServicesChanged()"> <span class="rt-hw-t"><i class="fa-solid fa-plug"></i> Web Serial <code dir="ltr">navigator.serial</code><span class="rt-hw-d">— منافذ تسلسلية عبر USB</span></span>
                 </label>
                 <div id="rt-hw-box" style="display:none; margin-top:10px; padding:12px; border:1px dashed var(--border-color); border-radius:10px;">
                     <small class="rt-hint" style="margin-top:0;">
@@ -19976,6 +19979,12 @@ document.addEventListener("DOMContentLoaded",function(){
         ttl.textContent = nm; var q;
         if (k === "h" || k === "p") textFields(c, e);
         else if (k === "btn" || k === "link") {
+            (function () {
+                var pg = []; try { (allHtmlFilesList || []).forEach(function (f) { var n = String(f.name || "").replace(/\.html$/i, ""); if (n && n.toLowerCase() !== "home") pg.push([n, n]); }); } catch (er) {}
+                pg.unshift(["home", T_("الصفحة الرئيسية (home)", "Home page (home)")]);
+                var cur = (e.getAttribute("href") || "").replace(/\.html$/i, "");
+                F(c, T_("انتقال إلى صفحة من تطبيقك", "Go to a page of your app"), "sel", function () { return pg.some(function (o) { return o[0] === cur; }) ? cur : ""; }, function (v) { if (v) { e.setAttribute("href", hrefOut(v)); drawSheet(); } }, [["", T_("— اختر صفحة —", "— choose a page —")]].concat(pg));
+            })();
             F(c, T_("الرابط (اسم صفحة مثل about، أو رابط، أو رقم هاتف)", "Link (a page name like about, a URL or a phone number)"), "txt", function () { return e.getAttribute("href") === "#" ? "" : e.getAttribute("href") || ""; }, function (v) { e.setAttribute("href", hrefOut(v)); }, { ltr: 1, ph: "about / https://... / +9665..." });
             if (k === "btn") { F(c, T_("الشكل", "Style"), "sel", function () { return e.classList.contains("o") ? "o" : ""; }, function (v) { e.classList.toggle("o", v === "o"); }, [["", T_("ممتلئ", "Filled")], ["o", T_("حدود فقط", "Outline")]]); q = sty(e, "background"); F(c, T_("لون الخلفية", "Background"), "color", q.g, function (v) { q.s(v); if (v) e.style.borderColor = v; else e.style.borderColor = ""; }, { def: "#2f7d4a" }); }
             textFields(c, e);
@@ -20190,6 +20199,12 @@ document.addEventListener("DOMContentLoaded",function(){
             var failed = false, oa = window.alert; window.alert = function () { failed = true; return oa.apply(this, arguments); };
             ve.style.display = "none";
             openEditorForNewFile(file, file, html);
+            /* استقلالية المحرر المبسط: المبتدئ لا يُحقن له هيدر المحرر المتقدم أبداً؛ والعادي فأعلى يحتفظ بحالة هيدر الصفحة الأصلية (والصفحة الجديدة تأخذ الافتراضي) */
+            try {
+                var rtBeg = document.body.classList.contains("rt-beginner");
+                var hdT = document.getElementById("enable-header-toggle");
+                if (hdT) { hdT.checked = rtBeg ? false : (VX.editing ? !!VX.hadHeader : true); if (typeof toggleHeaderControlsVisibility === "function") toggleHeaderControlsVisibility(); }
+            } catch (e) {}
             currentFileSha = sha || "";
             var before = currentFileSha;
             document.getElementById("editor-container").style.display = "none"; document.getElementById("main-container").style.display = "block";
@@ -20216,6 +20231,7 @@ document.addEventListener("DOMContentLoaded",function(){
                 if (!canvas || !document.body.contains(canvas)) { VX.pending = null; }
                 var own = /data-vx(t)?=/.test(html);
                 VX.sel = null; VX.undo = []; VX.redo = []; VX.editing = { path: path, sha: d.sha }; VX.raw = !own;
+                VX.hadHeader = html.indexOf("<!-- START ADMIN DRAWER -->") > -1;
                 VX.home = nm.toLowerCase() === "home"; VX.name = VX.home ? "home" : nm;
                 VX.mode = own ? "pen" : "code";
                 VX.pending = html; VX.rawCode = own ? null : html;
