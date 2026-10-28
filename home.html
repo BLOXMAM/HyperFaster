@@ -17880,7 +17880,7 @@ function smBundlePlanCardHtml(size, unsub, livePrice) {
             <div class="rtp-once">دفعة واحدة عبر Google Play</div>
             <ul class="rtp-list"><li>تفعيل ${size} مشاريع دفعة واحدة</li><li>أوفر من تفعيل كل مشروع منفرداً</li></ul>
             ${listHtml}
-            <button type="button" class="rtp-buy" id="rtp-bundle-buy-${size}" ${exact ? "" : "disabled"} onclick="smBuyBundle(${size})"><i class="fa-brands fa-google-play"></i> اشترِ عبر Google Play</button>
+            <button type="button" class="rtp-buy" id="rtp-bundle-buy-${size}" ${exact ? "" : 'style="opacity:.55"'} onclick="smBuyBundle(${size})"><i class="fa-brands fa-google-play"></i> اشترِ عبر Google Play</button>
         </div>`;
 }
 
@@ -17945,7 +17945,8 @@ function smUpdateBundleCount(size) {
     const countEl = document.getElementById(`rtp-bundle-count-${size}`);
     if (countEl) countEl.textContent = `${checked} / ${size} محدد`;
     const btn = document.getElementById(`rtp-bundle-buy-${size}`);
-    if (btn) btn.disabled = (checked !== size);
+    if (btn) { btn.style.opacity = (checked === size) ? "" : ".55"; }
+    if (countEl) countEl.style.color = "";
 }
 
 async function smBuyBundle(size) {
@@ -17959,7 +17960,13 @@ async function smBuyBundle(size) {
         const boxes = document.querySelectorAll(`.rtp-bundle-chk[data-size="${size}"]:checked`);
         selected = Array.from(boxes).map(el => unsub[parseInt(el.dataset.idx, 10)]).filter(Boolean);
     }
-    if (selected.length !== size) { alert(`يرجى اختيار ${size} مشاريع بالضبط.`); return; }
+    if (selected.length !== size) {
+        const msg = `يرجى اختيار ${size} مشاريع للتفعيل (المحدد حاليًا ${selected.length} / ${size})`;
+        const cEl = document.getElementById(`rtp-bundle-count-${size}`);
+        if (cEl) { cEl.textContent = `⚠️ ${msg}`; cEl.style.color = "#e74c3c"; cEl.style.fontWeight = "bold"; try { cEl.scrollIntoView({ block: "center", behavior: "smooth" }); } catch (e) {} }
+        try { showAndroidToast("⚠️ " + msg); } catch (e) { alert(msg); }
+        return;
+    }
 
     const b = smLicenseSettings.bundles[size] || {};
     const productId = b.productId || `prembundle${size}`;
@@ -19979,12 +19986,6 @@ document.addEventListener("DOMContentLoaded",function(){
         ttl.textContent = nm; var q;
         if (k === "h" || k === "p") textFields(c, e);
         else if (k === "btn" || k === "link") {
-            (function () {
-                var pg = []; try { (allHtmlFilesList || []).forEach(function (f) { var n = String(f.name || "").replace(/\.html$/i, ""); if (n && n.toLowerCase() !== "home") pg.push([n, n]); }); } catch (er) {}
-                pg.unshift(["home", T_("الصفحة الرئيسية (home)", "Home page (home)")]);
-                var cur = (e.getAttribute("href") || "").replace(/\.html$/i, "");
-                F(c, T_("انتقال إلى صفحة من تطبيقك", "Go to a page of your app"), "sel", function () { return pg.some(function (o) { return o[0] === cur; }) ? cur : ""; }, function (v) { if (v) { e.setAttribute("href", hrefOut(v)); drawSheet(); } }, [["", T_("— اختر صفحة —", "— choose a page —")]].concat(pg));
-            })();
             F(c, T_("الرابط (اسم صفحة مثل about، أو رابط، أو رقم هاتف)", "Link (a page name like about, a URL or a phone number)"), "txt", function () { return e.getAttribute("href") === "#" ? "" : e.getAttribute("href") || ""; }, function (v) { e.setAttribute("href", hrefOut(v)); }, { ltr: 1, ph: "about / https://... / +9665..." });
             if (k === "btn") { F(c, T_("الشكل", "Style"), "sel", function () { return e.classList.contains("o") ? "o" : ""; }, function (v) { e.classList.toggle("o", v === "o"); }, [["", T_("ممتلئ", "Filled")], ["o", T_("حدود فقط", "Outline")]]); q = sty(e, "background"); F(c, T_("لون الخلفية", "Background"), "color", q.g, function (v) { q.s(v); if (v) e.style.borderColor = v; else e.style.borderColor = ""; }, { def: "#2f7d4a" }); }
             textFields(c, e);
@@ -20199,12 +20200,6 @@ document.addEventListener("DOMContentLoaded",function(){
             var failed = false, oa = window.alert; window.alert = function () { failed = true; return oa.apply(this, arguments); };
             ve.style.display = "none";
             openEditorForNewFile(file, file, html);
-            /* استقلالية المحرر المبسط: المبتدئ لا يُحقن له هيدر المحرر المتقدم أبداً؛ والعادي فأعلى يحتفظ بحالة هيدر الصفحة الأصلية (والصفحة الجديدة تأخذ الافتراضي) */
-            try {
-                var rtBeg = document.body.classList.contains("rt-beginner");
-                var hdT = document.getElementById("enable-header-toggle");
-                if (hdT) { hdT.checked = rtBeg ? false : (VX.editing ? !!VX.hadHeader : true); if (typeof toggleHeaderControlsVisibility === "function") toggleHeaderControlsVisibility(); }
-            } catch (e) {}
             currentFileSha = sha || "";
             var before = currentFileSha;
             document.getElementById("editor-container").style.display = "none"; document.getElementById("main-container").style.display = "block";
@@ -20231,7 +20226,6 @@ document.addEventListener("DOMContentLoaded",function(){
                 if (!canvas || !document.body.contains(canvas)) { VX.pending = null; }
                 var own = /data-vx(t)?=/.test(html);
                 VX.sel = null; VX.undo = []; VX.redo = []; VX.editing = { path: path, sha: d.sha }; VX.raw = !own;
-                VX.hadHeader = html.indexOf("<!-- START ADMIN DRAWER -->") > -1;
                 VX.home = nm.toLowerCase() === "home"; VX.name = VX.home ? "home" : nm;
                 VX.mode = own ? "pen" : "code";
                 VX.pending = html; VX.rawCode = own ? null : html;
@@ -20465,6 +20459,7 @@ document.addEventListener("DOMContentLoaded",function(){
         h += '<button type="button" class="bh-big org" id="bh-add" style="margin-top:0"><i class="fa-solid fa-plus"></i> ' + esc(T("صفحة جديدة", "New page")) + '</button>';
         h += '<button type="button" class="bh-big ghost" id="bh-ai" style="margin:12px 0 18px"><i class="fa-solid fa-wand-magic-sparkles"></i> ' + esc(T("اكتبها لي بالذكاء الاصطناعي", "Write it with AI")) + '</button>';
         h += '<p class="bh-note"><i class="fa-solid fa-lightbulb"></i> ' + esc(T("حتى كمبتدئ، تقدر تختار مستوى «عادي فأعلى» وتعتمد على الذكاء الاصطناعي في كتابة صفحاتك.", "Even as a beginner, you can choose “Regular or above” and rely on AI to write your pages.")) + ' <button type="button" class="bh-nl" id="bh-nl1">' + esc(T("انتقل الآن", "Switch now")) + '</button></p>';
+        h += '<button type="button" class="bh-big ghost" id="bh-ref" style="margin:0 0 14px;min-height:46px;font-size:.95rem"><i class="fa-solid fa-rotate"></i> ' + esc(T("تحديث", "Refresh")) + '</button>';
         if (!list.length) h += '<div class="bh-card" style="text-align:center">' + esc(T("ما فيه صفحات للحين، أو جاري التحميل...", "No pages yet, or still loading...")) + '</div>';
         list.forEach(function (f, i) {
             var home = f.name.toLowerCase() === "home.html";
@@ -20475,6 +20470,12 @@ document.addEventListener("DOMContentLoaded",function(){
         $("bh-add").onclick = function () { window.rtbOpenEditor && window.rtbOpenEditor(); };
         $("bh-nl1").onclick = function () { window.rtbSetLevel && window.rtbSetLevel("pro"); };
         $("bh-ai").onclick = function () { window.rtbOpenPrompt && window.rtbOpenPrompt(); };
+        $("bh-ref").onclick = function () {
+            var b = this; if (b.disabled) return; b.disabled = true; b.style.opacity = ".7";
+            b.innerHTML = '<i class="fa-solid fa-rotate fa-spin"></i> ' + esc(T("جارٍ التحديث...", "Refreshing..."));
+            try { loadHtmlFiles(); } catch (e) {}
+            setTimeout(function () { if (isBeg() && S.scr === "pages") vPages(); }, 2500);
+        };
         [].forEach.call(host.querySelectorAll("[data-e]"), function (b) { b.onclick = function () { var f = list[+b.getAttribute("data-e")]; try { window.rtbEditPage(f.path); } catch (e) {} }; });
         [].forEach.call(host.querySelectorAll("[data-d]"), function (b) { b.onclick = function () { var f = list[+b.getAttribute("data-d")]; try { deleteFile(f.path, f.sha); } catch (e) {} }; });
     }
