@@ -19,10 +19,6 @@
     "op": "update",
     "timestamp": 1793385117130
   },
-  "test-deeplink.html": {
-    "op": "add",
-    "timestamp": 1792924773182
-  },
   "test-manual-sample.html": {
     "op": "update",
     "timestamp": 1792924820178
