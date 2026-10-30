@@ -38,9 +38,5 @@
   "assestslinks/rt-links.json": {
     "op": "update",
     "timestamp": 1793385377888
-  },
-  "home.html": {
-    "op": "add",
-    "timestamp": 1793385371583
   }
 }
