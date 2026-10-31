@@ -33,6 +33,10 @@
   "review": {
     "enabled": false
   },
+  "webview_check": {
+    "enabled": true,
+    "min_version": 120
+  },
   "deeplinks": {
     "enabled": false
   },
