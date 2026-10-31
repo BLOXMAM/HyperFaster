@@ -35,8 +35,8 @@
   },
   "webview_check": {
     "enabled": true,
-    "min_version": 116,
-    "force_version": 115
+    "min_version": 115,
+    "force_version": 112
   },
   "deeplinks": {
     "enabled": false
