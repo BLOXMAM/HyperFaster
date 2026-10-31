@@ -105,7 +105,7 @@ h2{font-family:var(--font-d);font-weight:400;font-size:calc(var(--u)*38);margin:
 .vt .tb.dn{filter:brightness(1.35)}
 #stage.play{border-radius:0;box-shadow:none}
 @media (prefers-reduced-motion:reduce){.panel,.grade{animation:none}}
-</style>
+.cn{display:inline-block;width:.8em;height:.8em;border-radius:50%;background:#ffd23c;border:.12em solid #1b1410;vertical-align:-.1em;box-sizing:border-box}</style>
 <div id="app">
   <div id="stage">
     <canvas id="cv" width="960" height="540"></canvas>
@@ -268,8 +268,9 @@ function buildChunk(st,layer,idx){
  const c=document.createElement('canvas');c.width=W+PAD*2;c.height=H;const g=c.getContext('2d');g.translate(PAD,0);g.lineWidth=4;g.strokeStyle=INK;g.lineJoin='round';g.lineCap='round';
  const h=P.h+st.k*3-12+Math.sin(idx*.9+st.k)*9,S=P.s,L=P.l+Math.sin(idx*1.3)*3,col=(dl,ds=0,dd=0,a)=>hsl(h+dd,S+ds,60+L+dl,a);
  const Z={g,r,col,cc:f=>(dl,ds=0,dd=0)=>col(dl+(f?14:0),ds-(f?10:0),dd),st,P,ox:idx*W};
- const n=far?5:3;for(let i=0;i<n;i++){const x=(i+.5)/n*W+r(-50,50),sc=far?r(.55,.8):r(1,1.4);TREE[P.t](Z,x,far?GY-30:GY+2,sc,far)}
- if(far){const hy=x=>GY-22+Math.sin((Z.ox+x)*.019+st.k)*9+Math.sin((Z.ox+x)*.047)*4;
+ const hy=x=>GY-22+Math.sin((Z.ox+x)*.019+st.k)*9+Math.sin((Z.ox+x)*.047)*4;
+ const n=far?5:3;for(let i=0;i<n;i++){const x=(i+.5)/n*W+r(-50,50),sc=far?r(.55,.8):r(1,1.4);TREE[P.t](Z,x,far?hy(x)+10:GY+2,sc,far)}
+ if(far){
   const hg=g.createLinearGradient(0,GY-40,0,GY+10);hg.addColorStop(0,col(10,-14,0));hg.addColorStop(1,col(-6,-14,0));g.fillStyle=hg;
   g.beginPath();g.moveTo(-PAD,H);for(let x=-PAD;x<=W+PAD;x+=20)g.lineTo(x,hy(x));g.lineTo(W+PAD,H);g.closePath();g.fill();
   g.lineWidth=4;g.beginPath();for(let x=-PAD;x<=W+PAD;x+=20){if(x===-PAD)g.moveTo(x,hy(x));else g.lineTo(x,hy(x))}g.stroke()}
@@ -738,7 +739,7 @@ function hud(g){const p=G.p,b=G.b,st=G.st;
   if(G.lock&&G.state==='fight')txt(g,'الأعداء المتبقية: '+ar(remaining()),W/2,84,22,'#ffd23c','center');
   else if(G.state==='fight'&&((G.t*2.2)|0)%2===0&&!p.dead){g.save();g.translate(W-70,H/2-40);g.fillStyle='#ffd23c';g.strokeStyle=INK;g.lineWidth=5;g.beginPath();g.moveTo(-26,-24);g.lineTo(6,-24);g.lineTo(6,-40);g.lineTo(38,0);g.lineTo(6,40);g.lineTo(6,24);g.lineTo(-26,24);g.closePath();g.fill();g.stroke();g.restore()}}
  txt(g,'المرحلة '+ar(G.n)+' / ١٠٠',W-16,22,22,CREAM,'right');txt(g,G.boss?'معركة الزعيم':'تقدّم وقاتل',W-16,46,18,'#eab13c','right');
- g.globalAlpha=.75;txt(g,'مقاطع الغابة المحمّلة: '+Stream.label(),W-14,H-16,15,'#cfe9c8','right');g.globalAlpha=1}
+ if(!isTouch){g.globalAlpha=.75;txt(g,'مقاطع الغابة المحمّلة: '+Stream.label(),W-14,H-16,15,'#cfe9c8','right');g.globalAlpha=1}}
 function banners(g){
  if(G.state==='intro'&&G.it>.2&&G.it<1.9){const u=(G.it-.2)/1.7,s=u<.12?u/.12*1.25:u<.2?1.25-(u-.12)/.08*.25:1,al=u>.85?(1-u)/.15:1;g.save();g.globalAlpha=al;g.translate(W/2,H/2-20);g.rotate(-.06);g.scale(s,s);g.fillStyle='rgba(20,10,0,.55)';g.fillRect(-W,-70,W*2,140);txt(g,G.boss?'الزعيم!':'استعد!',0,0,120,'#ffd23c','center',14);g.restore()}
  if(G.state==='ko'&&G.koT>.05&&G.koT<3.2){const u=Math.min(1,G.koT/.25),s=1+(1-u)*1.4+Math.sin(G.koT*8)*.03;g.save();g.translate(W/2,H/2-30);g.rotate(-.05);g.scale(s,s);g.fillStyle='rgba(20,10,0,.5)';g.fillRect(-W,-80,W*2,160);txt(g,'ضربة قاضية!',0,0,124,'#ffd23c','center',14);g.restore()}
@@ -949,12 +950,12 @@ const show=(h,name)=>{ui.innerHTML=h;scr=name||scr};
 const hideUI=()=>{ui.innerHTML='';scr=''};
 function setPlaying(v){$('stage').classList.toggle('play',!!v);if(!v)vsUi(0);$('pbtn').hidden=!v;$('touch').hidden=!(v&&isTouch)}
 const fmt=s=>ar(String(Math.floor(s/60)).padStart(2,'0'))+':'+ar(String(Math.floor(s%60)).padStart(2,'0'));
-const titleHTML=()=>`<div class="panel"><h1>ساحة العمالقة</h1><p class="sub">تسعون معركة وعشرة زعماء. أسرع يدٍ تفوز.</p><div class="btns"><button class="btn big" data-a="play">${save.max>1?'تابع – المرحلة '+ar(save.max):'ابدأ المعركة'}</button><div class="row"><button class="btn" data-a="levels">اختيار المرحلة</button><button class="btn" data-a="chals">التحديات</button></div><div class="row"><button class="btn" data-a="vsmenu">قتال ضد بعض</button><button class="btn" data-a="shop">المتجر · ${ar(save.coins)} 🪙</button></div><div class="row"><button class="btn" data-a="slots">ملفات الحفظ · ${ar(SL.cur+1)}</button><button class="btn" data-a="opts">الإعدادات</button></div></div></div>`;
+const titleHTML=()=>`<div class="panel"><h1>ساحة العمالقة</h1><p class="sub">تسعون معركة وعشرة زعماء. أسرع يدٍ تفوز.</p><div class="btns"><button class="btn big" data-a="play">${save.max>1?'تابع – المرحلة '+ar(save.max):'ابدأ المعركة'}</button><div class="row"><button class="btn" data-a="levels">اختيار المرحلة</button><button class="btn" data-a="chals">التحديات</button></div><div class="row"><button class="btn" data-a="vsmenu">قتال ضد بعض</button><button class="btn" data-a="shop">المتجر · ${ar(save.coins)} <i class="cn"></i></button></div><div class="row"><button class="btn" data-a="slots">ملفات الحفظ · ${ar(SL.cur+1)}</button><button class="btn" data-a="opts">الإعدادات</button></div></div></div>`;
 const pauseHTML=()=>`<div class="panel"><h2>توقّف قصير</h2><div class="btns"><button class="btn big" data-a="resume">أكمل القتال</button><button class="btn" data-a="retry">أعد المرحلة</button><button class="btn" data-a="opts">الإعدادات</button><button class="btn" data-a="levels">اختيار المرحلة</button><button class="btn" data-a="title">القائمة الرئيسية</button></div></div>`;
 function levelsHTML(){let h='<div class="panel wide"><h2>اختر معركتك</h2>';for(let w=0;w<10;w++){h+=`<div class="wn"><span>${WORLDS[w].n}</span><small>المراحل ${ar(w*10+1)} – ${ar(w*10+10)}</small></div><div class="grid">`;for(let k=1;k<=10;k++){const n=w*10+k,lock=n>save.max&&!save.o.all;h+=`<button class="lv${k===10?' mega':''}${lock?' lock':''}" data-a="lv" data-n="${n}"${lock?' disabled':''}>${ar(n)}${save.rank[n]?`<i>${save.rank[n]}</i>`:''}</button>`}h+='</div>'}return h+'<div class="row" style="margin-top:14px"><button class="btn sm" data-a="back">رجوع</button></div></div>'}
 function optsHTML(){const o=save.o,t=(k,l)=>`<button class="opt${o[k]?' on':''}" data-a="tog" data-k="${k}">${l}<b>${o[k]?'مفعّل':'متوقف'}</b></button>`,r=(a,v,l,cur)=>`<button class="opt${cur===v?' on':''}" data-a="${a}" data-v="${v}">${l}</button>`;
  return `<div class="panel wide"><h2>الإعدادات</h2><div class="opts">${t('sfx','المؤثرات الصوتية')}${t('amb','أجواء العالم (ريح وصدى بلا موسيقى)')}${t('aim','تصويب تلقائي نحو الزعيم')}${t('mir','عكس أزرار اللمس (الحركة يمين والأزرار يسار)')}${t('swp','تبديل مكان القفز والنار')}${t('lite','وضع الأداء الأقصى (للأجهزة الضعيفة: رسم أخف بكثير)')}${t('fps','عرض إحصائيات الأداء')}</div>
- <div class="wn"><span>السلاح</span><small>تنفتح الأسلحة بهزيمة زعماء المراحل ١٠ و٢٠ و٣٠ و٤٠</small></div><div class="row">${Object.keys(WPU).map(k=>wpOk(k)?r('wp',k,WPN[k],o.wp):`<button class="opt" disabled style="opacity:.4;width:auto">🔒 ${WPN[k]} · زعيم ${ar(WPU[k])}</button>`).join('')}</div>
+ <div class="wn"><span>السلاح</span><small>تنفتح الأسلحة بهزيمة زعماء المراحل ١٠ و٢٠ و٣٠ و٤٠</small></div><div class="row">${Object.keys(WPU).map(k=>wpOk(k)?r('wp',k,WPN[k],o.wp):`<button class="opt" disabled style="opacity:.4;width:auto">مقفل ${WPN[k]} · زعيم ${ar(WPU[k])}</button>`).join('')}</div>
  <div class="wn"><span>جودة الرسم</span><small>تتحسّن تلقائياً لتناسب جهازك</small></div><div class="row">${r('q',0,'تلقائي',o.q)}${r('q',1,'منخفضة',o.q)}${r('q',2,'متوسطة',o.q)}${r('q',3,'عالية (أحدّ، لجهاز قوي)',o.q)}</div>
  <div class="help">الحركة: ← → أو A D · القفز: مسافة أو Z (اضغطه في الهواء قرب كرة وردية للصدّ فتشحن السوبر) · النار: X · اندفاع: C أو Shift · سوبر: V · التصويب للأعلى: ↑ · إيقاف: Esc<br>على الجوال: زر ▲ يطلق للأعلى مباشرة، والتصويب التلقائي مغلق افتراضياً (فعّله من الإعدادات).</div>
  <div class="row" style="margin-top:12px"><button class="btn sm" data-a="back">رجوع</button></div></div>`}
@@ -962,7 +963,7 @@ let delArm=-1;
 function slotsHTML(){let h='<div class="panel"><h2>ملفات الحفظ</h2><div class="slots">';
  for(let i=0;i<4;i++){const d=SL.slots[i],cur=i===SL.cur;
   if(d&&(d.max>1||Object.keys(d.rank||{}).length||cur)){const cl=Object.keys(d.rank||{}).length,ss=Object.values(d.rank||{}).filter(x=>x==='S').length;let dt='';try{dt=new Date(d.t).toLocaleDateString('ar-SA')}catch(e){}
-   h+=`<div class="slot${cur?' cur':''}"><div><b>الملف ${ar(i+1)}</b><small>المرحلة ${ar(d.max)} / ١٠٠ · ${ar(d.coins|0)} 🪙 · أنهيت ${ar(cl)} · تقييم S: ${ar(ss)}</small><small>${dt}</small></div><div class="row"><button class="btn sm" data-a="pick" data-i="${i}">${cur?'ملعوب الآن':'العب'}</button>${delArm===i?`<button class="btn sm red" data-a="del" data-i="${i}">تأكيد الحذف</button><button class="btn sm" data-a="delx">إلغاء</button>`:`<button class="btn sm" data-a="del" data-i="${i}">حذف</button>`}</div></div>`}
+   h+=`<div class="slot${cur?' cur':''}"><div><b>الملف ${ar(i+1)}</b><small>المرحلة ${ar(d.max)} / ١٠٠ · ${ar(d.coins|0)} <i class="cn"></i> · أنهيت ${ar(cl)} · تقييم S: ${ar(ss)}</small><small>${dt}</small></div><div class="row"><button class="btn sm" data-a="pick" data-i="${i}">${cur?'ملعوب الآن':'العب'}</button>${delArm===i?`<button class="btn sm red" data-a="del" data-i="${i}">تأكيد الحذف</button><button class="btn sm" data-a="delx">إلغاء</button>`:`<button class="btn sm" data-a="del" data-i="${i}">حذف</button>`}</div></div>`}
   else h+=`<div class="slot"><div><b>الملف ${ar(i+1)}</b><small>فارغ</small></div><div class="row"><button class="btn sm" data-a="pick" data-i="${i}">ابدأ جديداً</button></div></div>`}
  return h+'</div><div class="row" style="margin-top:12px"><button class="btn sm" data-a="exp">تصدير الحفظ</button><button class="btn sm" data-a="imp">استيراد الحفظ</button><button class="btn sm" data-a="back">رجوع</button></div></div>'}
 const saveCode=()=>{persist();return 'ARENA1:'+btoa(JSON.stringify({cur:SL.cur,slots:SL.slots,o:SL.o}))};
@@ -975,7 +976,7 @@ function impHTML(){return `<div class="panel"><h2>استيراد الحفظ</h2>
 function syncTouch(){const t=$('touch');t.classList.toggle('mir',!!save.o.mir);t.classList.toggle('swp',!!save.o.swp)}
 function showResult(){setPlaying(false);const r=G.res;
  if(r.win){const last=G.n>=100&&!r.chal;const c=r.chal;
-  const extra=`<div class="sub" style="margin:0 0 10px">+${ar(r.coins)} 🪙 ${c&&!r.first?'(تكرار)':''} · رصيدك ${ar(save.coins)}${r.newWp.length?'<br>سلاح جديد: '+r.newWp.map(k=>WPN[k]).join('، ')+' (من الإعدادات)':''}</div>`;
+  const extra=`<div class="sub" style="margin:0 0 10px">+${ar(r.coins)} <i class="cn"></i> ${c&&!r.first?'(تكرار)':''} · رصيدك ${ar(save.coins)}${r.newWp.length?'<br>سلاح جديد: '+r.newWp.map(k=>WPN[k]).join('، ')+' (من الإعدادات)':''}</div>`;
   show(`<div class="panel"><h2>${c?'التحدّي مكتمل!':last?'أنهيت الساحة كلها!':r.boss?'ضربة قاضية!':'المرحلة مكتملة!'}</h2><div class="grade">${r.gr}</div><div class="stats"><div>${fmt(r.time)}<span>الزمن</span></div><div>${ar(r.hits)}<span>الإصابات</span></div><div>${ar(r.par)}<span>الصدّات</span></div>${r.boss?'':`<div>${ar(r.kills)}<span>الأعداء</span></div>`}</div>${extra}<div class="row">${last||c?'':'<button class="btn big" data-a="next">المرحلة التالية</button>'}<button class="btn${c?' big':''}" data-a="retry">أعد المحاولة</button>${r.coins?'<button class="btn" data-a="shop">المتجر</button>':''}<button class="btn" data-a="${c?'chals':'levels'}">${c?'التحديات':'المراحل'}</button></div></div>`,'result')}
  else show(`<div class="panel"><h2>${r.chal&&G.mod.time&&G.time>=G.mod.time?'انتهى الوقت':'سقطت في المعركة'}</h2><p class="sub">القفز على الكرة الوردية يصدّها ويشحن السوبر. الاندفاع يجعلك منيعاً لحظة.</p><div class="row"><button class="btn big" data-a="retry">حاول مجدداً</button><button class="btn" data-a="${r.chal?'chals':'levels'}">${r.chal?'التحديات':'المراحل'}</button><button class="btn" data-a="title">القائمة</button></div></div>`,'result')}
 function toTitle(){V=null;if(!G||G.state!=='demo')startLevel(save.max,true);setPlaying(false);show(titleHTML(),'title')}
@@ -1049,14 +1050,14 @@ async function boot(){const bar=$('bar'),bs=$('bs');bar.style.width='25%';
  await new Promise(r=>setTimeout(r,380));$('boot').style.opacity=0;setTimeout(()=>{const b=$('boot');b&&b.remove()},560);toTitle();requestAnimationFrame(frame)}
 boot();
 /* ================= SHOP / CHALLENGES / VERSUS MENUS ================= */
-function shopHTML(){let h=`<div class="panel"><h2>المتجر</h2><div class="coin">${ar(save.coins)} 🪙</div><p class="sub">اجمع العملات من إنهاء المراحل والتحديات، وطوّر شخصيتك.</p><div class="opts">`;
+function shopHTML(){let h=`<div class="panel"><h2>المتجر</h2><div class="coin">${ar(save.coins)} <i class="cn"></i></div><p class="sub">اجمع العملات من إنهاء المراحل والتحديات، وطوّر شخصيتك.</p><div class="opts">`;
  for(const u of UPS){const lv=save.up[u.k],mx=u.cost.length,c=u.cost[lv];
-  h+=`<div class="up"><div>${u.n} · مستوى ${ar(lv)} / ${ar(mx)}<small>${u.d}</small></div>${lv>=mx?'<b>أقصى مستوى</b>':`<button class="btn sm" data-a="buy" data-k="${u.k}"${save.coins<c?' disabled style="opacity:.45"':''}>${ar(c)} 🪙</button>`}</div>`}
+  h+=`<div class="up"><div>${u.n} · مستوى ${ar(lv)} / ${ar(mx)}<small>${u.d}</small></div>${lv>=mx?'<b>أقصى مستوى</b>':`<button class="btn sm" data-a="buy" data-k="${u.k}"${save.coins<c?' disabled style="opacity:.45"':''}>${ar(c)} <i class="cn"></i></button>`}</div>`}
  return h+'</div><div class="row" style="margin-top:12px"><button class="btn sm" data-a="back">رجوع</button></div></div>'}
 function chalsHTML(){const dc=dailyChal(),dd=save.daily&&save.daily.d===dc.id;
- let h=`<div class="panel wide"><h2>التحديات</h2><div class="chs"><button class="ch${dd?' done':''}" data-a="chal" data-id="daily" style="grid-column:1/-1;background:${dd?'#cfe9a8':'#ffe39a'}">★ ${dc.name}${dd?' · أنجزته ('+save.daily.gr+')':''}<small>${dc.d} · الجائزة ${ar(dc.reward)} 🪙 (مرة في اليوم) · مرحلة ثابتة عند الجميع</small></button>`;
+ let h=`<div class="panel wide"><h2>التحديات</h2><div class="chs"><button class="ch${dd?' done':''}" data-a="chal" data-id="daily" style="grid-column:1/-1;background:${dd?'#cfe9a8':'#ffe39a'}">★ ${dc.name}${dd?' · أنجزته ('+save.daily.gr+')':''}<small>${dc.d} · الجائزة ${ar(dc.reward)} <i class="cn"></i> (مرة في اليوم) · مرحلة ثابتة عند الجميع</small></button>`;
  for(const c of CHALS){const lock=c.n>save.max&&!save.o.all,done=!!save.chal[c.id];
-  h+=`<button class="ch${done?' done':''}${lock?' lock':''}" data-a="chal" data-id="${c.id}"${lock?' disabled':''}>${c.name}${done?' ✓':''}<small>${c.d}</small><small>الجائزة ${ar(c.reward)} 🪙${lock?' · تنفتح عند بلوغ المرحلة '+ar(c.n):''}</small></button>`}
+  h+=`<button class="ch${done?' done':''}${lock?' lock':''}" data-a="chal" data-id="${c.id}"${lock?' disabled':''}>${c.name}${done?' ✓':''}<small>${c.d}</small><small>الجائزة ${ar(c.reward)} <i class="cn"></i>${lock?' · تنفتح عند بلوغ المرحلة '+ar(c.n):''}</small></button>`}
  return h+'</div><div class="row" style="margin-top:12px"><button class="btn sm" data-a="back">رجوع</button></div></div>'}
 function vsHTML(){const c=vsCfg(),r=(k,v,l)=>`<button class="opt${c[k]===v?' on':''}" data-a="vsset" data-k="${k}" data-v="${v}">${l}</button>`,
  t=(k,l)=>`<button class="opt${c[k]?' on':''}" data-a="vsset" data-k="${k}" data-v="${c[k]?0:1}">${l}<b>${c[k]?'مفعّل':'متوقف'}</b></button>`;
