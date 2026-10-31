@@ -1,9 +1,5 @@
 <!doctype html>
-<html lang="ar" dir="rtl">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>ساحة العمالقة</title>
+<html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"><title>ساحة العمالقة</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cairo:wght@500;700;900&family=Lalezar&display=swap">
@@ -18,12 +14,19 @@ body{margin:0;overflow:hidden;background:var(--theatre);color:var(--cream);font-
 #app{position:relative;width:100%;height:100%;display:grid;place-items:center}
 #stage{position:relative;width:960px;height:540px;background:#000;overflow:hidden;border-radius:calc(var(--u)*14);box-shadow:0 0 0 calc(var(--u)*6) #0b0705,0 20px 60px #000a}
 #cv{position:absolute;inset:0;width:100%;height:100%;display:block}
+#fx{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+#fx i{position:absolute;display:block}
+#fx .vg{inset:0;background:radial-gradient(ellipse at 50% 50%,rgba(20,10,0,0) 50%,rgba(20,10,0,.6) 100%)}
+#fx .sl{inset:0;background:repeating-linear-gradient(0deg,rgba(0,0,0,.07) 0 1px,rgba(0,0,0,0) 1px 3px)}
+#fx .gr{inset:-48px;background-image:var(--grain);background-size:192px 192px;opacity:.55;animation:gshift .6s steps(1) infinite}
+@keyframes gshift{0%{transform:translate(0,0)}20%{transform:translate(-23px,14px)}40%{transform:translate(17px,-31px)}60%{transform:translate(-9px,-12px)}80%{transform:translate(26px,22px)}}
+body.lite #fx .gr{animation:none}
 #ui{position:absolute;inset:0;display:grid;place-items:center;pointer-events:none}
 #ui>*{pointer-events:auto}
 .panel{background:var(--paper);color:var(--ink);border:calc(var(--u)*5) solid var(--ink);border-radius:calc(var(--u)*18);box-shadow:calc(var(--u)*10) calc(var(--u)*10) 0 var(--ink);padding:calc(var(--u)*20) calc(var(--u)*28);width:calc(var(--u)*580);max-width:96%;max-height:calc(var(--u)*500);overflow:auto;text-align:center;transform:rotate(-.5deg);animation:pop .35s cubic-bezier(.2,1.6,.4,1)}
 .panel.wide{width:calc(var(--u)*820)}
 @keyframes pop{from{transform:scale(.7) rotate(-4deg);opacity:0}}
-h1{font-family:var(--font-d);font-weight:400;font-size:calc(var(--u)*84);line-height:1;margin:0 0 calc(var(--u)*4);color:var(--red);-webkit-text-stroke:calc(var(--u)*3) var(--ink);paint-order:stroke fill;text-shadow:calc(var(--u)*4) calc(var(--u)*5) 0 var(--ink);letter-spacing:.02em}
+h1{font-family:var(--font-d);font-weight:400;font-size:calc(var(--u)*84);line-height:1;margin:0 0 calc(var(--u)*4);color:var(--red);-webkit-text-stroke:calc(var(--u)*3) var(--ink);paint-order:stroke fill;text-shadow:calc(var(--u)*4) calc(var(--u)*5) 0 var(--ink);}
 h2{font-family:var(--font-d);font-weight:400;font-size:calc(var(--u)*38);margin:0 0 calc(var(--u)*8);color:var(--ink)}
 .sub{font-weight:700;font-size:calc(var(--u)*19);margin:0 0 calc(var(--u)*16);opacity:.8}
 .btns{display:flex;flex-direction:column;gap:calc(var(--u)*12);align-items:center}
@@ -106,6 +109,7 @@ h2{font-family:var(--font-d);font-weight:400;font-size:calc(var(--u)*38);margin:
 <div id="app">
   <div id="stage">
     <canvas id="cv" width="960" height="540"></canvas>
+    <div id="fx"><i class="vg"></i><i class="sl"></i><i class="gr"></i></div>
     <div id="ui"></div>
     <button id="pbtn" class="ibtn" hidden aria-label="إيقاف مؤقت">❚❚</button>
     <div id="boot"><div class="bt">ساحة العمالقة</div><div class="bar"><i id="bar"></i></div><div class="bs" id="bs">تحميل أولي خفيف…</div></div>
@@ -126,8 +130,7 @@ h2{font-family:var(--font-d);font-weight:400;font-size:calc(var(--u)*38);margin:
   </div>
   <div id="rot">أدر جهازك أفقياً<br>لتبدأ المعركة</div>
 </div>
-<script>
-'use strict';
+<script>'use strict';
 /* ================= CORE ================= */
 const W=960,H=540,GY=452,TAU=Math.PI*2,INK='#1b1410',CREAM='#fff4d6';
 const $=id=>document.getElementById(id);
@@ -266,6 +269,10 @@ function buildChunk(st,layer,idx){
  const h=P.h+st.k*3-12+Math.sin(idx*.9+st.k)*9,S=P.s,L=P.l+Math.sin(idx*1.3)*3,col=(dl,ds=0,dd=0,a)=>hsl(h+dd,S+ds,60+L+dl,a);
  const Z={g,r,col,cc:f=>(dl,ds=0,dd=0)=>col(dl+(f?14:0),ds-(f?10:0),dd),st,P,ox:idx*W};
  const n=far?5:3;for(let i=0;i<n;i++){const x=(i+.5)/n*W+r(-50,50),sc=far?r(.55,.8):r(1,1.4);TREE[P.t](Z,x,far?GY-30:GY+2,sc,far)}
+ if(far){const hy=x=>GY-22+Math.sin((Z.ox+x)*.019+st.k)*9+Math.sin((Z.ox+x)*.047)*4;
+  const hg=g.createLinearGradient(0,GY-40,0,GY+10);hg.addColorStop(0,col(10,-14,0));hg.addColorStop(1,col(-6,-14,0));g.fillStyle=hg;
+  g.beginPath();g.moveTo(-PAD,H);for(let x=-PAD;x<=W+PAD;x+=20)g.lineTo(x,hy(x));g.lineTo(W+PAD,H);g.closePath();g.fill();
+  g.lineWidth=4;g.beginPath();for(let x=-PAD;x<=W+PAD;x+=20){if(x===-PAD)g.moveTo(x,hy(x));else g.lineTo(x,hy(x))}g.stroke()}
  if(!far){ground(Z);const np=4+Math.floor(r(0,3));for(let i=0;i<np;i++)prop(Z,r(-40,W+40));
   for(let i=0;i<160;i++){g.fillStyle=R()<.5?'rgba(40,20,0,.07)':'rgba(255,240,200,.08)';g.fillRect(r(-PAD,W+PAD),r(0,H),r(1,3),r(1,3))}}
  return c}
@@ -685,7 +692,10 @@ function finish(win){G.state='result';G.ts=1;
 const cv=$('cv'),ctx=cv.getContext('2d',{alpha:false});let RS=1,DYN=1;
 const bossLayer=document.createElement('canvas');bossLayer.width=780;bossLayer.height=720;const bl=bossLayer.getContext('2d');
 let vig=null,grainPat=null,grainOff=[0,0],grainN=0;
-function makeOverlays(){vig=document.createElement('canvas');vig.width=W;vig.height=H;const v=vig.getContext('2d');const gr=v.createRadialGradient(W/2,H/2,H*.34,W/2,H/2,W*.62);gr.addColorStop(0,'rgba(30,15,0,0)');gr.addColorStop(1,'rgba(20,8,0,.62)');v.fillStyle=gr;v.fillRect(0,0,W,H);v.fillStyle='rgba(255,196,120,.07)';v.fillRect(0,0,W,H);
+function makeGrainImage(){try{const c=document.createElement('canvas');c.width=c.height=192;const g=c.getContext('2d'),id=g.createImageData(192,192),d=id.data;
+ for(let i=0;i<d.length;i+=4){const r=Math.random(),dark=Math.random()<.6;d[i]=d[i+1]=d[i+2]=dark?20:255;d[i+3]=r<.35?0:Math.floor(r*r*95)}
+ g.putImageData(id,0,0);$('fx').style.setProperty('--grain','url('+c.toDataURL('image/png')+')')}catch(e){}}
+function makeOverlays(){makeGrainImage();vig=document.createElement('canvas');vig.width=W;vig.height=H;const v=vig.getContext('2d');const gr=v.createRadialGradient(W/2,H/2,H*.34,W/2,H/2,W*.62);gr.addColorStop(0,'rgba(30,15,0,0)');gr.addColorStop(1,'rgba(20,8,0,.62)');v.fillStyle=gr;v.fillRect(0,0,W,H);v.fillStyle='rgba(255,196,120,.07)';v.fillRect(0,0,W,H);
  const t=document.createElement('canvas');t.width=t.height=128;const tc=t.getContext('2d'),id=tc.createImageData(128,128);for(let i=0;i<id.data.length;i+=4){const l=Math.random()<.5?0:255;id.data[i]=id.data[i+1]=id.data[i+2]=l;id.data[i+3]=Math.random()*34}tc.putImageData(id,0,0);grainPat=ctx.createPattern(t,'repeat')}
 
 function drawBoss(g,b){const L=bossLayer;bl.setTransform(1,0,0,1,0,0);bl.clearRect(0,0,L.width,L.height);bl.save();bl.translate(L.width/2,L.height/2);bl.scale(b.s*b.sx,b.s*b.sy);ink(bl,5);b.arch.draw(bl,b);bl.restore();
@@ -756,10 +766,6 @@ function render(){const g=ctx;g.setTransform(RS,0,0,RS,0,0);g.globalAlpha=1;
   g.strokeStyle=INK;g.lineWidth=3;for(const q of PB){const a=Math.atan2(q.vy,q.vx);g.save();g.translate(q.x,q.y);g.rotate(a);g.beginPath();g.ellipse(0,0,q.k==='p'?12:9,q.k==='p'?6.5:5.5,0,0,TAU);g.fillStyle=q.k==='h'?'#ffb3e6':q.k==='s'?'#ffd98a':'#fff6c8';g.fill();g.stroke();g.restore()}
   if(G.beam>0){const k=G.beam/.55,x0=p.x,y0=p.y-40;let x1=p.x+(p.face>0?W:-W),y1=y0;if(G.boss){x1=b.x;y1=b.y}else{const tg=aimTarget(p);if(tg){x1=tg.x;y1=tg.air?tg.y:tg.y-tg.ry}}g.lineCap='round';for(const[w,c]of[[110*k+10,INK],[90*k,'#ffb02e'],[40*k,'#fff6c8']]){g.strokeStyle=c;g.lineWidth=w;g.beginPath();g.moveTo(x0,y0);g.lineTo(x1+rnd(-6,6),y1+rnd(-6,6));g.stroke()}}}
  drawPT(g);g.restore();g.restore();
- g.drawImage(vig,0,0,W,H);
- g.fillStyle=`rgba(0,0,0,${.02+.035*Math.random()})`;g.fillRect(0,0,W,H);
- if(QL>=1&&DYN>=.8&&grainPat){if((grainN++%3)===0)grainOff=[rnd(0,128),rnd(0,128)];g.save();g.translate(-grainOff[0],-grainOff[1]);g.fillStyle=grainPat;g.fillRect(0,0,W+128,H+128);g.restore()}
- if(QL>=1&&DYN>=.8&&Math.random()<.05){g.fillStyle='rgba(255,244,214,.18)';g.fillRect(rnd(0,W),0,1.5,H)}
  if(G.flash>0){g.globalAlpha=Math.min(1,G.flash)*.55;g.fillStyle=G.flashC;g.fillRect(0,0,W,H);g.globalAlpha=1}
  if(G.state==='dead'){g.fillStyle=`rgba(30,14,0,${Math.min(.5,G.deadT*.3)})`;g.fillRect(0,0,W,H)}
  if(!demo){hud(g);banners(g)}}
@@ -930,9 +936,6 @@ function renderVS(){const g=ctx;g.setTransform(RS,0,0,RS,0,0);g.globalAlpha=1;
  for(const q of PB){const a=Math.atan2(q.vy,q.vx);g.save();g.translate(q.x,q.y);g.rotate(a);g.beginPath();g.ellipse(0,0,q.k==='p'||q.k==='l'?12:9,q.k==='p'||q.k==='l'?6.5:5.5,0,0,TAU);g.fillStyle=q.own?'#9bc8ff':'#ffb09a';g.fill();g.stroke();g.restore()}
  for(const q of V.MB){g.beginPath();g.arc(q.x,q.y,q.r,0,TAU);g.fillStyle=q.team?'#6fa8ff':'#ff7a5a';g.fill();g.stroke()}
  drawPT(g);g.restore();
- g.drawImage(vig,0,0,W,H);
- g.fillStyle=`rgba(0,0,0,${.02+.035*Math.random()})`;g.fillRect(0,0,W,H);
- if(QL>=1&&DYN>=.8&&grainPat){if((grainN++%3)===0)grainOff=[rnd(0,128),rnd(0,128)];g.save();g.translate(-grainOff[0],-grainOff[1]);g.fillStyle=grainPat;g.fillRect(0,0,W+128,H+128);g.restore()}
  if(V.flash>0){g.globalAlpha=Math.min(1,V.flash)*.55;g.fillStyle=V.flashC;g.fillRect(0,0,W,H);g.globalAlpha=1}
  vsBar(g,0,V.p[0]);vsBar(g,1,V.p[1]);
  txt(g,'الجولة '+ar(V.round),W/2,32,26,CREAM,'center');
@@ -995,7 +998,7 @@ resume(){setPause(false)},title(){toTitle()},
 levels(){backTo=scr;if(G.state!=='demo'&&scr!=='pause'&&scr!=='result')toTitle();show(levelsHTML(),'levels')},
 opts(){backTo=scr;show(optsHTML(),'opts')},
 back(){if(backTo==='pause')show(pauseHTML(),'pause');else if(backTo==='result')showResult();else toTitle()},
-tog(el){const k=el.dataset.k;save.o[k]=save.o[k]?0:1;persist();AU.setVol();syncTouch();if(k==='lite'){setQ();if(G)G.motes=makeMotes(G.world)}if(k==='fps')fpsBox.style.display=save.o.fps?'block':'none';show(optsHTML(),'opts')},
+tog(el){const k=el.dataset.k;save.o[k]=save.o[k]?0:1;persist();AU.setVol();syncTouch();if(k==='lite'){document.body.classList.toggle('lite',!!save.o.lite);setQ();if(G)G.motes=makeMotes(G.world)}if(k==='fps')fpsBox.style.display=save.o.fps?'block':'none';show(optsHTML(),'opts')},
 wp(el){save.o.wp=el.dataset.v;persist();show(optsHTML(),'opts')},
 q(el){save.o.q=+el.dataset.v;persist();setQ();show(optsHTML(),'opts')}};
 ui.addEventListener('click',e=>{const el=e.target.closest('[data-a]');if(!el)return;AU.init();AU.resume();SFX.ui();const f=ACT[el.dataset.a];if(f)f(el)});
@@ -1042,7 +1045,7 @@ function frame(ts){requestAnimationFrame(frame);const rdt=Math.min(.1,Math.max(0
  if(!save.o.q&&G&&!G.paused&&G.state==='fight'){pAcc+=rdt;pN++;if(pN>=150){const avg=pAcc/pN;pAcc=0;pN=0;if(avg>.028&&QL>0){QL--;applyQ()}}}}
 async function boot(){const bar=$('bar'),bs=$('bs');bar.style.width='25%';
  try{await Promise.race([document.fonts.load('40px Lalezar','ساحة العمالقة'),new Promise(r=>setTimeout(r,1500))])}catch(e){}
- bar.style.width='60%';syncTouch();setQ();fpsBox.style.display=save.o.fps?'block':'none';makeOverlays();startLevel(save.max,true);bs.textContent='بُثّ العالم '+ar(save.max)+' فقط';bar.style.width='100%';
+ bar.style.width='60%';syncTouch();setQ();fpsBox.style.display=save.o.fps?'block':'none';document.body.classList.toggle('lite',!!save.o.lite);makeOverlays();startLevel(save.max,true);bs.textContent='بُثّ العالم '+ar(save.max)+' فقط';bar.style.width='100%';
  await new Promise(r=>setTimeout(r,380));$('boot').style.opacity=0;setTimeout(()=>{const b=$('boot');b&&b.remove()},560);toTitle();requestAnimationFrame(frame)}
 boot();
 /* ================= SHOP / CHALLENGES / VERSUS MENUS ================= */
@@ -1080,5 +1083,4 @@ document.querySelectorAll('.vt .tb').forEach(btn=>{const p=+btn.dataset.p,k=btn.
  const dn=e=>{e.preventDefault();AU.init();AU.resume();VT[p][k]=1;btn.classList.add('dn');try{btn.setPointerCapture(e.pointerId)}catch(_){}};
  const up=e=>{e.preventDefault();VT[p][k]=0;btn.classList.remove('dn')};
  btn.addEventListener('pointerdown',dn);btn.addEventListener('pointerup',up);btn.addEventListener('pointercancel',up);btn.addEventListener('lostpointercapture',up)});
-</script>
-</body></html>
+</script></body></html>
