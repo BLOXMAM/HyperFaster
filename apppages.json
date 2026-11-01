@@ -40,8 +40,8 @@
     "timestamp": 1793505055092
   },
   "splash_config.json": {
-    "op": "sync",
-    "timestamp": 1793505055092
+    "op": "update",
+    "timestamp": 1793530844414
   },
   "var.json": {
     "op": "sync",
