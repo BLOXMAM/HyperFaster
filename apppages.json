@@ -12,8 +12,8 @@
     "timestamp": 1793505055092
   },
   "app_logo.json": {
-    "op": "sync",
-    "timestamp": 1793505055092
+    "op": "update",
+    "timestamp": 1793560672380
   },
   "app_status.json": {
     "op": "sync",
