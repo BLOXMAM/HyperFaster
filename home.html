@@ -114,7 +114,15 @@ h2{font-family:var(--font-d);font-weight:400;font-size:calc(var(--u)*38);margin:
 .ngap .row>.opt>*+*{margin-right:calc(var(--u)*8)}
 .ngap .vt>*{margin:4px}
 .ngap #boot>*+*{margin-top:calc(var(--u)*14)}
-.csk{position:absolute;left:12px;top:42px;z-index:7;pointer-events:auto}</style>
+.csk{position:absolute;left:12px;top:42px;z-index:7;pointer-events:auto}.kings{display:grid;grid-template-columns:repeat(5,1fr);gap:calc(var(--u)*10);margin:calc(var(--u)*8) 0}
+.kg{background:var(--cream);border:calc(var(--u)*3) solid var(--ink);border-radius:calc(var(--u)*12);padding:calc(var(--u)*8);text-align:center}
+.kg .kp{position:relative;height:calc(var(--u)*92);display:flex;align-items:center;justify-content:center}
+.kg img{max-width:100%;max-height:100%;display:block}
+.kg .q{position:absolute;top:0;right:0;bottom:0;left:0;display:flex;align-items:center;justify-content:center;font-family:var(--font-d);font-size:calc(var(--u)*64);color:#fff4d6;text-shadow:0 0 calc(var(--u)*6) #000}
+.kg.x .kp:before,.kg.x .kp:after{content:"";position:absolute;left:12%;right:12%;top:50%;height:calc(var(--u)*11);margin-top:calc(var(--u)*-5.5);background:#d4452a;border:calc(var(--u)*2.5) solid var(--ink);border-radius:99px;transform:rotate(45deg)}
+.kg.x .kp:after{transform:rotate(-45deg)}
+.kg small{display:block;margin-top:calc(var(--u)*4);font-weight:900;font-size:calc(var(--u)*15)}
+</style>
 <div id="app">
   <div id="stage">
     <canvas id="cv" width="960" height="540"></canvas>
@@ -959,7 +967,7 @@ const show=(h,name)=>{ui.innerHTML=h;scr=name||scr};
 const hideUI=()=>{ui.innerHTML='';scr=''};
 function setPlaying(v){$('stage').classList.toggle('play',!!v);if(!v)vsUi(0);$('pbtn').hidden=!v;$('touch').hidden=!(v&&isTouch)}
 const fmt=s=>ar(String(Math.floor(s/60)).padStart(2,'0'))+':'+ar(String(Math.floor(s%60)).padStart(2,'0'));
-const titleHTML=()=>`<div class="panel"><h1>ساحة العمالقة</h1><p class="sub">تسعون معركة وعشرة زعماء. أسرع يدٍ تفوز.</p><div class="btns"><button class="btn big" data-a="play">${save.max>1?'تابع – المرحلة '+ar(save.max):'ابدأ المعركة'}</button><div class="row"><button class="btn" data-a="levels">اختيار المرحلة</button><button class="btn" data-a="chals">التحديات</button></div><div class="row"><button class="btn" data-a="vsmenu">قتال ضد بعض</button><button class="btn" data-a="shop">المتجر · ${ar(save.coins)} <i class="cn"></i></button></div><div class="row"><button class="btn" data-a="slots">ملفات الحفظ · ${ar(SL.cur+1)}</button><button class="btn" data-a="opts">الإعدادات</button></div></div></div>`;
+const titleHTML=()=>`<div class="panel"><h1>ساحة العمالقة</h1><p class="sub">تسعون معركة وعشرة زعماء. أسرع يدٍ تفوز.</p><div class="btns"><button class="btn big" data-a="play">${save.max>1?'تابع – المرحلة '+ar(save.max):'ابدأ المعركة'}</button><div class="row"><button class="btn" data-a="levels">اختيار المرحلة</button><button class="btn" data-a="chals">التحديات</button></div><div class="row"><button class="btn" data-a="vsmenu">قتال ضد بعض</button><button class="btn" data-a="shop">المتجر · ${ar(save.coins)} <i class="cn"></i></button></div><div class="row"><button class="btn" data-a="slots">ملفات الحفظ · ${ar(SL.cur+1)}</button><button class="btn" data-a="kings">الملوك</button><button class="btn" data-a="opts">الإعدادات</button></div></div></div>`;
 const pauseHTML=()=>`<div class="panel"><h2>توقّف قصير</h2><div class="btns"><button class="btn big" data-a="resume">أكمل القتال</button><button class="btn" data-a="retry">أعد المرحلة</button><button class="btn" data-a="opts">الإعدادات</button><button class="btn" data-a="levels">اختيار المرحلة</button><button class="btn" data-a="title">القائمة الرئيسية</button></div></div>`;
 function levelsHTML(){let h='<div class="panel wide"><h2>اختر معركتك</h2>';for(let w=0;w<10;w++){h+=`<div class="wn"><span>${WORLDS[w].n}</span><small>المراحل ${ar(w*10+1)} – ${ar(w*10+10)}</small></div><div class="grid">`;for(let k=1;k<=10;k++){const n=w*10+k,lock=n>save.max&&!save.o.all;h+=`<button class="lv${k===10?' mega':''}${lock?' lock':''}" data-a="lv" data-n="${n}"${lock?' disabled':''}>${ar(n)}${save.rank[n]?`<i>${save.rank[n]}</i>`:''}</button>`}h+='</div>'}return h+'<div class="row" style="margin-top:14px"><button class="btn sm" data-a="back">رجوع</button></div></div>'}
 function optsHTML(){const o=save.o,t=(k,l)=>`<button class="opt${o[k]?' on':''}" data-a="tog" data-k="${k}">${l}<b>${o[k]?'مفعّل':'متوقف'}</b></button>`,r=(a,v,l,cur)=>`<button class="opt${cur===v?' on':''}" data-a="${a}" data-v="${v}">${l}</button>`;
@@ -994,7 +1002,7 @@ function playRaw(n){clearInput();hideUI();startLevel(n);setPlaying(true)}
 function play(n){if(n===1&&csOn()&&!csSeen(0))startCS(0,()=>playRaw(1));else playRaw(n)}
 function playChal(c){clearInput();hideUI();startLevel(c.n,false,c);setPlaying(true)}
 function setPause(v){if(V){vsPause(v);return}if(!G||G.state==='demo'||G.state==='result')return;G.paused=v;clearInput();if(v)show(pauseHTML(),'pause');else hideUI()}
-const ACT={story(){startCS(0,()=>toTitle())},
+const ACT={kings(){backTo='title';if(G.state!=='demo')toTitle();show(kingsHTML(),'kings')},story(){startCS(0,()=>toTitle())},
 slots(){backTo=scr;delArm=-1;show(slotsHTML(),'slots')},
 pick(el){const i=+el.dataset.i;loadSlot(i);persist();delArm=-1;startLevel(save.max,true);toTitle()},
 del(el){const i=+el.dataset.i;if(delArm!==i){delArm=i;show(slotsHTML(),'slots');return}SL.slots[i]=null;delArm=-1;if(i===SL.cur){loadSlot(i)}persist();show(slotsHTML(),'slots')},
@@ -1240,4 +1248,20 @@ function csRender(){const g=ctx,S=CS;g.setTransform(RS,0,0,RS,0,0);g.globalAlpha
  else csCaption(g,S);
  if(S.fade>0){g.fillStyle='rgba(13,9,7,'+S.fade+')';g.fillRect(0,0,W,H)}
  const rem=b.d-S.bt;if(S.i===S.beats.length-1&&rem<.9){g.fillStyle='rgba(13,9,7,'+(1-rem/.9)+')';g.fillRect(0,0,W,H)}}
+/* ================= KINGS GALLERY ================= */
+const KIMG={};
+function kingImg(k,beaten){const key=k+(beaten?'g':'b');if(KIMG[key])return KIMG[key];
+ const b=spawnBoss((k+1)*10);b.t=1;b.s=1;b.sx=b.sy=1;b.open=.2;b.flash=0;b.vis=1;b.state='fight';b.x=390;b.y=360;
+ const c=document.createElement('canvas');c.width=780;c.height=720;const g=c.getContext('2d');drawBoss(g,b);
+ const d=g.getImageData(0,0,780,720).data;let x0=780,y0=720,x1=0,y1=0;
+ for(let y=0;y<720;y+=2)for(let x=0;x<780;x+=2){if(d[(y*780+x)*4+3]>20){if(x<x0)x0=x;if(x>x1)x1=x;if(y<y0)y0=y;if(y>y1)y1=y}}
+ x0=Math.max(0,x0-4);y0=Math.max(0,y0-4);const bw=Math.min(780-x0,x1-x0+8),bh=Math.min(720-y0,y1-y0+8),s=Math.min(1,150/Math.max(bw,bh));
+ const o=document.createElement('canvas');o.width=Math.max(1,Math.round(bw*s));o.height=Math.max(1,Math.round(bh*s));const og=o.getContext('2d');og.drawImage(c,x0,y0,bw,bh,0,0,o.width,o.height);
+ const im=og.getImageData(0,0,o.width,o.height),p=im.data;
+ for(let i=0;i<p.length;i+=4){if(beaten){const l=p[i]*.3+p[i+1]*.59+p[i+2]*.11,v=l*.55+58;p[i]=p[i+1]=p[i+2]=v}else{p[i]=p[i+1]=p[i+2]=0}}
+ og.putImageData(im,0,0);return KIMG[key]=o.toDataURL('image/png')}
+function kingsHTML(){let n=0,h='';
+ for(let k=0;k<10;k++){const beat=!!save.rank[(k+1)*10];if(beat)n++;
+  h+=`<div class="kg${beat?' x':''}"><div class="kp"><img alt="" src="${kingImg(k,beat)}">${beat?'':'<span class="q">؟</span>'}</div><small>${beat?'الملك '+KING[k]:'؟؟؟'}</small></div>`}
+ return `<div class="panel wide"><h2>ملوك الغابات</h2><p class="sub">اهزم كل ملك لتكشف هويته. هزمت ${ar(n)} من ١٠.</p><div class="kings">${h}</div><div class="row" style="margin-top:12px"><button class="btn" data-a="title">رجوع</button></div></div>`}
 </script></body></html>
