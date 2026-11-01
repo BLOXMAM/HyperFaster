@@ -1,54 +1,58 @@
 {
-  "version.txt": {
-    "op": "update",
-    "timestamp": 1793504019376
-  },
-  "order.json": {
-    "op": "update",
-    "timestamp": 1793385564579
-  },
-  ".github/workflows/build-apk.yml": {
-    "op": "update",
-    "timestamp": 1793356370874
-  },
-  "rostrick-build/template.zip": {
-    "op": "update",
-    "timestamp": 1793478533282
-  },
-  "rostrick-build/config.json": {
-    "op": "update",
-    "timestamp": 1793479082302
-  },
-  "images/img-mvqstvvi.jpg": {
-    "op": "add",
-    "timestamp": 1793112409944
-  },
-  "images/img-mvqsublm.jpg": {
-    "op": "add",
-    "timestamp": 1793112429192
-  },
-  "images/img-mvqwd682.jpg": {
-    "op": "add",
-    "timestamp": 1793118348793
-  },
-  "checkser.json": {
-    "op": "update",
-    "timestamp": 1793323862143
-  },
-  "assestslinks/rt-links.json": {
-    "op": "update",
-    "timestamp": 1793457292718
-  },
-  "home.html": {
-    "op": "update",
-    "timestamp": 1793457535417
+  "404.html": {
+    "op": "sync",
+    "timestamp": 1793505055092
   },
   "Maintenance.html": {
-    "op": "add",
-    "timestamp": 1793457290904
+    "op": "sync",
+    "timestamp": 1793505055092
+  },
+  "app-assets/splash-logo.png": {
+    "op": "sync",
+    "timestamp": 1793505055092
+  },
+  "app_logo.json": {
+    "op": "sync",
+    "timestamp": 1793505055092
   },
   "app_status.json": {
-    "op": "update",
-    "timestamp": 1793504018205
+    "op": "sync",
+    "timestamp": 1793505055092
+  },
+  "apppages.json": {
+    "op": "sync",
+    "timestamp": 1793505055092
+  },
+  "checkser.json": {
+    "op": "sync",
+    "timestamp": 1793505055092
+  },
+  "home.html": {
+    "op": "sync",
+    "timestamp": 1793505055092
+  },
+  "order.json": {
+    "op": "sync",
+    "timestamp": 1793505055092
+  },
+  "sm-custom-styles.json": {
+    "op": "sync",
+    "timestamp": 1793505055092
+  },
+  "splash.html": {
+    "op": "sync",
+    "timestamp": 1793505055092
+  },
+  "splash_config.json": {
+    "op": "sync",
+    "timestamp": 1793505055092
+  },
+  "var.json": {
+    "op": "sync",
+    "timestamp": 1793505055092
+  },
+  "version.txt": {
+    "op": "sync",
+    "timestamp": 1793505055092
   }
 }
