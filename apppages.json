@@ -1,70 +1,62 @@
 {
   "404.html": {
-    "op": "update",
-    "timestamp": 1793505661978
+    "op": "sync",
+    "timestamp": 1793560767196
   },
   "Maintenance.html": {
     "op": "sync",
-    "timestamp": 1793505055092
+    "timestamp": 1793560767196
   },
   "app-assets/splash-logo.png": {
     "op": "sync",
-    "timestamp": 1793505055092
+    "timestamp": 1793560767196
   },
   "app_logo.json": {
-    "op": "update",
-    "timestamp": 1793560672380
+    "op": "sync",
+    "timestamp": 1793560767196
   },
   "app_status.json": {
     "op": "sync",
-    "timestamp": 1793505055092
+    "timestamp": 1793560767196
   },
   "apppages.json": {
     "op": "sync",
-    "timestamp": 1793505055092
+    "timestamp": 1793560767196
   },
   "checkser.json": {
     "op": "sync",
-    "timestamp": 1793505055092
+    "timestamp": 1793560767196
   },
   "home.html": {
-    "op": "update",
-    "timestamp": 1793532454488
+    "op": "sync",
+    "timestamp": 1793560767196
   },
   "order.json": {
-    "op": "update",
-    "timestamp": 1793530290719
+    "op": "sync",
+    "timestamp": 1793560767196
+  },
+  "searchbyrostrick.html": {
+    "op": "sync",
+    "timestamp": 1793560767196
   },
   "sm-custom-styles.json": {
     "op": "sync",
-    "timestamp": 1793505055092
+    "timestamp": 1793560767196
+  },
+  "splash.html": {
+    "op": "sync",
+    "timestamp": 1793560767196
   },
   "splash_config.json": {
-    "op": "update",
-    "timestamp": 1793530844414
+    "op": "sync",
+    "timestamp": 1793560767196
   },
   "var.json": {
     "op": "sync",
-    "timestamp": 1793505055092
+    "timestamp": 1793560767196
   },
   "version.txt": {
-    "op": "update",
-    "timestamp": 1793560673556
-  },
-  "assestslinks/rt-links.json": {
-    "op": "update",
-    "timestamp": 1793560708399
-  },
-  "app/uploads/testfolder/.gitkeep": {
-    "op": "add",
-    "timestamp": 1793505597657
-  },
-  "splash.html": {
-    "op": "update",
-    "timestamp": 1793532383784
-  },
-  "searchbyrostrick.html": {
-    "op": "add",
-    "timestamp": 1793560706652
+    "op": "sync",
+    "timestamp": 1793560767196
   }
 }
