@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="ar" dir="rtl"><head><meta name="rostrick-orientation" content="landscape"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"><title>ساحة العمالقة</title>
+<html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"><title>ساحة العمالقة</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cairo:wght@500;700;900&family=Lalezar&display=swap">
@@ -510,7 +510,7 @@ const NT={runner:{hp:3,rx:20,ry:30},shooter:{hp:3,rx:20,ry:34},hopper:{hp:4,rx:2
 const NHUE={runner:0,shooter:60,hopper:120,flyer:200,brute:300};
 function spawnNPC(type,x,y){const d=NT[type],hp=Math.ceil(d.hp*(1+G.diff*.8));NP.push({type,x,y:y==null?GY:y,vx:0,vy:0,hp,max:hp,rx:d.rx,ry:d.ry,face:-1,t:rnd(0,5),cd:rnd(.5,1.5),flash:0,sx:1,sy:1,air:type==='flyer',onG:true,hue:(WORLDS[G.world].h+NHUE[type])%360,idle:0})}
 function killNPC(e){const cy=e.air?e.y:e.y-e.ry;puff(e.x,cy,6,CREAM,200,12);stars(e.x,cy,6);SFX.boom(.25);G.kills++;G.p.meter=Math.min(5,G.p.meter+.08);
- if(Math.random()<(G.p.hp<3?.22:.06))PU.push({x:e.x,y:cy,vy:-260,k:'heart',t:0});else if(Math.random()<.1)PU.push({x:e.x,y:cy,vy:-260,k:'card',t:0});
+ if(Math.random()<(G.p.hp<G.pmax?.22:.06))PU.push({x:e.x,y:cy,vy:-260,k:'heart',t:0});else if(Math.random()<.1)PU.push({x:e.x,y:cy,vy:-260,k:'card',t:0});
  const i=NP.indexOf(e);if(i>=0)NP.splice(i,1)}
 function hitNPC(q){for(const e of NP){const cy=e.air?e.y:e.y-e.ry,dx=(q.x-e.x)/(e.rx+q.r),dy=(q.y-cy)/(e.ry+q.r);if(dx*dx+dy*dy<1){if(q.pr){q.hs=q.hs||[];if(q.hs.includes(e))continue;q.hs.push(e)}e.hp-=q.dmg;e.flash=.07;SFX.hit();G.p.meter=Math.min(5,G.p.meter+.006*q.dmg);if(e.hp<=0)killNPC(e);return true}}return false}
 function hurtNPCs(d){for(const e of NP.slice()){e.hp-=d;e.flash=.15;if(e.hp<=0)killNPC(e)}}
@@ -540,7 +540,7 @@ function updateEnc(dt){const st=G.st,p=G.p;
  if(en.wi<en.waves.length){en.wt-=dt;if(en.wt<=0&&NP.length<=1){spawnWave(en.waves[en.wi++]);en.wt=1.1}}
  else if(NP.length===0){en.done=1;G.encDone++;G.lock=null}}
 function updatePU(dt){const p=G.p;for(let i=PU.length-1;i>=0;i--){const u=PU[i];u.t+=dt;u.vy+=900*dt;u.y+=u.vy*dt;if(u.y>GY-16){u.y=GY-16;u.vy=0}
- if(!p.dead&&Math.abs(p.x-u.x)<32&&Math.abs(p.y-30-u.y)<50){if(u.k==='heart'){if(p.hp<3)p.hp++;else p.meter=Math.min(5,p.meter+.3)}else p.meter=Math.min(5,p.meter+.6);SFX.parry();stars(u.x,u.y,6,u.k==='heart'?'#ff6f7a':'#ffd23c');PU.splice(i,1);continue}
+ if(!p.dead&&Math.abs(p.x-u.x)<32&&Math.abs(p.y-30-u.y)<50){if(u.k==='heart'){if(p.hp<G.pmax)p.hp++;else p.meter=Math.min(5,p.meter+.3)}else p.meter=Math.min(5,p.meter+.6);SFX.parry();stars(u.x,u.y,6,u.k==='heart'?'#ff6f7a':'#ffd23c');PU.splice(i,1);continue}
  if(u.t>12)PU.splice(i,1)}}
 function drawPU(g){for(const u of PU){const bob=Math.sin(u.t*5)*3;if(u.t>9&&((u.t*8)|0)%2)continue;if(u.k==='heart')heart(g,u.x,u.y+bob,1,true);else{g.strokeStyle=INK;star(g,u.x,u.y+bob,14,u.t*2,'#ffd23c')}}}
 
