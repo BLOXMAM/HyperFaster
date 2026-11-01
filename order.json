@@ -1,5 +1,13 @@
 [
   {
+    "file": "Maintenance.html",
+    "title": "Maintenance",
+    "icon": "fa-solid fa-file",
+    "hidden": false,
+    "searchEnabled": true,
+    "searchNames": []
+  },
+  {
     "file": "home.html",
     "title": "home",
     "icon": "fa-solid fa-file",
