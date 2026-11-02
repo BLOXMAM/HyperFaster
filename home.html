@@ -19,6 +19,19 @@ body{margin:0;overflow:hidden;background:var(--theatre);color:var(--cream);font-
 #fx .sl{top:0;right:0;bottom:0;left:0;background:repeating-linear-gradient(0deg,rgba(0,0,0,.03) 0 1px,rgba(0,0,0,0) 1px 3px)}
 #fx .gr{top:-48px;right:-48px;bottom:-48px;left:-48px;background-image:var(--grain);background-size:192px 192px;opacity:.38;animation:gshift .6s steps(1) infinite}
 @keyframes gshift{0%{transform:translate(0,0)}20%{transform:translate(-23px,14px)}40%{transform:translate(17px,-31px)}60%{transform:translate(-9px,-12px)}80%{transform:translate(26px,22px)}}
+
+/* طبقة الفيلم القديم (إطار معتم + دفء + خدوش + سيبيا للذكريات): كلها صور/CSS جاهزة تتحرك بالمتصفح بدل ما تنرسم على الكانفس كل فريم */
+#fxf{position:absolute;top:0;right:0;bottom:0;left:0;display:none}
+#fxf.on{display:block}
+#fx .fm{top:0;right:0;bottom:0;left:0;background:radial-gradient(ellipse 62% 110% at 50% 50%,rgba(30,16,4,0) 38.2%,rgba(30,16,4,.5) 100%),linear-gradient(rgba(170,120,30,.06),rgba(170,120,30,.06))}
+#fx .sp{top:0;right:0;bottom:0;left:0;background:rgba(150,100,40,.28);display:none}
+#fxf.sep .sp{display:block}
+#fx .sc{top:0;left:50%;width:1.3px;height:40%;background:#fff;opacity:0}
+#fx .sc.a{animation:scA 2.4s steps(1,end) infinite}
+#fx .sc.b{animation:scB 3.1s steps(1,end) infinite}
+@keyframes scA{0.0%{opacity:0}4.0%{opacity:0}8.0%{opacity:0.13;left:53.4%;top:16.5%;height:16.7%}12.0%{opacity:0.13;left:43.6%;top:3.1%;height:18.2%}16.0%{opacity:0}20.0%{opacity:0.14;left:23.4%;top:28.2%;height:57.6%}24.0%{opacity:0.2;left:95.7%;top:2.1%;height:53.5%}28.0%{opacity:0}32.0%{opacity:0}36.0%{opacity:0}40.0%{opacity:0}44.0%{opacity:0.16;left:57.8%;top:28.8%;height:31.1%}48.0%{opacity:0.13;left:7.7%;top:9.3%;height:45.3%}52.0%{opacity:0}56.0%{opacity:0}60.0%{opacity:0.21;left:30.8%;top:35.7%;height:46.2%}64.0%{opacity:0}68.0%{opacity:0.23;left:86.0%;top:32.8%;height:27.2%}72.0%{opacity:0.14;left:42.1%;top:34.1%;height:21.0%}76.0%{opacity:0}80.0%{opacity:0}84.0%{opacity:0.27;left:57.0%;top:39.4%;height:28.4%}88.0%{opacity:0.24;left:57.7%;top:20.5%;height:52.6%}92.0%{opacity:0.21;left:65.8%;top:2.7%;height:46.3%}96.0%{opacity:0.32;left:80.9%;top:12.8%;height:31.7%}}
+@keyframes scB{0.0%{opacity:0.12;left:46.3%;top:7.6%;height:19.4%}3.12%{opacity:0}6.25%{opacity:0.15;left:25.8%;top:17.6%;height:54.1%}9.38%{opacity:0}12.5%{opacity:0}15.62%{opacity:0.3;left:80.7%;top:38.9%;height:26.8%}18.75%{opacity:0}21.88%{opacity:0}25.0%{opacity:0.31;left:16.5%;top:7.9%;height:24.7%}28.12%{opacity:0}31.25%{opacity:0}34.38%{opacity:0.17;left:2.4%;top:18.9%;height:31.0%}37.5%{opacity:0.31;left:68.3%;top:23.2%;height:42.4%}40.62%{opacity:0.13;left:88.4%;top:35.1%;height:54.2%}43.75%{opacity:0.2;left:40.3%;top:4.7%;height:43.2%}46.88%{opacity:0}50.0%{opacity:0}53.12%{opacity:0}56.25%{opacity:0}59.38%{opacity:0}62.5%{opacity:0}65.62%{opacity:0}68.75%{opacity:0}71.88%{opacity:0}75.0%{opacity:0}78.12%{opacity:0}81.25%{opacity:0.24;left:16.3%;top:11.4%;height:30.0%}84.38%{opacity:0}87.5%{opacity:0}90.62%{opacity:0.32;left:46.7%;top:21.8%;height:18.0%}93.75%{opacity:0}96.88%{opacity:0}}
+body.lite #fx .sc{animation:none}
 body.lite #fx .gr{animation:none}
 #ui{position:absolute;top:0;right:0;bottom:0;left:0;display:grid;place-items:center;pointer-events:none}
 #ui>*{pointer-events:auto}
@@ -133,7 +146,7 @@ h2{font-family:var(--font-d);font-weight:400;font-size:calc(var(--u)*38);margin:
 <div id="app">
   <div id="stage">
     <canvas id="cv" width="960" height="540"></canvas>
-    <div id="fx"><i class="vg"></i><i class="sl"></i><i class="gr"></i></div>
+    <div id="fx"><div id="fxf"><i class="fm"></i><i class="sc a"></i><i class="sc b"></i><i class="sp"></i></div><i class="vg"></i><i class="sl"></i><i class="gr"></i></div>
     <div id="ui"></div>
     <button id="pbtn" class="ibtn" hidden aria-label="إيقاف مؤقت">❚❚</button>
     <div id="boot"><div class="bt">ساحة العمالقة</div><div class="bar"><i id="bar"></i></div><div class="bs" id="bs">تحميل أولي خفيف…</div></div>
@@ -792,7 +805,16 @@ function makeOverlays(){makeGrainImage();vig=document.createElement('canvas');vi
  const t=document.createElement('canvas');t.width=t.height=128;const tc=t.getContext('2d'),id=tc.createImageData(128,128);for(let i=0;i<id.data.length;i+=4){const l=Math.random()<.5?0:255;id.data[i]=id.data[i+1]=id.data[i+2]=l;id.data[i+3]=Math.random()*34}tc.putImageData(id,0,0);grainPat=ctx.createPattern(t,'repeat')}
 
 const FORMCOL=['#ffb347','#ff3a2e'];
-function drawBoss(g,b){const L=bossLayer;bl.setTransform(1,0,0,1,0,0);bl.clearRect(0,0,L.width,L.height);bl.save();bl.translate(L.width/2,L.height/2);const fm=Math.min(2,b.phase|0);bl.scale(b.s*b.sx*(1+.04*fm),b.s*b.sy*(1+.04*fm));if(b.rot)bl.rotate(b.rot);ink(bl,5);
+/* boss layer cache: hand-drawn bosses animate on twos (30fps; 20fps on weak devices). The painted layer is reused in between; position/jitter/alpha still update every frame. Hit-flash is a cached white-silhouette copy, so it never forces a repaint. */
+let BLS=0,bcB=null,bcS=-1,bcT=-9,bcPh=0,bcSx=1,bcSy=1,bcSc=1,bcR=0,bcFS=-1;
+const flashLayer=document.createElement('canvas');flashLayer.width=780;flashLayer.height=720;const fll=flashLayer.getContext('2d');
+function bossIV(){return (typeof QL!=='undefined'&&QL<2)||(typeof DYN!=='undefined'&&DYN<.85)?1/20:1/30}
+function bossBlit(g,b,fl){const L=bossLayer;let src=L;
+ if(fl&&b.flash>0){if(bcFS!==BLS){fll.setTransform(1,0,0,1,0,0);fll.globalAlpha=1;fll.globalCompositeOperation='copy';fll.drawImage(L,0,0);fll.globalCompositeOperation='source-atop';fll.fillStyle='rgba(255,255,255,.75)';fll.fillRect(0,0,780,720);fll.globalCompositeOperation='source-over';bcFS=BLS}src=flashLayer}
+ const bf=(G.t*12)|0,bx=Math.sin(bf*12.98)*1.5,by=Math.cos(bf*7.23)*1.5;g.globalAlpha=b.vis;g.drawImage(src,b.x-L.width/2+bx,b.y-L.height/2+by);g.globalAlpha=1}
+function drawBoss(g,b,fight){const L=bossLayer;
+ if(fight&&bcB===b&&bcS===BLS&&G.t>=bcT&&G.t-bcT<bossIV()-.004&&Math.min(2,b.phase|0)===bcPh&&Math.abs(b.sx-bcSx)<.015&&Math.abs(b.sy-bcSy)<.015&&Math.abs(b.s-bcSc)<.015&&Math.abs((b.rot||0)-bcR)<.02){bossBlit(g,b,1);return}
+ bl.setTransform(1,0,0,1,0,0);bl.clearRect(0,0,L.width,L.height);bl.save();bl.translate(L.width/2,L.height/2);const fm=Math.min(2,b.phase|0);bl.scale(b.s*b.sx*(1+.04*fm),b.s*b.sy*(1+.04*fm));if(b.rot)bl.rotate(b.rot);ink(bl,5);
  if(typeof artInit==='function')artInit();if(!b.fc){const PP=typeof BPAL!=='undefined'?BPAL[ARCH.indexOf(b.arch)]:null;b.fc=PP?PP.map(mkCol):[b.col,bossCol((b.hue+50)%360),bossCol((b.hue+205)%360)]}b.col=b.fc[fm];
  if(fm>0){const R=Math.max(b.arch.rx,b.arch.ry)*1.35,a=bl.createRadialGradient(0,0,R*.3,0,0,R);a.addColorStop(0,'rgba(255,255,255,0)');a.addColorStop(.7,fm>1?'rgba(255,58,46,.28)':'rgba(255,179,71,.26)');a.addColorStop(1,'rgba(255,255,255,0)');bl.fillStyle=a;bl.beginPath();bl.arc(0,0,R,0,TAU);bl.fill()}
  {const mf=fm>0&&typeof MORPH!=='undefined'?MORPH[ARCH.indexOf(b.arch)]:null;(mf&&mf[fm-1]||b.arch.draw)(bl,b)}
@@ -800,8 +822,9 @@ function drawBoss(g,b){const L=bossLayer;bl.setTransform(1,0,0,1,0,0);bl.clearRe
  if(false){const R=Math.max(b.arch.rx,b.arch.ry)+34;for(let i=0;i<3;i++){const an=b.t*2.2+i*TAU/3,x=Math.cos(an)*R,y=Math.sin(an)*R*.8;bl.save();bl.translate(x,y);bl.rotate(an*2);bl.beginPath();for(let k=0;k<8;k++){const q=k/8*TAU,rd=k%2?7:15;bl.lineTo(Math.cos(q)*rd,Math.sin(q)*rd)}bl.closePath();bl.fillStyle='#ff3a2e';bl.fill();bl.lineWidth=3;bl.stroke();bl.restore()}}
  bl.restore();
  if(typeof GRAIN!=='undefined'&&GRAIN&&!artLite()){bl.save();bl.setTransform(1,0,0,1,0,0);bl.globalCompositeOperation='source-atop';bl.globalAlpha=.22;bl.fillStyle=GRAIN;bl.fillRect(0,0,L.width,L.height);bl.restore()}
+ BLS++;if(fight){bcB=b;bcS=BLS;bcT=G.t;bcPh=fm;bcSx=b.sx;bcSy=b.sy;bcSc=b.s;bcR=b.rot||0;bossBlit(g,b,1);return}bcB=null;
  if(b.flash>0){bl.globalCompositeOperation='source-atop';bl.fillStyle='rgba(255,255,255,.75)';bl.fillRect(0,0,L.width,L.height);bl.globalCompositeOperation='source-over'}
- const bf=(G.t*12)|0,bx=Math.sin(bf*12.98)*1.5,by=Math.cos(bf*7.23)*1.5;g.globalAlpha=b.vis;g.drawImage(L,b.x-L.width/2+bx,b.y-L.height/2+by);g.globalAlpha=1}
+ bossBlit(g,b,0)}
 
 function drawEB(g,e,b){const r=e.r;g.save();g.translate(e.x,e.y);ink(g,4);
  if(e.pink){const pu=1+Math.sin(G.t*14)*.1;g.fillStyle='#ff7ab8';g.beginPath();g.arc(0,0,r*pu,0,TAU);g.fill();g.stroke();g.fillStyle='#fff';g.beginPath();g.arc(-r*.3,-r*.3,r*.28,0,TAU);g.fill();g.strokeStyle='#fff';g.lineWidth=2.5;g.beginPath();g.arc(0,0,r*pu+6,0,TAU);g.stroke()}
@@ -863,7 +886,7 @@ function render(){const g=ctx;g.setTransform(RS,0,0,RS,0,0);g.globalAlpha=1;
  for(const e of NP){const h=e.air?clamp((GY-e.y)/260,0,1):0;g.fillStyle='rgba(20,10,0,.3)';g.beginPath();g.ellipse(e.x,GY+6,e.rx*(1-h*.5),6,0,0,TAU);g.fill()}
  if(!demo){const h=clamp((GY-p.y)/260,0,1);g.fillStyle='rgba(20,10,0,.34)';g.beginPath();g.ellipse(p.x,GY+6,22*(1-h*.45),6,0,0,TAU);g.fill()}
  for(const z of ZN)drawZone(g,z);
- if(G.boss){drawBoss(g,b);for(const r of RY)drawRay(g,r)}
+ if(G.boss){drawBoss(g,b,1);for(const r of RY)drawRay(g,r)}
  for(const e of NP)drawNPC(g,e);
  drawPU(g);for(const e of EB)drawEB(g,e,b);
  if(!demo){
@@ -1151,8 +1174,8 @@ function frame(ts){requestAnimationFrame(frame);const rdt=Math.min(.1,Math.max(0
  if(save.o.fps)fpsTick(rdt);
  if(!document.hidden&&((V&&V.state!=='over'&&!V.paused)||(G&&!V&&G.state==='fight'&&!G.paused)))perfWatch(rdt);
  if(CS){if(!document.hidden)csUpdate(rdt);csRender();return}
- if(MP){if(!document.hidden){mapUpdate(rdt);mapPerf(rdt)}mapRender();return}
- if(V){if(!V.paused&&!document.hidden)updateVS(rdt);renderVS();return}
+ if(MP){filmSet(0);if(!document.hidden){mapUpdate(rdt);mapPerf(rdt)}mapRender();return}
+ if(V){filmSet(0);if(!V.paused&&!document.hidden)updateVS(rdt);renderVS();return}
  if(G&&!G.paused&&!document.hidden)update(rdt);render();
  if(!save.o.q&&G&&!G.paused&&G.state==='fight'){pAcc+=rdt;pN++;if(pN>=150){const avg=pAcc/pN;pAcc=0;pN=0;if(avg>.028&&QL>0){QL--;applyQ()}}}}
 async function boot(){const bar=$('bar'),bs=$('bs');bar.style.width='25%';
@@ -1504,20 +1527,14 @@ function deadCard(g){if(!G||G.state!=='dead'||G.deadT<.35)return;const u=Math.mi
  txt(g,'جرّب مرة أخرى!',0,ch/2-26,26,'#2d4f9e','center',1);
  g.restore()}
 
-/* ---- film grain / vignette / scratches ---- */
-let FG=null,FV=null,fsc=[],fsT=0,fgO=[0,0];
-function filmInit(){FG=document.createElement('canvas');FG.width=FG.height=128;const x=FG.getContext('2d'),d=x.createImageData(128,128);
- for(let i=0;i<128*128;i++){const v=Math.random()*255|0,a=Math.random()<.5?0:(Math.random()*90|0);d.data[i*4]=v;d.data[i*4+1]=v>>1;d.data[i*4+2]=v>>3;d.data[i*4+3]=a}x.putImageData(d,0,0);
- FV=document.createElement('canvas');FV.width=W;FV.height=H;const y=FV.getContext('2d'),gr=y.createRadialGradient(W/2,H/2,H*.42,W/2,H/2,W*.62);gr.addColorStop(0,'rgba(30,16,4,0)');gr.addColorStop(1,'rgba(30,16,4,.5)');y.fillStyle=gr;y.fillRect(0,0,W,H)}
-function filmFx(g,sepia){if(save.o.film===0||save.o.lite)return;if(typeof QL!=='undefined'&&QL<1)return;if(!FG)filmInit();
- g.setTransform(RS,0,0,RS,0,0);g.globalAlpha=1;
- if(sepia){g.fillStyle='rgba(150,100,40,.28)';g.fillRect(0,0,W,H)}
- g.save();g.globalCompositeOperation='multiply';g.fillStyle='rgba(255,236,196,.2)';g.fillRect(0,0,W,H);g.restore();
- fsT-=1/60;if(fsT<=0){fsT=.07+Math.random()*.05;fgO=[Math.random()*128|0,Math.random()*128|0];fsc.length=0;const n=Math.random()<.55?(Math.random()*3|0):0;for(let i=0;i<n;i++)fsc.push({x:Math.random()*W,y:Math.random()*H*.5,h:60+Math.random()*(H*.6),a:.12+Math.random()*.2})}
- g.save();g.globalAlpha=sepia?.13:.09;g.fillStyle=g.createPattern(FG,'repeat');g.translate(-fgO[0],-fgO[1]);g.fillRect(fgO[0],fgO[1],W,H);g.restore();
- g.fillStyle='#fff';for(const s of fsc){g.globalAlpha=s.a;g.fillRect(s.x,s.y,1.2,s.h)}g.globalAlpha=1;
- g.drawImage(FV,0,0);
- const fl=((performance.now()/70)|0)%11===0?.035:0;if(fl){g.fillStyle='rgba(255,240,200,'+fl+')';g.fillRect(0,0,W,H)}}
+/* ---- old-film look (vignette / warm tint / scratches / sepia) ----
+   It used to be painted on the canvas every frame (a multiply fill, a grain pattern, scratch lines, a vignette picture) - several
+   full-screen passes that made gameplay lag. Now it is a few ready-made layers in the page (#fxf) that the browser composites,
+   and the game only switches them on/off. */
+let fmOn=-1;
+function filmSet(m){const off=save.o.film===0||save.o.lite||(typeof QL!=='undefined'&&QL<1);if(off)m=0;if(m===fmOn)return;fmOn=m;
+ const f=$('fxf');if(f)f.className=m?(m===2?'on sep':'on'):''}
+function filmFx(g,sepia){filmSet(sepia?2:1)}
 {const _r=render;render=function(){_r();if(!G)return;const g=ctx;
   if(G.state!=='demo'&&G.state!=='result'){g.setTransform(RS,0,0,RS,0,0);g.save();g.translate(-Math.round(G.cam),0);fx2Draw(g,0);g.restore();fx2Draw(g,1);
    deadCard(g);
