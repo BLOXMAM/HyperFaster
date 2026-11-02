@@ -1057,11 +1057,11 @@ const show=(h,name)=>{ui.innerHTML=h;scr=name||scr};
 const hideUI=()=>{ui.innerHTML='';scr=''};
 function setPlaying(v){$('stage').classList.toggle('play',!!v);if(!v)vsUi(0);$('pbtn').hidden=!v;$('touch').hidden=!(v&&isTouch)}
 const fmt=s=>ar(String(Math.floor(s/60)).padStart(2,'0'))+':'+ar(String(Math.floor(s%60)).padStart(2,'0'));
-const titleHTML=()=>`<div class="panel"><h1>ساحة العمالقة</h1><p class="sub">١٠٨ معارك واثنا عشر زعيماً. أسرع يدٍ تفوز.</p><div class="btns"><button class="btn big" data-a="play">${save.max>1?'تابع – المرحلة '+ar(save.max):'ابدأ المعركة'}</button><div class="row"><button class="btn" data-a="levels">اختيار المرحلة</button><button class="btn" data-a="chals">التحديات</button></div><div class="row"><button class="btn" data-a="vsmenu">قتال ضد بعض</button><button class="btn" data-a="shop">المتجر · ${ar(save.coins)} <i class="cn"></i></button></div><div class="row"><button class="btn" data-a="slots">ملفات الحفظ · ${ar(SL.cur+1)}</button><button class="btn" data-a="kings">الملوك</button><button class="btn" data-a="opts">الإعدادات</button></div></div></div>`;
+const titleHTML=()=>`<div class="panel"><h1>ساحة العمالقة</h1><p class="sub">١٠٨ معارك واثنا عشر زعيماً. أسرع يدٍ تفوز.</p><div class="btns"><button class="btn big" data-a="play">${save.max>1?'تابع – المرحلة '+ar(save.max):'ابدأ المعركة'}</button><div class="row"><button class="btn" data-a="levels">اختيار المرحلة</button><button class="btn" data-a="chals">التحديات</button></div><div class="row"><button class="btn" data-a="vsmenu">قتال ضد بعض</button><button class="btn" data-a="shop">المتجر · ${ar(save.coins)} <i class="cn"></i></button></div><div class="row"><button class="btn" data-a="slots">ملفات الحفظ · ${ar(SL.cur+1)}</button><button class="btn" data-a="kings">الملوك</button><button class="btn" data-a="scenes">المشاهد</button><button class="btn" data-a="opts">الإعدادات</button></div></div></div>`;
 const pauseHTML=()=>`<div class="panel"><h2>توقّف قصير</h2><div class="btns"><button class="btn big" data-a="resume">أكمل القتال</button><button class="btn" data-a="retry">أعد المرحلة</button><button class="btn" data-a="opts">الإعدادات</button><button class="btn" data-a="levels">اختيار المرحلة</button><button class="btn" data-a="title">القائمة الرئيسية</button></div></div>`;
 function levelsHTML(){let h='<div class="panel wide"><h2>اختر معركتك</h2>';for(let w=0;w<NW;w++){h+=`<div class="wn"><span>${WORLDS[w].n}</span><small>المراحل ${ar(w*10+1)} – ${ar(w*10+10)}</small></div><div class="grid">`;for(let k=1;k<=10;k++){const n=w*10+k,lock=n>save.max&&!save.o.all;h+=`<button class="lv${k===10?' mega':''}${lock?' lock':''}" data-a="lv" data-n="${n}"${lock?' disabled':''}>${ar(n)}${save.rank[n]?`<i>${save.rank[n]}</i>`:''}</button>`}h+='</div>'}return h+'<div class="row" style="margin-top:14px"><button class="btn sm" data-a="back">رجوع</button></div></div>'}
 function optsHTML(){const o=save.o,t=(k,l)=>`<button class="opt${o[k]?' on':''}" data-a="tog" data-k="${k}">${l}<b>${o[k]?'مفعّل':'متوقف'}</b></button>`,r=(a,v,l,cur)=>`<button class="opt${cur===v?' on':''}" data-a="${a}" data-v="${v}">${l}</button>`;
- return `<div class="panel wide"><h2>الإعدادات</h2><div class="opts">${t('sfx','المؤثرات الصوتية')}${t('amb','أجواء العالم (ريح وصدى بلا موسيقى)')}${t('aim','تصويب تلقائي نحو الزعيم')}${t('cs','مشاهد القصة المتحركة')}<button class="opt" data-a="story">إعادة مشهد البداية<b>▶</b></button>${t('mir','عكس أزرار اللمس (الحركة يمين والأزرار يسار)')}${t('swp','تبديل مكان القفز والنار')}${t('film','تأثير الفيلم القديم (حبيبات وخدوش على طراز الكرتون القديم)')}<button class="opt" data-a="tbedit">تخصيص أماكن وأحجام أزرار اللمس<b>◀</b></button>${t('lite','وضع الأداء الأقصى (للأجهزة الضعيفة: رسم أخف بكثير)')}${t('fps','عرض إحصائيات الأداء')}</div>
+ return `<div class="panel wide"><h2>الإعدادات</h2><div class="opts">${t('sfx','المؤثرات الصوتية')}${t('amb','أجواء العالم (ريح وصدى بلا موسيقى)')}${t('aim','تصويب تلقائي نحو الزعيم')}${t('cs','مشاهد القصة المتحركة')}<button class="opt" data-a="scenes">المشاهد (إعادة مشاهدة ما شاهدته من القصة)<b>▶</b></button>${t('mir','عكس أزرار اللمس (الحركة يمين والأزرار يسار)')}${t('swp','تبديل مكان القفز والنار')}${t('film','تأثير الفيلم القديم (حبيبات وخدوش على طراز الكرتون القديم)')}<button class="opt" data-a="tbedit">تخصيص أماكن وأحجام أزرار اللمس<b>◀</b></button>${t('lite','وضع الأداء الأقصى (للأجهزة الضعيفة: رسم أخف بكثير)')}${t('fps','عرض إحصائيات الأداء')}</div>
  <div class="wn"><span>السلاح</span><small>تنفتح الأسلحة بهزيمة زعماء المراحل ١٠ و٢٠ و٣٠ و٤٠</small></div><div class="row">${Object.keys(WPU).map(k=>wpOk(k)?r('wp',k,WPN[k],o.wp):`<button class="opt" disabled style="opacity:.4;width:auto">مقفل ${WPN[k]} · زعيم ${ar(WPU[k])}</button>`).join('')}</div>
  <div class="wn"><span>جودة الرسم</span><small>تتحسّن تلقائياً لتناسب جهازك</small></div><div class="row">${r('q',0,'تلقائي',o.q)}${r('q',1,'منخفضة',o.q)}${r('q',2,'متوسطة',o.q)}${r('q',3,'عالية (أحدّ، لجهاز قوي)',o.q)}</div>
  <div class="help">الحركة: ← → أو A D · القفز: مسافة أو Z (اضغطه في الهواء قرب كرة وردية للصدّ فتشحن السوبر) · النار: X · اندفاع: C أو Shift · سوبر: V · التصويب للأعلى: ↑ · إيقاف: Esc<br>على الجوال: زر ▲ يطلق للأعلى مباشرة، والتصويب التلقائي مغلق افتراضياً (فعّله من الإعدادات).</div>
@@ -2779,4 +2779,24 @@ SGK.hands={u(e,dt){const p=G.p,fx=40,xl1=e.tx-e.hw-fx,xr1=e.tx+e.hw+fx;
 
 /* ---------------------------------------------------------------- register in every phase deck */
 for(let i=0;i<12;i++){const A=ARCH[i];if(A&&A.atk&&SIG[i])A.atk.forEach((L,k)=>{L.push(SIG[i]);if(k>0)L.push(SIG[i])})}
+/* ================= SCENES (replay the story scenes the player has already seen; unseen ones stay hidden) ================= */
+const SCN_GROUPS=[['القصة',[0,12]],['ملوك الغابات',[1,2,3,4,5,6,7,8,9,10,11]],['الذكريات',[20,21,22,23,24]]];
+function scnTitle(id){
+ if(id===0)return'البداية: اختطاف سامي';
+ if(id===12)return'النهاية: عودة الأخوين';
+ if(id>=1&&id<=11)return'بعد هزيمة الملك '+KING[id-1];
+ if(id>=20){let c=null;try{const d=csScene(id);c=d.beats&&d.beats[0]&&d.beats[0].card}catch(e){}return'ذكرى: '+(c&&c[1]?String(c[1]).replace(/[….\s]+$/,''):ar(id-19))}
+ return'مشهد '+ar(id)}
+function scenesHTML(){let h='<div class="panel wide"><h2>المشاهد</h2>',any=false,list='';
+ for(const[name,ids]of SCN_GROUPS){const seen=ids.filter(csSeen);if(!seen.length)continue;any=true;
+  list+=`<div class="sub" style="grid-column:1/-1;margin:6px 0 0;text-align:start">${name}</div>`+seen.map(id=>`<button class="opt" data-a="scene" data-id="${id}">${scnTitle(id)}<b>▶</b></button>`).join('')}
+ h+=any?`<p class="sub">أعد مشاهدة ما شاهدته من القصة. المشاهد التي لم تصل إليها بعد تبقى مخفية.</p><div class="opts" style="display:grid;width:100%;grid-template-columns:${innerWidth>innerHeight?'1fr 1fr':'1fr'};gap:calc(var(--u)*.7);max-height:calc(var(--u)*205);overflow-y:auto;-webkit-overflow-scrolling:touch">${list}</div>`
+  :'<p class="sub">لا توجد مشاهد بعد. كل مشهد تشاهده أثناء القصة يظهر هنا لتعيده متى شئت.</p>';
+ return h+'<div class="row" style="margin-top:12px"><button class="btn" data-a="scenesback">رجوع</button></div></div>'}
+let scFrom='title';
+Object.assign(ACT,{
+ scenes(){scFrom=scr==='opts'?'opts':'title';show(scenesHTML(),'scenes')},
+ scenesback(){if(scFrom==='opts')show(optsHTML(),'opts');else toTitle()},
+ scene(el){const id=+el.dataset.id;if(!csSeen(id))return;const was=$('stage').classList.contains('play');
+  startCS(id,()=>{if(was)setPlaying(true);show(scenesHTML(),'scenes')})}});
 </script></body></html>
