@@ -8,6 +8,22 @@
     "searchNames": []
   },
   {
+    "file": "index_fonts_4.html",
+    "title": "index_fonts_4",
+    "icon": "fa-solid fa-file",
+    "hidden": false,
+    "searchEnabled": true,
+    "searchNames": []
+  },
+  {
+    "file": "loading.html",
+    "title": "loading",
+    "icon": "fa-solid fa-file",
+    "hidden": false,
+    "searchEnabled": true,
+    "searchNames": []
+  },
+  {
     "file": "home.html",
     "title": "home",
     "icon": "fa-solid fa-file",
