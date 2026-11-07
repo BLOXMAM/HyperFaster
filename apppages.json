@@ -78,5 +78,9 @@
   "ru.html": {
     "op": "add",
     "timestamp": 1794058868993
+  },
+  "rostrick-build/template.zip": {
+    "op": "update",
+    "timestamp": 1794059034388
   }
 }
