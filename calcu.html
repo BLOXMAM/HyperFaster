@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+      <title>الآلة الحاسبة الذكية</title>
+  <style>
+    :root {
+      --bg-color: #0f172a;
+      --card-bg: #1e293b;
+      --display-bg: #090d16;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --btn-num: #334155;
+      --btn-num-hover: #475569;
+      --btn-op: #3b82f6;
+      --btn-op-hover: #2563eb;
+      --btn-action: #64748b;
+      --btn-equal: #10b981;
+      --border-color: #334155;
+    }
+
+    [data-theme="emerald"] {
+      --bg-color: #064e3b;
+      --card-bg: #065f46;
+      --display-bg: #022c22;
+      --text-main: #ecfdf5;
+      --text-muted: #a7f3d0;
+      --btn-num: #047857;
+      --btn-num-hover: #059669;
+      --btn-op: #10b981;
+      --btn-op-hover: #34d399;
+      --btn-action: #0f766e;
+      --btn-equal: #f59e0b;
+      --border-color: #059669;
+    }
+
+    [data-theme="sunset"] {
+      --bg-color: #450a0a;
+      --card-bg: #7f1d1d;
+      --display-bg: #290505;
+      --text-main: #fef2f2;
+      --text-muted: #fecaca;
+      --btn-num: #991b1b;
+      --btn-num-hover: #b91c1c;
+      --btn-op: #f97316;
+      --btn-op-hover: #fb923c;
+      --btn-action: #9a3412;
+      --btn-equal: #eab308;
+      --border-color: #b91c1c;
+    }
+
+    [data-theme="purple"] {
+      --bg-color: #2e1065;
+      --card-bg: #3b0764;
+      --display-bg: #1c053a;
+      --text-main: #faf5ff;
+      --text-muted: #d8b4fe;
+      --btn-num: #581c87;
+      --btn-num-hover: #6b21a8;
+      --btn-op: #a855f7;
+      --btn-op-hover: #c084fc;
+      --btn-action: #7e22ce;
+      --btn-equal: #ec4899;
+      --border-color: #6b21a8;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 12px;
+      transition: background-color 0.3s ease;
+    }
+
+    .app-container {
+      width: 100%;
+      max-width: 440px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      flex: 1;
+    }
+
+    .toolbox {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      background: var(--card-bg);
+      padding: 8px 12px;
+      border-radius: 12px;
+      border: 1px solid var(--border-color);
+    }
+
+    .tool-btn {
+      background: var(--btn-action);
+      color: #fff;
+      border: none;
+      outline: none;
+      padding: 6px 12px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      transition: opacity 0.2s;
+    }
+
+    .tool-btn:active {
+      opacity: 0.8;
+    }
+
+    .tool-btn.btn-theme {
+      background: #4f46e5;
+    }
+
+    .tool-btn.btn-share {
+      background: #0284c7;
+    }
+
+    .tool-btn.btn-print {
+      background: #475569;
+    }
+
+    .tool-btn.btn-import {
+      background: #0d9488;
+    }
+
+    .tool-btn.btn-reload {
+      background: #dc2626;
+    }
+
+    .theme-selector-bar {
+      display: flex;
+      gap: 6px;
+      width: 100%;
+      align-items: center;
+      padding-top: 4px;
+      border-top: 1px solid var(--border-color);
+    }
+
+    .theme-label {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .theme-chip {
+      flex: 1;
+      padding: 4px;
+      border-radius: 6px;
+      font-size: 11px;
+      text-align: center;
+      cursor: pointer;
+      border: 1px solid transparent;
+      background: rgba(255, 255, 255, 0.1);
+      color: var(--text-main);
+    }
+
+    .theme-chip.active {
+      border-color: #fff;
+      font-weight: bold;
+    }
+
+    .calc-card {
+      background: var(--card-bg);
+      border-radius: 20px;
+      padding: 16px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+      border: 1px solid var(--border-color);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      flex: 1;
+    }
+
+    .display {
+      background: var(--display-bg);
+      border-radius: 14px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      justify-content: space-around;
+      min-height: 90px;
+      border: 1px solid var(--border-color);
+      word-break: break-all;
+      direction: ltr;
+    }
+
+    .display-history {
+      font-size: 14px;
+      color: var(--text-muted);
+      min-height: 20px;
+    }
+
+    .display-main {
+      font-size: 32px;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
+    .keypad {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+      flex: 1;
+    }
+
+    .btn {
+      border: none;
+      outline: none;
+      border-radius: 12px;
+      font-size: 20px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 14px 0;
+      transition: transform 0.08s, filter 0.1s;
+    }
+
+    .btn:active {
+      transform: scale(0.95);
+      filter: brightness(1.2);
+    }
+
+    .btn-num {
+      background-color: var(--btn-num);
+      color: var(--text-main);
+    }
+
+    .btn-op {
+      background-color: var(--btn-op);
+      color: #fff;
+    }
+
+    .btn-fn {
+      background-color: var(--btn-action);
+      color: #fff;
+    }
+
+    .btn-equal {
+      background-color: var(--btn-equal);
+      color: #fff;
+      grid-column: span 2;
+    }
+
+    .pages-box {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 10px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .pages-box span {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .rt-pages-btn {
+      background: #4338ca;
+      color: #fff;
+      border: none;
+      padding: 8px 14px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .status-msg {
+      font-size: 11px;
+      color: #38bdf8;
+      text-align: center;
+      min-height: 16px;
+    }
+
+    @media print {
+      body {
+        background: #fff !important;
+        color: #000 !important;
+      }
+      .toolbox, .pages-box, .keypad, .theme-selector-bar, .status-msg {
+        display: none !important;
+      }
+      .calc-card {
+        box-shadow: none !important;
+        border: 2px solid #000 !important;
+      }
+      .display {
+        background: #f1f5f9 !important;
+        color: #000 !important;
+        border: 1px solid #ccc !important;
+      }
+      .display-main, .display-history {
+        color: #000 !important;
+      }
+      .print-header {
+        display: block !important;
+        margin-bottom: 20px;
+        text-align: center;
+        font-size: 20px;
+        font-weight: bold;
+      }
+    }
+
+    .print-header {
+      display: none;
+    }
+  </style>
+</head>
+<body screen="rt_flag_secure">
+
+  <div class="app-container">
+    <div class="print-header">تقرير نتيجة الآلة الحاسبة</div>
+
+    <!-- شريط الأدوات العلوي -->
+    <div class="toolbox">
+      <button class="tool-btn btn-share" id="btnShare" title="مشاركة الناتج">
+        📤 مشاركة الناتج
+      </button>
+      <button class="tool-btn btn-import" id="btnImportTrigger" title="استيراد معادلة جمع">
+        📄 استيراد TXT
+      </button>
+      <input type="file" id="fileInput" accept=".txt" style="display:none">
+      
+      <button class="tool-btn btn-print" id="btnPrint" title="طباعة النتيجة كـ PDF">
+        🖨️ طباعة PDF
+      </button>
+      <button class="tool-btn btn-reload" onCreate="reload.rostrick.page" id="btnReload" title="إعادة تشغيل التطبيق">
+        🔄 إعادة التشغيل
+      </button>
+
+      <!-- اختيار المظاهر (يظهر إعلان بنر علوي عند الضغط) -->
+      <div class="theme-selector-bar">
+        <span class="theme-label">المظهر:</span>
+        <div class="theme-chip active" data-set-theme="dark">داكن</div>
+        <div class="theme-chip" data-set-theme="emerald">زمردي</div>
+        <div class="theme-chip" data-set-theme="sunset">غروب</div>
+        <div class="theme-chip" data-set-theme="purple">ملكي</div>
+      </div>
+    </div>
+
+    <!-- بطاقة الحاسبة الرئيسية -->
+    <div class="calc-card">
+      <div class="display">
+        <div class="display-history" id="displayHistory"></div>
+        <div class="display-main" id="displayMain">0</div>
+      </div>
+      <div class="status-msg" id="statusMsg"></div>
+
+      <div class="keypad">
+        <button class="btn btn-fn" data-action="clear">C</button>
+        <button class="btn btn-fn" data-action="backspace">⌫</button>
+        <button class="btn btn-fn" data-action="percent">%</button>
+        <button class="btn btn-op" data-op="/">÷</button>
+
+        <button class="btn btn-num" data-val="7">7</button>
+        <button class="btn btn-num" data-val="8">8</button>
+        <button class="btn btn-num" data-val="9">9</button>
+        <button class="btn btn-op" data-op="*">×</button>
+
+        <button class="btn btn-num" data-val="4">4</button>
+        <button class="btn btn-num" data-val="5">5</button>
+        <button class="btn btn-num" data-val="6">6</button>
+        <button class="btn btn-op" data-op="-">-</button>
+
+        <button class="btn btn-num" data-val="1">1</button>
+        <button class="btn btn-num" data-val="2">2</button>
+        <button class="btn btn-num" data-val="3">3</button>
+        <button class="btn btn-op" data-op="+">+</button>
+
+        <button class="btn btn-num" data-val="0">0</button>
+        <button class="btn btn-num" data-val=".">.</button>
+        <button class="btn btn-equal" data-action="calculate">=</button>
+      </div>
+    </div>
+
+    <!-- قائمة تنزيل الصفحات (RosTrickPages) -->
+    <div class="pages-box">
+      <div>
+        <div style="font-size: 13px; font-weight: 600;">صفحة الدليل (ru.html)</div>
+        <span>محتوى إضافي جاهز للتنزيل المباشر</span>
+      </div>
+      <button class="rt-pages-btn"
+              onCreate="rostrickpages"
+              rostrick="ru.html"
+              rtnd="تنزيل الصفحة"
+              rtid="فتح الصفحة"
+              progress="true">
+        تنزيل ru.html
+      </button>
+    </div>
+  </div>
+
+  <script>
+    // حالة الحاسبة
+    let expression = '';
+    let evaluated = false;
+    const displayMain = document.getElementById('displayMain');
+    const displayHistory = document.getElementById('displayHistory');
+    const statusMsg = document.getElementById('statusMsg');
+
+    function setStatus(text, duration = 3000) {
+      statusMsg.textContent = text;
+      if (duration > 0) {
+        setTimeout(() => {
+          if (statusMsg.textContent === text) statusMsg.textContent = '';
+        }, duration);
+      }
+    }
+
+    function updateDisplay() {
+      displayMain.textContent = expression || '0';
+    }
+
+    // إدخال الأرقام
+    function appendValue(val) {
+      if (evaluated) {
+        expression = '';
+        evaluated = false;
+      }
+      if (val === '.' && (expression.slice(-1) === '.' || expression.split(/[+\-*/]/).pop().includes('.'))) {
+        return;
+      }
+      expression += val;
+      updateDisplay();
+    }
+
+    // العمليات الحسابية
+    function appendOp(op) {
+      if (expression === '' && op === '-') {
+        expression = '-';
+        updateDisplay();
+        return;
+      }
+      if (expression === '' || '+-*/'.includes(expression.slice(-1))) {
+        if (expression.length > 0) {
+          expression = expression.slice(0, -1) + op;
+          updateDisplay();
+        }
+        return;
+      }
+      evaluated = false;
+      expression += op;
+      updateDisplay();
+    }
+
+    // حساب النتيجة مع تفعيل الإعلان البيني
+    async function calculateResult() {
+      if (!expression) return;
+      if ('+-*/'.includes(expression.slice(-1))) {
+        expression = expression.slice(0, -1);
+      }
+      
+      let result = null;
+      try {
+        // التحقق من أمان التعبير الرياضي قبل التقييم
+        const sanitized = expression.replace(/[^0-9+\-*/.() ]/g, '');
+        result = Function(`'use strict'; return (${sanitized})`)();
+        displayHistory.textContent = expression + ' =';
+        expression = String(result);
+        updateDisplay();
+        evaluated = true;
+      } catch (err) {
+        setStatus('خطأ في صيغة المعادلة');
+        return;
+      }
+
+      // عرض إعلان بيني عند كل ضغطة على زر =
+      if (window.RosTrickAds && typeof window.RosTrickAds.showInterstitial === 'function') {
+        try {
+          await window.RosTrickAds.showInterstitial();
+        } catch (e) {
+          console.warn('RosTrickAds Interstitial error:', e);
+        }
+      }
+    }
+
+    // المستمعين للأزرار
+    document.querySelectorAll('.keypad button').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const val = btn.dataset.val;
+        const op = btn.dataset.op;
+        const action = btn.dataset.action;
+
+        if (val !== undefined) {
+          appendValue(val);
+        } else if (op !== undefined) {
+          appendOp(op);
+        } else if (action === 'clear') {
+          expression = '';
+          displayHistory.textContent = '';
+          evaluated = false;
+          updateDisplay();
+        } else if (action === 'backspace') {
+          if (!evaluated && expression.length > 0) {
+            expression = expression.slice(0, -1);
+            updateDisplay();
+          }
+        } else if (action === 'percent') {
+          if (expression) {
+            try {
+              const val = parseFloat(expression) / 100;
+              expression = String(val);
+              updateDisplay();
+            } catch (e) {}
+          }
+        } else if (action === 'calculate') {
+          calculateResult();
+        }
+      });
+    });
+
+    // تغيير المظهر وإظهار إعلان بنر علوي
+    document.querySelectorAll('.theme-chip').forEach(chip => {
+      chip.addEventListener('click', () => {
+        document.querySelectorAll('.theme-chip').forEach(c => c.classList.remove('active'));
+        chip.classList.add('active');
+        const theme = chip.dataset.setTheme;
+        if (theme === 'dark') {
+          document.documentElement.removeAttribute('data-theme');
+        } else {
+          document.documentElement.setAttribute('data-theme', theme);
+        }
+
+        // إظهار إعلان Banner علوي
+        if (window.RosTrickAds && typeof window.RosTrickAds.showBanner === 'function') {
+          try {
+            window.RosTrickAds.showBanner('top');
+          } catch (e) {
+            console.warn('RosTrickAds Banner error:', e);
+          }
+        }
+      });
+    });
+
+    // مشاركة الناتج
+    document.getElementById('btnShare').addEventListener('click', () => {
+      const textToShare = 'نتيجة العملية الحسابية: ' + (displayMain.textContent || '0');
+      if (window.RosTrickShare && typeof window.RosTrickShare.share === 'function') {
+        window.RosTrickShare.share({
+          title: 'الآلة الحاسبة',
+          text: textToShare
+        });
+      } else if (navigator.share) {
+        navigator.share({
+          title: 'الآلة الحاسبة',
+          text: textToShare
+        }).catch(() => {});
+      } else if (navigator.clipboard) {
+        navigator.clipboard.writeText(textToShare).then(() => {
+          setStatus('تم نسخ الناتج إلى الحافظة!');
+        });
+      } else {
+        setStatus(textToShare);
+      }
+    });
+
+    // استيراد ملف txt لمعادلة جمع
+    const fileInput = document.getElementById('fileInput');
+    document.getElementById('btnImportTrigger').addEventListener('click', () => {
+      fileInput.click();
+    });
+
+    fileInput.addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const content = event.target.result || '';
+        // استخراج الأرقام أو معادلة الجمع من النص
+        // استخراج أرقام مفصولة بأسطر أو فواصل أو علامة زائد
+        const cleanContent = content.trim();
+        if (cleanContent.includes('+')) {
+          expression = cleanContent.replace(/[^0-9+.]/g, '');
+        } else {
+          // اعتبار الأرقام الموجودة مجموعاً متتالياً
+          const numbers = cleanContent.match(/\d+(\.\d+)?/g);
+          if (numbers && numbers.length > 0) {
+            expression = numbers.join('+');
+          } else {
+            setStatus('لم يتم العثور على أرقام جمع في الملف');
+            return;
+          }
+        }
+        updateDisplay();
+        setStatus('تم استيراد معادلة الجمع بنجاح');
+      };
+      reader.readAsText(file);
+      fileInput.value = '';
+    });
+
+    // طباعة النتيجة PDF
+    document.getElementById('btnPrint').addEventListener('click', () => {
+      if (window.RosTrickPdf && typeof window.RosTrickPdf.print === 'function') {
+        window.RosTrickPdf.print('Calculator-Result');
+      } else {
+        window.print();
+      }
+    });
+
+    // زر إعادة تشغيل النشاط/التطبيق
+    document.getElementById('btnReload').addEventListener('click', () => {
+      if (typeof window.RosTrickReload === 'function') {
+        window.RosTrickReload();
+      } else {
+        location.reload();
+      }
+    });
+
+    // التعرف على الروابط العميقة (Deep Links)
+    function handleIncomingDeepLink(linkData) {
+      if (!linkData) return;
+      try {
+        // التعامل الآمن مع نصوص الرابط عبر textContent وتفادي إدخال أكواد خبيثة
+        let queryExpr = '';
+        if (linkData.query) {
+          const params = new URLSearchParams(linkData.query);
+          queryExpr = params.get('expr') || params.get('q') || '';
+        } else if (linkData.path) {
+          queryExpr = decodeURIComponent(linkData.path.replace(/^\//, ''));
+        }
+        if (queryExpr) {
+          const sanitized = queryExpr.replace(/[^0-9+\-*/.()]/g, '');
+          if (sanitized) {
+            expression = sanitized;
+            updateDisplay();
+            setStatus('تم تحميل معادلة من الرابط الخارجي');
+          }
+        }
+      } catch (err) {
+        console.error('Deep link parse error:', err);
+      }
+    }
+
+    if (window.RosTrickLinks && typeof window.RosTrickLinks.getInitial === 'function') {
+      const initial = window.RosTrickLinks.getInitial();
+      if (initial) {
+        handleIncomingDeepLink(initial);
+        if (typeof window.RosTrickLinks.clear === 'function') {
+          window.RosTrickLinks.clear();
+        }
+      }
+    }
+    window.addEventListener('rostrick-link', (e) => {
+      if (e && e.detail) {
+        handleIncomingDeepLink(e.detail);
+      }
+    });
+  </script>
+</body>
+</html>
