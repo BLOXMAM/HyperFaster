@@ -1,82 +1,74 @@
 {
   "404.html": {
-    "op": "update",
-    "timestamp": 1793561205511
+    "op": "sync",
+    "timestamp": 1794076345122
   },
   "app-assets/splash-logo.png": {
     "op": "sync",
-    "timestamp": 1793560767196
+    "timestamp": 1794076345122
+  },
+  "app_lazy_pages.json": {
+    "op": "sync",
+    "timestamp": 1794076345122
   },
   "app_logo.json": {
     "op": "sync",
-    "timestamp": 1793560767196
+    "timestamp": 1794076345122
   },
   "app_status.json": {
     "op": "sync",
-    "timestamp": 1793560767196
+    "timestamp": 1794076345122
   },
   "apppages.json": {
     "op": "sync",
-    "timestamp": 1793560767196
+    "timestamp": 1794076345122
+  },
+  "calcu.html": {
+    "op": "sync",
+    "timestamp": 1794076345122
   },
   "checkser.json": {
-    "op": "update",
-    "timestamp": 1793655810519
+    "op": "sync",
+    "timestamp": 1794076345122
   },
   "home.html": {
-    "op": "update",
-    "timestamp": 1793734676186
+    "op": "sync",
+    "timestamp": 1794076345122
+  },
+  "index_fonts_4.html": {
+    "op": "sync",
+    "timestamp": 1794076345122
+  },
+  "loading.html": {
+    "op": "sync",
+    "timestamp": 1794076345122
   },
   "order.json": {
-    "op": "update",
-    "timestamp": 1794076341337
+    "op": "sync",
+    "timestamp": 1794076345122
   },
   "searchbyrostrick.html": {
     "op": "sync",
-    "timestamp": 1793560767196
+    "timestamp": 1794076345122
   },
   "sm-custom-styles.json": {
     "op": "sync",
-    "timestamp": 1793560767196
+    "timestamp": 1794076345122
   },
   "splash.html": {
-    "op": "update",
-    "timestamp": 1793651027318
+    "op": "sync",
+    "timestamp": 1794076345122
   },
   "splash_config.json": {
     "op": "sync",
-    "timestamp": 1793560767196
+    "timestamp": 1794076345122
   },
   "var.json": {
     "op": "sync",
-    "timestamp": 1793560767196
+    "timestamp": 1794076345122
   },
   "version.txt": {
-    "op": "update",
-    "timestamp": 1794076342491
-  },
-  "index_fonts_4.html": {
-    "op": "add",
-    "timestamp": 1793560958101
-  },
-  "assestslinks/rt-links.json": {
-    "op": "update",
-    "timestamp": 1794076336004
-  },
-  "loading.html": {
-    "op": "add",
-    "timestamp": 1793651035364
-  },
-  "calcu.html": {
-    "op": "update",
-    "timestamp": 1794076208516
-  },
-  "rostrick-build/template.zip": {
-    "op": "update",
-    "timestamp": 1794059034388
-  },
-  "rostrick-build/config.json": {
-    "op": "update",
-    "timestamp": 1794059038570
+    "op": "sync",
+    "timestamp": 1794076345122
   }
 }
