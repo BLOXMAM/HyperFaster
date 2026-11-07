@@ -24,8 +24,24 @@
     "searchNames": []
   },
   {
+    "file": "calcu.html",
+    "title": "calcu",
+    "icon": "fa-solid fa-file",
+    "hidden": true,
+    "searchEnabled": true,
+    "searchNames": []
+  },
+  {
     "file": "home.html",
     "title": "home",
+    "icon": "fa-solid fa-file",
+    "hidden": true,
+    "searchEnabled": true,
+    "searchNames": []
+  },
+  {
+    "file": "ru.html",
+    "title": "ru",
     "icon": "fa-solid fa-file",
     "hidden": true,
     "searchEnabled": true,
