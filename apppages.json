@@ -82,9 +82,5 @@
   "rostrick-build/config.json": {
     "op": "update",
     "timestamp": 1794059038570
-  },
-  "ru.html": {
-    "op": "add",
-    "timestamp": 1794059315119
   }
 }
