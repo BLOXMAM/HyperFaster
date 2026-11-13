@@ -28,6 +28,9 @@
   "firebase": {
     "enabled": false
   },
+  "analytics": {
+    "enabled": false
+  },
   "billing": {
     "enabled": false
   },
