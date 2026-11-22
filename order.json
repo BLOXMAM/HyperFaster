@@ -30,5 +30,13 @@
     "hidden": false,
     "searchEnabled": true,
     "searchNames": []
+  },
+  {
+    "file": "favorites.html",
+    "title": "المفضلة",
+    "icon": "fa-solid fa-file",
+    "hidden": false,
+    "searchEnabled": true,
+    "searchNames": []
   }
 ]
