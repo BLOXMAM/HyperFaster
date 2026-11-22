@@ -1,8 +1,8 @@
 {
   "app_name": "ألغاز و العاب ذكاء",
   "package_name": "com.rostrick.puzzlesandgames",
-  "version_code": 1,
-  "version_name": "1.0",
+  "version_code": 2,
+  "version_name": "1.1",
   "asset_base_host": "hyperfaster.hosaaam-753.workers.dev",
   "colors": {
     "primary": "#6200EE",
