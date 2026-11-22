@@ -9,15 +9,14 @@
 body{margin:0;min-height:100vh;display:flex;align-items:center;justify-content:center;background:#2c3e50;font-family:'Cairo', 'Segoe UI', Tahoma, sans-serif;}
 .sm-splash-title{font-size:2rem;color:#ffffff;font-weight:bold;animation:smFadeIn 1s ease both;}
 @keyframes smFadeIn{from{opacity:0;transform:translateY(15px);}to{opacity:1;transform:translateY(0);}}
-.sm-splash-title.sm-anim-zoom{animation:smZoomInOut 0.8s cubic-bezier(.34,1.56,.64,1) both;}
-@keyframes smZoomInOut{from{opacity:0;transform:scale(0.4);}to{opacity:1;transform:scale(1);}}
+
     </style>
 </head>
 <body>
 <div class="sm-splash-title">ساحة العمالقة</div>
 <script>
-    document.querySelectorAll(".sm-splash-title").forEach(function(el){ el.classList.add("sm-anim-zoom"); });
-    setTimeout(function () { window.location.href = "home.html"; }, 2000);
+    
+    setTimeout(function () { window.location.href = "home.html"; }, 2200);
 </script>
 </body>
 </html>
