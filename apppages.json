@@ -142,5 +142,9 @@
   "puzzle-view.html": {
     "op": "add",
     "timestamp": 1795362646668
+  },
+  "overlay-guide.html": {
+    "op": "add",
+    "timestamp": 1795362702349
   }
 }
