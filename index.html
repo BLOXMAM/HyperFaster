@@ -3,2598 +3,494 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>متجر التسوق الشامل — الرئيسية</title>
+<title>الرئيسية - مكتبة الألعاب المتواضعة</title>
 <style>
-:root{
-  --primary:#FEEE00;
-  --primary-dark:#D9C800;
-  --accent:#3866DF;
-  --highlight:#FFF685;
-  --control:#404553;
-  --bg:#F7F7FA;
-  --surface:#FFFFFF;
-  --border:#E6E8F0;
-  --text:#1F2430;
-  --muted:#6B7280;
-  --success:#16A34A;
-  --danger:#DC2626;
+:root {
+  --primary: #6200EE;
+  --primary-dark: #3700B3;
+  --accent: #03DAC6;
+  --highlight: #FF0266;
+  --control: #B0BEC5;
+  --bg: #121212;
+  --surface: #1E1E1E;
+  --surface-light: #2D2D2D;
+  --text: #E0E0E0;
+  --text-muted: #9E9E9E;
 }
-*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
-html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Tahoma,Arial,sans-serif;line-height:1.45;overflow-x:hidden;}
-a{color:inherit;text-decoration:none;}
-button{font-family:inherit;cursor:pointer;border:none;background:none;padding:0;color:inherit;}
-input{font-family:inherit;}
 
-/* Header */
-.site-header{background:var(--primary);position:sticky;top:0;z-index:100;box-shadow:0 2px 8px rgba(31,36,48,0.08);}
-.header-inner{max-width:1280px;margin:0 auto;padding:10px 14px;}
-.header-top{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;}
-.brand-group{display:flex;align-items:center;}
-.brand-logo{display:inline-flex;align-items:center;min-height:44px;padding:4px 6px;border-radius:10px;}
-.brand-mark{width:36px;height:36px;border-radius:10px;background:var(--control);display:flex;align-items:center;justify-content:center;margin-left:8px;flex-shrink:0;}
-.brand-text{display:flex;flex-direction:column;}
-.brand-title{font-size:17px;font-weight:800;color:var(--control);line-height:1.1;}
-.brand-sub{font-size:11px;font-weight:700;color:var(--control);opacity:0.8;}
-
-.deliver-pill{display:none;align-items:center;background:rgba(255,255,255,0.65);border:1px solid rgba(64,69,83,0.14);border-radius:999px;padding:6px 12px;min-height:44px;margin-right:10px;font-size:12px;font-weight:700;color:var(--control);}
-.deliver-pill svg{margin-left:6px;flex-shrink:0;}
-
-.header-actions{display:flex;align-items:center;}
-.icon-btn{position:relative;display:inline-flex;align-items:center;justify-content:center;min-width:44px;min-height:44px;padding:0 8px;border-radius:10px;color:var(--control);font-size:13px;font-weight:700;margin-right:4px;transition:background 0.15s;}
-.icon-btn:hover,.icon-btn:active{background:rgba(64,69,83,0.1);}
-.icon-btn-label{display:none;margin-right:6px;}
-.badge-count{position:absolute;top:5px;left:4px;min-width:18px;height:18px;padding:0 5px;border-radius:999px;background:var(--accent);color:#FFFFFF;font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;border:2px solid var(--primary);}
-.badge-count.hidden{display:none;}
-
-.search-row{margin-top:8px;display:flex;align-items:center;}
-.search-form{position:relative;flex:1;display:flex;align-items:center;background:#FFFFFF;border-radius:10px;box-shadow:0 1px 4px rgba(0,0,0,0.06);border:1px solid rgba(64,69,83,0.12);}
-.search-input{flex:1;height:44px;border:none;background:transparent;padding:0 14px 0 8px;font-size:14px;color:var(--text);outline:none;}
-.search-submit{min-width:44px;height:44px;display:flex;align-items:center;justify-content:center;color:var(--control);border-radius:10px 0 0 10px;}
-.search-dropdown{position:absolute;top:48px;right:0;left:0;background:#FFFFFF;border-radius:12px;box-shadow:0 12px 28px rgba(31,36,48,0.16);border:1px solid var(--border);z-index:120;display:none;max-height:300px;overflow-y:auto;}
-.search-dropdown.open{display:block;}
-.search-sug-item{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;min-height:44px;border-bottom:1px solid var(--border);font-size:13px;}
-.search-sug-item:last-child{border-bottom:none;}
-.search-sug-item:hover{background:#F8FAFC;}
-.search-sug-price{font-weight:800;color:var(--accent);font-size:12px;margin-right:8px;white-space:nowrap;}
-
-/* Sub Nav Strip */
-.sub-nav{background:#FFFFFF;border-bottom:1px solid var(--border);}
-.sub-nav-inner{max-width:1280px;margin:0 auto;padding:0 10px;display:flex;align-items:center;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;}
-.sub-nav-inner::-webkit-scrollbar{display:none;}
-.sub-nav-link{display:inline-flex;align-items:center;min-height:44px;padding:0 12px;font-size:13px;font-weight:700;color:var(--control);white-space:nowrap;border-bottom:2px solid transparent;transition:color 0.15s,border-color 0.15s;}
-.sub-nav-link.active,.sub-nav-link:hover{color:var(--accent);border-bottom-color:var(--accent);}
-.sub-nav-deals{color:#B91C1C;}
-.sub-nav-deals svg{margin-left:5px;}
-
-/* Main Container */
-.main-container{max-width:1280px;margin:0 auto;padding:14px 12px 86px 12px;}
-
-/* Hero Carousel */
-.hero-section{position:relative;border-radius:16px;overflow:hidden;background:var(--control);box-shadow:0 4px 16px rgba(31,36,48,0.08);}
-.hero-track{display:flex;transition:transform 0.45s cubic-bezier(0.22,1,0.36,1);direction:ltr;}
-.hero-slide{min-width:100%;direction:rtl;padding:22px 18px 34px 18px;display:flex;flex-direction:column;justify-content:space-between;position:relative;min-height:210px;}
-.slide-1{background:linear-gradient(125deg,#1E3A8A 0%,#3866DF 60%,#5B86F5 100%);color:#FFFFFF;}
-.slide-2{background:linear-gradient(125deg,#2B303A 0%,#404553 65%,#575E70 100%);color:#FFFFFF;}
-.slide-3{background:linear-gradient(125deg,#FEEE00 0%,#FFF685 70%,#FFFBE0 100%);color:var(--control);}
-.hero-content{max-width:65%;position:relative;z-index:2;}
-.hero-tag{display:inline-flex;align-items:center;padding:4px 10px;border-radius:999px;font-size:11px;font-weight:800;margin-bottom:8px;}
-.slide-1 .hero-tag,.slide-2 .hero-tag{background:var(--primary);color:var(--control);}
-.slide-3 .hero-tag{background:var(--control);color:var(--primary);}
-.hero-title{margin:0 0 6px 0;font-size:21px;font-weight:900;line-height:1.25;}
-.hero-desc{margin:0 0 14px 0;font-size:13px;opacity:0.92;max-width:400px;}
-.hero-cta{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 18px;border-radius:10px;font-size:13px;font-weight:800;transition:transform 0.15s;}
-.hero-cta:active{transform:scale(0.97);}
-.slide-1 .hero-cta,.slide-2 .hero-cta{background:var(--primary);color:var(--control);}
-.slide-3 .hero-cta{background:var(--accent);color:#FFFFFF;}
-.hero-cta svg{margin-right:6px;}
-.hero-art{position:absolute;left:14px;bottom:14px;width:120px;height:120px;opacity:0.95;pointer-events:none;}
-.hero-controls{position:absolute;bottom:10px;right:18px;left:18px;display:flex;align-items:center;justify-content:space-between;z-index:5;pointer-events:none;}
-.hero-dots{display:flex;align-items:center;pointer-events:auto;}
-.hero-dot{width:8px;height:8px;border-radius:999px;background:rgba(255,255,255,0.45);margin-left:6px;transition:width 0.2s,background 0.2s;min-height:24px;padding:8px 0;background-clip:content-box;}
-.slide-light-dots .hero-dot{background:rgba(64,69,83,0.3);background-clip:content-box;}
-.hero-dot.active{width:22px;background:var(--primary);background-clip:content-box;}
-.slide-light-dots .hero-dot.active{background:var(--control);background-clip:content-box;}
-.hero-arrows{display:none;pointer-events:auto;}
-.hero-arrow{width:44px;height:44px;border-radius:50%;background:rgba(255,255,255,0.9);color:var(--control);display:inline-flex;align-items:center;justify-content:center;margin-right:6px;box-shadow:0 2px 8px rgba(0,0,0,0.15);}
-
-/* Section Header */
-.section-block{margin-top:22px;}
-.section-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
-.section-title-wrap{display:flex;align-items:center;flex-wrap:wrap;}
-.section-title{margin:0;font-size:18px;font-weight:900;color:var(--control);}
-.section-accent-bar{width:4px;height:20px;border-radius:4px;background:var(--accent);margin-left:8px;}
-.countdown-pill{display:inline-flex;align-items:center;background:#FEF2F2;color:var(--danger);border:1px solid #FECACA;border-radius:8px;padding:4px 10px;font-size:12px;font-weight:800;margin-right:10px;}
-.countdown-pill svg{margin-left:5px;}
-.view-all-link{display:inline-flex;align-items:center;min-height:44px;padding:0 10px;font-size:13px;font-weight:800;color:var(--accent);border-radius:8px;}
-.view-all-link svg{margin-right:4px;}
-
-/* Quick Categories */
-.cats-scroll{display:flex;overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:6px;scrollbar-width:none;}
-.cats-scroll::-webkit-scrollbar{display:none;}
-.cat-card{flex:0 0 auto;width:86px;display:flex;flex-direction:column;align-items:center;text-align:center;margin-left:10px;padding:6px 4px;border-radius:12px;transition:transform 0.15s;}
-.cat-card:active{transform:scale(0.96);}
-.cat-icon-box{width:64px;height:64px;border-radius:18px;background:#FFFFFF;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;box-shadow:0 2px 6px rgba(31,36,48,0.04);margin-bottom:7px;transition:border-color 0.15s,background 0.15s;}
-.cat-card:hover .cat-icon-box{border-color:var(--accent);background:#F5F8FF;}
-.cat-card-all .cat-icon-box{background:var(--highlight);border-color:var(--primary-dark);}
-.cat-name{font-size:12px;font-weight:700;color:var(--text);line-height:1.25;}
-
-/* Product Grid & Horizontal Deals */
-.deals-scroller{display:flex;overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:8px;scrollbar-width:none;}
-.deals-scroller::-webkit-scrollbar{display:none;}
-.deals-scroller .product-card{flex:0 0 185px;margin-left:12px;}
-
-.filter-tabs{display:flex;overflow-x:auto;-webkit-overflow-scrolling:touch;margin-bottom:14px;padding-bottom:2px;scrollbar-width:none;}
-.filter-tabs::-webkit-scrollbar{display:none;}
-.filter-tab{min-height:44px;padding:0 16px;border-radius:999px;background:#FFFFFF;border:1px solid var(--border);font-size:13px;font-weight:700;color:var(--control);white-space:nowrap;margin-left:8px;transition:all 0.15s;}
-.filter-tab.active{background:var(--control);color:var(--primary);border-color:var(--control);}
-
-.products-grid{display:grid;grid-template-columns:repeat(2,1fr);grid-gap:12px;}
-
-.product-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:10px;display:flex;flex-direction:column;justify-content:space-between;position:relative;transition:box-shadow 0.2s,transform 0.15s;}
-.product-card:hover{box-shadow:0 8px 20px rgba(31,36,48,0.08);}
-.product-top{position:relative;}
-.discount-badge{position:absolute;top:0;right:0;background:#FEF2F2;color:var(--danger);font-size:11px;font-weight:800;padding:3px 7px;border-radius:8px;z-index:2;}
-.wish-btn{position:absolute;top:-4px;left:-4px;width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--muted);z-index:2;background:rgba(255,255,255,0.85);}
-.wish-btn.active{color:var(--danger);}
-.product-img-link{display:flex;align-items:center;justify-content:center;height:132px;background:#F9FAFB;border-radius:10px;margin-bottom:10px;padding:10px;}
-.product-img-link svg{width:96px;height:96px;}
-.express-badge{display:inline-flex;align-items:center;background:var(--highlight);color:var(--control);font-size:10px;font-weight:800;padding:2px 7px;border-radius:6px;margin-bottom:5px;}
-.express-badge svg{margin-left:3px;}
-.product-title{display:block;font-size:13px;font-weight:700;color:var(--text);line-height:1.35;height:36px;overflow:hidden;margin-bottom:6px;}
-.rating-row{display:flex;align-items:center;margin-bottom:8px;font-size:11px;color:var(--muted);}
-.rating-pill{display:inline-flex;align-items:center;background:#ECFDF5;color:var(--success);font-weight:800;padding:1px 6px;border-radius:6px;margin-left:5px;}
-.rating-pill svg{margin-right:2px;}
-.price-row{display:flex;align-items:baseline;flex-wrap:wrap;margin-bottom:10px;}
-.price-now{font-size:16px;font-weight:900;color:var(--text);margin-left:6px;}
-.price-currency{font-size:11px;font-weight:700;margin-right:2px;}
-.price-old{font-size:12px;color:var(--muted);text-decoration:line-through;}
-.add-cart-btn{width:100%;min-height:44px;border-radius:10px;background:var(--primary);color:var(--control);font-size:13px;font-weight:800;display:flex;align-items:center;justify-content:center;transition:background 0.15s,transform 0.1s;}
-.add-cart-btn:hover{background:var(--primary-dark);}
-.add-cart-btn:active{transform:scale(0.98);}
-.add-cart-btn.added{background:var(--accent);color:#FFFFFF;}
-.add-cart-btn svg{margin-left:6px;}
-
-/* Dual Promo Banners */
-.promo-dual{display:grid;grid-template-columns:1fr;grid-gap:12px;margin-top:22px;}
-.promo-card{border-radius:14px;padding:18px;display:flex;align-items:center;justify-content:space-between;min-height:112px;position:relative;overflow:hidden;}
-.promo-card-blue{background:linear-gradient(135deg,#EEF4FF 0%,#DCE7FF 100%);border:1px solid #C7D7FE;}
-.promo-card-yellow{background:linear-gradient(135deg,#FFFBE0 0%,#FFF685 100%);border:1px solid #F5E042;}
-.promo-card-text h3{margin:0 0 4px 0;font-size:16px;font-weight:900;color:var(--control);}
-.promo-card-text p{margin:0 0 10px 0;font-size:12px;color:var(--control);opacity:0.85;}
-.promo-mini-cta{display:inline-flex;align-items:center;min-height:36px;padding:6px 12px;border-radius:8px;background:var(--control);color:#FFFFFF;font-size:12px;font-weight:800;}
-
-/* Trust Strip */
-.trust-grid{display:grid;grid-template-columns:repeat(2,1fr);grid-gap:10px;margin-top:24px;}
-.trust-item{background:#FFFFFF;border:1px solid var(--border);border-radius:12px;padding:12px;display:flex;align-items:center;}
-.trust-icon{width:40px;height:40px;border-radius:10px;background:var(--highlight);color:var(--control);display:flex;align-items:center;justify-content:center;margin-left:10px;flex-shrink:0;}
-.trust-text strong{display:block;font-size:12px;font-weight:800;color:var(--control);}
-.trust-text span{display:block;font-size:11px;color:var(--muted);}
-
-/* Footer */
-.site-footer{margin-top:26px;background:var(--control);color:#E5E7EB;border-radius:16px;padding:20px 16px;}
-.footer-grid{display:grid;grid-template-columns:1fr;grid-gap:16px;}
-.footer-brand{font-size:16px;font-weight:900;color:var(--primary);margin-bottom:6px;}
-.footer-desc{font-size:12px;color:#D1D5DB;margin:0;}
-.footer-links{display:flex;flex-wrap:wrap;}
-.footer-link{display:inline-flex;align-items:center;min-height:44px;padding:0 12px;font-size:12px;font-weight:700;color:#FFFFFF;background:rgba(255,255,255,0.08);border-radius:8px;margin-left:8px;margin-bottom:8px;}
-.footer-copy{margin-top:14px;padding-top:12px;border-top:1px solid rgba(255,255,255,0.12);font-size:11px;color:#9CA3AF;text-align:center;}
-
-/* Bottom Mobile Nav */
-.bottom-nav{position:fixed;bottom:0;right:0;left:0;background:#FFFFFF;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-around;z-index:110;padding:4px 4px;box-shadow:0 -2px 10px rgba(31,36,48,0.06);}
-.bottom-nav-item{flex:1;min-height:52px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--muted);position:relative;border-radius:10px;}
-.bottom-nav-item.active{color:var(--accent);}
-.bottom-nav-item svg{margin-bottom:3px;}
-.bottom-cart-badge{position:absolute;top:4px;left:50%;margin-left:4px;min-width:17px;height:17px;padding:0 4px;border-radius:999px;background:var(--accent);color:#FFFFFF;font-size:10px;font-weight:800;display:flex;align-items:center;justify-content:center;}
-.bottom-cart-badge.hidden{display:none;}
-
-/* Toast Notification */
-.toast{position:fixed;bottom:74px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--control);color:#FFFFFF;padding:10px 18px;border-radius:12px;font-size:13px;font-weight:700;box-shadow:0 8px 24px rgba(0,0,0,0.2);opacity:0;pointer-events:none;transition:opacity 0.2s,transform 0.2s;z-index:200;display:flex;align-items:center;white-space:nowrap;}
-.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
-.toast svg{margin-left:8px;color:var(--primary);}
-
-/* Responsive Breakpoints */
-@media(min-width:640px){
-  .products-grid{grid-template-columns:repeat(3,1fr);}
-  .promo-dual{grid-template-columns:repeat(2,1fr);}
-  .trust-grid{grid-template-columns:repeat(4,1fr);}
-  .hero-slide{padding:30px 32px 42px 32px;min-height:245px;}
-  .hero-title{font-size:26px;}
-  .hero-art{width:170px;height:170px;left:28px;bottom:20px;}
-  .hero-arrows{display:flex;}
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: Tahoma, Arial, sans-serif;
+  -webkit-tap-highlight-color: transparent;
 }
-@media(min-width:960px){
-  .header-top{flex-wrap:nowrap;}
-  .deliver-pill{display:inline-flex;}
-  .search-row{margin-top:0;flex:1;margin:0 18px;}
-  .header-inner{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;}
-  .header-top{width:100%;}
-  .icon-btn-label{display:inline;}
-  .products-grid{grid-template-columns:repeat(4,1fr);grid-gap:16px;}
-  .deals-scroller .product-card{flex:0 0 220px;}
-  .bottom-nav{display:none;}
-  .main-container{padding-bottom:32px;}
-  .toast{bottom:24px;}
-  .footer-grid{grid-template-columns:1.2fr 1fr;}
+
+body {
+  background-color: var(--bg);
+  color: var(--text);
+  padding-bottom: 70px;
+}
+
+header {
+  background-color: var(--surface);
+  padding: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--surface-light);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.logo-area {
+  display: flex;
+  align-items: center;
+}
+
+.logo-area svg {
+  width: 28px;
+  height: 28px;
+  fill: var(--accent);
+  margin-left: 12px;
+}
+
+header h1 {
+  font-size: 18px;
+  color: #fff;
+}
+
+.search-box {
+  padding: 12px 16px;
+  background-color: var(--surface);
+  border-bottom: 1px solid var(--surface-light);
+}
+
+.search-input {
+  width: 100%;
+  padding: 10px 14px;
+  background-color: var(--surface-light);
+  border: 1px solid var(--control);
+  border-radius: 8px;
+  color: #fff;
+  font-size: 14px;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+.section {
+  padding: 16px;
+}
+
+.section-title {
+  font-size: 16px;
+  color: var(--accent);
+  margin-bottom: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Featured Carousel */
+.featured-scroll {
+  display: flex;
+  overflow-x: auto;
+  padding-bottom: 8px;
+  scroll-snap-type: x mandatory;
+}
+
+.featured-card {
+  min-width: 260px;
+  height: 150px;
+  background-color: var(--surface);
+  border-radius: 12px;
+  overflow: hidden;
+  position: relative;
+  flex-shrink: 0;
+  scroll-snap-align: start;
+  text-decoration: none;
+  color: inherit;
+  border: 1px solid var(--surface-light);
+  margin-left: 12px;
+}
+
+.featured-card:last-child {
+  margin-left: 0;
+}
+
+.featured-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.featured-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(transparent, rgba(0,0,0,0.85));
+  padding: 12px;
+}
+
+.featured-title {
+  font-size: 15px;
+  font-weight: bold;
+  color: #fff;
+  margin-bottom: 4px;
+}
+
+.featured-genre {
+  font-size: 11px;
+  color: var(--accent);
+}
+
+/* Games Grid */
+.games-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-gap: 12px;
+}
+
+.game-card {
+  background-color: var(--surface);
+  border-radius: 10px;
+  overflow: hidden;
+  text-decoration: none;
+  color: inherit;
+  border: 1px solid var(--surface-light);
+  display: flex;
+  flex-direction: column;
+}
+
+.game-thumb {
+  width: 100%;
+  height: 110px;
+  object-fit: cover;
+  background-color: var(--surface-light);
+}
+
+.game-info {
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.game-title {
+  font-size: 13px;
+  font-weight: bold;
+  color: #fff;
+  margin-bottom: 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.game-meta {
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+}
+
+.game-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: auto;
+}
+
+.game-rating {
+  font-size: 11px;
+  color: var(--highlight);
+  font-weight: bold;
+}
+
+.fav-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 6px;
+  min-width: 44px;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.fav-btn svg {
+  width: 20px;
+  height: 20px;
+  fill: var(--control);
+  transition: fill 0.2s;
+}
+
+.fav-btn.active svg {
+  fill: var(--highlight);
+}
+
+/* Bottom Navigation */
+nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 60px;
+  background-color: var(--surface);
+  border-top: 1px solid var(--surface-light);
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  z-index: 100;
+}
+
+.nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-decoration: none;
+  color: var(--text-muted);
+  font-size: 10px;
+  min-width: 44px;
+  min-height: 44px;
+  justify-content: center;
+  flex: 1;
+}
+
+.nav-item svg {
+  width: 22px;
+  height: 22px;
+  fill: var(--text-muted);
+  margin-bottom: 3px;
+}
+
+.nav-item.active {
+  color: var(--accent);
+}
+
+.nav-item.active svg {
+  fill: var(--accent);
+}
+
+.no-results {
+  grid-column: span 2;
+  text-align: center;
+  padding: 30px;
+  color: var(--text-muted);
+  font-size: 13px;
 }
 </style>
 </head>
 <body>
 
-<header class="site-header">
-  <div class="header-inner">
-    <div class="header-top">
-      <div class="brand-group">
-        <a href="index.html" class="brand-logo" aria-label="متجر التسوق الشامل الرئيسية">
-          <div class="brand-mark">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
-              <path d="M6 8h12l-1.2 11H7.2L6 8z" fill="#FEEE00"/>
-              <path d="M9 8V6a3 3 0 0 1 6 0v2" stroke="#FEEE00" stroke-width="2" stroke-linecap="round"/>
-              <circle cx="12" cy="13.5" r="2" fill="#404553"/>
-            </svg>
-          </div>
-          <div class="brand-text">
-            <span class="brand-title">التسوق الشامل</span>
-            <span class="brand-sub">تسوق ذكي وسريع</span>
-          </div>
-        </a>
-        <a href="account.html" class="deliver-pill" title="إدارة العناوين">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
-            <circle cx="12" cy="10" r="3"></circle>
-          </svg>
-          <span>التوصيل إلى: الرياض</span>
-        </a>
-      </div>
-
-      <div class="search-row" id="desktopSearchSlot">
-        <form class="search-form" id="searchForm" action="search.html" method="get" autocomplete="off">
-          <input type="search" name="q" id="searchInput" class="search-input" placeholder="ابحث عن جوالات، أزياء، أجهزة منزلية..." aria-label="البحث في المتجر">
-          <button type="submit" class="search-submit" aria-label="بحث">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="11" cy="11" r="8"></circle>
-              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-            </svg>
-          </button>
-          <div class="search-dropdown" id="searchDropdown"></div>
-        </form>
-      </div>
-
-      <div class="header-actions">
-        <a href="wishlist.html" class="icon-btn" aria-label="المفضلة">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
-          </svg>
-          <span class="icon-btn-label">المفضلة</span>
-          <span class="badge-count hidden" id="headerWishBadge">0</span>
-        </a>
-        <a href="account.html" class="icon-btn" aria-label="حسابي">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-            <circle cx="12" cy="7" r="4"></circle>
-          </svg>
-          <span class="icon-btn-label">حسابي</span>
-        </a>
-        <a href="cart.html" class="icon-btn" aria-label="سلة التسوق">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="9" cy="21" r="1"></circle>
-            <circle cx="20" cy="21" r="1"></circle>
-            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
-          </svg>
-          <span class="icon-btn-label">السلة</span>
-          <span class="badge-count hidden" id="headerCartBadge">0</span>
-        </a>
-      </div>
-    </div>
+<header>
+  <div class="logo-area">
+    <svg viewBox="0 0 24 24"><path d="M21 6H3c-1.1 0-2 .9-2 2v8c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm-10 7H8v3H6v-3H3v-2h3V8h2v3h3v2zm4.5 2c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm3-4c-.83 0-1.5-.67-1.5-1.5S17.67 8 18.5 8s1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
+    <h1>مكتبة الألعاب</h1>
   </div>
 </header>
 
-<nav class="sub-nav" aria-label="التنقل السريع">
-  <div class="sub-nav-inner">
-    <a href="categories.html" class="sub-nav-link">جميع الأقسام</a>
-    <a href="deals.html" class="sub-nav-link sub-nav-deals">
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
-        <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
-      </svg>
-      عروض اليوم
-    </a>
-    <a href="products.html?cat=electronics" class="sub-nav-link">الإلكترونيات</a>
-    <a href="products.html?cat=fashion" class="sub-nav-link">الأزياء</a>
-    <a href="products.html?cat=home" class="sub-nav-link">المنزل والمطبخ</a>
-    <a href="products.html?cat=beauty" class="sub-nav-link">الجمال والعطور</a>
-    <a href="products.html?cat=supermarket" class="sub-nav-link">السوبرماركت</a>
-    <a href="products.html" class="sub-nav-link">الأكثر مبيعاً</a>
-  </div>
-</nav>
-
-<main class="main-container">
-  <!-- Hero Promotional Banner Carousel -->
-  <section class="hero-section" id="heroCarousel" aria-label="البانرات الترويجية">
-    <div class="hero-track" id="heroTrack">
-      <div class="hero-slide slide-1">
-        <div class="hero-content">
-          <span class="hero-tag">مهرجان التوفير الكبير</span>
-          <h1 class="hero-title">خصومات تصل إلى 50% على الإلكترونيات الذكية</h1>
-          <p class="hero-desc">أحدث الهواتف، السماعات اللاسلكية والساعات الذكية مع توصيل سريع لباب منزلك.</p>
-          <a href="deals.html" class="hero-cta">
-            تسوق العروض الآن
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-              <polyline points="15 18 9 12 15 6"></polyline>
-            </svg>
-          </a>
-        </div>
-        <svg class="hero-art" viewBox="0 0 160 160" fill="none">
-          <circle cx="80" cy="80" r="68" fill="rgba(255,255,255,0.12)"/>
-          <rect x="48" y="24" width="64" height="112" rx="14" fill="#1F2430" stroke="#FEEE00" stroke-width="3"/>
-          <rect x="54" y="34" width="52" height="86" rx="8" fill="#3866DF"/>
-          <circle cx="80" cy="128" r="4" fill="#FEEE00"/>
-          <path d="M66 64l10 10 20-22" stroke="#FEEE00" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
-          <circle cx="126" cy="42" r="18" fill="#FEEE00"/>
-          <path d="M120 42h12M126 36v12" stroke="#404553" stroke-width="3" stroke-linecap="round"/>
-        </svg>
-      </div>
-
-      <div class="hero-slide slide-2">
-        <div class="hero-content">
-          <span class="hero-tag">تشكيلة الموسم الجديد</span>
-          <h2 class="hero-title">أناقة يومية في الأزياء والأحذية الرياضية</h2>
-          <p class="hero-desc">تخفيضات حصرية على أشهر العلامات مع إمكانية الإرجاع المجاني خلال 15 يوماً.</p>
-          <a href="products.html?cat=fashion" class="hero-cta">
-            استكشف الأزياء
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-              <polyline points="15 18 9 12 15 6"></polyline>
-            </svg>
-          </a>
-        </div>
-        <svg class="hero-art" viewBox="0 0 160 160" fill="none">
-          <circle cx="80" cy="80" r="68" fill="rgba(254,238,0,0.14)"/>
-          <path d="M34 102c18-24 38-34 62-28l30 22c6 4 4 14-4 14H36c-7 0-9-4-2-8z" fill="#FEEE00"/>
-          <path d="M34 108h92v8c0 4-3 6-8 6H42c-5 0-8-2-8-6v-8z" fill="#FFFFFF"/>
-          <path d="M68 78l10 10M82 75l9 9" stroke="#404553" stroke-width="3.5" stroke-linecap="round"/>
-        </svg>
-      </div>
-
-      <div class="hero-slide slide-3">
-        <div class="hero-content">
-          <span class="hero-tag">عروض المنزل والمطبخ</span>
-          <h2 class="hero-title">جدد مطبخك بأفضل الأجهزة العصرية</h2>
-          <p class="hero-desc">قلايات هوائية، ماكينات قهوة ومستلزمات الضيافة بأسعار تنافسية لا تفوت.</p>
-          <a href="products.html?cat=home" class="hero-cta">
-            تصفح قسم المنزل
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-              <polyline points="15 18 9 12 15 6"></polyline>
-            </svg>
-          </a>
-        </div>
-        <svg class="hero-art" viewBox="0 0 160 160" fill="none">
-          <circle cx="80" cy="80" r="68" fill="rgba(56,102,223,0.12)"/>
-          <rect x="44" y="34" width="72" height="92" rx="16" fill="#404553"/>
-          <rect x="54" y="46" width="52" height="32" rx="8" fill="#3866DF"/>
-          <circle cx="80" cy="100" r="14" fill="#FEEE00"/>
-          <rect x="64" y="126" width="32" height="8" rx="4" fill="#1F2430"/>
-        </svg>
-      </div>
-    </div>
-
-    <div class="hero-controls" id="heroControls">
-      <div class="hero-dots" id="heroDots">
-        <button type="button" class="hero-dot active" data-slide="0" aria-label="الشريحة الأولى"></button>
-        <button type="button" class="hero-dot" data-slide="1" aria-label="الشريحة الثانية"></button>
-        <button type="button" class="hero-dot" data-slide="2" aria-label="الشريحة الثالثة"></button>
-      </div>
-      <div class="hero-arrows">
-        <button type="button" class="hero-arrow" id="heroPrev" aria-label="السابق">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-            <polyline points="9 18 15 12 9 6"></polyline>
-          </svg>
-        </button>
-        <button type="button" class="hero-arrow" id="heroNext" aria-label="التالي">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-            <polyline points="15 18 9 12 15 6"></polyline>
-          </svg>
-        </button>
-      </div>
-    </div>
-  </section>
-
-  <!-- Quick Categories -->
-  <section class="section-block" aria-label="الأقسام السريعة">
-    <div class="section-head">
-      <div class="section-title-wrap">
-        <span class="section-accent-bar"></span>
-        <h2 class="section-title">تسوق حسب القسم</h2>
-      </div>
-      <a href="categories.html" class="view-all-link">
-        كل الأقسام
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-          <polyline points="15 18 9 12 15 6"></polyline>
-        </svg>
-      </a>
-    </div>
-
-    <div class="cats-scroll">
-      <a href="products.html?cat=electronics" class="cat-card">
-        <div class="cat-icon-box">
-          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#3866DF" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-            <rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect>
-            <line x1="12" y1="18" x2="12.01" y2="18"></line>
-          </svg>
-        </div>
-        <span class="cat-name">الإلكترونيات</span>
-      </a>
-
-      <a href="products.html?cat=fashion" class="cat-card">
-        <div class="cat-icon-box">
-          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#404553" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M20.38 3.46L16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.47a1 1 0 0 0 .99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.47a2 2 0 0 0-1.34-2.23z"></path>
-          </svg>
-        </div>
-        <span class="cat-name">الأزياء</span>
-      </a>
-
-      <a href="products.html?cat=home" class="cat-card">
-        <div class="cat-icon-box">
-          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#3866DF" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
-            <polyline points="9 22 9 12 15 12 15 22"></polyline>
-          </svg>
-        </div>
-        <span class="cat-name">المنزل والمطبخ</span>
-      </a>
-
-      <a href="products.html?cat=beauty" class="cat-card">
-        <div class="cat-icon-box">
-          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#DB2777" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M9 3h6v4H9z"></path>
-            <path d="M7 7h10l1 13a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L7 7z"></path>
-            <circle cx="12" cy="14" r="2"></circle>
-          </svg>
-        </div>
-        <span class="cat-name">الجمال والعطور</span>
-      </a>
-
-      <a href="products.html?cat=supermarket" class="cat-card">
-        <div class="cat-icon-box">
-          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#16A34A" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
-            <line x1="3" y1="6" x2="21" y2="6"></line>
-            <path d="M16 10a4 4 0 0 1-8 0"></path>
-          </svg>
-        </div>
-        <span class="cat-name">السوبرماركت</span>
-      </a>
-
-      <a href="products.html?cat=sports" class="cat-card">
-        <div class="cat-icon-box">
-          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#EA580C" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="12" cy="12" r="9"></circle>
-            <path d="M12 3a9 9 0 0 0 0 18"></path>
-            <path d="M3.6 9h16.8M3.6 15h16.8"></path>
-          </svg>
-        </div>
-        <span class="cat-name">الرياضة</span>
-      </a>
-
-      <a href="deals.html" class="cat-card">
-        <div class="cat-icon-box">
-          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#DC2626" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-            <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
-          </svg>
-        </div>
-        <span class="cat-name">عروض الفلاش</span>
-      </a>
-
-      <a href="categories.html" class="cat-card cat-card-all">
-        <div class="cat-icon-box">
-          <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#404553" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <rect x="3" y="3" width="7" height="7" rx="1"></rect>
-            <rect x="14" y="3" width="7" height="7" rx="1"></rect>
-            <rect x="14" y="14" width="7" height="7" rx="1"></rect>
-            <rect x="3" y="14" width="7" height="7" rx="1"></rect>
-          </svg>
-        </div>
-        <span class="cat-name">جميع الأقسام</span>
-      </a>
-    </div>
-  </section>
-
-  <!-- Best Deals / Flash Sale -->
-  <section class="section-block" aria-label="أفضل العروض اليومية">
-    <div class="section-head">
-      <div class="section-title-wrap">
-        <span class="section-accent-bar"></span>
-        <h2 class="section-title">أفضل العروض</h2>
-        <span class="countdown-pill" id="dealCountdown" aria-live="polite">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="12" cy="12" r="10"></circle>
-            <polyline points="12 6 12 12 16 14"></polyline>
-          </svg>
-          <span id="countdownText">04:25:18</span>
-        </span>
-      </div>
-      <a href="deals.html" class="view-all-link">
-        عرض الكل
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-          <polyline points="15 18 9 12 15 6"></polyline>
-        </svg>
-      </a>
-    </div>
-
-    <div class="deals-scroller" id="dealsGrid"></div>
-  </section>
-
-  <!-- Dual Promo Banners -->
-  <section class="promo-dual" aria-label="عروض مميزة">
-    <a href="deals.html" class="promo-card promo-card-yellow">
-      <div class="promo-card-text">
-        <h3>خصم إضافي 15% بالكود</h3>
-        <p>استخدم كود SAVE15 عند إتمام الطلب</p>
-        <span class="promo-mini-cta">اكتشف الصفقات</span>
-      </div>
-      <svg width="78" height="78" viewBox="0 0 80 80" fill="none">
-        <circle cx="40" cy="40" r="34" fill="#FEEE00" stroke="#404553" stroke-width="2.5"/>
-        <path d="M28 52L52 28" stroke="#404553" stroke-width="4" stroke-linecap="round"/>
-        <circle cx="30" cy="30" r="5" fill="#3866DF"/>
-        <circle cx="50" cy="50" r="5" fill="#3866DF"/>
-      </svg>
-    </a>
-
-    <a href="products.html?cat=electronics" class="promo-card promo-card-blue">
-      <div class="promo-card-text">
-        <h3>تقنيات صوتية فائقة</h3>
-        <p>سماعات ومكبرات صوت بضمان سنتين</p>
-        <span class="promo-mini-cta">تسوق الإلكترونيات</span>
-      </div>
-      <svg width="78" height="78" viewBox="0 0 80 80" fill="none">
-        <path d="M20 44v-6a20 20 0 0 1 40 0v6" stroke="#3866DF" stroke-width="5" stroke-linecap="round"/>
-        <rect x="14" y="42" width="12" height="20" rx="5" fill="#404553"/>
-        <rect x="54" y="42" width="12" height="20" rx="5" fill="#404553"/>
-      </svg>
-    </a>
-  </section>
-
-  <!-- Best Sellers with Interactive Category Filter -->
-  <section class="section-block" aria-label="المنتجات الأكثر مبيعاً">
-    <div class="section-head">
-      <div class="section-title-wrap">
-        <span class="section-accent-bar"></span>
-        <h2 class="section-title">المنتجات الأكثر مبيعاً</h2>
-      </div>
-      <a href="products.html" class="view-all-link">
-        المزيد
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-          <polyline points="15 18 9 12 15 6"></polyline>
-        </svg>
-      </a>
-    </div>
-
-    <div class="filter-tabs" id="bestFilterTabs">
-      <button type="button" class="filter-tab active" data-cat="all">الكل</button>
-      <button type="button" class="filter-tab" data-cat="electronics">الإلكترونيات</button>
-      <button type="button" class="filter-tab" data-cat="fashion">الأزياء</button>
-      <button type="button" class="filter-tab" data-cat="home">المنزل والمطبخ</button>
-      <button type="button" class="filter-tab" data-cat="beauty">الجمال والعطور</button>
-    </div>
-
-    <div class="products-grid" id="bestSellersGrid"></div>
-  </section>
-
-  <!-- Service Guarantees -->
-  <section class="trust-grid" aria-label="مزايا المتجر">
-    <div class="trust-item">
-      <div class="trust-icon">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-          <rect x="1" y="3" width="15" height="13"></rect>
-          <polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon>
-          <circle cx="5.5" cy="18.5" r="2.5"></circle>
-          <circle cx="18.5" cy="18.5" r="2.5"></circle>
-        </svg>
-      </div>
-      <div class="trust-text">
-        <strong>توصيل إكسبرس</strong>
-        <span>شحن مجاني للطلبات فوق 200 ر.س</span>
-      </div>
-    </div>
-
-    <div class="trust-item">
-      <div class="trust-icon">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
-          <polyline points="9 12 11 14 15 10"></polyline>
-        </svg>
-      </div>
-      <div class="trust-text">
-        <strong>منتجات أصلية 100%</strong>
-        <span>ضمان معتمد وجودة عالية</span>
-      </div>
-    </div>
-
-    <div class="trust-item">
-      <div class="trust-icon">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-          <polyline points="1 4 1 10 7 10"></polyline>
-          <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path>
-        </svg>
-      </div>
-      <div class="trust-text">
-        <strong>إرجاع مجاني</strong>
-        <span>خلال 15 يوماً بكل سهولة</span>
-      </div>
-    </div>
-
-    <div class="trust-item">
-      <div class="trust-icon">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-          <rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect>
-          <line x1="1" y1="10" x2="23" y2="10"></line>
-        </svg>
-      </div>
-      <div class="trust-text">
-        <strong>دفع آمن ومتنوع</strong>
-        <span>بطاقات أو الدفع عند الاستلام</span>
-      </div>
-    </div>
-  </section>
-
-  <!-- Footer -->
-  <footer class="site-footer">
-    <div class="footer-grid">
-      <div>
-        <div class="footer-brand">متجر التسوق الشامل</div>
-        <p class="footer-desc">وجهتك الأولى للتسوق الإلكتروني في المنطقة العربية مع آلاف المنتجات المختارة، عروض يومية متجددة، وتوصيل سريع وآمن.</p>
-      </div>
-      <div class="footer-links">
-        <a href="categories.html" class="footer-link">الأقسام</a>
-        <a href="deals.html" class="footer-link">العروض</a>
-        <a href="search.html" class="footer-link">البحث</a>
-        <a href="wishlist.html" class="footer-link">المفضلة</a>
-        <a href="cart.html" class="footer-link">سلة التسوق</a>
-        <a href="account.html" class="footer-link">حسابي</a>
-      </div>
-    </div>
-    <div class="footer-copy">جميع الحقوق محفوظة لمتجر التسوق الشامل</div>
-  </footer>
-</main>
-
-<!-- Bottom Navigation Bar (Mobile) -->
-<nav class="bottom-nav" aria-label="القائمة السفلية">
-  <a href="index.html" class="bottom-nav-item active">
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
-      <polyline points="9 22 9 12 15 12 15 22"></polyline>
-    </svg>
-    <span>الرئيسية</span>
-  </a>
-  <a href="categories.html" class="bottom-nav-item">
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <rect x="3" y="3" width="7" height="7" rx="1"></rect>
-      <rect x="14" y="3" width="7" height="7" rx="1"></rect>
-      <rect x="14" y="14" width="7" height="7" rx="1"></rect>
-      <rect x="3" y="14" width="7" height="7" rx="1"></rect>
-    </svg>
-    <span>الأقسام</span>
-  </a>
-  <a href="deals.html" class="bottom-nav-item">
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
-    </svg>
-    <span>العروض</span>
-  </a>
-  <a href="cart.html" class="bottom-nav-item">
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <circle cx="9" cy="21" r="1"></circle>
-      <circle cx="20" cy="21" r="1"></circle>
-      <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
-    </svg>
-    <span>السلة</span>
-    <span class="bottom-cart-badge hidden" id="bottomCartBadge">0</span>
-  </a>
-  <a href="account.html" class="bottom-nav-item">
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-      <circle cx="12" cy="7" r="4"></circle>
-    </svg>
-    <span>حسابي</span>
-  </a>
-</nav>
-
-<div class="toast" id="toastBox" role="status" aria-live="polite">
-  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-    <polyline points="20 6 9 17 4 12"></polyline>
-  </svg>
-  <span id="toastMsg">تمت الإضافة</span>
+<div class="search-box">
+  <input type="text" id="searchInput" class="search-input" placeholder="ابحث في الألعاب المتواضعة...">
 </div>
 
-<script>
-(function(){
-  'use strict';
-
-  var STORAGE_CART = 'shamil_cart_v1';
-  var STORAGE_WISH = 'shamil_wishlist_v1';
-
-  var PRODUCTS = [
-    {
-      id: 'p101',
-      name: 'سماعات رأس لاسلكية عازلة للضوضاء برو',
-      category: 'electronics',
-      price: 349,
-      oldPrice: 549,
-      discount: 36,
-      rating: 4.8,
-      reviews: 420,
-      express: true,
-      isDeal: true,
-      bestSeller: true,
-      icon: 'headphones'
-    },
-    {
-      id: 'p102',
-      name: 'ساعة ذكية رياضية بشاشة AMOLED ومراقبة نبض القلب',
-      category: 'electronics',
-      price: 279,
-      oldPrice: 420,
-      discount: 34,
-      rating: 4.7,
-      reviews: 318,
-      express: true,
-      isDeal: true,
-      bestSeller: true,
-      icon: 'watch'
-    },
-    {
-      id: 'p103',
-      name: 'قلاية هوائية ديجيتال سعة 6 لتر بدون زيت',
-      category: 'home',
-      price: 299,
-      oldPrice: 499,
-      discount: 40,
-      rating: 4.9,
-      reviews: 615,
-      express: true,
-      isDeal: true,
-      bestSeller: true,
-      icon: 'airfryer'
-    },
-    {
-      id: 'p104',
-      name: 'حذاء رياضي مريح للجري والاستخدام اليومي',
-      category: 'fashion',
-      price: 189,
-      oldPrice: 280,
-      discount: 33,
-      rating: 4.6,
-      reviews: 204,
-      express: true,
-      isDeal: true,
-      bestSeller: true,
-      icon: 'sneaker'
-    },
-    {
-      id: 'p105',
-      name: 'عطر أو دو بارفان فاخر برائحة العود والعنبر 100 مل',
-      category: 'beauty',
-      price: 225,
-      oldPrice: 340,
-      discount: 34,
-      rating: 4.8,
-      reviews: 187,
-      express: true,
-      isDeal: true,
-      bestSeller: true,
-      icon: 'perfume'
-    },
-    {
-      id: 'p106',
-      name: 'هاتف ذكي 5G ذاكرة 256 جيجابايت كاميرا ثلاثية',
-      category: 'electronics',
-      price: 1899,
-      oldPrice: 2299,
-      discount: 17,
-      rating: 4.9,
-      reviews: 512,
-      express: true,
-      isDeal: false,
-      bestSeller: true,
-      icon: 'phone'
-    },
-    {
-      id: 'p107',
-      name: 'ماكينة تحضير الإسبريسو والكابتشينو المنزلية',
-      category: 'home',
-      price: 459,
-      oldPrice: 650,
-      discount: 29,
-      rating: 4.7,
-      reviews: 274,
-      express: true,
-      isDeal: false,
-      bestSeller: true,
-      icon: 'coffee'
-    },
-    {
-      id: 'p108',
-      name: 'حقيبة ظهر عملية مقاومة للماء مع منفذ USB',
-      category: 'fashion',
-      price: 119,
-      oldPrice: 179,
-      discount: 34,
-      rating: 4.5,
-      reviews: 156,
-      express: true,
-      isDeal: false,
-      bestSeller: true,
-      icon: 'backpack'
-    },
-    {
-      id: 'p109',
-      name: 'سيروم فيتامين سي لنضارة البشرة وترطيبها 30 مل',
-      category: 'beauty',
-      price: 89,
-      oldPrice: 135,
-      discount: 34,
-      rating: 4.7,
-      reviews: 340,
-      express: true,
-      isDeal: false,
-      bestSeller: true,
-      icon: 'serum'
-    },
-    {
-      id: 'p110',
-      name: 'مكبر صوت بلوتوث محمول مقاوم للماء 20 واط',
-      category: 'electronics',
-      price: 159,
-      oldPrice: 230,
-      discount: 31,
-      rating: 4.6,
-      reviews: 192,
-      express: true,
-      isDeal: true,
-      bestSeller: true,
-      icon: 'speaker'
-    },
-    {
-      id: 'p111',
-      name: 'طقم أواني طهي جرانيت غير لاصق 8 قطع',
-      category: 'home',
-      price: 389,
-      oldPrice: 580,
-      discount: 33,
-      rating: 4.8,
-      reviews: 289,
-      express: false,
-      isDeal: false,
-      bestSeller: true,
-      icon: 'pot'
-    },
-    {
-      id: 'p112',
-      name: 'نظارة شمسية كلاسيكية بإطار خفيف وحماية UV400',
-      category: 'fashion',
-      price: 95,
-      oldPrice: 150,
-      discount: 37,
-      rating: 4.5,
-      reviews: 118,
-      express: true,
-      isDeal: false,
-      bestSeller: true,
-      icon: 'glasses'
-    }
-  ];
-
-  function getSvgArt(type){
-    var arts = {
-      headphones: '<svg viewBox="0 0 96 96" fill="none"><path d="M22 52v-6c0-14.4 11.6-26 26-26s26 11.6 26 26v6" stroke="#404553" stroke-width="6" stroke-linecap="round"/><rect x="14" y="48" width="14" height="24" rx="7" fill="#3866DF"/><rect x="68" y="48" width="14" height="24" rx="7" fill="#3866DF"/><rect x="22" y="52" width="4" height="16" rx="2" fill="#FEEE00"/><rect x="70" y="52" width="4" height="16" rx="2" fill="#FEEE00"/></svg>',
-      watch: '<svg viewBox="0 0 96 96" fill="none"><rect x="35" y="10" width="26" height="18" rx="4" fill="#404553"/><rect x="35" y="68" width="26" height="18" rx="4" fill="#404553"/><rect x="25" y="24" width="46" height="48" rx="12" fill="#1F2430" stroke="#3866DF" stroke-width="3"/><rect x="31" y="30" width="34" height="36" rx="7" fill="#3866DF"/><path d="M48 39v10l7 4" stroke="#FEEE00" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/></svg>',
-      airfryer: '<svg viewBox="0 0 96 96" fill="none"><rect x="22" y="16" width="52" height="64" rx="14" fill="#404553"/><rect x="30" y="24" width="36" height="18" rx="6" fill="#3866DF"/><circle cx="48" cy="33" r="4" fill="#FEEE00"/><rect x="28" y="48" width="40" height="26" rx="6" fill="#2B303A"/><rect x="42" y="56" width="12" height="6" rx="3" fill="#FEEE00"/></svg>',
-      sneaker: '<svg viewBox="0 0 96 96" fill="none"><path d="M16 62c11-16 24-22 40-18l22 14c4 3 3 10-3 10H18c-5 0-6-3-2-6z" fill="#3866DF"/><path d="M16 66h63v5c0 3-2 5-6 5H22c-4 0-6-2-6-5v-5z" fill="#FEEE00"/><path d="M42 46l6 6M50 44l6 6" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round"/></svg>',
-      perfume: '<svg viewBox="0 0 96 96" fill="none"><rect x="37" y="14" width="22" height="14" rx="3" fill="#404553"/><rect x="42" y="28" width="12" height="6" fill="#D9C800"/><rect x="24" y="34" width="48" height="48" rx="10" fill="#FFF685" stroke="#404553" stroke-width="3"/><rect x="34" y="46" width="28" height="24" rx="4" fill="#FFFFFF"/><path d="M42 58h12" stroke="#3866DF" stroke-width="3" stroke-linecap="round"/></svg>',
-      phone: '<svg viewBox="0 0 96 96" fill="none"><rect x="26" y="10" width="44" height="76" rx="9" fill="#1F2430"/><rect x="30" y="16" width="36" height="60" rx="5" fill="#3866DF"/><circle cx="48" cy="80" r="2.5" fill="#FEEE00"/><rect x="36" y="24" width="24" height="12" rx="3" fill="rgba(255,255,255,0.22)"/><circle cx="48" cy="54" r="9" fill="#FEEE00"/></svg>',
-      coffee: '<svg viewBox="0 0 96 96" fill="none"><rect x="20" y="16" width="56" height="64" rx="10" fill="#404553"/><rect x="28" y="22" width="40" height="14" rx="4" fill="#FEEE00"/><rect x="30" y="46" width="26" height="22" rx="4" fill="#FFFFFF"/><path d="M56 50h6a4 4 0 0 1 0 8h-6" stroke="#FFFFFF" stroke-width="3"/><rect x="22" y="72" width="52" height="8" rx="4" fill="#1F2430"/></svg>',
-      backpack: '<svg viewBox="0 0 96 96" fill="none"><path d="M36 24v-6a12 12 0 0 1 24 0v6" stroke="#404553" stroke-width="5" stroke-linecap="round"/><rect x="22" y="24" width="52" height="58" rx="16" fill="#3866DF"/><rect x="30" y="48" width="36" height="24" rx="8" fill="#1E3A8A"/><rect x="40" y="34" width="16" height="5" rx="2.5" fill="#FEEE00"/></svg>',
-      serum: '<svg viewBox="0 0 96 96" fill="none"><path d="M43 12h10l2 14H41l2-14z" fill="#404553"/><rect x="38" y="26" width="20" height="8" rx="2" fill="#D9C800"/><rect x="28" y="34" width="40" height="48" rx="10" fill="#FFF685" stroke="#EA580C" stroke-width="2.5"/><rect x="35" y="46" width="26" height="24" rx="4" fill="#FFFFFF"/><circle cx="48" cy="58" r="6" fill="#FEEE00"/></svg>',
-      speaker: '<svg viewBox="0 0 96 96" fill="none"><rect x="24" y="14" width="48" height="68" rx="14" fill="#404553"/><circle cx="48" cy="34" r="9" fill="#3866DF"/><circle cx="48" cy="60" r="14" fill="#1F2430" stroke="#FEEE00" stroke-width="3"/><circle cx="48" cy="60" r="5" fill="#FEEE00"/></svg>',
-      pot: '<svg viewBox="0 0 96 96" fill="none"><path d="M38 24h20" stroke="#404553" stroke-width="5" stroke-linecap="round"/><path d="M22 36h52l-4 36a6 6 0 0 1-6 6H32a6 6 0 0 1-6-6l-4-36z" fill="#404553"/><path d="M20 32h56" stroke="#3866DF" stroke-width="6" stroke-linecap="round"/><rect x="10" y="42" width="10" height="6" rx="3" fill="#FEEE00"/><rect x="76" y="42" width="10" height="6" rx="3" fill="#FEEE00"/></svg>',
-      glasses: '<svg viewBox="0 0 96 96" fill="none"><rect x="12" y="34" width="30" height="24" rx="8" fill="#1F2430" stroke="#404553" stroke-width="3"/><rect x="54" y="34" width="30" height="24" rx="8" fill="#1F2430" stroke="#404553" stroke-width="3"/><path d="M42 42h12" stroke="#404553" stroke-width="4"/><path d="M18 40l8 8M60 40l8 8" stroke="#FEEE00" stroke-width="2.5" stroke-linecap="round"/></svg>'
-    };
-    return arts[type] || arts.phone;
-  }
-
-  function safeRead(key, fallback){
-    try{
-      var raw = localStorage.getItem(key);
-      if(!raw) return fallback;
-      var parsed = JSON.parse(raw);
-      return parsed !== null ? parsed : fallback;
-    }catch(e){
-      return fallback;
-    }
-  }
-
-  function safeWrite(key, val){
-    try{
-      localStorage.setItem(key, JSON.stringify(val));
-    }catch(e){}
-  }
-
-  function getCart(){
-    var arr = safeRead(STORAGE_CART, []);
-    return Array.isArray(arr) ? arr : [];
-  }
-
-  function getWishlist(){
-    var arr = safeRead(STORAGE_WISH, []);
-    return Array.isArray(arr) ? arr : [];
-  }
-
-  function updateBadges(){
-    var cart = getCart();
-    var totalQty = 0;
-    for(var i = 0; i < cart.length; i++){
-      totalQty += (cart[i].qty || 1);
-    }
-    var wish = getWishlist();
-
-    var hCart = document.getElementById('headerCartBadge');
-    var bCart = document.getElementById('bottomCartBadge');
-    var hWish = document.getElementById('headerWishBadge');
-
-    if(hCart){
-      hCart.textContent = String(totalQty);
-      if(totalQty > 0){ hCart.classList.remove('hidden'); } else { hCart.classList.add('hidden'); }
-    }
-    if(bCart){
-      bCart.textContent = String(totalQty);
-      if(totalQty > 0){ bCart.classList.remove('hidden'); } else { bCart.classList.add('hidden'); }
-    }
-    if(hWish){
-      hWish.textContent = String(wish.length);
-      if(wish.length > 0){ hWish.classList.remove('hidden'); } else { hWish.classList.add('hidden'); }
-    }
-  }
-
-  var toastTimer = null;
-  function showToast(msg){
-    var box = document.getElementById('toastBox');
-    var txt = document.getElementById('toastMsg');
-    if(!box || !txt) return;
-    txt.textContent = msg;
-    box.classList.add('show');
-    if(toastTimer) clearTimeout(toastTimer);
-    toastTimer = setTimeout(function(){
-      box.classList.remove('show');
-    }, 2200);
-  }
-
-  function findProduct(id){
-    for(var i = 0; i < PRODUCTS.length; i++){
-      if(PRODUCTS[i].id === id) return PRODUCTS[i];
-    }
-    return null;
-  }
-
-  function addToCart(id, btn){
-    var prod = findProduct(id);
-    if(!prod) return;
-    var cart = getCart();
-    var found = false;
-    for(var i = 0; i < cart.length; i++){
-      if(cart[i].id === id){
-        cart[i].qty = (cart[i].qty || 1) + 1;
-        found = true;
-        break;
-      }
-    }
-    if(!found){
-      cart.push({
-        id: prod.id,
-        name: prod.name,
-        price: prod.price,
-        oldPrice: prod.oldPrice,
-        icon: prod.icon,
-        qty: 1
-      });
-    }
-    safeWrite(STORAGE_CART, cart);
-    updateBadges();
-    showToast('تمت إضافة المنتج إلى السلة');
-
-    if(btn){
-      btn.classList.add('added');
-      var orig = btn.innerHTML;
-      btn.innerHTML = 'تمت الإضافة للسلة';
-      setTimeout(function(){
-        btn.classList.remove('added');
-        btn.innerHTML = orig;
-      }, 1100);
-    }
-  }
-
-  function toggleWish(id){
-    var wish = getWishlist();
-    var idx = wish.indexOf(id);
-    if(idx > -1){
-      wish.splice(idx, 1);
-      showToast('تمت الإزالة من المفضلة');
-    } else {
-      wish.push(id);
-      showToast('تم الحفظ في المفضلة');
-    }
-    safeWrite(STORAGE_WISH, wish);
-    updateBadges();
-    syncWishButtons();
-  }
-
-  function syncWishButtons(){
-    var wish = getWishlist();
-    var btns = document.querySelectorAll('.wish-btn');
-    for(var i = 0; i < btns.length; i++){
-      var id = btns[i].getAttribute('data-id');
-      var active = wish.indexOf(id) > -1;
-      if(active){
-        btns[i].classList.add('active');
-        btns[i].setAttribute('aria-pressed', 'true');
-        btns[i].querySelector('svg').setAttribute('fill', '#DC2626');
-      } else {
-        btns[i].classList.remove('active');
-        btns[i].setAttribute('aria-pressed', 'false');
-        btns[i].querySelector('svg').setAttribute('fill', 'none');
-      }
-    }
-  }
-
-  function buildProductCard(p){
-    var wish = getWishlist();
-    var isWished = wish.indexOf(p.id) > -1;
-    var expressHtml = p.express
-      ? '<span class="express-badge"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>إكسبرس</span>'
-      : '';
-    var discountHtml = p.discount > 0
-      ? '<span class="discount-badge">خصم ' + p.discount + '%</span>'
-      : '';
-
-    return (
-      '<article class="product-card">' +
-        '<div class="product-top">' +
-          discountHtml +
-          '<button type="button" class="wish-btn' + (isWished ? ' active' : '') + '" data-id="' + p.id + '" aria-label="حفظ في المفضلة" aria-pressed="' + (isWished ? 'true' : 'false') + '">' +
-            '<svg width="20" height="20" viewBox="0 0 24 24" fill="' + (isWished ? '#DC2626' : 'none') + '" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' +
-              '<path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>' +
-            '</svg>' +
-          '</button>' +
-          '<a href="product.html?id=' + p.id + '" class="product-img-link" aria-label="' + p.name + '">' +
-            getSvgArt(p.icon) +
-          '</a>' +
-          expressHtml +
-          '<a href="product.html?id=' + p.id + '" class="product-title">' + p.name + '</a>' +
-        '</div>' +
-        '<div>' +
-          '<div class="rating-row">' +
-            '<span class="rating-pill">' + p.rating.toFixed(1) +
-              '<svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>' +
-            '</span>' +
-            '<span>(' + p.reviews + ')</span>' +
-          '</div>' +
-          '<div class="price-row">' +
-            '<span class="price-now">' + p.price + '<span class="price-currency">ر.س</span></span>' +
-            '<span class="price-old">' + p.oldPrice + ' ر.س</span>' +
-          '</div>' +
-          '<button type="button" class="add-cart-btn" data-add="' + p.id + '">' +
-            '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>' +
-            'إضافة للسلة' +
-          '</button>' +
-        '</div>' +
-      '</article>'
-    );
-  }
-
-  function renderDeals(){
-    var container = document.getElementById('dealsGrid');
-    if(!container) return;
-    var html = '';
-    for(var i = 0; i < PRODUCTS.length; i++){
-      if(PRODUCTS[i].isDeal){
-        html += buildProductCard(PRODUCTS[i]);
-      }
-    }
-    container.innerHTML = html;
-  }
-
-  function renderBestSellers(category){
-    var container = document.getElementById('bestSellersGrid');
-    if(!container) return;
-    var html = '';
-    var count = 0;
-    for(var i = 0; i < PRODUCTS.length; i++){
-      var p = PRODUCTS[i];
-      if(category === 'all' || p.category === category){
-        html += buildProductCard(p);
-        count++;
-        if(category === 'all' && count >= 8) break;
-      }
-    }
-    container.innerHTML = html;
-  }
-
-  /* Event Delegation for Cart & Wishlist */
-  document.addEventListener('click', function(e){
-    var target = e.target;
-    while(target && target !== document){
-      if(target.classList && target.classList.contains('add-cart-btn')){
-        var addId = target.getAttribute('data-add');
-        addToCart(addId, target);
-        return;
-      }
-      if(target.classList && target.classList.contains('wish-btn')){
-        var wishId = target.getAttribute('data-id');
-        toggleWish(wishId);
-        return;
-      }
-      target = target.parentNode;
-    }
-  });
-
-  /* Filter Tabs for Best Sellers */
-  var tabsWrap = document.getElementById('bestFilterTabs');
-  if(tabsWrap){
-    tabsWrap.addEventListener('click', function(e){
-      var btn = e.target;
-      if(!btn || !btn.classList.contains('filter-tab')) return;
-      var allTabs = tabsWrap.querySelectorAll('.filter-tab');
-      for(var i = 0; i < allTabs.length; i++){
-        allTabs[i].classList.remove('active');
-      }
-      btn.classList.add('active');
-      renderBestSellers(btn.getAttribute('data-cat'));
-    });
-  }
-
-  /* Hero Carousel */
-  var currentSlide = 0;
-  var totalSlides = 3;
-  var heroTrack = document.getElementById('heroTrack');
-  var heroControls = document.getElementById('heroControls');
-  var heroDots = document.querySelectorAll('.hero-dot');
-  var heroTimer = null;
-
-  function goToSlide(idx){
-    currentSlide = (idx + totalSlides) % totalSlides;
-    if(heroTrack){
-      heroTrack.style.transform = 'translateX(-' + (currentSlide * 100) + '%)';
-    }
-    for(var i = 0; i < heroDots.length; i++){
-      if(i === currentSlide){
-        heroDots[i].classList.add('active');
-      } else {
-        heroDots[i].classList.remove('active');
-      }
-    }
-    if(heroControls){
-      if(currentSlide === 2){
-        heroControls.classList.add('slide-light-dots');
-      } else {
-        heroControls.classList.remove('slide-light-dots');
-      }
-    }
-  }
-
-  function startHeroAuto(){
-    if(heroTimer) clearInterval(heroTimer);
-    heroTimer = setInterval(function(){
-      goToSlide(currentSlide + 1);
-    }, 5000);
-  }
-
-  var prevBtn = document.getElementById('heroPrev');
-  var nextBtn = document.getElementById('heroNext');
-  if(prevBtn){
-    prevBtn.addEventListener('click', function(){
-      goToSlide(currentSlide - 1);
-      startHeroAuto();
-    });
-  }
-  if(nextBtn){
-    nextBtn.addEventListener('click', function(){
-      goToSlide(currentSlide + 1);
-      startHeroAuto();
-    });
-  }
-  for(var d = 0; d < heroDots.length; d++){
-    heroDots[d].addEventListener('click', function(){
-      var s = parseInt(this.getAttribute('data-slide'), 10);
-      goToSlide(s);
-      startHeroAuto();
-    });
-  }
-
-  /* Touch swipe on Hero */
-  var heroEl = document.getElementById('heroCarousel');
-  var touchStartX = 0;
-  if(heroEl){
-    heroEl.addEventListener('touchstart', function(e){
-      if(e.touches && e.touches.length > 0){
-        touchStartX = e.touches[0].clientX;
-      }
-    }, {passive: true});
-    heroEl.addEventListener('touchend', function(e){
-      if(e.changedTouches && e.changedTouches.length > 0){
-        var diff = e.changedTouches[0].clientX - touchStartX;
-        if(Math.abs(diff) > 40){
-          if(diff > 0){
-            goToSlide(currentSlide + 1);
-          } else {
-            goToSlide(currentSlide - 1);
-          }
-          startHeroAuto();
-        }
-      }
-    }, {passive: true});
-  }
-
-  /* Flash Sale Countdown */
-  var secondsLeft = 4 * 3600 + 25 * 60 + 18;
-  function pad2(n){ return n < 10 ? '0' + n : String(n); }
-  function updateCountdown(){
-    var el = document.getElementById('countdownText');
-    if(!el) return;
-    if(secondsLeft <= 0) secondsLeft = 5 * 3600;
-    var h = Math.floor(secondsLeft / 3600);
-    var m = Math.floor((secondsLeft % 3600) / 60);
-    var s = secondsLeft % 60;
-    el.textContent = pad2(h) + ':' + pad2(m) + ':' + pad2(s);
-    secondsLeft--;
-  }
-
-  /* Instant Search Dropdown */
-  var searchInput = document.getElementById('searchInput');
-  var searchDropdown = document.getElementById('searchDropdown');
-  if(searchInput && searchDropdown){
-    searchInput.addEventListener('input', function(){
-      var q = searchInput.value.trim();
-      if(q.length < 1){
-        searchDropdown.classList.remove('open');
-        searchDropdown.innerHTML = '';
-        return;
-      }
-      var matches = [];
-      for(var i = 0; i < PRODUCTS.length; i++){
-        if(PRODUCTS[i].name.indexOf(q) > -1){
-          matches.push(PRODUCTS[i]);
-        }
-      }
-      if(matches.length === 0){
-        searchDropdown.innerHTML = '<a href="search.html?q=' + encodeURIComponent(q) + '" class="search-sug-item"><span>البحث عن "' + q.replace(/</g, '&lt;') + '" في المتجر</span><span class="search-sug-price">عرض</span></a>';
-      } else {
-        var html = '';
-        var limit = matches.length > 5 ? 5 : matches.length;
-        for(var j = 0; j < limit; j++){
-          html += '<a href="product.html?id=' + matches[j].id + '" class="search-sug-item"><span>' + matches[j].name + '</span><span class="search-sug-price">' + matches[j].price + ' ر.س</span></a>';
-        }
-        html += '<a href="search.html?q=' + encodeURIComponent(q) + '" class="search-sug-item" style="background:#F8FAFC;font-weight:800;color:#3866DF;"><span>عرض كل النتائج (' + matches.length + ')</span><span>&larr;</span></a>';
-        searchDropdown.innerHTML = html;
-      }
-      searchDropdown.classList.add('open');
-    });
-
-    document.addEventListener('click', function(e){
-      if(!searchInput.contains(e.target) && !searchDropdown.contains(e.target)){
-        searchDropdown.classList.remove('open');
-      }
-    });
-  }
-
-  /* Initialize Page */
-  renderDeals();
-  renderBestSellers('all');
-  updateBadges();
-  startHeroAuto();
-  updateCountdown();
-  setInterval(updateCountdown, 1000);
-})();
-</script>
-</body>
-</html>
-</!DOCTYPE html>
-``` Wait—let me check the closing tag carefully! I accidentally typed `</!DOCTYPE html>` and backticks? Let me inspect what I output. No, I haven't output yet—I am inside my thought? No, I'm writing the response! Wait: in my thought I noticed `</!DOCTYPE html>`. Let's make sure the actual output ends strictly with `</html>` and nothing after it, and starts strictly with `<!DOCTYPE html>`. Let's review all rules once more:
-- Chromium 78 compatible: no `?.`, no `??`, no flex `gap`, no `clamp()`/`min()`/`max()`. Checked!
-- Offline only, inline CSS/JS, SVG icons, no emoji. Checked!
-- `dir="rtl"`, `lang="ar"`, `<meta name="viewport" content="width=device-width, initial-scale=1">`, 44px+ touch targets. Checked!
-- `localStorage` wrapped in `try/catch`. Checked!
-- Links only to: `categories.html`, `products.html`, `product.html`, `search.html`, `deals.html`, `cart.html`, `wishlist.html`, `account.html` (and `index.html`). Checked!
-- Shared CSS variables included verbatim. Checked!
-
-Now output ONLY the complete HTML document from `<!DOCTYPE html>` to `</html>`.<!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>متجر التسوق الشامل — الرئيسية</title>
-<style>
-:root{
-  --primary:#FEEE00;
-  --primary-dark:#D9C800;
-  --accent:#3866DF;
-  --highlight:#FFF685;
-  --control:#404553;
-  --bg:#F7F7FA;
-  --surface:#FFFFFF;
-  --border:#E6E8F0;
-  --text:#1F2430;
-  --muted:#6B7280;
-  --success:#16A34A;
-  --danger:#DC2626;
-}
-*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
-html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Tahoma,Arial,sans-serif;line-height:1.45;overflow-x:hidden;}
-a{color:inherit;text-decoration:none;}
-button{font-family:inherit;cursor:pointer;border:none;background:none;padding:0;color:inherit;}
-input{font-family:inherit;}
-
-/* Header */
-.site-header{background:var(--primary);position:sticky;top:0;z-index:100;box-shadow:0 2px 8px rgba(31,36,48,0.08);}
-.header-inner{max-width:1280px;margin:0 auto;padding:10px 14px;}
-.header-top{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;}
-.brand-group{display:flex;align-items:center;}
-.brand-logo{display:inline-flex;align-items:center;min-height:44px;padding:4px 6px;border-radius:10px;}
-.brand-mark{width:36px;height:36px;border-radius:10px;background:var(--control);display:flex;align-items:center;justify-content:center;margin-left:8px;flex-shrink:0;}
-.brand-text{display:flex;flex-direction:column;}
-.brand-title{font-size:17px;font-weight:800;color:var(--control);line-height:1.1;}
-.brand-sub{font-size:11px;font-weight:700;color:var(--control);opacity:0.8;}
-
-.deliver-pill{display:none;align-items:center;background:rgba(255,255,255,0.65);border:1px solid rgba(64,69,83,0.14);border-radius:999px;padding:6px 12px;min-height:44px;margin-right:10px;font-size:12px;font-weight:700;color:var(--control);}
-.deliver-pill svg{margin-left:6px;flex-shrink:0;}
-
-.header-actions{display:flex;align-items:center;}
-.icon-btn{position:relative;display:inline-flex;align-items:center;justify-content:center;min-width:44px;min-height:44px;padding:0 8px;border-radius:10px;color:var(--control);font-size:13px;font-weight:700;margin-right:4px;transition:background 0.15s;}
-.icon-btn:hover,.icon-btn:active{background:rgba(64,69,83,0.1);}
-.icon-btn-label{display:none;margin-right:6px;}
-.badge-count{position:absolute;top:5px;left:4px;min-width:18px;height:18px;padding:0 5px;border-radius:999px;background:var(--accent);color:#FFFFFF;font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;border:2px solid var(--primary);}
-.badge-count.hidden{display:none;}
-
-.search-row{margin-top:8px;width:100%;display:flex;align-items:center;order:3;}
-.search-form{position:relative;flex:1;display:flex;align-items:center;background:#FFFFFF;border-radius:10px;box-shadow:0 1px 4px rgba(0,0,0,0.06);border:1px solid rgba(64,69,83,0.12);}
-.search-input{flex:1;height:44px;border:none;background:transparent;padding:0 14px 0 8px;font-size:14px;color:var(--text);outline:none;}
-.search-submit{min-width:44px;height:44px;display:flex;align-items:center;justify-content:center;color:var(--control);border-radius:10px 0 0 10px;}
-.search-dropdown{position:absolute;top:48px;right:0;left:0;background:#FFFFFF;border-radius:12px;box-shadow:0 12px 28px rgba(31,36,48,0.16);border:1px solid var(--border);z-index:120;display:none;max-height:300px;overflow-y:auto;}
-.search-dropdown.open{display:block;}
-.search-sug-item{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;min-height:44px;border-bottom:1px solid var(--border);font-size:13px;}
-.search-sug-item:last-child{border-bottom:none;}
-.search-sug-item:hover{background:#F8FAFC;}
-.search-sug-price{font-weight:800;color:var(--accent);font-size:12px;margin-right:8px;white-space:nowrap;}
-
-/* Sub Nav Strip */
-.sub-nav{background:#FFFFFF;border-bottom:1px solid var(--border);}
-.sub-nav-inner{max-width:1280px;margin:0 auto;padding:0 10px;display:flex;align-items:center;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;}
-.sub-nav-inner::-webkit-scrollbar{display:none;}
-.sub-nav-link{display:inline-flex;align-items:center;min-height:44px;padding:0 12px;font-size:13px;font-weight:700;color:var(--control);white-space:nowrap;border-bottom:2px solid transparent;transition:color 0.15s,border-color 0.15s;}
-.sub-nav-link.active,.sub-nav-link:hover{color:var(--accent);border-bottom-color:var(--accent);}
-.sub-nav-deals{color:#B91C1C;}
-.sub-nav-deals svg{margin-left:5px;}
-
-/* Main Container */
-.main-container{max-width:1280px;margin:0 auto;padding:14px 12px 86px 12px;}
-
-/* Hero Carousel */
-.hero-section{position:relative;border-radius:16px;overflow:hidden;background:var(--control);box-shadow:0 4px 16px rgba(31,36,48,0.08);}
-.hero-track{display:flex;transition:transform 0.45s cubic-bezier(0.22,1,0.36,1);direction:ltr;}
-.hero-slide{min-width:100%;direction:rtl;padding:22px 18px 34px 18px;display:flex;flex-direction:column;justify-content:space-between;position:relative;min-height:210px;}
-.slide-1{background:linear-gradient(125deg,#1E3A8A 0%,#3866DF 60%,#5B86F5 100%);color:#FFFFFF;}
-.slide-2{background:linear-gradient(125deg,#2B303A 0%,#404553 65%,#575E70 100%);color:#FFFFFF;}
-.slide-3{background:linear-gradient(125deg,#FEEE00 0%,#FFF685 70%,#FFFBE0 100%);color:var(--control);}
-.hero-content{max-width:66%;position:relative;z-index:2;}
-.hero-tag{display:inline-flex;align-items:center;padding:4px 10px;border-radius:999px;font-size:11px;font-weight:800;margin-bottom:8px;}
-.slide-1 .hero-tag,.slide-2 .hero-tag{background:var(--primary);color:var(--control);}
-.slide-3 .hero-tag{background:var(--control);color:var(--primary);}
-.hero-title{margin:0 0 6px 0;font-size:21px;font-weight:900;line-height:1.25;}
-.hero-desc{margin:0 0 14px 0;font-size:13px;opacity:0.92;max-width:400px;}
-.hero-cta{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 18px;border-radius:10px;font-size:13px;font-weight:800;transition:transform 0.15s;}
-.hero-cta:active{transform:scale(0.97);}
-.slide-1 .hero-cta,.slide-2 .hero-cta{background:var(--primary);color:var(--control);}
-.slide-3 .hero-cta{background:var(--accent);color:#FFFFFF;}
-.hero-cta svg{margin-right:6px;}
-.hero-art{position:absolute;left:14px;bottom:14px;width:120px;height:120px;opacity:0.95;pointer-events:none;}
-.hero-controls{position:absolute;bottom:10px;right:18px;left:18px;display:flex;align-items:center;justify-content:space-between;z-index:5;pointer-events:none;}
-.hero-dots{display:flex;align-items:center;pointer-events:auto;}
-.hero-dot{width:8px;height:8px;border-radius:999px;background:rgba(255,255,255,0.45);margin-left:6px;transition:width 0.2s,background 0.2s;min-height:24px;padding:8px 0;background-clip:content-box;}
-.slide-light-dots .hero-dot{background:rgba(64,69,83,0.3);background-clip:content-box;}
-.hero-dot.active{width:22px;background:var(--primary);background-clip:content-box;}
-.slide-light-dots .hero-dot.active{background:var(--control);background-clip:content-box;}
-.hero-arrows{display:none;pointer-events:auto;}
-.hero-arrow{width:44px;height:44px;border-radius:50%;background:rgba(255,255,255,0.9);color:var(--control);display:inline-flex;align-items:center;justify-content:center;margin-right:6px;box-shadow:0 2px 8px rgba(0,0,0,0.15);}
-
-/* Section Header */
-.section-block{margin-top:22px;}
-.section-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
-.section-title-wrap{display:flex;align-items:center;flex-wrap:wrap;}
-.section-title{margin:0;font-size:18px;font-weight:900;color:var(--control);}
-.section-accent-bar{width:4px;height:20px;border-radius:4px;background:var(--accent);margin-left:8px;}
-.countdown-pill{display:inline-flex;align-items:center;background:#FEF2F2;color:var(--danger);border:1px solid #FECACA;border-radius:8px;padding:4px 10px;font-size:12px;font-weight:800;margin-right:10px;}
-.countdown-pill svg{margin-left:5px;}
-.view-all-link{display:inline-flex;align-items:center;min-height:44px;padding:0 10px;font-size:13px;font-weight:800;color:var(--accent);border-radius:8px;white-space:nowrap;}
-.view-all-link svg{margin-right:4px;}
-
-/* Quick Categories */
-.cats-scroll{display:flex;overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:6px;scrollbar-width:none;}
-.cats-scroll::-webkit-scrollbar{display:none;}
-.cat-card{flex:0 0 auto;width:86px;display:flex;flex-direction:column;align-items:center;text-align:center;margin-left:10px;padding:6px 4px;border-radius:12px;transition:transform 0.15s;}
-.cat-card:active{transform:scale(0.96);}
-.cat-icon-box{width:64px;height:64px;border-radius:18px;background:#FFFFFF;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;box-shadow:0 2px 6px rgba(31,36,48,0.04);margin-bottom:7px;transition:border-color 0.15s,background 0.15s;}
-.cat-card:hover .cat-icon-box{border-color:var(--accent);background:#F5F8FF;}
-.cat-card-all .cat-icon-box{background:var(--highlight);border-color:var(--primary-dark);}
-.cat-name{font-size:12px;font-weight:700;color:var(--text);line-height:1.25;}
-
-/* Product Grid & Horizontal Deals */
-.deals-scroller{display:flex;overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:8px;scrollbar-width:none;}
-.deals-scroller::-webkit-scrollbar{display:none;}
-.deals-scroller .product-card{flex:0 0 185px;margin-left:12px;}
-
-.filter-tabs{display:flex;overflow-x:auto;-webkit-overflow-scrolling:touch;margin-bottom:14px;padding-bottom:2px;scrollbar-width:none;}
-.filter-tabs::-webkit-scrollbar{display:none;}
-.filter-tab{min-height:44px;padding:0 16px;border-radius:999px;background:#FFFFFF;border:1px solid var(--border);font-size:13px;font-weight:700;color:var(--control);white-space:nowrap;margin-left:8px;transition:all 0.15s;}
-.filter-tab.active{background:var(--control);color:var(--primary);border-color:var(--control);}
-
-.products-grid{display:grid;grid-template-columns:repeat(2,1fr);grid-gap:12px;}
-
-.product-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:10px;display:flex;flex-direction:column;justify-content:space-between;position:relative;transition:box-shadow 0.2s,transform 0.15s;}
-.product-card:hover{box-shadow:0 8px 20px rgba(31,36,48,0.08);}
-.product-top{position:relative;}
-.discount-badge{position:absolute;top:0;right:0;background:#FEF2F2;color:var(--danger);font-size:11px;font-weight:800;padding:3px 7px;border-radius:8px;z-index:2;}
-.wish-btn{position:absolute;top:-4px;left:-4px;width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--muted);z-index:2;background:rgba(255,255,255,0.85);}
-.wish-btn.active{color:var(--danger);}
-.product-img-link{display:flex;align-items:center;justify-content:center;height:132px;background:#F9FAFB;border-radius:10px;margin-bottom:10px;padding:10px;}
-.product-img-link svg{width:96px;height:96px;}
-.express-badge{display:inline-flex;align-items:center;background:var(--highlight);color:var(--control);font-size:10px;font-weight:800;padding:2px 7px;border-radius:6px;margin-bottom:5px;}
-.express-badge svg{margin-left:3px;}
-.product-title{display:block;font-size:13px;font-weight:700;color:var(--text);line-height:1.35;height:36px;overflow:hidden;margin-bottom:6px;}
-.rating-row{display:flex;align-items:center;margin-bottom:8px;font-size:11px;color:var(--muted);}
-.rating-pill{display:inline-flex;align-items:center;background:#ECFDF5;color:var(--success);font-weight:800;padding:1px 6px;border-radius:6px;margin-left:5px;}
-.rating-pill svg{margin-right:2px;}
-.price-row{display:flex;align-items:baseline;flex-wrap:wrap;margin-bottom:10px;}
-.price-now{font-size:16px;font-weight:900;color:var(--text);margin-left:6px;}
-.price-currency{font-size:11px;font-weight:700;margin-right:2px;}
-.price-old{font-size:12px;color:var(--muted);text-decoration:line-through;}
-.add-cart-btn{width:100%;min-height:44px;border-radius:10px;background:var(--primary);color:var(--control);font-size:13px;font-weight:800;display:flex;align-items:center;justify-content:center;transition:background 0.15s,transform 0.1s;}
-.add-cart-btn:hover{background:var(--primary-dark);}
-.add-cart-btn:active{transform:scale(0.98);}
-.add-cart-btn.added{background:var(--accent);color:#FFFFFF;}
-.add-cart-btn svg{margin-left:6px;}
-
-/* Dual Promo Banners */
-.promo-dual{display:grid;grid-template-columns:1fr;grid-gap:12px;margin-top:22px;}
-.promo-card{border-radius:14px;padding:18px;display:flex;align-items:center;justify-content:space-between;min-height:112px;position:relative;overflow:hidden;}
-.promo-card-blue{background:linear-gradient(135deg,#EEF4FF 0%,#DCE7FF 100%);border:1px solid #C7D7FE;}
-.promo-card-yellow{background:linear-gradient(135deg,#FFFBE0 0%,#FFF685 100%);border:1px solid #F5E042;}
-.promo-card-text h3{margin:0 0 4px 0;font-size:16px;font-weight:900;color:var(--control);}
-.promo-card-text p{margin:0 0 10px 0;font-size:12px;color:var(--control);opacity:0.85;}
-.promo-mini-cta{display:inline-flex;align-items:center;min-height:36px;padding:6px 12px;border-radius:8px;background:var(--control);color:#FFFFFF;font-size:12px;font-weight:800;}
-
-/* Trust Strip */
-.trust-grid{display:grid;grid-template-columns:repeat(2,1fr);grid-gap:10px;margin-top:24px;}
-.trust-item{background:#FFFFFF;border:1px solid var(--border);border-radius:12px;padding:12px;display:flex;align-items:center;}
-.trust-icon{width:40px;height:40px;border-radius:10px;background:var(--highlight);color:var(--control);display:flex;align-items:center;justify-content:center;margin-left:10px;flex-shrink:0;}
-.trust-text strong{display:block;font-size:12px;font-weight:800;color:var(--control);}
-.trust-text span{display:block;font-size:11px;color:var(--muted);}
-
-/* Footer */
-.site-footer{margin-top:26px;background:var(--control);color:#E5E7EB;border-radius:16px;padding:20px 16px;}
-.footer-grid{display:grid;grid-template-columns:1fr;grid-gap:16px;}
-.footer-brand{font-size:16px;font-weight:900;color:var(--primary);margin-bottom:6px;}
-.footer-desc{font-size:12px;color:#D1D5DB;margin:0;}
-.footer-links{display:flex;flex-wrap:wrap;}
-.footer-link{display:inline-flex;align-items:center;min-height:44px;padding:0 12px;font-size:12px;font-weight:700;color:#FFFFFF;background:rgba(255,255,255,0.08);border-radius:8px;margin-left:8px;margin-bottom:8px;}
-.footer-copy{margin-top:14px;padding-top:12px;border-top:1px solid rgba(255,255,255,0.12);font-size:11px;color:#9CA3AF;text-align:center;}
-
-/* Bottom Mobile Nav */
-.bottom-nav{position:fixed;bottom:0;right:0;left:0;background:#FFFFFF;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-around;z-index:110;padding:4px 4px;box-shadow:0 -2px 10px rgba(31,36,48,0.06);}
-.bottom-nav-item{flex:1;min-height:52px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--muted);position:relative;border-radius:10px;}
-.bottom-nav-item.active{color:var(--accent);}
-.bottom-nav-item svg{margin-bottom:3px;}
-.bottom-cart-badge{position:absolute;top:4px;left:50%;margin-left:4px;min-width:17px;height:17px;padding:0 4px;border-radius:999px;background:var(--accent);color:#FFFFFF;font-size:10px;font-weight:800;display:flex;align-items:center;justify-content:center;}
-.bottom-cart-badge.hidden{display:none;}
-
-/* Toast Notification */
-.toast{position:fixed;bottom:74px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--control);color:#FFFFFF;padding:10px 18px;border-radius:12px;font-size:13px;font-weight:700;box-shadow:0 8px 24px rgba(0,0,0,0.2);opacity:0;pointer-events:none;transition:opacity 0.2s,transform 0.2s;z-index:200;display:flex;align-items:center;white-space:nowrap;}
-.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
-.toast svg{margin-left:8px;color:var(--primary);}
-
-/* Responsive Breakpoints */
-@media(min-width:640px){
-  .products-grid{grid-template-columns:repeat(3,1fr);}
-  .promo-dual{grid-template-columns:repeat(2,1fr);}
-  .trust-grid{grid-template-columns:repeat(4,1fr);}
-  .hero-slide{padding:30px 32px 42px 32px;min-height:245px;}
-  .hero-title{font-size:26px;}
-  .hero-art{width:170px;height:170px;left:28px;bottom:20px;}
-  .hero-arrows{display:flex;}
-}
-@media(min-width:960px){
-  .header-top{flex-wrap:nowrap;}
-  .deliver-pill{display:inline-flex;}
-  .search-row{margin-top:0;width:auto;flex:1;margin:0 18px;order:0;}
-  .header-actions{order:0;}
-  .icon-btn-label{display:inline;}
-  .products-grid{grid-template-columns:repeat(4,1fr);grid-gap:16px;}
-  .deals-scroller .product-card{flex:0 0 220px;}
-  .bottom-nav{display:none;}
-  .main-container{padding-bottom:32px;}
-  .toast{bottom:24px;}
-  .footer-grid{grid-template-columns:1.2fr 1fr;}
-}
-</style>
-</head>
-<body>
-
-<header class="site-header">
-  <div class="header-inner">
-    <div class="header-top">
-      <div class="brand-group">
-        <a href="index.html" class="brand-logo" aria-label="متجر التسوق الشامل الرئيسية">
-          <div class="brand-mark">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
-              <path d="M6 8h12l-1.2 11H7.2L6 8z" fill="#FEEE00"/>
-              <path d="M9 8V6a3 3 0 0 1 6 0v2" stroke="#FEEE00" stroke-width="2" stroke-linecap="round"/>
-              <circle cx="12" cy="13.5" r="2" fill="#404553"/>
-            </svg>
-          </div>
-          <div class="brand-text">
-            <span class="brand-title">التسوق الشامل</span>
-            <span class="brand-sub">تسوق ذكي وسريع</span>
-          </div>
-        </a>
-        <a href="account.html" class="deliver-pill" title="إدارة العناوين">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
-            <circle cx="12" cy="10" r="3"></circle>
-          </svg>
-          <span>التوصيل إلى: الرياض</span>
-        </a>
-      </div>
-
-      <div class="search-row">
-        <form class="search-form" id="searchForm" action="search.html" method="get" autocomplete="off">
-          <input type="search" name="q" id="searchInput" class="search-input" placeholder="ابحث عن جوالات، أزياء، أجهزة منزلية..." aria-label="البحث في المتجر">
-          <button type="submit" class="search-submit" aria-label="بحث">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="11" cy="11" r="8"></circle>
-              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-            </svg>
-          </button>
-          <div class="search-dropdown" id="searchDropdown"></div>
-        </form>
-      </div>
-
-      <div class="header-actions">
-        <a href="wishlist.html" class="icon-btn" aria-label="المفضلة">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
-          </svg>
-          <span class="icon-btn-label">المفضلة</span>
-          <span class="badge-count hidden" id="headerWishBadge">0</span>
-        </a>
-        <a href="account.html" class="icon-btn" aria-label="حسابي">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-            <circle cx="12" cy="7" r="4"></circle>
-          </svg>
-          <span class="icon-btn-label">حسابي</span>
-        </a>
-        <a href="cart.html" class="icon-btn" aria-label="سلة التسوق">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="9" cy="21" r="1"></circle>
-            <circle cx="20" cy="21" r="1"></circle>
-            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
-          </svg>
-          <span class="icon-btn-label">السلة</span>
-          <span class="badge-count hidden" id="headerCartBadge">0</span>
-        </a>
-      </div>
-    </div>
+<div class="section" id="featuredSection">
+  <div class="section-title">الألعاب المميزة</div>
+  <div class="featured-scroll" id="featuredContainer">
+    <!-- Rendered via JS -->
   </div>
-</header>
-
-<nav class="sub-nav" aria-label="التنقل السريع">
-  <div class="sub-nav-inner">
-    <a href="categories.html" class="sub-nav-link">جميع الأقسام</a>
-    <a href="deals.html" class="sub-nav-link sub-nav-deals">
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
-        <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
-      </svg>
-      عروض اليوم
-    </a>
-    <a href="products.html?cat=electronics" class="sub-nav-link">الإلكترونيات</a>
-    <a href="products.html?cat=fashion" class="sub-nav-link">الأزياء</a>
-    <a href="products.html?cat=home" class="sub-nav-link">المنزل والمطبخ</a>
-    <a href="products.html?cat=beauty" class="sub-nav-link">الجمال والعطور</a>
-    <a href="products.html?cat=supermarket" class="sub-nav-link">السوبرماركت</a>
-    <a href="products.html" class="sub-nav-link">الأكثر مبيعاً</a>
-  </div>
-</nav>
-
-<main class="main-container">
-  <!-- Hero Promotional Banner Carousel -->
-  <section class="hero-section" id="heroCarousel" aria-label="البانرات الترويجية">
-    <div class="hero-track" id="heroTrack">
-      <div class="hero-slide slide-1">
-        <div class="hero-content">
-          <span class="hero-tag">مهرجان التوفير الكبير</span>
-          <h1 class="hero-title">خصومات تصل إلى 50% على الإلكترونيات الذكية</h1>
-          <p class="hero-desc">أحدث الهواتف، السماعات اللاسلكية والساعات الذكية مع توصيل سريع لباب منزلك.</p>
-          <a href="deals.html" class="hero-cta">
-            تسوق العروض الآن
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-              <polyline points="15 18 9 12 15 6"></polyline>
-            </svg>
-          </a>
-        </div>
-        <svg class="hero-art" viewBox="0 0 160 160" fill="none">
-          <circle cx="80" cy="80" r="68" fill="rgba(255,255,255,0.12)"/>
-          <rect x="48" y="24" width="64" height="112" rx="14" fill="#1F2430" stroke="#FEEE00" stroke-width="3"/>
-          <rect x="54" y="34" width="52" height="86" rx="8" fill="#3866DF"/>
-          <circle cx="80" cy="128" r="4" fill="#FEEE00"/>
-          <path d="M66 64l10 10 20-22" stroke="#FEEE00" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
-          <circle cx="126" cy="42" r="18" fill="#FEEE00"/>
-          <path d="M120 42h12M126 36v12" stroke="#404553" stroke-width="3" stroke-linecap="round"/>
-        </svg>
-      </div>
-
-      <div class="hero-slide slide-2">
-        <div class="hero-content">
-          <span class="hero-tag">تشكيلة الموسم الجديد</span>
-          <h2 class="hero-title">أناقة يومية في الأزياء والأحذية الرياضية</h2>
-          <p class="hero-desc">تخفيضات حصرية على أشهر العلامات مع إمكانية الإرجاع المجاني خلال 15 يوماً.</p>
-          <a href="products.html?cat=fashion" class="hero-cta">
-            استكشف الأزياء
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-              <polyline points="15 18 9 12 15 6"></polyline>
-            </svg>
-          </a>
-        </div>
-        <svg class="hero-art" viewBox="0 0 160 160" fill="none">
-          <circle cx="80" cy="80" r="68" fill="rgba(254,238,0,0.14)"/>
-          <path d="M34 102c18-24 38-34 62-28l30 22c6 4 4 14-4 14H36c-7 0-9-4-2-8z" fill="#FEEE00"/>
-          <path d="M34 108h92v8c0 4-3 6-8 6H42c-5 0-8-2-8-6v-8z" fill="#FFFFFF"/>
-          <path d="M68 78l10 10M82 75l9 9" stroke="#404553" stroke-width="3.5" stroke-linecap="round"/>
-        </svg>
-      </div>
-
-      <div class="hero-slide slide-3">
-        <div class="hero-content">
-          <span class="hero-tag">عروض المنزل والمطبخ</span>
-          <h2 class="hero-title">جدد مطبخك بأفضل الأجهزة العصرية</h2>
-          <p class="hero-desc">قلايات هوائية، ماكينات قهوة ومستلزمات الضيافة بأسعار تنافسية لا تفوت.</p>
-          <a href="products.html?cat=home" class="hero-cta">
-            تصفح قسم المنزل
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-              <polyline points="15 18 9 12 15 6"></polyline>
-            </svg>
-          </a>
-        </div>
-        <svg class="hero-art" viewBox="0 0 160 160" fill="none">
-          <circle cx="80" cy="80" r="68" fill="rgba(56,102,223,0.12)"/>
-          <rect x="44" y="34" width="72" height="92" rx="16" fill="#404553"/>
-          <rect x="54" y="46" width="52" height="32" rx="8" fill="#3866DF"/>
-          <circle cx="80" cy="100" r="14" fill="#FEEE00"/>
-          <rect x="64" y="126" width="32" height="8" rx="4" fill="#1F2430"/>
-        </svg>
-      </div>
-    </div>
-
-    <div class="hero-controls" id="heroControls">
-      <div class="hero-dots" id="heroDots">
-        <button type="button" class="hero-dot active" data-slide="0" aria-label="الشريحة الأولى"></button>
-        <button type="button" class="hero-dot" data-slide="1" aria-label="الشريحة الثانية"></button>
-        <button type="button" class="hero-dot" data-slide="2" aria-label="الشريحة الثالثة"></button>
-      </div>
-      <div class="hero-arrows">
-        <button type="button" class="hero-arrow" id="heroPrev" aria-label="السابق">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-            <polyline points="9 18 15 12 9 6"></polyline>
-          </svg>
-        </button>
-        <button type="button" class="hero-arrow" id="heroNext" aria-label="التالي">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-            <polyline points="15 18 9 12 15 6"></polyline>
-          </svg>
-        </button>
-      </div>
-    </div>
-  </section>
-
-  <!-- Quick Categories -->
-  <section class="section-block" aria-label="الأقسام السريعة">
-    <div class="section-head">
-      <div class="section-title-wrap">
-        <span class="section-accent-bar"></span>
-        <h2 class="section-title">تسوق حسب القسم</h2>
-      </div>
-      <a href="categories.html" class="view-all-link">
-        كل الأقسام
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-          <polyline points="15 18 9 12 15 6"></polyline>
-        </svg>
-      </a>
-    </div>
-
-    <div class="cats-scroll">
-      <a href="products.html?cat=electronics" class="cat-card">
-        <div class="cat-icon-box">
-          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#3866DF" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-            <rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect>
-            <line x1="12" y1="18" x2="12.01" y2="18"></line>
-          </svg>
-        </div>
-        <span class="cat-name">الإلكترونيات</span>
-      </a>
-
-      <a href="products.html?cat=fashion" class="cat-card">
-        <div class="cat-icon-box">
-          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#404553" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M20.38 3.46L16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.47a1 1 0 0 0 .99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.47a2 2 0 0 0-1.34-2.23z"></path>
-          </svg>
-        </div>
-        <span class="cat-name">الأزياء</span>
-      </a>
-
-      <a href="products.html?cat=home" class="cat-card">
-        <div class="cat-icon-box">
-          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#3866DF" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
-            <polyline points="9 22 9 12 15 12 15 22"></polyline>
-          </svg>
-        </div>
-        <span class="cat-name">المنزل والمطبخ</span>
-      </a>
-
-      <a href="products.html?cat=beauty" class="cat-card">
-        <div class="cat-icon-box">
-          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#DB2777" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M9 3h6v4H9z"></path>
-            <path d="M7 7h10l1 13a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L7 7z"></path>
-            <circle cx="12" cy="14" r="2"></circle>
-          </svg>
-        </div>
-        <span class="cat-name">الجمال والعطور</span>
-      </a>
-
-      <a href="products.html?cat=supermarket" class="cat-card">
-        <div class="cat-icon-box">
-          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#16A34A" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
-            <line x1="3" y1="6" x2="21" y2="6"></line>
-            <path d="M16 10a4 4 0 0 1-8 0"></path>
-          </svg>
-        </div>
-        <span class="cat-name">السوبرماركت</span>
-      </a>
-
-      <a href="products.html?cat=sports" class="cat-card">
-        <div class="cat-icon-box">
-          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#EA580C" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="12" cy="12" r="9"></circle>
-            <path d="M12 3a9 9 0 0 0 0 18"></path>
-            <path d="M3.6 9h16.8M3.6 15h16.8"></path>
-          </svg>
-        </div>
-        <span class="cat-name">الرياضة</span>
-      </a>
-
-      <a href="deals.html" class="cat-card">
-        <div class="cat-icon-box">
-          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#DC2626" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-            <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
-          </svg>
-        </div>
-        <span class="cat-name">عروض الفلاش</span>
-      </a>
-
-      <a href="categories.html" class="cat-card cat-card-all">
-        <div class="cat-icon-box">
-          <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#404553" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <rect x="3" y="3" width="7" height="7" rx="1"></rect>
-            <rect x="14" y="3" width="7" height="7" rx="1"></rect>
-            <rect x="14" y="14" width="7" height="7" rx="1"></rect>
-            <rect x="3" y="14" width="7" height="7" rx="1"></rect>
-          </svg>
-        </div>
-        <span class="cat-name">جميع الأقسام</span>
-      </a>
-    </div>
-  </section>
-
-  <!-- Best Deals / Flash Sale -->
-  <section class="section-block" aria-label="أفضل العروض اليومية">
-    <div class="section-head">
-      <div class="section-title-wrap">
-        <span class="section-accent-bar"></span>
-        <h2 class="section-title">أفضل العروض</h2>
-        <span class="countdown-pill" id="dealCountdown" aria-live="polite">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="12" cy="12" r="10"></circle>
-            <polyline points="12 6 12 12 16 14"></polyline>
-          </svg>
-          <span id="countdownText">04:25:18</span>
-        </span>
-      </div>
-      <a href="deals.html" class="view-all-link">
-        عرض الكل
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-          <polyline points="15 18 9 12 15 6"></polyline>
-        </svg>
-      </a>
-    </div>
-
-    <div class="deals-scroller" id="dealsGrid"></div>
-  </section>
-
-  <!-- Dual Promo Banners -->
-  <section class="promo-dual" aria-label="عروض مميزة">
-    <a href="deals.html" class="promo-card promo-card-yellow">
-      <div class="promo-card-text">
-        <h3>خصم إضافي 15% بالكود</h3>
-        <p>استخدم كود SAVE15 عند إتمام الطلب</p>
-        <span class="promo-mini-cta">اكتشف الصفقات</span>
-      </div>
-      <svg width="78" height="78" viewBox="0 0 80 80" fill="none">
-        <circle cx="40" cy="40" r="34" fill="#FEEE00" stroke="#404553" stroke-width="2.5"/>
-        <path d="M28 52L52 28" stroke="#404553" stroke-width="4" stroke-linecap="round"/>
-        <circle cx="30" cy="30" r="5" fill="#3866DF"/>
-        <circle cx="50" cy="50" r="5" fill="#3866DF"/>
-      </svg>
-    </a>
-
-    <a href="products.html?cat=electronics" class="promo-card promo-card-blue">
-      <div class="promo-card-text">
-        <h3>تقنيات صوتية فائقة</h3>
-        <p>سماعات ومكبرات صوت بضمان سنتين</p>
-        <span class="promo-mini-cta">تسوق الإلكترونيات</span>
-      </div>
-      <svg width="78" height="78" viewBox="0 0 80 80" fill="none">
-        <path d="M20 44v-6a20 20 0 0 1 40 0v6" stroke="#3866DF" stroke-width="5" stroke-linecap="round"/>
-        <rect x="14" y="42" width="12" height="20" rx="5" fill="#404553"/>
-        <rect x="54" y="42" width="12" height="20" rx="5" fill="#404553"/>
-      </svg>
-    </a>
-  </section>
-
-  <!-- Best Sellers with Interactive Category Filter -->
-  <section class="section-block" aria-label="المنتجات الأكثر مبيعاً">
-    <div class="section-head">
-      <div class="section-title-wrap">
-        <span class="section-accent-bar"></span>
-        <h2 class="section-title">المنتجات الأكثر مبيعاً</h2>
-      </div>
-      <a href="products.html" class="view-all-link">
-        المزيد
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-          <polyline points="15 18 9 12 15 6"></polyline>
-        </svg>
-      </a>
-    </div>
-
-    <div class="filter-tabs" id="bestFilterTabs">
-      <button type="button" class="filter-tab active" data-cat="all">الكل</button>
-      <button type="button" class="filter-tab" data-cat="electronics">الإلكترونيات</button>
-      <button type="button" class="filter-tab" data-cat="fashion">الأزياء</button>
-      <button type="button" class="filter-tab" data-cat="home">المنزل والمطبخ</button>
-      <button type="button" class="filter-tab" data-cat="beauty">الجمال والعطور</button>
-    </div>
-
-    <div class="products-grid" id="bestSellersGrid"></div>
-  </section>
-
-  <!-- Service Guarantees -->
-  <section class="trust-grid" aria-label="مزايا المتجر">
-    <div class="trust-item">
-      <div class="trust-icon">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-          <rect x="1" y="3" width="15" height="13"></rect>
-          <polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon>
-          <circle cx="5.5" cy="18.5" r="2.5"></circle>
-          <circle cx="18.5" cy="18.5" r="2.5"></circle>
-        </svg>
-      </div>
-      <div class="trust-text">
-        <strong>توصيل إكسبرس</strong>
-        <span>شحن مجاني للطلبات فوق 200 ر.س</span>
-      </div>
-    </div>
-
-    <div class="trust-item">
-      <div class="trust-icon">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
-          <polyline points="9 12 11 14 15 10"></polyline>
-        </svg>
-      </div>
-      <div class="trust-text">
-        <strong>منتجات أصلية 100%</strong>
-        <span>ضمان معتمد وجودة عالية</span>
-      </div>
-    </div>
-
-    <div class="trust-item">
-      <div class="trust-icon">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-          <polyline points="1 4 1 10 7 10"></polyline>
-          <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path>
-        </svg>
-      </div>
-      <div class="trust-text">
-        <strong>إرجاع مجاني</strong>
-        <span>خلال 15 يوماً بكل سهولة</span>
-      </div>
-    </div>
-
-    <div class="trust-item">
-      <div class="trust-icon">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-          <rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect>
-          <line x1="1" y1="10" x2="23" y2="10"></line>
-        </svg>
-      </div>
-      <div class="trust-text">
-        <strong>دفع آمن ومتنوع</strong>
-        <span>بطاقات أو الدفع عند الاستلام</span>
-      </div>
-    </div>
-  </section>
-
-  <!-- Footer -->
-  <footer class="site-footer">
-    <div class="footer-grid">
-      <div>
-        <div class="footer-brand">متجر التسوق الشامل</div>
-        <p class="footer-desc">وجهتك الأولى للتسوق الإلكتروني في المنطقة العربية مع آلاف المنتجات المختارة، عروض يومية متجددة، وتوصيل سريع وآمن.</p>
-      </div>
-      <div class="footer-links">
-        <a href="categories.html" class="footer-link">الأقسام</a>
-        <a href="deals.html" class="footer-link">العروض</a>
-        <a href="search.html" class="footer-link">البحث</a>
-        <a href="wishlist.html" class="footer-link">المفضلة</a>
-        <a href="cart.html" class="footer-link">سلة التسوق</a>
-        <a href="account.html" class="footer-link">حسابي</a>
-      </div>
-    </div>
-    <div class="footer-copy">جميع الحقوق محفوظة لمتجر التسوق الشامل</div>
-  </footer>
-</main>
-
-<!-- Bottom Navigation Bar (Mobile) -->
-<nav class="bottom-nav" aria-label="القائمة السفلية">
-  <a href="index.html" class="bottom-nav-item active">
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
-      <polyline points="9 22 9 12 15 12 15 22"></polyline>
-    </svg>
-    <span>الرئيسية</span>
-  </a>
-  <a href="categories.html" class="bottom-nav-item">
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <rect x="3" y="3" width="7" height="7" rx="1"></rect>
-      <rect x="14" y="3" width="7" height="7" rx="1"></rect>
-      <rect x="14" y="14" width="7" height="7" rx="1"></rect>
-      <rect x="3" y="14" width="7" height="7" rx="1"></rect>
-    </svg>
-    <span>الأقسام</span>
-  </a>
-  <a href="deals.html" class="bottom-nav-item">
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
-    </svg>
-    <span>العروض</span>
-  </a>
-  <a href="cart.html" class="bottom-nav-item">
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <circle cx="9" cy="21" r="1"></circle>
-      <circle cx="20" cy="21" r="1"></circle>
-      <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
-    </svg>
-    <span>السلة</span>
-    <span class="bottom-cart-badge hidden" id="bottomCartBadge">0</span>
-  </a>
-  <a href="account.html" class="bottom-nav-item">
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-      <circle cx="12" cy="7" r="4"></circle>
-    </svg>
-    <span>حسابي</span>
-  </a>
-</nav>
-
-<div class="toast" id="toastBox" role="status" aria-live="polite">
-  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-    <polyline points="20 6 9 17 4 12"></polyline>
-  </svg>
-  <span id="toastMsg">تمت الإضافة</span>
 </div>
 
+<div class="section">
+  <div class="section-title">أحدث الألعاب</div>
+  <div class="games-grid" id="gamesContainer">
+    <!-- Rendered via JS -->
+  </div>
+</div>
+
+<nav>
+  <a href="index.html" class="nav-item active">
+    <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+    الرئيسية
+  </a>
+  <a href="categories.html" class="nav-item">
+    <svg viewBox="0 0 24 24"><path d="M4 8h4V4H4v4zm6 12h4v-4h-4v4zm-6 0h4v-4H4v4zm0-6h4v-4H4v4zm6 0h4v-4h-4v4zm6-10v4h4V4h-4zm-6 4h4V4h-4v4zm6 6h4v-4h-4v4zm0 6h4v-4h-4v4z"/></svg>
+    التصنيفات
+  </a>
+  <a href="favorites.html" class="nav-item">
+    <svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+    المفضلة
+  </a>
+  <a href="settings.html" class="nav-item">
+    <svg viewBox="0 0 24 24"><path d="M19.43 12.98c.04-.32.07-.64.07-.98s-.03-.66-.07-.98l2.11-1.65c.19-.15.24-.42.12-.64l-2-3.46c-.12-.22-.39-.3-.61-.22l-2.49 1c-.52-.4-1.08-.73-1.69-.98l-.38-2.65C14.46 2.18 14.25 2 14 2h-4c-.25 0-.46.18-.49.42l-.38 2.65c-.61.25-1.17.59-1.69.98l-2.49-1c-.23-.09-.49 0-.61.22l-2 3.46c-.13.22-.07.49.12.64l2.11 1.65c-.04.32-.07.65-.07.98s.03.66.07.98l-2.11 1.65c-.19.15-.24.42-.12.64l2 3.46c.12.22.39.3.61.22l2.49-1c.52.4 1.08.73 1.69.98l.38 2.65c.03.24.24.42.49.42h4c.25 0 .46-.18.49-.42l.38-2.65c.61-.25 1.17-.59 1.69-.98l2.49 1c.23.09.49 0 .61-.22l2-3.46c.12-.22.07-.49-.12-.64l-2.11-1.65zM12 15.5c-1.93 0-3.5-1.57-3.5-3.5s1.57-3.5 3.5-3.5 3.5 1.57 3.5 3.5-1.57 3.5-3.5 3.5z"/></svg>
+    الإعدادات
+  </a>
+</nav>
+
 <script>
-(function(){
-  'use strict';
-
-  var STORAGE_CART = 'shamil_cart_v1';
-  var STORAGE_WISH = 'shamil_wishlist_v1';
-
-  var PRODUCTS = [
-    {
-      id: 'p101',
-      name: 'سماعات رأس لاسلكية عازلة للضوضاء برو',
-      category: 'electronics',
-      price: 349,
-      oldPrice: 549,
-      discount: 36,
-      rating: 4.8,
-      reviews: 420,
-      express: true,
-      isDeal: true,
-      bestSeller: true,
-      icon: 'headphones'
-    },
-    {
-      id: 'p102',
-      name: 'ساعة ذكية رياضية بشاشة AMOLED ومراقبة نبض القلب',
-      category: 'electronics',
-      price: 279,
-      oldPrice: 420,
-      discount: 34,
-      rating: 4.7,
-      reviews: 318,
-      express: true,
-      isDeal: true,
-      bestSeller: true,
-      icon: 'watch'
-    },
-    {
-      id: 'p103',
-      name: 'قلاية هوائية ديجيتال سعة 6 لتر بدون زيت',
-      category: 'home',
-      price: 299,
-      oldPrice: 499,
-      discount: 40,
-      rating: 4.9,
-      reviews: 615,
-      express: true,
-      isDeal: true,
-      bestSeller: true,
-      icon: 'airfryer'
-    },
-    {
-      id: 'p104',
-      name: 'حذاء رياضي مريح للجري والاستخدام اليومي',
-      category: 'fashion',
-      price: 189,
-      oldPrice: 280,
-      discount: 33,
-      rating: 4.6,
-      reviews: 204,
-      express: true,
-      isDeal: true,
-      bestSeller: true,
-      icon: 'sneaker'
-    },
-    {
-      id: 'p105',
-      name: 'عطر أو دو بارفان فاخر برائحة العود والعنبر 100 مل',
-      category: 'beauty',
-      price: 225,
-      oldPrice: 340,
-      discount: 34,
-      rating: 4.8,
-      reviews: 187,
-      express: true,
-      isDeal: true,
-      bestSeller: true,
-      icon: 'perfume'
-    },
-    {
-      id: 'p106',
-      name: 'هاتف ذكي 5G ذاكرة 256 جيجابايت كاميرا ثلاثية',
-      category: 'electronics',
-      price: 1899,
-      oldPrice: 2299,
-      discount: 17,
-      rating: 4.9,
-      reviews: 512,
-      express: true,
-      isDeal: false,
-      bestSeller: true,
-      icon: 'phone'
-    },
-    {
-      id: 'p107',
-      name: 'ماكينة تحضير الإسبريسو والكابتشينو المنزلية',
-      category: 'home',
-      price: 459,
-      oldPrice: 650,
-      discount: 29,
-      rating: 4.7,
-      reviews: 274,
-      express: true,
-      isDeal: false,
-      bestSeller: true,
-      icon: 'coffee'
-    },
-    {
-      id: 'p108',
-      name: 'حقيبة ظهر عملية مقاومة للماء مع منفذ USB',
-      category: 'fashion',
-      price: 119,
-      oldPrice: 179,
-      discount: 34,
-      rating: 4.5,
-      reviews: 156,
-      express: true,
-      isDeal: false,
-      bestSeller: true,
-      icon: 'backpack'
-    },
-    {
-      id: 'p109',
-      name: 'سيروم فيتامين سي لنضارة البشرة وترطيبها 30 مل',
-      category: 'beauty',
-      price: 89,
-      oldPrice: 135,
-      discount: 34,
-      rating: 4.7,
-      reviews: 340,
-      express: true,
-      isDeal: false,
-      bestSeller: true,
-      icon: 'serum'
-    },
-    {
-      id: 'p110',
-      name: 'مكبر صوت بلوتوث محمول مقاوم للماء 20 واط',
-      category: 'electronics',
-      price: 159,
-      oldPrice: 230,
-      discount: 31,
-      rating: 4.6,
-      reviews: 192,
-      express: true,
-      isDeal: true,
-      bestSeller: true,
-      icon: 'speaker'
-    },
-    {
-      id: 'p111',
-      name: 'طقم أواني طهي جرانيت غير لاصق 8 قطع',
-      category: 'home',
-      price: 389,
-      oldPrice: 580,
-      discount: 33,
-      rating: 4.8,
-      reviews: 289,
-      express: false,
-      isDeal: false,
-      bestSeller: true,
-      icon: 'pot'
-    },
-    {
-      id: 'p112',
-      name: 'نظارة شمسية كلاسيكية بإطار خفيف وحماية UV400',
-      category: 'fashion',
-      price: 95,
-      oldPrice: 150,
-      discount: 37,
-      rating: 4.5,
-      reviews: 118,
-      express: true,
-      isDeal: false,
-      bestSeller: true,
-      icon: 'glasses'
-    }
-  ];
-
-  function getSvgArt(type){
-    var arts = {
-      headphones: '<svg viewBox="0 0 96 96" fill="none"><path d="M22 52v-6c0-14.4 11.6-26 26-26s26 11.6 26 26v6" stroke="#404553" stroke-width="6" stroke-linecap="round"/><rect x="14" y="48" width="14" height="24" rx="7" fill="#3866DF"/><rect x="68" y="48" width="14" height="24" rx="7" fill="#3866DF"/><rect x="22" y="52" width="4" height="16" rx="2" fill="#FEEE00"/><rect x="70" y="52" width="4" height="16" rx="2" fill="#FEEE00"/></svg>',
-      watch: '<svg viewBox="0 0 96 96" fill="none"><rect x="35" y="10" width="26" height="18" rx="4" fill="#404553"/><rect x="35" y="68" width="26" height="18" rx="4" fill="#404553"/><rect x="25" y="24" width="46" height="48" rx="12" fill="#1F2430" stroke="#3866DF" stroke-width="3"/><rect x="31" y="30" width="34" height="36" rx="7" fill="#3866DF"/><path d="M48 39v10l7 4" stroke="#FEEE00" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/></svg>',
-      airfryer: '<svg viewBox="0 0 96 96" fill="none"><rect x="22" y="16" width="52" height="64" rx="14" fill="#404553"/><rect x="30" y="24" width="36" height="18" rx="6" fill="#3866DF"/><circle cx="48" cy="33" r="4" fill="#FEEE00"/><rect x="28" y="48" width="40" height="26" rx="6" fill="#2B303A"/><rect x="42" y="56" width="12" height="6" rx="3" fill="#FEEE00"/></svg>',
-      sneaker: '<svg viewBox="0 0 96 96" fill="none"><path d="M16 62c11-16 24-22 40-18l22 14c4 3 3 10-3 10H18c-5 0-6-3-2-6z" fill="#3866DF"/><path d="M16 66h63v5c0 3-2 5-6 5H22c-4 0-6-2-6-5v-5z" fill="#FEEE00"/><path d="M42 46l6 6M50 44l6 6" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round"/></svg>',
-      perfume: '<svg viewBox="0 0 96 96" fill="none"><rect x="37" y="14" width="22" height="14" rx="3" fill="#404553"/><rect x="42" y="28" width="12" height="6" fill="#D9C800"/><rect x="24" y="34" width="48" height="48" rx="10" fill="#FFF685" stroke="#404553" stroke-width="3"/><rect x="34" y="46" width="28" height="24" rx="4" fill="#FFFFFF"/><path d="M42 58h12" stroke="#3866DF" stroke-width="3" stroke-linecap="round"/></svg>',
-      phone: '<svg viewBox="0 0 96 96" fill="none"><rect x="26" y="10" width="44" height="76" rx="9" fill="#1F2430"/><rect x="30" y="16" width="36" height="60" rx="5" fill="#3866DF"/><circle cx="48" cy="80" r="2.5" fill="#FEEE00"/><rect x="36" y="24" width="24" height="12" rx="3" fill="rgba(255,255,255,0.22)"/><circle cx="48" cy="54" r="9" fill="#FEEE00"/></svg>',
-      coffee: '<svg viewBox="0 0 96 96" fill="none"><rect x="20" y="16" width="56" height="64" rx="10" fill="#404553"/><rect x="28" y="22" width="40" height="14" rx="4" fill="#FEEE00"/><rect x="30" y="46" width="26" height="22" rx="4" fill="#FFFFFF"/><path d="M56 50h6a4 4 0 0 1 0 8h-6" stroke="#FFFFFF" stroke-width="3"/><rect x="22" y="72" width="52" height="8" rx="4" fill="#1F2430"/></svg>',
-      backpack: '<svg viewBox="0 0 96 96" fill="none"><path d="M36 24v-6a12 12 0 0 1 24 0v6" stroke="#404553" stroke-width="5" stroke-linecap="round"/><rect x="22" y="24" width="52" height="58" rx="16" fill="#3866DF"/><rect x="30" y="48" width="36" height="24" rx="8" fill="#1E3A8A"/><rect x="40" y="34" width="16" height="5" rx="2.5" fill="#FEEE00"/></svg>',
-      serum: '<svg viewBox="0 0 96 96" fill="none"><path d="M43 12h10l2 14H41l2-14z" fill="#404553"/><rect x="38" y="26" width="20" height="8" rx="2" fill="#D9C800"/><rect x="28" y="34" width="40" height="48" rx="10" fill="#FFF685" stroke="#EA580C" stroke-width="2.5"/><rect x="35" y="46" width="26" height="24" rx="4" fill="#FFFFFF"/><circle cx="48" cy="58" r="6" fill="#FEEE00"/></svg>',
-      speaker: '<svg viewBox="0 0 96 96" fill="none"><rect x="24" y="14" width="48" height="68" rx="14" fill="#404553"/><circle cx="48" cy="34" r="9" fill="#3866DF"/><circle cx="48" cy="60" r="14" fill="#1F2430" stroke="#FEEE00" stroke-width="3"/><circle cx="48" cy="60" r="5" fill="#FEEE00"/></svg>',
-      pot: '<svg viewBox="0 0 96 96" fill="none"><path d="M38 24h20" stroke="#404553" stroke-width="5" stroke-linecap="round"/><path d="M22 36h52l-4 36a6 6 0 0 1-6 6H32a6 6 0 0 1-6-6l-4-36z" fill="#404553"/><path d="M20 32h56" stroke="#3866DF" stroke-width="6" stroke-linecap="round"/><rect x="10" y="42" width="10" height="6" rx="3" fill="#FEEE00"/><rect x="76" y="42" width="10" height="6" rx="3" fill="#FEEE00"/></svg>',
-      glasses: '<svg viewBox="0 0 96 96" fill="none"><rect x="12" y="34" width="30" height="24" rx="8" fill="#1F2430" stroke="#404553" stroke-width="3"/><rect x="54" y="34" width="30" height="24" rx="8" fill="#1F2430" stroke="#404553" stroke-width="3"/><path d="M42 42h12" stroke="#404553" stroke-width="4"/><path d="M18 40l8 8M60 40l8 8" stroke="#FEEE00" stroke-width="2.5" stroke-linecap="round"/></svg>'
-    };
-    return arts[type] || arts.phone;
+var gamesData = [
+  {
+    id: 1,
+    title: "مغامرة الصحراء الكبرى",
+    genre: "مغامرة",
+    rating: "4.8",
+    downloads: "12K",
+    featured: true,
+    svgThumb: '<svg viewBox="0 0 24 24" width="100%" height="100%"><rect width="24" height="24" fill="#3E2723"/><circle cx="18" cy="6" r="3" fill="#FFB300"/><path d="M0 20l6-8 4 4 6-10 8 14z" fill="#D7CCC8"/></svg>'
+  },
+  {
+    id: 2,
+    title: "لغز المعبد القديم",
+    genre: "ألغاز",
+    rating: "4.6",
+    downloads: "8.5K",
+    featured: true,
+    svgThumb: '<svg viewBox="0 0 24 24" width="100%" height="100%"><rect width="24" height="24" fill="#1A237E"/><path d="M4 4h16v16H4z" fill="none" stroke="#7986CB" stroke-width="2"/><circle cx="12" cy="12" r="4" fill="#FFD54F"/></svg>'
+  },
+  {
+    id: 3,
+    title: "متسابق السرعة القصوى",
+    genre: "حركة",
+    rating: "4.9",
+    downloads: "25K",
+    featured: true,
+    svgThumb: '<svg viewBox="0 0 24 24" width="100%" height="100%"><rect width="24" height="24" fill="#B71C1C"/><path d="M2 14h20v4H2z" fill="#37474F"/><circle cx="7" cy="18" r="2" fill="#212121"/><circle cx="17" cy="18" r="2" fill="#212121"/></svg>'
+  },
+  {
+    id: 4,
+    title: "قلعة الفضاء الغامضة",
+    genre: "مغامرة",
+    rating: "4.5",
+    downloads: "6.2K",
+    featured: false,
+    svgThumb: '<svg viewBox="0 0 24 24" width="100%" height="100%"><rect width="24" height="24" fill="#000000"/><polygon points="12,2 15,10 23,12 16,17 18,24 12,20 6,24 8,17 1,12 9,10" fill="#7C4DFF"/></svg>'
+  },
+  {
+    id: 5,
+    title: "تحدي الأرقام الذكية",
+    genre: "ألغاز",
+    rating: "4.3",
+    downloads: "4.1K",
+    featured: false,
+    svgThumb: '<svg viewBox="0 0 24 24" width="100%" height="100%"><rect width="24" height="24" fill="#00695C"/><text x="6" y="17" font-size="14" fill="#E0F2F1" font-weight="bold">123</text></svg>'
+  },
+  {
+    id: 6,
+    title: "معركة الساحة الفولاذية",
+    genre: "حركة",
+    rating: "4.7",
+    downloads: "15K",
+    featured: false,
+    svgThumb: '<svg viewBox="0 0 24 24" width="100%" height="100%"><rect width="24" height="24" fill="#263238"/><path d="M3 3l18 18M21 3L3 21" stroke="#FF5722" stroke-width="3"/></svg>'
   }
+];
 
-  function safeRead(key, fallback){
-    try{
-      var raw = localStorage.getItem(key);
-      if(!raw) return fallback;
-      var parsed = JSON.parse(raw);
-      return parsed !== null ? parsed : fallback;
-    }catch(e){
-      return fallback;
+function getFavorites() {
+  try {
+    var stored = localStorage.getItem("humble_favorites");
+    if (stored) {
+      return JSON.parse(stored);
     }
+  } catch (e) {}
+  return [];
+}
+
+function saveFavorites(favs) {
+  try {
+    localStorage.setItem("humble_favorites", JSON.stringify(favs));
+  } catch (e) {}
+}
+
+function toggleFav(id, event) {
+  event.preventDefault();
+  event.stopPropagation();
+  var favs = getFavorites();
+  var index = favs.indexOf(id);
+  if (index > -1) {
+    favs.splice(index, 1);
+  } else {
+    favs.push(id);
   }
+  saveFavorites(favs);
+  renderApp();
+}
 
-  function safeWrite(key, val){
-    try{
-      localStorage.setItem(key, JSON.stringify(val));
-    }catch(e){}
-  }
+function renderApp() {
+  var query = document.getElementById("searchInput").value.trim().toLowerCase();
+  var favs = getFavorites();
 
-  function getCart(){
-    var arr = safeRead(STORAGE_CART, []);
-    return Array.isArray(arr) ? arr : [];
-  }
+  var featuredContainer = document.getElementById("featuredContainer");
+  var featuredSection = document.getElementById("featuredSection");
+  var gamesContainer = document.getElementById("gamesContainer");
 
-  function getWishlist(){
-    var arr = safeRead(STORAGE_WISH, []);
-    return Array.isArray(arr) ? arr : [];
-  }
-
-  function updateBadges(){
-    var cart = getCart();
-    var totalQty = 0;
-    for(var i = 0; i < cart.length; i++){
-      totalQty += (cart[i].qty || 1);
-    }
-    var wish = getWishlist();
-
-    var hCart = document.getElementById('headerCartBadge');
-    var bCart = document.getElementById('bottomCartBadge');
-    var hWish = document.getElementById('headerWishBadge');
-
-    if(hCart){
-      hCart.textContent = String(totalQty);
-      if(totalQty > 0){ hCart.classList.remove('hidden'); } else { hCart.classList.add('hidden'); }
-    }
-    if(bCart){
-      bCart.textContent = String(totalQty);
-      if(totalQty > 0){ bCart.classList.remove('hidden'); } else { bCart.classList.add('hidden'); }
-    }
-    if(hWish){
-      hWish.textContent = String(wish.length);
-      if(wish.length > 0){ hWish.classList.remove('hidden'); } else { hWish.classList.add('hidden'); }
-    }
-  }
-
-  var toastTimer = null;
-  function showToast(msg){
-    var box = document.getElementById('toastBox');
-    var txt = document.getElementById('toastMsg');
-    if(!box || !txt) return;
-    txt.textContent = msg;
-    box.classList.add('show');
-    if(toastTimer) clearTimeout(toastTimer);
-    toastTimer = setTimeout(function(){
-      box.classList.remove('show');
-    }, 2200);
-  }
-
-  function findProduct(id){
-    for(var i = 0; i < PRODUCTS.length; i++){
-      if(PRODUCTS[i].id === id) return PRODUCTS[i];
-    }
-    return null;
-  }
-
-  function addToCart(id, btn){
-    var prod = findProduct(id);
-    if(!prod) return;
-    var cart = getCart();
-    var found = false;
-    for(var i = 0; i < cart.length; i++){
-      if(cart[i].id === id){
-        cart[i].qty = (cart[i].qty || 1) + 1;
-        found = true;
-        break;
-      }
-    }
-    if(!found){
-      cart.push({
-        id: prod.id,
-        name: prod.name,
-        price: prod.price,
-        oldPrice: prod.oldPrice,
-        icon: prod.icon,
-        qty: 1
-      });
-    }
-    safeWrite(STORAGE_CART, cart);
-    updateBadges();
-    showToast('تمت إضافة المنتج إلى السلة');
-
-    if(btn){
-      btn.classList.add('added');
-      var orig = btn.innerHTML;
-      btn.innerHTML = 'تمت الإضافة للسلة';
-      setTimeout(function(){
-        btn.classList.remove('added');
-        btn.innerHTML = orig;
-      }, 1100);
-    }
-  }
-
-  function toggleWish(id){
-    var wish = getWishlist();
-    var idx = wish.indexOf(id);
-    if(idx > -1){
-      wish.splice(idx, 1);
-      showToast('تمت الإزالة من المفضلة');
-    } else {
-      wish.push(id);
-      showToast('تم الحفظ في المفضلة');
-    }
-    safeWrite(STORAGE_WISH, wish);
-    updateBadges();
-    syncWishButtons();
-  }
-
-  function syncWishButtons(){
-    var wish = getWishlist();
-    var btns = document.querySelectorAll('.wish-btn');
-    for(var i = 0; i < btns.length; i++){
-      var id = btns[i].getAttribute('data-id');
-      var active = wish.indexOf(id) > -1;
-      if(active){
-        btns[i].classList.add('active');
-        btns[i].setAttribute('aria-pressed', 'true');
-        btns[i].querySelector('svg').setAttribute('fill', '#DC2626');
-      } else {
-        btns[i].classList.remove('active');
-        btns[i].setAttribute('aria-pressed', 'false');
-        btns[i].querySelector('svg').setAttribute('fill', 'none');
+  // Filter featured
+  var featuredHtml = "";
+  var featuredList = [];
+  for (var i = 0; i < gamesData.length; i++) {
+    if (gamesData[i].featured) {
+      if (!query || gamesData[i].title.toLowerCase().indexOf(query) > -1 || gamesData[i].genre.toLowerCase().indexOf(query) > -1) {
+        featuredList.push(gamesData[i]);
       }
     }
   }
 
-  function buildProductCard(p){
-    var wish = getWishlist();
-    var isWished = wish.indexOf(p.id) > -1;
-    var expressHtml = p.express
-      ? '<span class="express-badge"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>إكسبرس</span>'
-      : '';
-    var discountHtml = p.discount > 0
-      ? '<span class="discount-badge">خصم ' + p.discount + '%</span>'
-      : '';
-
-    return (
-      '<article class="product-card">' +
-        '<div class="product-top">' +
-          discountHtml +
-          '<button type="button" class="wish-btn' + (isWished ? ' active' : '') + '" data-id="' + p.id + '" aria-label="حفظ في المفضلة" aria-pressed="' + (isWished ? 'true' : 'false') + '">' +
-            '<svg width="20" height="20" viewBox="0 0 24 24" fill="' + (isWished ? '#DC2626' : 'none') + '" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' +
-              '<path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>' +
-            '</svg>' +
-          '</button>' +
-          '<a href="product.html?id=' + p.id + '" class="product-img-link" aria-label="' + p.name + '">' +
-            getSvgArt(p.icon) +
-          '</a>' +
-          expressHtml +
-          '<a href="product.html?id=' + p.id + '" class="product-title">' + p.name + '</a>' +
+  if (featuredList.length > 0 && !query) {
+    featuredSection.style.display = "block";
+    for (var i = 0; i < featuredList.length; i++) {
+      var game = featuredList[i];
+      featuredHtml += '<a href="game-details.html?id=' + game.id + '" class="featured-card">' +
+        game.svgThumb +
+        '<div class="featured-overlay">' +
+          '<div class="featured-title">' + game.title + '</div>' +
+          '<div class="featured-genre">' + game.genre + '</div>' +
         '</div>' +
-        '<div>' +
-          '<div class="rating-row">' +
-            '<span class="rating-pill">' + p.rating.toFixed(1) +
-              '<svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>' +
-            '</span>' +
-            '<span>(' + p.reviews + ')</span>' +
+      '</a>';
+    }
+    featuredContainer.innerHTML = featuredHtml;
+  } else {
+    featuredSection.style.display = "none";
+  }
+
+  // Filter all games
+  var gamesHtml = "";
+  var matchCount = 0;
+  for (var i = 0; i < gamesData.length; i++) {
+    var game = gamesData[i];
+    if (!query || game.title.toLowerCase().indexOf(query) > -1 || game.genre.toLowerCase().indexOf(query) > -1) {
+      matchCount++;
+      var isFav = favs.indexOf(game.id) > -1;
+      gamesHtml += '<a href="game-details.html?id=' + game.id + '" class="game-card">' +
+        '<div class="game-thumb">' + game.svgThumb + '</div>' +
+        '<div class="game-info">' +
+          '<div class="game-title">' + game.title + '</div>' +
+          '<div class="game-meta">' + game.genre + ' • ' + game.downloads + '</div>' +
+          '<div class="game-footer">' +
+            '<span class="game-rating">★ ' + game.rating + '</span>' +
+            '<button class="fav-btn ' + (isFav ? 'active' : '') + '" onclick="toggleFav(' + game.id + ', event)">' +
+              '<svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>' +
+            '</button>' +
           '</div>' +
-          '<div class="price-row">' +
-            '<span class="price-now">' + p.price + '<span class="price-currency">ر.س</span></span>' +
-            '<span class="price-old">' + p.oldPrice + ' ر.س</span>' +
-          '</div>' +
-          '<button type="button" class="add-cart-btn" data-add="' + p.id + '">' +
-            '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>' +
-            'إضافة للسلة' +
-          '</button>' +
         '</div>' +
-      '</article>'
-    );
-  }
-
-  function renderDeals(){
-    var container = document.getElementById('dealsGrid');
-    if(!container) return;
-    var html = '';
-    for(var i = 0; i < PRODUCTS.length; i++){
-      if(PRODUCTS[i].isDeal){
-        html += buildProductCard(PRODUCTS[i]);
-      }
-    }
-    container.innerHTML = html;
-  }
-
-  function renderBestSellers(category){
-    var container = document.getElementById('bestSellersGrid');
-    if(!container) return;
-    var html = '';
-    var count = 0;
-    for(var i = 0; i < PRODUCTS.length; i++){
-      var p = PRODUCTS[i];
-      if(category === 'all' || p.category === category){
-        html += buildProductCard(p);
-        count++;
-        if(category === 'all' && count >= 8) break;
-      }
-    }
-    container.innerHTML = html;
-  }
-
-  /* Event Delegation for Cart & Wishlist */
-  document.addEventListener('click', function(e){
-    var target = e.target;
-    while(target && target !== document){
-      if(target.classList && target.classList.contains('add-cart-btn')){
-        var addId = target.getAttribute('data-add');
-        addToCart(addId, target);
-        return;
-      }
-      if(target.classList && target.classList.contains('wish-btn')){
-        var wishId = target.getAttribute('data-id');
-        toggleWish(wishId);
-        return;
-      }
-      target = target.parentNode;
-    }
-  });
-
-  /* Filter Tabs for Best Sellers */
-  var tabsWrap = document.getElementById('bestFilterTabs');
-  if(tabsWrap){
-    tabsWrap.addEventListener('click', function(e){
-      var btn = e.target;
-      if(!btn || !btn.classList.contains('filter-tab')) return;
-      var allTabs = tabsWrap.querySelectorAll('.filter-tab');
-      for(var i = 0; i < allTabs.length; i++){
-        allTabs[i].classList.remove('active');
-      }
-      btn.classList.add('active');
-      renderBestSellers(btn.getAttribute('data-cat'));
-    });
-  }
-
-  /* Hero Carousel */
-  var currentSlide = 0;
-  var totalSlides = 3;
-  var heroTrack = document.getElementById('heroTrack');
-  var heroControls = document.getElementById('heroControls');
-  var heroDots = document.querySelectorAll('.hero-dot');
-  var heroTimer = null;
-
-  function goToSlide(idx){
-    currentSlide = (idx + totalSlides) % totalSlides;
-    if(heroTrack){
-      heroTrack.style.transform = 'translateX(-' + (currentSlide * 100) + '%)';
-    }
-    for(var i = 0; i < heroDots.length; i++){
-      if(i === currentSlide){
-        heroDots[i].classList.add('active');
-      } else {
-        heroDots[i].classList.remove('active');
-      }
-    }
-    if(heroControls){
-      if(currentSlide === 2){
-        heroControls.classList.add('slide-light-dots');
-      } else {
-        heroControls.classList.remove('slide-light-dots');
-      }
+      '</a>';
     }
   }
 
-  function startHeroAuto(){
-    if(heroTimer) clearInterval(heroTimer);
-    heroTimer = setInterval(function(){
-      goToSlide(currentSlide + 1);
-    }, 5000);
+  if (matchCount === 0) {
+    gamesHtml = '<div class="no-results">لا توجد ألعاب مطابقة للبحث</div>';
   }
 
-  var prevBtn = document.getElementById('heroPrev');
-  var nextBtn = document.getElementById('heroNext');
-  if(prevBtn){
-    prevBtn.addEventListener('click', function(){
-      goToSlide(currentSlide - 1);
-      startHeroAuto();
-    });
-  }
-  if(nextBtn){
-    nextBtn.addEventListener('click', function(){
-      goToSlide(currentSlide + 1);
-      startHeroAuto();
-    });
-  }
-  for(var d = 0; d < heroDots.length; d++){
-    heroDots[d].addEventListener('click', function(){
-      var s = parseInt(this.getAttribute('data-slide'), 10);
-      goToSlide(s);
-      startHeroAuto();
-    });
-  }
+  gamesContainer.innerHTML = gamesHtml;
+}
 
-  /* Touch swipe on Hero */
-  var heroEl = document.getElementById('heroCarousel');
-  var touchStartX = 0;
-  if(heroEl){
-    heroEl.addEventListener('touchstart', function(e){
-      if(e.touches && e.touches.length > 0){
-        touchStartX = e.touches[0].clientX;
-      }
-    }, {passive: true});
-    heroEl.addEventListener('touchend', function(e){
-      if(e.changedTouches && e.changedTouches.length > 0){
-        var diff = e.changedTouches[0].clientX - touchStartX;
-        if(Math.abs(diff) > 40){
-          if(diff > 0){
-            goToSlide(currentSlide + 1);
-          } else {
-            goToSlide(currentSlide - 1);
-          }
-          startHeroAuto();
-        }
-      }
-    }, {passive: true});
-  }
+document.getElementById("searchInput").addEventListener("input", renderApp);
 
-  /* Flash Sale Countdown */
-  var secondsLeft = 4 * 3600 + 25 * 60 + 18;
-  function pad2(n){ return n < 10 ? '0' + n : String(n); }
-  function updateCountdown(){
-    var el = document.getElementById('countdownText');
-    if(!el) return;
-    if(secondsLeft <= 0) secondsLeft = 5 * 3600;
-    var h = Math.floor(secondsLeft / 3600);
-    var m = Math.floor((secondsLeft % 3600) / 60);
-    var s = secondsLeft % 60;
-    el.textContent = pad2(h) + ':' + pad2(m) + ':' + pad2(s);
-    secondsLeft--;
-  }
-
-  /* Instant Search Dropdown */
-  var searchInput = document.getElementById('searchInput');
-  var searchDropdown = document.getElementById('searchDropdown');
-  if(searchInput && searchDropdown){
-    searchInput.addEventListener('input', function(){
-      var q = searchInput.value.trim();
-      if(q.length < 1){
-        searchDropdown.classList.remove('open');
-        searchDropdown.innerHTML = '';
-        return;
-      }
-      var matches = [];
-      for(var i = 0; i < PRODUCTS.length; i++){
-        if(PRODUCTS[i].name.indexOf(q) > -1){
-          matches.push(PRODUCTS[i]);
-        }
-      }
-      if(matches.length === 0){
-        searchDropdown.innerHTML = '<a href="search.html?q=' + encodeURIComponent(q) + '" class="search-sug-item"><span>البحث عن "' + q.replace(/</g, '&lt;') + '" في المتجر</span><span class="search-sug-price">عرض</span></a>';
-      } else {
-        var html = '';
-        var limit = matches.length > 5 ? 5 : matches.length;
-        for(var j = 0; j < limit; j++){
-          html += '<a href="product.html?id=' + matches[j].id + '" class="search-sug-item"><span>' + matches[j].name + '</span><span class="search-sug-price">' + matches[j].price + ' ر.س</span></a>';
-        }
-        html += '<a href="search.html?q=' + encodeURIComponent(q) + '" class="search-sug-item" style="background:#F8FAFC;font-weight:800;color:#3866DF;"><span>عرض كل النتائج (' + matches.length + ')</span><span>&larr;</span></a>';
-        searchDropdown.innerHTML = html;
-      }
-      searchDropdown.classList.add('open');
-    });
-
-    document.addEventListener('click', function(e){
-      if(!searchInput.contains(e.target) && !searchDropdown.contains(e.target)){
-        searchDropdown.classList.remove('open');
-      }
-    });
-  }
-
-  /* Initialize Page */
-  renderDeals();
-  renderBestSellers('all');
-  updateBadges();
-  startHeroAuto();
-  updateCountdown();
-  setInterval(updateCountdown, 1000);
-})();
+// Initial render
+renderApp();
 </script>
+
 </body>
 </html>
