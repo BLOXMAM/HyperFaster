@@ -1,0 +1,98 @@
+[
+  {
+    "id": "pdf_01",
+    "title": "فجر الصقر الحديدي - الفصل الأول",
+    "category": "أكشن وأبطال خارقون",
+    "url": "pdfs/iron_falcon_ch01.pdf",
+    "comicId": "comic_01",
+    "image": "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'><rect width='120' height='120' rx='16' fill='%230f172a'/><polygon points='60,14 102,44 86,102 34,102 18,44' fill='%23ef4444' stroke='%23facc15' stroke-width='5'/><polygon points='60,32 76,62 60,86 44,62' fill='%23facc15'/></svg>"
+  },
+  {
+    "id": "pdf_02",
+    "title": "فجر الصقر الحديدي - الفصل الثاني",
+    "category": "أكشن وأبطال خارقون",
+    "url": "pdfs/iron_falcon_ch02.pdf",
+    "comicId": "comic_01",
+    "image": "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'><rect width='120' height='120' rx='16' fill='%231e293b'/><path d='M20 85 L52 20 L66 55 L100 35 L70 100 L54 68 Z' fill='%23facc15' stroke='%23ef4444' stroke-width='4'/></svg>"
+  },
+  {
+    "id": "pdf_03",
+    "title": "مدينة النيون 2099 - الملف الكامل",
+    "category": "خيال علمي",
+    "url": "pdfs/neon_city_2099.pdf",
+    "comicId": "comic_02",
+    "image": "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'><rect width='120' height='120' rx='16' fill='%231e1b4b'/><rect x='22' y='40' width='22' height='64' fill='%2306b6d4'/><rect x='50' y='22' width='24' height='82' fill='%23ec4899'/><rect x='80' y='52' width='18' height='52' fill='%23a855f7'/><circle cx='62' cy='38' r='6' fill='%23facc15'/></svg>"
+  },
+  {
+    "id": "pdf_04",
+    "title": "أسرار المكتبة المنسية - الجزء الأول",
+    "category": "مغامرات وغموض",
+    "url": "pdfs/forgotten_library_p1.pdf",
+    "comicId": "comic_03",
+    "image": "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'><rect width='120' height='120' rx='16' fill='%233b0764'/><rect x='26' y='24' width='68' height='74' rx='8' fill='%23f59e0b' stroke='%23fef08a' stroke-width='4'/><circle cx='60' cy='58' r='16' fill='%233b0764'/><circle cx='60' cy='58' r='7' fill='%2322d3ee'/></svg>"
+  },
+  {
+    "id": "pdf_05",
+    "title": "مغامرات القط زحل في المطبخ",
+    "category": "كوميديا وفكاهة",
+    "url": "pdfs/saturn_cat_kitchen.pdf",
+    "comicId": "comic_04",
+    "image": "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'><rect width='120' height='120' rx='16' fill='%23f97316'/><circle cx='60' cy='66' r='30' fill='%23fef08a'/><polygon points='36,44 34,20 52,38' fill='%23fef08a'/><polygon points='84,44 86,20 68,38' fill='%23fef08a'/><circle cx='49' cy='62' r='5' fill='%230f172a'/><circle cx='71' cy='62' r='5' fill='%230f172a'/></svg>"
+  },
+  {
+    "id": "pdf_06",
+    "title": "حارس الظلال - العدد الذهبي",
+    "category": "أكشن وأبطال خارقون",
+    "url": "pdfs/shadow_guardian_gold.pdf",
+    "comicId": "comic_05",
+    "image": "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'><rect width='120' height='120' rx='16' fill='%23111827'/><path d='M24 32 L60 18 L96 32 L88 84 L60 104 L32 84 Z' fill='%23eab308' stroke='%23ffffff' stroke-width='4'/><polygon points='42,50 56,56 44,64' fill='%23111827'/><polygon points='78,50 64,56 76,64' fill='%23111827'/></svg>"
+  },
+  {
+    "id": "pdf_07",
+    "title": "رحلة إلى كوكب الكريستال",
+    "category": "خيال علمي",
+    "url": "pdfs/crystal_planet_vol1.pdf",
+    "comicId": "comic_06",
+    "image": "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'><rect width='120' height='120' rx='16' fill='%230c4a6e'/><circle cx='60' cy='62' r='28' fill='%2338bdf8'/><ellipse cx='60' cy='62' rx='48' ry='14' transform='rotate(-20 60 62)' fill='none' stroke='%23f472b6' stroke-width='6'/></svg>"
+  },
+  {
+    "id": "pdf_08",
+    "title": "لغز القطار الليلي السريع",
+    "category": "مغامرات وغموض",
+    "url": "pdfs/night_express_mystery.pdf",
+    "comicId": "comic_07",
+    "image": "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'><rect width='120' height='120' rx='16' fill='%23172554'/><rect x='24' y='34' width='72' height='48' rx='10' fill='%23ef4444' stroke='%23fde047' stroke-width='4'/><rect x='34' y='44' width='22' height='18' rx='3' fill='%23bae6fd'/><rect x='64' y='44' width='22' height='18' rx='3' fill='%23bae6fd'/><circle cx='40' cy='92' r='8' fill='%23fde047'/><circle cx='80' cy='92' r='8' fill='%23fde047'/></svg>"
+  },
+  {
+    "id": "pdf_09",
+    "title": "فريق الشرارة - ملف التجنيد السري",
+    "category": "إصدارات خاصة",
+    "url": "pdfs/spark_squad_dossier.pdf",
+    "comicId": "comic_08",
+    "image": "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'><rect width='120' height='120' rx='16' fill='%23991b1b'/><polygon points='66,14 34,64 58,64 50,106 86,52 62,52' fill='%23facc15' stroke='%23ffffff' stroke-width='4'/></svg>"
+  },
+  {
+    "id": "pdf_10",
+    "title": "يوميات مبرمج في عالم البكسل",
+    "category": "كوميديا وفكاهة",
+    "url": "pdfs/pixel_coder_diaries.pdf",
+    "comicId": "comic_09",
+    "image": "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'><rect width='120' height='120' rx='16' fill='%23064e3b'/><rect x='22' y='28' width='76' height='54' rx='6' fill='%2310b981' stroke='%23ecfdf5' stroke-width='4'/><rect x='36' y='44' width='12' height='12' fill='%23064e3b'/><rect x='72' y='44' width='12' height='12' fill='%23064e3b'/><rect x='42' y='64' width='36' height='8' fill='%23fef08a'/></svg>"
+  },
+  {
+    "id": "pdf_11",
+    "title": "حكاية السيف المضيء - النسخة المصورة",
+    "category": "مغامرات وغموض",
+    "url": "pdfs/luminous_blade_edition.pdf",
+    "comicId": "comic_10",
+    "image": "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'><rect width='120' height='120' rx='16' fill='%23312e81'/><polygon points='92,20 42,70 50,78 100,28' fill='%2338bdf8' stroke='%23ffffff' stroke-width='3'/><rect x='28' y='64' width='28' height='10' transform='rotate(45 42 69)' fill='%23facc15'/><line x1='38' y1='82' x2='24' y2='96' stroke='%23ef4444' stroke-width='9' stroke-linecap='round'/></svg>"
+  },
+  {
+    "id": "pdf_12",
+    "title": "ملحق رسومات الكواليس والأغلفة النادرة",
+    "category": "إصدارات خاصة",
+    "url": "pdfs/rare_covers_artbook.pdf",
+    "comicId": "comic_03",
+    "image": "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'><rect width='120' height='120' rx='16' fill='%23701a75'/><rect x='26' y='20' width='56' height='76' rx='6' fill='%23f43f5e' stroke='%23fde047' stroke-width='4'/><rect x='38' y='28' width='56' height='76' rx='6' fill='%232563eb' stroke='%23ffffff' stroke-width='4'/><circle cx='66' cy='62' r='14' fill='%23fde047'/></svg>"
+  }
+]
