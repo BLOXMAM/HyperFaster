@@ -22,5 +22,13 @@
     "hidden": false,
     "searchEnabled": true,
     "searchNames": []
+  },
+  {
+    "file": "puzzle-game.html",
+    "title": "لعبة الألغاز الكلاسيكية",
+    "icon": "fa-solid fa-file",
+    "hidden": false,
+    "searchEnabled": true,
+    "searchNames": []
   }
 ]
