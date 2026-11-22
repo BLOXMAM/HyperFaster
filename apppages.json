@@ -55,18 +55,6 @@
     "op": "add",
     "timestamp": 1794213506788
   },
-  "rostrick-build/template.zip": {
-    "op": "update",
-    "timestamp": 1795354604607
-  },
-  "rostrick-build/config.json": {
-    "op": "update",
-    "timestamp": 1795362052257
-  },
-  "rostrick-build/ai-job.json": {
-    "op": "update",
-    "timestamp": 1795362179944
-  },
   "index.html": {
     "op": "update",
     "timestamp": 1795362593448
@@ -98,10 +86,6 @@
   ".github/workflows/build-apk.yml": {
     "op": "update",
     "timestamp": 1795354601339
-  },
-  "rostrick-build/ai-drafts/puzzle-game.html.json": {
-    "op": "update",
-    "timestamp": 1795357520192
   },
   "puzzle-game.html": {
     "op": "add",
