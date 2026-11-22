@@ -98,5 +98,9 @@
   ".github/workflows/build-apk.yml": {
     "op": "update",
     "timestamp": 1795354601339
+  },
+  "games.json": {
+    "op": "add",
+    "timestamp": 1795357369570
   }
 }
