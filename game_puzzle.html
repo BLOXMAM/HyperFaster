@@ -1,0 +1,1810 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1, user-scalable=no">
+<title>لعبة ألغاز الكوميكس - كوميكس أوفرلاي</title>
+<style>
+  :root {
+    --primary: #D90429;
+    --primary-dark: #8D0801;
+    --accent: #FFB703;
+    --highlight: #FB8500;
+    --control: #2B2D42;
+    --bg-dark: #141624;
+    --surface: #1E2134;
+    --surface-light: #272B42;
+    --ink: #0B0C14;
+    --text-main: #FFFFFF;
+    --text-muted: #B8C0D9;
+    --success: #06D6A0;
+  }
+
+  * {
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    background-color: var(--bg-dark);
+    color: var(--text-main);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans Arabic", Tahoma, Arial, sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  body {
+    background-image: radial-gradient(rgba(255, 183, 3, 0.08) 1.5px, transparent 1.5px);
+    background-size: 14px 14px;
+    padding-bottom: 84px;
+    padding-bottom: calc(84px + env(safe-area-inset-bottom));
+  }
+
+  a {
+    text-decoration: none;
+    color: inherit;
+  }
+
+  button {
+    font-family: inherit;
+    cursor: pointer;
+    border: none;
+    outline: none;
+  }
+
+  /* Top App Bar */
+  .app-bar {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+    border-bottom: 3px solid var(--ink);
+    box-shadow: 0 4px 0 var(--ink);
+    padding: 10px 12px;
+    padding-top: calc(10px + env(safe-area-inset-top));
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .app-bar-right {
+    display: flex;
+    align-items: center;
+    min-width: 0;
+  }
+
+  .icon-btn {
+    width: 44px;
+    height: 44px;
+    min-width: 44px;
+    min-height: 44px;
+    border-radius: 12px;
+    background: var(--control);
+    color: var(--text-main);
+    border: 2px solid var(--ink);
+    box-shadow: 0 3px 0 var(--ink);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.12s ease, box-shadow 0.12s ease, background-color 0.15s ease;
+    margin-left: 8px;
+  }
+
+  .icon-btn:active {
+    transform: translateY(2px);
+    box-shadow: 0 1px 0 var(--ink);
+  }
+
+  .icon-btn.active {
+    background: var(--accent);
+    color: var(--ink);
+  }
+
+  .app-title-wrap {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    margin-left: 6px;
+  }
+
+  .app-title {
+    font-size: 17px;
+    font-weight: 800;
+    line-height: 1.2;
+    color: #FFFFFF;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .app-subtitle {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--accent);
+    margin-top: 2px;
+  }
+
+  .app-bar-left {
+    display: flex;
+    align-items: center;
+  }
+
+  .app-bar-left .icon-btn {
+    margin-left: 0;
+    margin-right: 8px;
+  }
+
+  .app-bar-left .icon-btn:first-child {
+    margin-right: 0;
+  }
+
+  /* Main Container */
+  .main-wrap {
+    max-width: 540px;
+    margin: 0 auto;
+    padding: 14px 14px 18px 14px;
+    transition: all 0.25s ease;
+  }
+
+  /* Floating Overlay Simulation Mode */
+  .main-wrap.overlay-sim {
+    max-width: 332px;
+    margin-top: 16px;
+    background: var(--surface);
+    border: 3px solid var(--accent);
+    border-radius: 20px;
+    box-shadow: 0 14px 32px rgba(0, 0, 0, 0.65), 0 6px 0 var(--ink);
+    padding: 10px;
+  }
+
+  .overlay-sim-bar {
+    display: none;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--control);
+    border: 2px solid var(--ink);
+    border-radius: 12px;
+    padding: 6px 10px;
+    margin-bottom: 10px;
+  }
+
+  .main-wrap.overlay-sim .overlay-sim-bar {
+    display: flex;
+  }
+
+  .overlay-sim-label {
+    display: flex;
+    align-items: center;
+    font-size: 12px;
+    font-weight: 800;
+    color: var(--accent);
+  }
+
+  .overlay-sim-label svg {
+    margin-left: 6px;
+  }
+
+  .overlay-sim-close {
+    min-width: 44px;
+    min-height: 36px;
+    padding: 4px 10px;
+    border-radius: 8px;
+    background: var(--primary);
+    color: #fff;
+    font-size: 11px;
+    font-weight: 800;
+    border: 2px solid var(--ink);
+  }
+
+  /* Comic Panel Cards */
+  .comic-card {
+    background: var(--surface);
+    border: 3px solid var(--ink);
+    border-radius: 16px;
+    box-shadow: 0 5px 0 var(--ink);
+    padding: 12px;
+    margin-bottom: 12px;
+  }
+
+  .main-wrap.overlay-sim .comic-card {
+    padding: 9px;
+    margin-bottom: 9px;
+    border-radius: 12px;
+  }
+
+  /* Alert Banner */
+  .alert-banner {
+    display: none;
+    background: #3A1622;
+    border: 2px solid var(--primary);
+    border-radius: 12px;
+    padding: 10px 12px;
+    margin-bottom: 12px;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .alert-banner.visible {
+    display: flex;
+  }
+
+  .alert-text {
+    font-size: 12px;
+    font-weight: 700;
+    color: #FFD6DE;
+    margin-left: 8px;
+    line-height: 1.4;
+  }
+
+  .retry-btn {
+    min-width: 44px;
+    min-height: 44px;
+    padding: 0 12px;
+    border-radius: 10px;
+    background: var(--accent);
+    color: var(--ink);
+    font-weight: 800;
+    font-size: 12px;
+    border: 2px solid var(--ink);
+    flex-shrink: 0;
+  }
+
+  /* Comic Scene Selector */
+  .section-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+  }
+
+  .section-title {
+    font-size: 14px;
+    font-weight: 800;
+    color: var(--accent);
+    display: flex;
+    align-items: center;
+  }
+
+  .section-title svg {
+    margin-left: 6px;
+  }
+
+  .comic-badge {
+    background: var(--highlight);
+    color: var(--ink);
+    font-size: 11px;
+    font-weight: 800;
+    padding: 3px 9px;
+    border-radius: 999px;
+    border: 2px solid var(--ink);
+  }
+
+  .comics-strip {
+    display: flex;
+    overflow-x: auto;
+    padding-bottom: 4px;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .comics-strip::-webkit-scrollbar {
+    height: 4px;
+  }
+
+  .comics-strip::-webkit-scrollbar-thumb {
+    background: var(--control);
+    border-radius: 4px;
+  }
+
+  .comic-chip {
+    flex: 0 0 auto;
+    width: 96px;
+    background: var(--surface-light);
+    border: 2px solid var(--ink);
+    border-radius: 12px;
+    padding: 6px;
+    margin-left: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    transition: transform 0.12s ease, border-color 0.15s ease, background-color 0.15s ease;
+    min-height: 44px;
+  }
+
+  .comic-chip:last-child {
+    margin-left: 0;
+  }
+
+  .comic-chip:active {
+    transform: scale(0.96);
+  }
+
+  .comic-chip.selected {
+    background: var(--control);
+    border-color: var(--accent);
+    box-shadow: 0 0 0 2px var(--accent);
+  }
+
+  .comic-chip img {
+    width: 56px;
+    height: 56px;
+    border-radius: 8px;
+    border: 2px solid var(--ink);
+    object-fit: cover;
+    background: var(--bg-dark);
+    margin-bottom: 5px;
+    display: block;
+  }
+
+  .comic-chip-name {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--text-main);
+    line-height: 1.25;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .main-wrap.overlay-sim .comic-chip {
+    width: 78px;
+    padding: 4px;
+  }
+
+  .main-wrap.overlay-sim .comic-chip img {
+    width: 44px;
+    height: 44px;
+  }
+
+  /* Controls Row */
+  .controls-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    margin-top: 8px;
+  }
+
+  .seg-group {
+    display: inline-flex;
+    background: var(--bg-dark);
+    border: 2px solid var(--ink);
+    border-radius: 12px;
+    padding: 3px;
+    margin-bottom: 4px;
+  }
+
+  .seg-btn {
+    min-height: 38px;
+    min-width: 58px;
+    padding: 6px 10px;
+    border-radius: 9px;
+    background: transparent;
+    color: var(--text-muted);
+    font-size: 12px;
+    font-weight: 800;
+    transition: background-color 0.15s ease, color 0.15s ease;
+  }
+
+  .seg-btn.active {
+    background: var(--accent);
+    color: var(--ink);
+  }
+
+  .mini-toggles {
+    display: flex;
+    align-items: center;
+    margin-bottom: 4px;
+  }
+
+  .pill-btn {
+    min-height: 44px;
+    padding: 0 12px;
+    border-radius: 12px;
+    background: var(--control);
+    color: var(--text-main);
+    border: 2px solid var(--ink);
+    box-shadow: 0 3px 0 var(--ink);
+    font-size: 12px;
+    font-weight: 800;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 6px;
+    transition: transform 0.12s ease, background-color 0.15s ease;
+  }
+
+  .pill-btn:first-child {
+    margin-right: 0;
+  }
+
+  .pill-btn:active {
+    transform: translateY(2px);
+    box-shadow: 0 1px 0 var(--ink);
+  }
+
+  .pill-btn.active {
+    background: var(--highlight);
+    color: var(--ink);
+  }
+
+  .pill-btn svg {
+    margin-left: 5px;
+  }
+
+  /* HUD Stats */
+  .hud-grid {
+    display: flex;
+    align-items: stretch;
+    justify-content: space-between;
+    margin-bottom: 8px;
+  }
+
+  .hud-box {
+    flex: 1;
+    background: var(--bg-dark);
+    border: 2px solid var(--ink);
+    border-radius: 12px;
+    padding: 7px 6px;
+    text-align: center;
+    margin-left: 6px;
+  }
+
+  .hud-box:last-child {
+    margin-left: 0;
+  }
+
+  .hud-label {
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--text-muted);
+    margin-bottom: 2px;
+  }
+
+  .hud-val {
+    font-size: 16px;
+    font-weight: 900;
+    color: var(--accent);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .hud-val.best {
+    color: var(--success);
+  }
+
+  .progress-track {
+    width: 100%;
+    height: 10px;
+    background: var(--bg-dark);
+    border: 2px solid var(--ink);
+    border-radius: 999px;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, var(--highlight), var(--accent), var(--success));
+    transition: width 0.25s ease;
+  }
+
+  /* Puzzle Board */
+  .board-card {
+    position: relative;
+    background: var(--surface);
+    border: 3px solid var(--ink);
+    border-radius: 18px;
+    box-shadow: 0 6px 0 var(--ink);
+    padding: 10px;
+    margin-bottom: 12px;
+  }
+
+  .board-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 8px;
+  }
+
+  .current-comic-title {
+    font-size: 14px;
+    font-weight: 800;
+    color: #FFFFFF;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-left: 8px;
+  }
+
+  .puzzle-stage {
+    position: relative;
+    width: 100%;
+    padding-top: 100%;
+    background: #0D0F1A;
+    border: 3px solid var(--ink);
+    border-radius: 12px;
+    overflow: hidden;
+    direction: ltr;
+    touch-action: none;
+  }
+
+  .puzzle-grid {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: 3px;
+  }
+
+  .tile-slot {
+    position: absolute;
+    padding: 3px;
+    transition: left 0.16s cubic-bezier(0.22, 1, 0.36, 1), top 0.16s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .tile-btn {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 2px solid var(--ink);
+    background: var(--surface-light);
+    box-shadow: 0 3px 0 rgba(0, 0, 0, 0.75);
+    display: block;
+  }
+
+  .tile-btn:active {
+    transform: scale(0.96);
+  }
+
+  .tile-btn.correct {
+    border-color: var(--success);
+  }
+
+  .tile-art {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    pointer-events: none;
+  }
+
+  .tile-art img {
+    position: absolute;
+    max-width: none;
+    pointer-events: none;
+    user-select: none;
+    display: block;
+  }
+
+  .tile-num {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    min-width: 22px;
+    height: 22px;
+    padding: 0 5px;
+    border-radius: 6px;
+    background: rgba(11, 12, 20, 0.85);
+    color: var(--accent);
+    border: 1.5px solid var(--accent);
+    font-size: 11px;
+    font-weight: 900;
+    line-height: 19px;
+    text-align: center;
+    pointer-events: none;
+  }
+
+  .tile-btn.correct .tile-num {
+    background: var(--success);
+    color: var(--ink);
+    border-color: var(--ink);
+  }
+
+  .hide-numbers .tile-num {
+    display: none;
+  }
+
+  .empty-slot-marker {
+    position: absolute;
+    padding: 3px;
+    pointer-events: none;
+    transition: left 0.16s ease, top 0.16s ease;
+  }
+
+  .empty-slot-inner {
+    width: 100%;
+    height: 100%;
+    border-radius: 8px;
+    border: 2px dashed rgba(255, 183, 3, 0.45);
+    background: rgba(255, 183, 3, 0.04);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(255, 183, 3, 0.5);
+  }
+
+  /* Peek Overlay */
+  .peek-layer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(11, 12, 20, 0.94);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 12px;
+    z-index: 20;
+  }
+
+  .peek-layer.visible {
+    display: flex;
+  }
+
+  .peek-layer img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    border-radius: 10px;
+    border: 3px solid var(--accent);
+  }
+
+  .peek-tag {
+    position: absolute;
+    bottom: 16px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--accent);
+    color: var(--ink);
+    font-size: 12px;
+    font-weight: 900;
+    padding: 4px 12px;
+    border-radius: 999px;
+    border: 2px solid var(--ink);
+    white-space: nowrap;
+  }
+
+  /* Win Overlay */
+  .win-layer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(15, 18, 32, 0.92);
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 18px;
+    z-index: 30;
+    text-align: center;
+    direction: rtl;
+  }
+
+  .win-layer.visible {
+    display: flex;
+    animation: popIn 0.28s ease-out;
+  }
+
+  @keyframes popIn {
+    from { opacity: 0; transform: scale(0.92); }
+    to { opacity: 1; transform: scale(1); }
+  }
+
+  .win-burst {
+    background: var(--accent);
+    color: var(--ink);
+    border: 3px solid var(--ink);
+    box-shadow: 0 4px 0 var(--ink);
+    border-radius: 14px;
+    padding: 6px 16px;
+    font-size: 18px;
+    font-weight: 900;
+    margin-bottom: 10px;
+  }
+
+  .win-stats {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text-main);
+    background: var(--surface-light);
+    border: 2px solid var(--ink);
+    border-radius: 12px;
+    padding: 10px 14px;
+    margin-bottom: 14px;
+    line-height: 1.6;
+  }
+
+  .win-record {
+    display: inline-block;
+    background: var(--success);
+    color: var(--ink);
+    font-size: 11px;
+    font-weight: 900;
+    padding: 2px 8px;
+    border-radius: 999px;
+    margin-top: 4px;
+  }
+
+  .win-actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .action-btn {
+    min-height: 44px;
+    padding: 0 16px;
+    border-radius: 12px;
+    font-size: 13px;
+    font-weight: 800;
+    border: 2px solid var(--ink);
+    box-shadow: 0 3px 0 var(--ink);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin: 4px;
+    transition: transform 0.12s ease;
+  }
+
+  .action-btn:active {
+    transform: translateY(2px);
+    box-shadow: 0 1px 0 var(--ink);
+  }
+
+  .btn-primary {
+    background: var(--primary);
+    color: #FFFFFF;
+  }
+
+  .btn-accent {
+    background: var(--accent);
+    color: var(--ink);
+  }
+
+  .btn-control {
+    background: var(--control);
+    color: #FFFFFF;
+  }
+
+  /* Board Action Row */
+  .board-actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 10px;
+  }
+
+  .board-actions .action-btn {
+    flex: 1;
+    margin: 0 4px;
+  }
+
+  .board-actions .action-btn:first-child {
+    margin-right: 0;
+  }
+
+  .board-actions .action-btn:last-child {
+    margin-left: 0;
+  }
+
+  /* Overlay Launch Card */
+  .overlay-promo {
+    background: linear-gradient(135deg, #2B2D42 0%, #1D1F30 100%);
+    border: 3px solid var(--ink);
+    border-radius: 16px;
+    box-shadow: 0 5px 0 var(--ink);
+    padding: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .overlay-promo-info {
+    margin-left: 10px;
+  }
+
+  .overlay-promo-title {
+    font-size: 14px;
+    font-weight: 800;
+    color: var(--accent);
+    margin-bottom: 3px;
+  }
+
+  .overlay-promo-desc {
+    font-size: 12px;
+    color: var(--text-muted);
+    line-height: 1.4;
+  }
+
+  .overlay-launch-link {
+    min-height: 44px;
+    min-width: 112px;
+    padding: 0 12px;
+    border-radius: 12px;
+    background: var(--highlight);
+    color: var(--ink);
+    border: 2px solid var(--ink);
+    box-shadow: 0 3px 0 var(--ink);
+    font-size: 12px;
+    font-weight: 900;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: transform 0.12s ease;
+  }
+
+  .overlay-launch-link:active {
+    transform: translateY(2px);
+    box-shadow: 0 1px 0 var(--ink);
+  }
+
+  .overlay-launch-link svg {
+    margin-left: 6px;
+  }
+
+  /* Bottom Navigation Bar */
+  .bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 60;
+    background: var(--surface);
+    border-top: 3px solid var(--ink);
+    padding: 6px 12px;
+    padding-bottom: calc(6px + env(safe-area-inset-bottom));
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+  }
+
+  .nav-item {
+    flex: 1;
+    max-width: 180px;
+    min-height: 48px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 800;
+    color: var(--text-muted);
+    background: transparent;
+    transition: background-color 0.15s ease, color 0.15s ease;
+    margin: 0 4px;
+  }
+
+  .nav-item:active {
+    background: var(--surface-light);
+  }
+
+  .nav-item.highlight {
+    background: var(--primary);
+    color: #FFFFFF;
+    border: 2px solid var(--ink);
+    box-shadow: 0 3px 0 var(--ink);
+  }
+
+  .nav-item svg {
+    margin-left: 7px;
+  }
+</style>
+<style id="rt-native">html,body{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;-webkit-tap-highlight-color:transparent;overscroll-behavior:none}input,textarea,select,[contenteditable],.rt-selectable,.rt-selectable *{-webkit-user-select:text;user-select:text}img,a{-webkit-user-drag:none}a,button,[role=button]{outline:none}</style>
+</head>
+<body>
+
+  <!-- Top App Bar -->
+  <header class="app-bar">
+    <div class="app-bar-right">
+      <a href="games.html" class="icon-btn" aria-label="العودة إلى الألعاب المصغرة" title="الألعاب المصغرة">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="9 18 15 12 9 6"></polyline>
+        </svg>
+      </a>
+      <div class="app-title-wrap">
+        <span class="app-title">ألغاز لوحات الكوميكس</span>
+        <span class="app-subtitle" id="modeBadge">وضع المكتبة الكامل</span>
+      </div>
+    </div>
+
+    <div class="app-bar-left">
+      <button type="button" class="icon-btn" id="quickResetBtn" aria-label="إعادة خلط اللغز" title="خلط جديد">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="23 4 23 10 17 10"></polyline>
+          <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path>
+        </svg>
+      </button>
+
+      <button type="button" class="icon-btn" id="simOverlayBtn" aria-label="معاينة النافذة العائمة" title="معاينة الحجم العائم">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="3" width="18" height="18" rx="3"></rect>
+          <rect x="11" y="11" width="8" height="8" rx="1.5" fill="currentColor"></rect>
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <main class="main-wrap" id="mainWrap">
+
+    <!-- Floating Window Preview Header -->
+    <div class="overlay-sim-bar">
+      <div class="overlay-sim-label">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4">
+          <rect x="2" y="4" width="20" height="16" rx="3"></rect>
+          <path d="M8 12h8"></path>
+        </svg>
+        <span>معاينة النافذة العائمة المصغرة</span>
+      </div>
+      <button type="button" class="overlay-sim-close" id="exitSimBtn">تكبير</button>
+    </div>
+
+    <!-- Error / Offline Fallback Banner -->
+    <div class="alert-banner" id="dataAlert">
+      <div class="alert-text" id="dataAlertText">تعذر تحميل ملف القصص المصورة. تم تفعيل لوحة احتياطية للعب الفوري.</div>
+      <button type="button" class="retry-btn" id="retryLoadBtn">إعادة المحاولة</button>
+    </div>
+
+    <!-- Comic Scene & Settings Card -->
+    <section class="comic-card" aria-label="اختيار لوحة القصة والمستوى">
+      <div class="section-head">
+        <div class="section-title">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="3" width="7" height="7" rx="1"></rect>
+            <rect x="14" y="3" width="7" height="7" rx="1"></rect>
+            <rect x="14" y="14" width="7" height="7" rx="1"></rect>
+            <rect x="3" y="14" width="7" height="7" rx="1"></rect>
+          </svg>
+          <span>اختر غلاف القصة للترتيب</span>
+        </div>
+        <span class="comic-badge" id="comicsCountBadge">...</span>
+      </div>
+
+      <div class="comics-strip" id="comicsStrip"></div>
+
+      <div class="controls-row">
+        <div class="seg-group" role="group" aria-label="حجم الشبكة">
+          <button type="button" class="seg-btn active" data-size="3">3×3 سريع</button>
+          <button type="button" class="seg-btn" data-size="4">4×4 تحدي</button>
+        </div>
+
+        <div class="mini-toggles">
+          <button type="button" class="pill-btn active" id="toggleNumbersBtn">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4">
+              <line x1="4" y1="9" x2="20" y2="9"></line>
+              <line x1="4" y1="15" x2="20" y2="15"></line>
+              <line x1="10" y1="3" x2="8" y2="21"></line>
+              <line x1="16" y1="3" x2="14" y2="21"></line>
+            </svg>
+            <span>أرقام</span>
+          </button>
+
+          <button type="button" class="pill-btn" id="peekBtn">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4">
+              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+              <circle cx="12" cy="12" r="3"></circle>
+            </svg>
+            <span>معاينة</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- HUD Stats -->
+    <section class="comic-card" aria-label="إحصائيات اللغز">
+      <div class="hud-grid">
+        <div class="hud-box">
+          <div class="hud-label">الحركات</div>
+          <div class="hud-val" id="movesVal">0</div>
+        </div>
+        <div class="hud-box">
+          <div class="hud-label">الوقت</div>
+          <div class="hud-val" id="timerVal">00:00</div>
+        </div>
+        <div class="hud-box">
+          <div class="hud-label">أفضل نتيجة</div>
+          <div class="hud-val best" id="bestVal">--</div>
+        </div>
+      </div>
+      <div class="progress-track" aria-label="نسبة اكتمال اللغز">
+        <div class="progress-fill" id="progressFill"></div>
+      </div>
+    </section>
+
+    <!-- Interactive Puzzle Board -->
+    <section class="board-card" aria-label="لوحة اللغز">
+      <div class="board-header">
+        <div class="current-comic-title rt-selectable" id="activeComicTitle">جاري التحميل...</div>
+        <span class="comic-badge" id="progressBadge">0%</span>
+      </div>
+
+      <div class="puzzle-stage" id="puzzleStage">
+        <div class="puzzle-grid" id="puzzleGrid"></div>
+
+        <!-- Original Image Peek Layer -->
+        <div class="peek-layer" id="peekLayer">
+          <img id="peekImage" src="" alt="معاينة اللوحة الأصلية">
+          <span class="peek-tag">اضغط للإغلاق</span>
+        </div>
+
+        <!-- Win Celebration Overlay -->
+        <div class="win-layer" id="winLayer">
+          <div class="win-burst">اكتمل مشهد الكوميكس!</div>
+          <div class="win-stats rt-selectable" id="winStatsText"></div>
+          <div class="win-actions">
+            <button type="button" class="action-btn btn-accent" id="playAgainBtn">العب مجدداً</button>
+            <button type="button" class="action-btn btn-primary" id="nextComicBtn">القصة التالية</button>
+            <a href="games.html" class="action-btn btn-control">كل الألعاب</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="board-actions">
+        <button type="button" class="action-btn btn-primary" id="shuffleBtn">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-left:6px;">
+            <polyline points="16 3 21 3 21 8"></polyline>
+            <line x1="4" y1="20" x2="21" y2="3"></line>
+            <polyline points="21 16 21 21 16 21"></polyline>
+            <line x1="15" y1="15" x2="21" y2="21"></line>
+            <line x1="4" y1="4" x2="9" y2="9"></line>
+          </svg>
+          <span>خلط جديد</span>
+        </button>
+
+        <button type="button" class="action-btn btn-control" id="hintMoveBtn">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-left:6px;">
+            <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+          </svg>
+          <span>ترتيب تلقائي</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- Overlay Hub Launch Card -->
+    <section class="overlay-promo" aria-label="التشغيل في الطبقة العائمة">
+      <div class="overlay-promo-info">
+        <div class="overlay-promo-title">العب فوق التطبيقات الأخرى</div>
+        <div class="overlay-promo-desc">ثبّت لغز الكوميكس في نافذة عائمة مصغرة أثناء التصفح أو القراءة.</div>
+      </div>
+      <a href="overlay_hub.html" class="overlay-launch-link" id="launchOverlayLink">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+          <polyline points="15 3 21 3 21 9"></polyline>
+          <line x1="10" y1="14" x2="21" y2="3"></line>
+        </svg>
+        <span>طبقة عائمة</span>
+      </a>
+    </section>
+
+  </main>
+
+  <!-- Bottom Native Navigation -->
+  <nav class="bottom-nav" aria-label="التنقل السريع">
+    <a href="games.html" class="nav-item">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="2" y="6" width="20" height="12" rx="3"></rect>
+        <path d="M6 12h4"></path>
+        <path d="M8 10v4"></path>
+        <circle cx="15" cy="11" r="1" fill="currentColor"></circle>
+        <circle cx="18" cy="13" r="1" fill="currentColor"></circle>
+      </svg>
+      <span>الألعاب المصغرة</span>
+    </a>
+
+    <a href="overlay_hub.html" class="nav-item highlight" id="bottomOverlayLink">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="3" y="3" width="18" height="18" rx="3"></rect>
+        <rect x="11" y="11" width="8" height="8" rx="1.5" fill="currentColor"></rect>
+      </svg>
+      <span>التحكم بالطبقة العائمة</span>
+    </a>
+  </nav>
+
+<script>
+(function() {
+  "use strict";
+
+  var FALLBACK_COMIC_SVG =
+    "data:image/svg+xml;utf8," +
+    encodeURIComponent(
+      "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 240 240'>" +
+      "<rect width='240' height='240' fill='#141624'/>" +
+      "<rect x='12' y='12' width='104' height='104' rx='8' fill='#D90429' stroke='#FFFFFF' stroke-width='4'/>" +
+      "<rect x='124' y='12' width='104' height='104' rx='8' fill='#FFB703' stroke='#FFFFFF' stroke-width='4'/>" +
+      "<rect x='12' y='124' width='104' height='104' rx='8' fill='#2B2D42' stroke='#FFFFFF' stroke-width='4'/>" +
+      "<rect x='124' y='124' width='104' height='104' rx='8' fill='#FB8500' stroke='#FFFFFF' stroke-width='4'/>" +
+      "<polygon points='64,28 76,56 106,58 82,76 90,104 64,88 38,104 46,76 22,58 52,56' fill='#FFB703' stroke='#141624' stroke-width='3'/>" +
+      "<circle cx='176' cy='64' r='30' fill='#D90429' stroke='#141624' stroke-width='4'/>" +
+      "<polygon points='176,42 186,64 176,86 166,64' fill='#FFFFFF'/>" +
+      "<path d='M32 196 L64 148 L96 196 Z' fill='#06D6A0' stroke='#FFFFFF' stroke-width='3'/>" +
+      "<circle cx='176' cy='176' r='26' fill='#141624' stroke='#FFFFFF' stroke-width='4'/>" +
+      "<polygon points='168,162 192,176 168,190' fill='#FFB703'/>" +
+      "</svg>"
+    );
+
+  var comicsList = [];
+  var selectedComicIndex = 0;
+  var gridSize = 3;
+  var board = [];
+  var emptyPos = 0;
+  var moves = 0;
+  var secondsElapsed = 0;
+  var timerId = null;
+  var gameActive = false;
+  var gameWon = false;
+  var showNumbers = true;
+  var swipeStart = null;
+  var undoLastMovePos = -1;
+
+  var mainWrap = document.getElementById("mainWrap");
+  var modeBadge = document.getElementById("modeBadge");
+  var simOverlayBtn = document.getElementById("simOverlayBtn");
+  var exitSimBtn = document.getElementById("exitSimBtn");
+  var quickResetBtn = document.getElementById("quickResetBtn");
+
+  var dataAlert = document.getElementById("dataAlert");
+  var dataAlertText = document.getElementById("dataAlertText");
+  var retryLoadBtn = document.getElementById("retryLoadBtn");
+
+  var comicsStrip = document.getElementById("comicsStrip");
+  var comicsCountBadge = document.getElementById("comicsCountBadge");
+  var activeComicTitle = document.getElementById("activeComicTitle");
+
+  var puzzleStage = document.getElementById("puzzleStage");
+  var puzzleGrid = document.getElementById("puzzleGrid");
+  var peekBtn = document.getElementById("peekBtn");
+  var peekLayer = document.getElementById("peekLayer");
+  var peekImage = document.getElementById("peekImage");
+  var toggleNumbersBtn = document.getElementById("toggleNumbersBtn");
+
+  var movesVal = document.getElementById("movesVal");
+  var timerVal = document.getElementById("timerVal");
+  var bestVal = document.getElementById("bestVal");
+  var progressFill = document.getElementById("progressFill");
+  var progressBadge = document.getElementById("progressBadge");
+
+  var winLayer = document.getElementById("winLayer");
+  var winStatsText = document.getElementById("winStatsText");
+  var playAgainBtn = document.getElementById("playAgainBtn");
+  var nextComicBtn = document.getElementById("nextComicBtn");
+  var shuffleBtn = document.getElementById("shuffleBtn");
+  var hintMoveBtn = document.getElementById("hintMoveBtn");
+
+  var launchOverlayLink = document.getElementById("launchOverlayLink");
+  var bottomOverlayLink = document.getElementById("bottomOverlayLink");
+
+  function safeGet(key, fallback) {
+    try {
+      var val = window.localStorage.getItem(key);
+      return val !== null ? val : fallback;
+    } catch (e) {
+      return fallback;
+    }
+  }
+
+  function safeSet(key, value) {
+    try {
+      window.localStorage.setItem(key, String(value));
+    } catch (e) {
+      // Storage unavailable
+    }
+  }
+
+  function vibrateTap(ms) {
+    try {
+      if (window.navigator && typeof window.navigator.vibrate === "function") {
+        window.navigator.vibrate(ms);
+      }
+    } catch (e) {
+      // Ignore
+    }
+  }
+
+  function formatTime(totalSec) {
+    var m = Math.floor(totalSec / 60);
+    var s = totalSec % 60;
+    return (m < 10 ? "0" + m : "" + m) + ":" + (s < 10 ? "0" + s : "" + s);
+  }
+
+  function getBestKey(comicId, size) {
+    return "puzzle_best_" + comicId + "_" + size;
+  }
+
+  function updateBestDisplay() {
+    var comic = comicsList[selectedComicIndex];
+    if (!comic) {
+      bestVal.textContent = "--";
+      return;
+    }
+    var raw = safeGet(getBestKey(comic.id, gridSize), "");
+    if (!raw) {
+      bestVal.textContent = "--";
+      return;
+    }
+    try {
+      var parsed = JSON.parse(raw);
+      if (parsed && typeof parsed.moves === "number") {
+        bestVal.textContent = parsed.moves + " حركة";
+      } else {
+        bestVal.textContent = "--";
+      }
+    } catch (e) {
+      bestVal.textContent = "--";
+    }
+  }
+
+  function saveBestIfBetter(comicId, size, moveCount, timeSec) {
+    var key = getBestKey(comicId, size);
+    var raw = safeGet(key, "");
+    var isRecord = false;
+    try {
+      if (!raw) {
+        isRecord = true;
+      } else {
+        var prev = JSON.parse(raw);
+        if (!prev || typeof prev.moves !== "number" || moveCount < prev.moves || (moveCount === prev.moves && timeSec < prev.time)) {
+          isRecord = true;
+        }
+      }
+      if (isRecord) {
+        safeSet(key, JSON.stringify({ moves: moveCount, time: timeSec }));
+      }
+    } catch (e) {
+      isRecord = false;
+    }
+    updateBestDisplay();
+    return isRecord;
+  }
+
+  function loadComics() {
+    dataAlert.classList.remove("visible");
+    try {
+      fetch("comics.json")
+        .then(function(response) {
+          if (!response.ok) {
+            throw new Error("HTTP " + response.status);
+          }
+          return response.json();
+        })
+        .then(function(data) {
+          if (!Array.isArray(data) || data.length === 0) {
+            throw new Error("empty");
+          }
+          comicsList = data.map(function(item, idx) {
+            return {
+              id: item.id || ("comic-" + idx),
+              title: item.title || ("قصة رقم " + (idx + 1)),
+              cover: item.cover || item.image || FALLBACK_COMIC_SVG,
+              genre: item.genre || "كوميكس"
+            };
+          });
+          initAfterDataLoad();
+        })
+        .catch(function() {
+          activateFallbackComics();
+        });
+    } catch (e) {
+      activateFallbackComics();
+    }
+  }
+
+  function activateFallbackComics() {
+    dataAlertText.textContent = "تعذر الوصول إلى comics.json حالياً. تم تشغيل لوحة تدريب سريعة حتى استعادة الملف.";
+    dataAlert.classList.add("visible");
+    comicsList = [
+      {
+        id: "fallback-panel",
+        title: "لوحة الأبطال السريعة",
+        cover: FALLBACK_COMIC_SVG,
+        genre: "أركيد"
+      }
+    ];
+    initAfterDataLoad();
+  }
+
+  function initAfterDataLoad() {
+    var savedIdx = parseInt(safeGet("puzzle_selected_idx", "0"), 10);
+    if (isNaN(savedIdx) || savedIdx < 0 || savedIdx >= comicsList.length) {
+      savedIdx = 0;
+    }
+    selectedComicIndex = savedIdx;
+    comicsCountBadge.textContent = comicsList.length + " لوحة";
+    renderComicStrip();
+    startNewPuzzle();
+  }
+
+  function renderComicStrip() {
+    comicsStrip.innerHTML = "";
+    for (var i = 0; i < comicsList.length; i++) {
+      (function(idx) {
+        var comic = comicsList[idx];
+        var btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "comic-chip" + (idx === selectedComicIndex ? " selected" : "");
+        btn.setAttribute("aria-label", comic.title);
+
+        var img = document.createElement("img");
+        img.src = comic.cover;
+        img.alt = comic.title;
+
+        var span = document.createElement("span");
+        span.className = "comic-chip-name";
+        span.textContent = comic.title;
+
+        btn.appendChild(img);
+        btn.appendChild(span);
+
+        btn.addEventListener("click", function() {
+          selectedComicIndex = idx;
+          safeSet("puzzle_selected_idx", idx);
+          renderComicStrip();
+          startNewPuzzle();
+        });
+
+        comicsStrip.appendChild(btn);
+      })(i);
+    }
+  }
+
+  function stopTimer() {
+    if (timerId !== null) {
+      clearInterval(timerId);
+      timerId = null;
+    }
+  }
+
+  function startTimer() {
+    stopTimer();
+    timerId = setInterval(function() {
+      if (!gameActive || gameWon) return;
+      secondsElapsed += 1;
+      timerVal.textContent = formatTime(secondsElapsed);
+    }, 1000);
+  }
+
+  function getNeighbors(pos) {
+    var row = Math.floor(pos / gridSize);
+    var col = pos % gridSize;
+    var list = [];
+    if (row > 0) list.push(pos - gridSize);
+    if (row < gridSize - 1) list.push(pos + gridSize);
+    if (col > 0) list.push(pos - 1);
+    if (col < gridSize - 1) list.push(pos + 1);
+    return list;
+  }
+
+  function isSolvedState() {
+    var total = gridSize * gridSize;
+    for (var i = 0; i < total - 1; i++) {
+      if (board[i] !== i) return false;
+    }
+    return board[total - 1] === -1;
+  }
+
+  function shuffleBoardGuaranteed() {
+    var total = gridSize * gridSize;
+    board = [];
+    for (var i = 0; i < total - 1; i++) {
+      board.push(i);
+    }
+    board.push(-1);
+    emptyPos = total - 1;
+
+    var steps = gridSize === 3 ? 75 : 150;
+    var prevEmpty = -1;
+    for (var s = 0; s < steps; s++) {
+      var neighbors = getNeighbors(emptyPos);
+      var candidates = [];
+      for (var k = 0; k < neighbors.length; k++) {
+        if (neighbors[k] !== prevEmpty) {
+          candidates.push(neighbors[k]);
+        }
+      }
+      if (candidates.length === 0) candidates = neighbors;
+      var pick = candidates[Math.floor(Math.random() * candidates.length)];
+      board[emptyPos] = board[pick];
+      board[pick] = -1;
+      prevEmpty = emptyPos;
+      emptyPos = pick;
+    }
+
+    if (isSolvedState()) {
+      var n = getNeighbors(emptyPos)[0];
+      board[emptyPos] = board[n];
+      board[n] = -1;
+      emptyPos = n;
+    }
+  }
+
+  function startNewPuzzle() {
+    stopTimer();
+    moves = 0;
+    secondsElapsed = 0;
+    gameActive = false;
+    gameWon = false;
+    undoLastMovePos = -1;
+    winLayer.classList.remove("visible");
+    peekLayer.classList.remove("visible");
+    peekBtn.classList.remove("active");
+
+    var comic = comicsList[selectedComicIndex];
+    if (comic) {
+      activeComicTitle.textContent = comic.title;
+      peekImage.src = comic.cover;
+    }
+
+    movesVal.textContent = "0";
+    timerVal.textContent = "00:00";
+    updateBestDisplay();
+
+    shuffleBoardGuaranteed();
+    buildBoardDOM();
+    updateProgress();
+  }
+
+  var tileSlotElements = {};
+  var emptyMarkerEl = null;
+
+  function buildBoardDOM() {
+    puzzleGrid.innerHTML = "";
+    tileSlotElements = {};
+
+    var total = gridSize * gridSize;
+    var cellPct = 100 / gridSize;
+    var comic = comicsList[selectedComicIndex];
+    var imgSrc = comic ? comic.cover : FALLBACK_COMIC_SVG;
+
+    emptyMarkerEl = document.createElement("div");
+    emptyMarkerEl.className = "empty-slot-marker";
+    emptyMarkerEl.style.width = cellPct + "%";
+    emptyMarkerEl.style.height = cellPct + "%";
+
+    var emptyInner = document.createElement("div");
+    emptyInner.className = "empty-slot-inner";
+    emptyInner.innerHTML =
+      '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">' +
+      '<rect x="5" y="5" width="14" height="14" rx="3"></rect>' +
+      '</svg>';
+    emptyMarkerEl.appendChild(emptyInner);
+    puzzleGrid.appendChild(emptyMarkerEl);
+
+    for (var pos = 0; pos < total; pos++) {
+      var tileId = board[pos];
+      if (tileId === -1) continue;
+
+      var slot = document.createElement("div");
+      slot.className = "tile-slot";
+      slot.style.width = cellPct + "%";
+      slot.style.height = cellPct + "%";
+      slot.setAttribute("data-tile-id", tileId);
+
+      var btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "tile-btn";
+      btn.setAttribute("aria-label", "لوحة رقم " + (tileId + 1));
+
+      var art = document.createElement("div");
+      art.className = "tile-art";
+
+      var origRow = Math.floor(tileId / gridSize);
+      var origCol = tileId % gridSize;
+
+      var img = document.createElement("img");
+      img.src = imgSrc;
+      img.alt = "";
+      img.style.width = (gridSize * 100) + "%";
+      img.style.height = (gridSize * 100) + "%";
+      img.style.left = -(origCol * 100) + "%";
+      img.style.top = -(origRow * 100) + "%";
+
+      var numBadge = document.createElement("span");
+      numBadge.className = "tile-num";
+      numBadge.textContent = "" + (tileId + 1);
+
+      art.appendChild(img);
+      btn.appendChild(art);
+      btn.appendChild(numBadge);
+      slot.appendChild(btn);
+
+      (function(tid) {
+        btn.addEventListener("click", function() {
+          handleTileTap(tid);
+        });
+      })(tileId);
+
+      tileSlotElements[tileId] = slot;
+      puzzleGrid.appendChild(slot);
+    }
+
+    positionTiles();
+  }
+
+  function positionTiles() {
+    var total = gridSize * gridSize;
+    var cellPct = 100 / gridSize;
+
+    for (var pos = 0; pos < total; pos++) {
+      var row = Math.floor(pos / gridSize);
+      var col = pos % gridSize;
+      var tileId = board[pos];
+
+      if (tileId === -1) {
+        if (emptyMarkerEl) {
+          emptyMarkerEl.style.left = (col * cellPct) + "%";
+          emptyMarkerEl.style.top = (row * cellPct) + "%";
+        }
+      } else {
+        var slot = tileSlotElements[tileId];
+        if (slot) {
+          slot.style.left = (col * cellPct) + "%";
+          slot.style.top = (row * cellPct) + "%";
+          var btn = slot.querySelector(".tile-btn");
+          if (btn) {
+            if (tileId === pos) {
+              btn.classList.add("correct");
+            } else {
+              btn.classList.remove("correct");
+            }
+          }
+        }
+      }
+    }
+  }
+
+  function findTilePosition(tileId) {
+    for (var i = 0; i < board.length; i++) {
+      if (board[i] === tileId) return i;
+    }
+    return -1;
+  }
+
+  function handleTileTap(tileId) {
+    if (gameWon) return;
+    var pos = findTilePosition(tileId);
+    if (pos === -1) return;
+
+    var tRow = Math.floor(pos / gridSize);
+    var tCol = pos % gridSize;
+    var eRow = Math.floor(emptyPos / gridSize);
+    var eCol = emptyPos % gridSize;
+
+    if (tRow === eRow && tCol !== eCol) {
+      var step = tCol < eCol ? -1 : 1;
+      var curr = emptyPos;
+      while (curr !== pos) {
+        var next = curr + step;
+        board[curr] = board[next];
+        curr = next;
+      }
+      board[pos] = -1;
+      emptyPos = pos;
+      onValidMove();
+    } else if (tCol === eCol && tRow !== eRow) {
+      var stepRow = tRow < eRow ? -gridSize : gridSize;
+      var currR = emptyPos;
+      while (currR !== pos) {
+        var nextR = currR + stepRow;
+        board[currR] = board[nextR];
+        currR = nextR;
+      }
+      board[pos] = -1;
+      emptyPos = pos;
+      onValidMove();
+    }
+  }
+
+  function onValidMove() {
+    if (!gameActive) {
+      gameActive = true;
+      startTimer();
+    }
+    moves += 1;
+    movesVal.textContent = "" + moves;
+    vibrateTap(12);
+    positionTiles();
+    updateProgress();
+
+    if (isSolvedState()) {
+      handleWin();
+    }
+  }
+
+  function updateProgress() {
+    var totalTiles = gridSize * gridSize - 1;
+    var correctCount = 0;
+    for (var i = 0; i < totalTiles; i++) {
+      if (board[i] === i) correctCount += 1;
+    }
+    var pct = Math.round((correctCount / totalTiles) * 100);
+    progressFill.style.width = pct + "%";
+    progressBadge.textContent = pct + "%";
+  }
+
+  function handleWin() {
+    gameWon = true;
+    gameActive = false;
+    stopTimer();
+    vibrateTap(45);
+
+    var comic = comicsList[selectedComicIndex];
+    var isNewRecord = false;
+    if (comic) {
+      isNewRecord = saveBestIfBetter(comic.id, gridSize, moves, secondsElapsed);
+    }
+
+    var recordHtml = isNewRecord ? '<br><span class="win-record">رقم قياسي جديد!</span>' : "";
+    winStatsText.innerHTML =
+      "تم تجميع: <strong>" + (comic ? comic.title : "اللوحة") + "</strong><br>" +
+      "الحركات: <strong>" + moves + "</strong> | الزمن: <strong>" + formatTime(secondsElapsed) + "</strong>" +
+      recordHtml;
+
+    setTimeout(function() {
+      winLayer.classList.add("visible");
+    }, 220);
+  }
+
+  function performSmartHint() {
+    if (gameWon) return;
+    var neighbors = getNeighbors(emptyPos);
+    var bestPos = neighbors[0];
+    var bestScore = -999;
+
+    for (var i = 0; i < neighbors.length; i++) {
+      var nPos = neighbors[i];
+      if (nPos === undoLastMovePos && neighbors.length > 1) continue;
+      var tileId = board[nPos];
+      var targetRow = Math.floor(tileId / gridSize);
+      var targetCol = tileId % gridSize;
+      var curRow = Math.floor(nPos / gridSize);
+      var curCol = nPos % gridSize;
+      var newRow = Math.floor(emptyPos / gridSize);
+      var newCol = emptyPos % gridSize;
+
+      var oldDist = Math.abs(targetRow - curRow) + Math.abs(targetCol - curCol);
+      var newDist = Math.abs(targetRow - newRow) + Math.abs(targetCol - newCol);
+      var score = oldDist - newDist;
+      if (newDist === 0) score += 2;
+      if (score > bestScore) {
+        bestScore = score;
+        bestPos = nPos;
+      }
+    }
+
+    undoLastMovePos = emptyPos;
+    handleTileTap(board[bestPos]);
+  }
+
+  puzzleStage.addEventListener("touchstart", function(e) {
+    if (e.touches && e.touches.length === 1) {
+      swipeStart = {
+        x: e.touches[0].clientX,
+        y: e.touches[0].clientY
+      };
+    }
+  }, { passive: true });
+
+  puzzleStage.addEventListener("touchend", function(e) {
+    if (!swipeStart || gameWon) return;
+    if (!e.changedTouches || e.changedTouches.length === 0) return;
+    var dx = e.changedTouches[0].clientX - swipeStart.x;
+    var dy = e.changedTouches[0].clientY - swipeStart.y;
+    swipeStart = null;
+
+    if (Math.abs(dx) < 24 && Math.abs(dy) < 24) return;
+
+    var eRow = Math.floor(emptyPos / gridSize);
+    var eCol = emptyPos % gridSize;
+    var sourcePos = -1;
+
+    if (Math.abs(dx) > Math.abs(dy)) {
+      if (dx > 0 && eCol > 0) sourcePos = emptyPos - 1;
+      if (dx < 0 && eCol < gridSize - 1) sourcePos = emptyPos + 1;
+    } else {
+      if (dy > 0 && eRow > 0) sourcePos = emptyPos - gridSize;
+      if (dy < 0 && eRow < gridSize - 1) sourcePos = emptyPos + gridSize;
+    }
+
+    if (sourcePos !== -1 && board[sourcePos] !== -1) {
+      handleTileTap(board[sourcePos]);
+    }
+  }, { passive: true });
+
+  var segButtons = document.querySelectorAll(".seg-btn");
+  for (var b = 0; b < segButtons.length; b++) {
+    (function(btn) {
+      btn.addEventListener("click", function() {
+        var newSize = parseInt(btn.getAttribute("data-size"), 10);
+        if (newSize === gridSize) return;
+        gridSize = newSize;
+        for (var j = 0; j < segButtons.length; j++) {
+          segButtons[j].classList.remove("active");
+        }
+        btn.classList.add("active");
+        startNewPuzzle();
+      });
+    })(segButtons[b]);
+  }
+
+  toggleNumbersBtn.addEventListener("click", function() {
+    showNumbers = !showNumbers;
+    if (showNumbers) {
+      toggleNumbersBtn.classList.add("active");
+      puzzleGrid.classList.remove("hide-numbers");
+    } else {
+      toggleNumbersBtn.classList.remove("active");
+      puzzleGrid.classList.add("hide-numbers");
+    }
+  });
+
+  peekBtn.addEventListener("click", function() {
+    peekLayer.classList.toggle("visible");
+    peekBtn.classList.toggle("active");
+  });
+
+  peekLayer.addEventListener("click", function() {
+    peekLayer.classList.remove("visible");
+    peekBtn.classList.remove("active");
+  });
+
+  function setOverlaySim(active) {
+    if (active) {
+      mainWrap.classList.add("overlay-sim");
+      simOverlayBtn.classList.add("active");
+      modeBadge.textContent = "معاينة النافذة العائمة";
+    } else {
+      mainWrap.classList.remove("overlay-sim");
+      simOverlayBtn.classList.remove("active");
+      modeBadge.textContent = "وضع المكتبة الكامل";
+    }
+  }
+
+  simOverlayBtn.addEventListener("click", function() {
+    setOverlaySim(!mainWrap.classList.contains("overlay-sim"));
+  });
+
+  exitSimBtn.addEventListener("click", function() {
+    setOverlaySim(false);
+  });
+
+  function saveOverlayIntent() {
+    safeSet("overlay_active_game", "game_puzzle.html");
+    safeSet("overlay_active_game_title", "ألغاز لوحات الكوميكس");
+  }
+
+  launchOverlayLink.addEventListener("click", saveOverlayIntent);
+  bottomOverlayLink.addEventListener("click", saveOverlayIntent);
+
+  quickResetBtn.addEventListener("click", startNewPuzzle);
+  shuffleBtn.addEventListener("click", startNewPuzzle);
+  playAgainBtn.addEventListener("click", startNewPuzzle);
+  hintMoveBtn.addEventListener("click", performSmartHint);
+  retryLoadBtn.addEventListener("click", loadComics);
+
+  nextComicBtn.addEventListener("click", function() {
+    if (comicsList.length > 1) {
+      selectedComicIndex = (selectedComicIndex + 1) % comicsList.length;
+      safeSet("puzzle_selected_idx", selectedComicIndex);
+      renderComicStrip();
+    }
+    startNewPuzzle();
+  });
+
+  if (window.location.search.indexOf("overlay=1") !== -1) {
+    setOverlaySim(true);
+  }
+
+  loadComics();
+})();
+</script>
+</body>
+</html>
