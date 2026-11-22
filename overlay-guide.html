@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>إرشادات النافذة العائمة</title>
+<style>
+:root {
+  --primary: #6200EE;
+  --primary-dark: #3700B3;
+  --accent: #03DAC6;
+  --highlight: #FFEB3B;
+  --control: #B0BEC5;
+  --bg-dark: #121212;
+  --bg-card: #1E1E1E;
+ --text-main: #E0E0E0;
+  --text-muted: #9E9E9E;
+  --danger: #CF6679;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: system-ui, -apple-system, Roboto, sans-serif;
+  background-color: var(--bg-dark);
+  color: var(--text-main);
+  direction: rtl;
+  padding-top: env(safe-area-inset-top);
+  padding-bottom: env(safe-area-inset-bottom);
+  overflow-x: hidden;
+}
+
+.app-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 56px;
+  background-color: var(--bg-card);
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.5);
+  z-index: 1000;
+}
+
+.back-btn {
+  background: none;
+  border: none;
+  color: var(--accent);
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.back-btn:active {
+  background-color: rgba(3, 218, 198, 0.1);
+}
+
+.app-title {
+  font-size: 1.1rem;
+  font-weight: bold;
+  margin-right: 16px;
+  color: var(--text-main);
+}
+
+.content {
+  margin-top: 56px;
+  padding: 20px;
+  padding-bottom: 80px;
+}
+
+.hero-card {
+  background-color: var(--bg-card);
+  border-radius: 16px;
+  padding: 24px;
+  text-align: center;
+  margin-bottom: 24px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+
+.hero-icon {
+  width: 64px;
+  height: 64px;
+  background-color: rgba(98, 0, 238, 0.2);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 16px auto;
+  color: var(--accent);
+}
+
+.hero-card h1 {
+  font-size: 1.3rem;
+  margin-bottom: 8px;
+  color: var(--text-main);
+}
+
+.hero-card p {
+  font-size: 0.95rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+.steps-container {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 24px;
+}
+
+.step-card {
+  background-color: var(--bg-card);
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: flex-start;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
+
+.step-number {
+  background-color: var(--primary);
+  color: #fff;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 0.9rem;
+  flex-shrink: 0;
+  margin-left: 16px;
+}
+
+.step-content h3 {
+  font-size: 1rem;
+  margin-bottom: 4px;
+  color: var(--text-main);
+}
+
+.step-content p {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  line-height: 1.4;
+}
+
+.sim-section {
+  background-color: var(--bg-card);
+  border-radius: 16px;
+  padding: 20px;
+  text-align: center;
+  margin-bottom: 24px;
+  border: 1px dashed var(--control);
+}
+
+.sim-section h2 {
+  font-size: 1.05rem;
+  margin-bottom: 12px;
+  color: var(--text-main);
+}
+
+.sim-btn {
+  background-color: var(--primary);
+  color: #fff;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 24px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(98, 0, 238, 0.4);
+  transition: background-color 0.2s;
+}
+
+.sim-btn:active {
+  background-color: var(--primary-dark);
+}
+
+/* Simulated Floating Bubble */
+.floating-bubble {
+  position: fixed;
+  bottom: 80px;
+  left: 20px;
+  width: 56px;
+  height: 56px;
+  background-color: var(--accent);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(3, 218, 198, 0.4);
+  cursor: pointer;
+  z-index: 2000;
+  transition: transform 0.2s;
+}
+
+.floating-bubble:active {
+  transform: scale(0.92);
+}
+
+/* Simulated Overlay Window */
+.overlay-window {
+  position: fixed;
+  top: 80px;
+  left: 20px;
+  right: 20px;
+  background-color: #242424;
+  border: 1px solid var(--accent);
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.6);
+  z-index: 2001;
+  display: none;
+  overflow: hidden;
+}
+
+.overlay-header {
+  background-color: var(--primary-dark);
+  padding: 10px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.overlay-title {
+  font-size: 0.9rem;
+  font-weight: bold;
+  color: #fff;
+}
+
+.overlay-close {
+  background: none;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  font-size: 1.1rem;
+}
+
+.overlay-body {
+  padding: 16px;
+}
+
+.overlay-body p {
+  font-size: 0.85rem;
+  color: var(--text-main);
+  margin-bottom: 12px;
+}
+
+.overlay-puzzle-box {
+  background-color: #121212;
+  padding: 12px;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  color: var(--highlight);
+  text-align: center;
+}
+
+.permission-note {
+  background-color: rgba(207, 102, 121, 0.1);
+  border-right: 4px solid var(--danger);
+  padding: 12px;
+  border-radius: 0 8px 8px 0;
+  font-size: 0.85rem;
+  color: var(--text-main);
+  line-height: 1.4;
+}
+</style>
+<style id="rt-native">html,body{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;-webkit-tap-highlight-color:transparent;overscroll-behavior:none}input,textarea,select,[contenteditable],.rt-selectable,.rt-selectable *{-webkit-user-select:text;user-select:text}img,a{-webkit-user-drag:none}a,button,[role=button]{outline:none}</style>
+</head>
+<body>
+
+  <header class="app-bar">
+    <a href="index.html" class="back-btn" aria-label="رجوع">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="9 18 15 12 9 6"></polyline>
+      </svg>
+    </a>
+    <h1 class="app-title">إرشادات النافذة العائمة</h1>
+  </header>
+
+  <main class="content">
+    <div class="hero-card">
+      <div class="hero-icon">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="2" y="2" width="20" height="20" rx="2.18" ry="2.18"></rect>
+          <line x1="7" y1="2" x2="7" y2="22"></line>
+          <line x1="17" y1="2" x2="17" y2="22"></line>
+          <line x1="2" y1="12" x2="22" y2="12"></line>
+          <line x1="2" y1="7" x2="7" y2="7"></line>
+          <line x1="2" y1="17" x2="7" y2="17"></line>
+          <line x1="17" y1="17" x2="22" y2="17"></line>
+          <line x1="17" y1="7" x2="22" y2="7"></line>
+        </svg>
+      </div>
+      <h1>النافذة العائمة الذكية</h1>
+      <p class="rt-selectable">استمتع بحل الألغاز الصعبة أثناء تصفحك لتطبيقات أخرى عبر تفعيل فقاعة العرض المباشر على الشاشة.</p>
+    </div>
+
+    <div class="steps-container">
+      <div class="step-card">
+        <div class="step-number">١</div>
+        <div class="step-content">
+          <h3>منح إذن العرض فوق التطبيقات</h3>
+          <p class="rt-selectable">عند تفعيل الميزة لأول مرة، سيطلب منك النظام السماح للتطبيق بالظهور فوق التطبيقات الأخرى.</p>
+        </div>
+      </div>
+
+      <div class="step-card">
+        <div class="step-number">٢</div>
+        <div class="step-content">
+          <h3>تفعيل الفقاعة العائمة</h3>
+          <p class="rt-selectable">اضغط على زر التفعيل أدناه أو من داخل شاشة أي لغز لتظهر لك فقاعة عائمة صغيرة على حافة الشاشة.</p>
+        </div>
+      </div>
+
+      <div class="step-card">
+        <div class="step-number">٣</div>
+        <div class="step-content">
+          <h3>استعراض الحل أثناء اللعب</h3>
+          <p class="rt-selectable">اضغط على الفقاعة في أي وقت لتفتح لك نافذة مصغرة تحتوي على تفاصيل اللغز ومساعد الذكاء الاصطناعي.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="sim-section">
+      <h2>تجربة تفاعلية مصغرة</h2>
+      <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 12px;">اضغط الزر أدناه لمعاينة كيف تبدو الفقاعة والنافذة العائمة:</p>
+      <button class="sim-btn" id="simulateBtn">تجربة النافذة العائمة الآن</button>
+    </div>
+
+    <div class="permission-note rt-selectable">
+      <strong>ملاحظة هامة:</strong> قد تتطلب بعض أجهزة أندرويد الانتقال إلى إعدادات الجهاز اليدوية وتفعيل خيار "الظهور أعلى التطبيقات الأخرى" يدوياً لتطبيق ألغاز الذكاء.
+    </div>
+  </main>
+
+  <!-- Simulated Floating Bubble Element -->
+  <div class="floating-bubble" id="floatingBubble" title="فقاعة اللغز العائمة" style="display: none;">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#121212" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="12" r="10"></circle>
+      <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+      <line x1="12" y1="17" x2="12.01" y2="17"></line>
+    </svg>
+  </div>
+
+  <!-- Simulated Overlay Window Element -->
+  <div class="overlay-window" id="overlayWindow">
+    <div class="overlay-header">
+      <span class="overlay-title">لغز عائم نشط</span>
+      <button class="overlay-close" id="closeOverlay">✕</button>
+    </div>
+    <div class="overlay-body">
+      <p class="rt-selectable">يمكنك نقل هذه النافذة أو إغلاقها متى شئت أثناء استخدامك لأي تطبيق آخر.</p>
+      <div class="overlay-puzzle-box rt-selectable">
+        لغز تجريبي: ما هو الشيء الذي يكلم كل لغات العالم؟ <br><strong>(الصدى)</strong>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    try {
+      var simulateBtn = document.getElementById('simulateBtn');
+      var floatingBubble = document.getElementById('floatingBubble');
+      var overlayWindow = document.getElementById('overlayWindow');
+      var closeOverlay = document.getElementById('closeOverlay');
+
+      simulateBtn.addEventListener('click', function() {
+        floatingBubble.style.display = 'flex';
+        overlayWindow.style.display = 'block';
+      });
+
+      floatingBubble.addEventListener('click', function() {
+        if (overlayWindow.style.display === 'none') {
+          overlayWindow.style.display = 'block';
+        } else {
+          overlayWindow.style.display = 'none';
+        }
+      });
+
+      closeOverlay.addEventListener('click', function() {
+        overlayWindow.style.display = 'none';
+        floatingBubble.style.display = 'none';
+      });
+    } catch (e) {
+      console.error(e);
+    }
+  </script>
+</body>
+</html>
