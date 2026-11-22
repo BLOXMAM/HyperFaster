@@ -70,5 +70,9 @@
   "index.html": {
     "op": "add",
     "timestamp": 1795320370518
+  },
+  "categories.html": {
+    "op": "add",
+    "timestamp": 1795320444582
   }
 }
