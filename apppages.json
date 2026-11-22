@@ -146,5 +146,9 @@
   "overlay-guide.html": {
     "op": "add",
     "timestamp": 1795362702349
+  },
+  "scores.html": {
+    "op": "add",
+    "timestamp": 1795362746048
   }
 }
