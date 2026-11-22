@@ -99,10 +99,6 @@
     "op": "update",
     "timestamp": 1795354601339
   },
-  "games.json": {
-    "op": "add",
-    "timestamp": 1795357369570
-  },
   "rostrick-build/ai-drafts/puzzle-game.html.json": {
     "op": "update",
     "timestamp": 1795357520192
