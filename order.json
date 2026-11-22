@@ -54,5 +54,13 @@
     "hidden": false,
     "searchEnabled": true,
     "searchNames": []
+  },
+  {
+    "file": "settings.html",
+    "title": "الإعدادات",
+    "icon": "fa-solid fa-file",
+    "hidden": false,
+    "searchEnabled": true,
+    "searchNames": []
   }
 ]
