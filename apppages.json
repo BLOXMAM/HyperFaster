@@ -92,8 +92,8 @@
     "timestamp": 1795354528793
   },
   "settings.html": {
-    "op": "add",
-    "timestamp": 1795354549302
+    "op": "update",
+    "timestamp": 1795361960632
   },
   ".github/workflows/build-apk.yml": {
     "op": "update",
