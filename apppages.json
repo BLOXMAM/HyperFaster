@@ -82,5 +82,9 @@
   "product.html": {
     "op": "add",
     "timestamp": 1795342104413
+  },
+  "favorites.html": {
+    "op": "add",
+    "timestamp": 1795354423144
   }
 }
