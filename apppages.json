@@ -78,5 +78,9 @@
   "products.html": {
     "op": "add",
     "timestamp": 1795320801574
+  },
+  "product.html": {
+    "op": "add",
+    "timestamp": 1795342104413
   }
 }
