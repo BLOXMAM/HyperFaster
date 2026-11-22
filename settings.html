@@ -2,128 +2,156 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>الإعدادات - مكتبة الألعاب المتواضعة</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>الإعدادات - لغز الألعاب الغامضة</title>
 <style>
-:root{
-  --primary:#6200EE;
-  --primary-dark:#3700B3;
-  --accent:#03DAC6;
-  --highlight:#FF0266;
-  --control:#B0BEC5;
-  --bg:#121212;
-  --surface:#1E1E1E;
-  --surface-card:#2A2A2A;
-  --text:#FFFFFF;
-  --text-secondary:#B3B3B3;
-  --border:#333333;
-}
-
-body.light-theme {
-  --bg:#F5F5F5;
-  --surface:#FFFFFF;
-  --surface-card:#EFEFEF;
-  --text:#121212;
-  --text-secondary:#666666;
-  --border:#DDDDDD;
+:root {
+  --primary: #1A1A2E;
+  --primary-dark: #16213E;
+  --accent: #0F3460;
+  --highlight: #E94560;
+  --control: #FFFFFF;
+  --surface: #222244;
+  --surface-border: #333366;
+  --text-muted: #A0A0B0;
 }
 
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  font-family: Tahoma, Arial, sans-serif;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   -webkit-tap-highlight-color: transparent;
 }
 
 body {
-  background-color: var(--bg);
-  color: var(--text);
+  background-color: var(--primary);
+  color: var(--control);
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
-  padding-bottom: 70px;
+  padding-top: env(safe-area-inset-top);
+  padding-bottom: env(safe-area-inset-bottom);
+  user-select: none;
 }
 
-header {
-  background-color: var(--surface);
-  border-bottom: 1px solid var(--border);
-  padding: 16px;
-  text-align: center;
+.rt-selectable {
+  user-select: text;
+}
+
+/* App Bar */
+.app-bar {
+  background-color: var(--primary-dark);
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+  border-bottom: 1px solid var(--accent);
   position: sticky;
   top: 0;
-  z-index: 10;
+  z-index: 100;
 }
 
-header h1 {
-  font-size: 1.2rem;
-  color: var(--text);
+.app-bar-title {
+  font-size: 18px;
+  font-weight: bold;
+  color: var(--control);
 }
 
+.app-bar-btn {
+  background: none;
+  border: none;
+  color: var(--control);
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.app-bar-btn:active {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.app-bar-btn svg {
+  width: 24px;
+  height: 24px;
+  fill: currentColor;
+}
+
+/* Main Content Container */
 .container {
+  flex: 1;
   padding: 16px;
   max-width: 600px;
-  margin: 0 auto;
   width: 100%;
+  margin: 0 auto;
+  padding-bottom: 80px;
 }
 
-.section-title {
-  font-size: 1rem;
-  color: var(--text-secondary);
-  margin-bottom: 12px;
-  margin-top: 16px;
-  text-transform: uppercase;
-}
-
-.card {
+/* Section Cards */
+.settings-section {
   background-color: var(--surface);
-  border-radius: 8px;
-  border: 1px solid var(--border);
-  margin-bottom: 12px;
-  overflow: hidden;
+  border: 1px solid var(--surface-border);
+  border-radius: 16px;
+  padding: 16px;
+  margin-bottom: 16px;
 }
 
+.settings-section-title {
+  font-size: 14px;
+  color: var(--highlight);
+  font-weight: bold;
+  margin-bottom: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Setting Item Rows */
 .setting-item {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 16px;
-  border-bottom: 1px solid var(--border);
+  padding: 12px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .setting-item:last-child {
   border-bottom: none;
+  padding-bottom: 0;
+}
+
+.setting-item:first-of-type {
+  padding-top: 0;
 }
 
 .setting-info {
-  display: flex;
-  align-items: center;
+  flex: 1;
+  margin-left: 16px;
 }
 
-.setting-icon {
-  width: 24px;
-  height: 24px;
-  margin-left: 12px;
-  fill: var(--accent);
+.setting-name {
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--control);
+  margin-bottom: 4px;
 }
 
-.setting-text h3 {
-  font-size: 0.95rem;
-  color: var(--text);
-  margin-bottom: 2px;
+.setting-desc {
+  font-size: 13px;
+  color: var(--text-muted);
 }
 
-.setting-text p {
-  font-size: 0.8rem;
-  color: var(--text-secondary);
-}
-
-/* Switch UI */
+/* Toggle Switch */
 .switch {
   position: relative;
   display: inline-block;
-  width: 50px;
-  height: 26px;
+  width: 52px;
+  height: 28px;
+  flex-shrink: 0;
 }
 
 .switch input {
@@ -135,284 +163,396 @@ header h1 {
 .slider {
   position: absolute;
   cursor: pointer;
-  top: 0; left: 0; right: 0; bottom: 0;
-  background-color: var(--control);
-  transition: .3s;
-  border-radius: 26px;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: var(--accent);
+  transition: 0.3s;
+  border-radius: 28px;
 }
 
 .slider:before {
   position: absolute;
   content: "";
-  height: 20px;
-  width: 20px;
+  height: 22px;
+  width: 22px;
   left: 3px;
   bottom: 3px;
   background-color: white;
-  transition: .3s;
+  transition: 0.3s;
   border-radius: 50%;
 }
 
 input:checked + .slider {
-  background-color: var(--primary);
+  background-color: var(--highlight);
 }
 
 input:checked + .slider:before {
-  transform: translateX(-24px);
+  transform: translateX(-24px); /* RTL movement */
 }
 
+/* Range Sliders */
+.range-container {
+  width: 100%;
+  margin-top: 8px;
+}
+
+.range-slider {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 6px;
+  border-radius: 3px;
+  background: var(--accent);
+  outline: none;
+}
+
+.range-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--highlight);
+  cursor: pointer;
+}
+
+/* Buttons inside settings */
 .btn-action {
-  background: none;
-  border: 1px solid var(--border);
-  color: var(--text);
-  padding: 8px 16px;
-  border-radius: 6px;
-  font-size: 0.85rem;
+  background-color: var(--accent);
+  color: var(--control);
+  border: none;
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
   cursor: pointer;
   min-height: 44px;
-  min-width: 44px;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 .btn-action:active {
-  background-color: var(--border);
+  background-color: var(--highlight);
 }
 
 .btn-danger {
+  background-color: rgba(233, 69, 96, 0.2);
   color: var(--highlight);
-  border-color: var(--highlight);
+  border: 1px solid var(--highlight);
+  width: 100%;
+  margin-top: 8px;
 }
 
-.app-version {
-  text-align: center;
-  color: var(--text-secondary);
-  font-size: 0.8rem;
-  margin-top: 24px;
+.btn-danger:active {
+  background-color: var(--highlight);
+  color: var(--control);
 }
 
-/* Navigation bar */
-nav {
+/* Toast Notification */
+.toast {
+  position: fixed;
+  bottom: 70px;
+  left: 50%;
+  transform: translateX(-50%) translateY(100px);
+  background-color: var(--surface);
+  color: var(--control);
+  border: 1px solid var(--highlight);
+  padding: 12px 24px;
+  border-radius: 24px;
+  font-size: 14px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  transition: transform 0.3s ease;
+  z-index: 1000;
+  pointer-events: none;
+}
+
+.toast.show {
+  transform: translateX(-50%) translateY(0);
+}
+
+/* Bottom Nav */
+.bottom-nav {
   position: fixed;
   bottom: 0;
   left: 0;
   right: 0;
-  background-color: var(--surface);
-  border-top: 1px solid var(--border);
+  height: 60px;
+  background-color: var(--primary-dark);
+  border-top: 1px solid var(--accent);
   display: flex;
   justify-content: space-around;
-  padding: 8px 0;
-  z-index: 100;
+  align-items: center;
+  z-index: 99;
+  padding-bottom: env(safe-area-inset-bottom);
 }
 
-nav a {
+.nav-item {
+  color: var(--text-muted);
+  text-decoration: none;
   display: flex;
   flex-direction: column;
   align-items: center;
-  text-decoration: none;
-  color: var(--text-secondary);
-  font-size: 0.75rem;
-  width: 25%;
-  min-height: 44px;
   justify-content: center;
+  flex: 1;
+  height: 100%;
+  font-size: 11px;
 }
 
-nav a.active {
-  color: var(--accent);
+.nav-item.active {
+  color: var(--highlight);
 }
 
-nav a svg {
+.nav-item svg {
   width: 22px;
   height: 22px;
-  margin-bottom: 4px;
   fill: currentColor;
+  margin-bottom: 2px;
 }
 </style>
+<style id="rt-native">html,body{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;-webkit-tap-highlight-color:transparent;overscroll-behavior:none}input,textarea,select,[contenteditable],.rt-selectable,.rt-selectable *{-webkit-user-select:text;user-select:text}img,a{-webkit-user-drag:none}a,button,[role=button]{outline:none}</style>
 </head>
 <body>
 
-<header>
-  <h1>إعدادات التطبيق</h1>
-</header>
+  <!-- App Bar -->
+  <header class="app-bar">
+    <a href="home.html" class="app-bar-btn" aria-label="الرئيسية">
+      <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+    </a>
+    <h1 class="app-bar-title">الإعدادات</h1>
+    <div style="width: 44px;"></div> <!-- Spacer -->
+  </header>
 
-<div class="container">
-  
-  <div class="section-title">التفضيلات العامة</div>
-  <div class="card">
-    <div class="setting-item">
-      <div class="setting-info">
-        <svg class="setting-icon" viewBox="0 0 24 24"><path d="M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9 9-4.03 9-9c0-.46-.04-.92-.1-1.36-.98 1.37-2.58 2.26-4.4 2.26-3.03 0-5.5-2.47-5.5-5.5 0-1.82.89-3.42 2.26-4.4-.44-.06-.9-.1-1.36-.1z"/></svg>
-        <div class="setting-text">
-          <h3>المظهر الفاتح</h3>
-          <p>تفعيل الألوان الفاتحة للواجهة</p>
+  <!-- Main Settings Container -->
+  <main class="container">
+    
+    <!-- Audio & Effects Section -->
+    <div class="settings-section">
+      <div class="settings-section-title">الصوت والمؤثرات</div>
+      
+      <div class="setting-item">
+        <div class="setting-info">
+          <div class="setting-name">مؤثرات الأزرار والألغاز</div>
+          <div class="setting-desc">تشغيل أصوات تفاعلية عند النقر وحل الألغاز</div>
         </div>
+        <label class="switch">
+          <input type="checkbox" id="soundToggle" checked>
+          <span class="slider"></span>
+        </label>
       </div>
-      <label class="switch">
-        <input type="checkbox" id="themeSwitch">
-        <span class="slider"></span>
-      </label>
-    </div>
 
-    <div class="setting-item">
-      <div class="setting-info">
-        <svg class="setting-icon" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 16h-2v-2h2v2zm1.07-7.75l-.9.92C12.45 11.9 12 12.5 12 14h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H7c0-2.76 2.24-5 5-5s5 2.24 5 5c0 1.03-.42 1.98-1.07 2.75z"/></svg>
-        <div class="setting-text">
-          <h3>المؤثرات الصوتية</h3>
-          <p>تشغيل الأصوات عند النقر</p>
+      <div class="setting-item" style="flex-direction: column; align-items: stretch; margin-top: 12px;">
+        <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
+          <span class="setting-name" style="font-size: 14px;">مستوى صوت المؤثرات</span>
+          <span id="volumeValue" class="rt-selectable" style="font-size: 14px; color: var(--highlight);">80%</span>
         </div>
-      </div>
-      <label class="switch">
-        <input type="checkbox" id="soundSwitch" checked>
-        <span class="slider"></span>
-      </label>
-    </div>
-  </div>
-
-  <div class="section-title">التخزين والبيانات</div>
-  <div class="card">
-    <div class="setting-item">
-      <div class="setting-info">
-        <svg class="setting-icon" viewBox="0 0 24 24"><path d="M19 4h-3.5l-1-1h-5l-1 1H5v2h14M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12z"/></svg>
-        <div class="setting-text">
-          <h3>مسح بيانات التخزين المؤقت</h3>
-          <p>إزالة الألعاب المحفوظة مؤقتاً وبيانات التصفح</p>
-        </div>
-      </div>
-      <button class="btn-action btn-danger" id="clearCacheBtn">مسح</button>
-    </div>
-  </div>
-
-  <div class="section-title">حول التطبيق</div>
-  <div class="card">
-    <div class="setting-item">
-      <div class="setting-info">
-        <svg class="setting-icon" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
-        <div class="setting-text">
-          <h3>رقم الإصدار</h3>
-          <p>مكتبة الألعاب المتواضعة v1.0.4</p>
+        <div class="range-container">
+          <input type="range" min="0" max="100" value="80" class="range-slider" id="volumeSlider">
         </div>
       </div>
     </div>
-  </div>
 
-  <div class="app-version">جميع الحقوق محفوظة © 2023</div>
+    <!-- Appearance & Theme Section -->
+    <div class="settings-section">
+      <div class="settings-section-title">المظهر والنمط</div>
+      
+      <div class="setting-item">
+        <div class="setting-info">
+          <div class="setting-name">الوضع المظلم المتقدم</div>
+          <div class="setting-desc">تعزيز التباين ليناسب غرف الألغاز المظلمة</div>
+        </div>
+        <label class="switch">
+          <input type="checkbox" id="darkThemeToggle" checked>
+          <span class="slider"></span>
+        </label>
+      </div>
 
-</div>
+      <div class="setting-item">
+        <div class="setting-info">
+          <div class="setting-name">الاهتزاز عند اللمس</div>
+          <div class="setting-desc">اهتزاز خفيف للأجهزة المدعومة عند التفاعل</div>
+        </div>
+        <label class="switch">
+          <input type="checkbox" id="vibrateToggle" checked>
+          <span class="slider"></span>
+        </label>
+      </div>
+    </div>
 
-<nav>
-  <a href="index.html">
-    <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
-    الرئيسية
-  </a>
-  <a href="categories.html">
-    <svg viewBox="0 0 24 24"><path d="M4 8h4V4H4v4zm6 12h4v-4h-4v4zm-6 0h4v-4H4v4zm0-6h4v-4H4v4zm6 0h4v-4h-4v4zm6-10v4h4V4h-4zm-6 4h4V4h-4v4zm6 6h4v-4h-4v4zm0 6h4v-4h-4v4z"/></svg>
-    التصنيفات
-  </a>
-  <a href="favorites.html">
-    <svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
-    المفضلة
-  </a>
-  <a href="settings.html" class="active">
-    <svg viewBox="0 0 24 24"><path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg>
-    الإعدادات
-  </a>
-</nav>
+    <!-- Overlay & System Integration -->
+    <div class="settings-section">
+      <div class="settings-section-title">النظام والوضع العائم</div>
+      
+      <div class="setting-item">
+        <div class="setting-info">
+          <div class="setting-name">خدمة النافذة العائمة (Overlay)</div>
+          <div class="setting-desc">السماح بعرض الألغاز المصغرة فوق التطبيقات الأخرى</div>
+        </div>
+        <label class="switch">
+          <input type="checkbox" id="overlayServiceToggle">
+          <span class="slider"></span>
+        </label>
+      </div>
+    </div>
 
-<script>
-  // Web Audio API context for sound effects
-  var audioCtx = null;
-  function playClickSound() {
-    try {
-      var soundEnabled = document.getElementById('soundSwitch').checked;
-      if (!soundEnabled) return;
-      if (!audioCtx) {
-        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-      }
-      var osc = audioCtx.createOscillator();
-      var gain = audioCtx.createGain();
-      osc.type = 'sine';
-      osc.frequency.setValueAtTime(400, audioCtx.currentTime);
-      osc.frequency.exponentialRampToValueAtTime(800, audioCtx.currentTime + 0.05);
-      gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
-      gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.05);
-      osc.connect(gain);
-      gain.connect(audioCtx.destination);
-      osc.start();
-      osc.stop(audioCtx.currentTime + 0.05);
-    } catch (e) {
-      // Audio context might be blocked without user interaction
-    }
-  }
+    <!-- Data Management Section -->
+    <div class="settings-section">
+      <div class="settings-section-title">البيانات والتخزين</div>
+      
+      <div class="setting-item" style="flex-direction: column; align-items: stretch;">
+        <div class="setting-info" style="margin-bottom: 12px; margin-left: 0;">
+          <div class="setting-name">إعادة ضبط تقدم الألغاز</div>
+          <div class="setting-desc">مسح جميع النقاط والمستويات المحفوظة محلياً والبدء من جديد</div>
+        </div>
+        <button class="btn-action btn-danger" id="resetDataBtn">مسح كافة البيانات المؤقتة</button>
+      </div>
+    </div>
 
-  // Load saved settings
-  try {
-    var savedTheme = localStorage.getItem('app_theme');
-    var themeSwitch = document.getElementById('themeSwitch');
-    if (savedTheme === 'light') {
-      document.body.classList.add('light-theme');
-      themeSwitch.checked = true;
-    } else {
-      themeSwitch.checked = false;
-    }
+  </main>
 
-    var savedSound = localStorage.getItem('app_sound');
-    var soundSwitch = document.getElementById('soundSwitch');
-    if (savedSound === 'off') {
-      soundSwitch.checked = false;
-    } else {
-      soundSwitch.checked = true;
-    }
-  } catch (e) {}
+  <!-- Toast Notification -->
+  <div class="toast" id="toastMessage">تم حفظ الإعدادات بنجاح</div>
 
-  // Theme switch listener
-  document.getElementById('themeSwitch').addEventListener('change', function() {
-    playClickSound();
-    try {
-      if (this.checked) {
-        document.body.classList.add('light-theme');
-        localStorage.setItem('app_theme', 'light');
-      } else {
-        document.body.classList.remove('light-theme');
-        localStorage.setItem('app_theme', 'dark');
-      }
-    } catch (e) {}
-  });
+  <!-- Bottom Navigation -->
+  <nav class="bottom-nav">
+    <a href="home.html" class="nav-item">
+      <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+      الرئيسية
+    </a>
+    <a href="library.html" class="nav-item">
+      <svg viewBox="0 0 24 24"><path d="M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm16-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0-2-.9-2-2V4c0-1.1-.9-2-2-2zm0 14H8V4h12v12z"/></svg>
+      المكتبة
+    </a>
+    <a href="riddle.html" class="nav-item">
+      <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 16h-2v-2h2v2zm1.07-7.75l-.9.92C12.45 11.9 12 12.5 12 14h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H7c0-2.76 2.24-5 5-5s5 2.24 5 5c0 1.03-.42 1.98-1.03 2.75z"/></svg>
+      اللغز
+    </a>
+    <a href="settings.html" class="nav-item active">
+      <svg viewBox="0 0 24 24"><path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg>
+      الإعدادات
+    </a>
+  </nav>
 
-  // Sound switch listener
-  document.getElementById('soundSwitch').addEventListener('change', function() {
-    try {
-      if (this.checked) {
-        localStorage.setItem('app_sound', 'on');
-        playClickSound();
-      } else {
-        localStorage.setItem('app_sound', 'off');
-      }
-    } catch (e) {}
-  });
-
-  // Clear cache action
-  document.getElementById('clearCacheBtn').addEventListener('click', function() {
-    playClickSound();
-    if (confirm('هل أنت متأكد من مسح جميع بيانات التخزين المؤقت؟')) {
+  <script>
+    // Simple Web Audio API for UI click feedback
+    let audioCtx = null;
+    function playClickSound() {
       try {
-        localStorage.clear();
-        alert('تم مسح البيانات بنجاح');
-        location.reload();
+        if (!document.getElementById('soundToggle').checked) return;
+        if (!audioCtx) {
+          audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        }
+        if (audioCtx.state === 'suspended') {
+          audioCtx.resume();
+        }
+        var osc = audioCtx.createOscillator();
+        var gain = audioCtx.createGain();
+        var volume = document.getElementById('volumeSlider').value / 100;
+        
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(440, audioCtx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(880, audioCtx.currentTime + 0.05);
+        
+        gain.gain.setValueAtTime(volume * 0.1, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.05);
+        
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        
+        osc.start();
+        osc.stop(audioCtx.currentTime + 0.05);
       } catch (e) {
-        alert('حدث خطأ أثناء مسح البيانات');
+        // Ignore audio errors if blocked by browser policy
       }
     }
-  });
 
-  // Add sound to all buttons and nav items
-  var clickables = document.querySelectorAll('button, nav a, .switch');
-  for (var i = 0; i < clickables.length; i++) {
-    clickables[i].addEventListener('click', function() {
-      playClickSound();
+    // Toast utility
+    function showToast(text) {
+      var toast = document.getElementById('toastMessage');
+      toast.textContent = text;
+      toast.classList.add('show');
+      setTimeout(function() {
+        toast.classList.remove('show');
+      }, 2500);
+    }
+
+    // LocalStorage management for settings
+    const STORAGE_KEY = 'mystic_games_settings';
+
+    function loadSettings() {
+      try {
+        var raw = localStorage.getItem(STORAGE_KEY);
+        if (raw) {
+          var data = JSON.parse(raw);
+          document.getElementById('soundToggle').checked = !!data.sound;
+          document.getElementById('volumeSlider').value = data.volume !== undefined ? data.volume : 80;
+          document.getElementById('volumeValue').textContent = document.getElementById('volumeSlider').value + '%';
+          document.getElementById('darkThemeToggle').checked = !!data.darkTheme;
+          document.getElementById('vibrateToggle').checked = !!data.vibrate;
+          document.getElementById('overlayServiceToggle').checked = !!data.overlay;
+        }
+      } catch (e) {
+        console.error('Failed to load settings', e);
+      }
+    }
+
+    function saveSettings() {
+      try {
+        var data = {
+          sound: document.getElementById('soundToggle').checked,
+          volume: parseInt(document.getElementById('volumeSlider').value, 10),
+          darkTheme: document.getElementById('darkThemeToggle').checked,
+          vibrate: document.getElementById('vibrateToggle').checked,
+          overlay: document.getElementById('overlayServiceToggle').checked
+        };
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+        showToast('تم حفظ الإعدادات بنجاح');
+      } catch (e) {
+        showToast('تعذر حفظ الإعدادات');
+      }
+    }
+
+    // Event listeners
+    document.addEventListener('DOMContentLoaded', function() {
+      loadSettings();
+
+      // Volume slider real-time update
+      var volumeSlider = document.getElementById('volumeSlider');
+      var volumeValue = document.getElementById('volumeValue');
+      volumeSlider.addEventListener('input', function() {
+        volumeValue.textContent = volumeSlider.value + '%';
+      });
+
+      // Save on any change with debounce/direct reaction
+      var inputs = document.querySelectorAll('input');
+      for (var i = 0; i < inputs.length; i++) {
+        inputs[i].addEventListener('change', function() {
+          playClickSound();
+          saveSettings();
+        });
+      }
+
+      volumeSlider.addEventListener('change', function() {
+        playClickSound();
+        saveSettings();
+      });
+
+      // Reset data button
+      document.getElementById('resetDataBtn').addEventListener('click', function() {
+        playClickSound();
+        try {
+          localStorage.removeItem('mystic_games_progress');
+          localStorage.removeItem(STORAGE_KEY);
+          showToast('تم مسح جميع البيانات وإعادة الضبط');
+          setTimeout(function() {
+            location.reload();
+          }, 1000);
+        } catch (e) {
+          showToast('حدث خطأ أثناء مسح البيانات');
+        }
+      });
     });
-  }
-</script>
-
+  </script>
 </body>
 </html>
