@@ -132,8 +132,8 @@
     "timestamp": 1795375351288
   },
   "comics.json": {
-    "op": "add",
-    "timestamp": 1795368507963
+    "op": "update",
+    "timestamp": 1795375634184
   },
   "games.json": {
     "op": "add",
