@@ -92,4 +92,4 @@
     window.RTAdmin = api;
     try { if (window.RosTrickLinks && window.RosTrickLinks.getInitial) route(window.RosTrickLinks.getInitial()); } catch (e) {}
     window.addEventListener("rostrick-link", function (e) { route(e && e.detail); });
-  })({"worker":"https://hyperfaster.hosaaam-753.workers.dev","files":["games.json"],"page":"admin.html","host":"puzzlelibrary.rostrick.com"});
+  })({"worker":"https://hyperfaster.hosaaam-753.workers.dev","files":["comics.json","games.json","pdf_links.json"],"page":"admin.html","host":"comicsoverlay.rostrick.com"});
