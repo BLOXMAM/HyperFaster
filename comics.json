@@ -1,0 +1,122 @@
+[
+  {
+    "id": "comic-01",
+    "title": "صقر المدار: فجر النيون",
+    "author": "طارق المنصور",
+    "genre": "أبطال خارقون",
+    "cover": "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'><rect width='120' height='120' fill='%23101828'/><polygon points='60,10 75,45 112,45 82,68 94,105 60,82 26,105 38,68 8,45 45,45' fill='%23ff3b30' stroke='%23ffd60a' stroke-width='4'/><circle cx='60' cy='60' r='16' fill='%2300e5ff' stroke='%23101828' stroke-width='3'/><path d='M48 60 L60 48 L72 60 L60 72 Z' fill='%23ffffff'/></svg>",
+    "pdfUrl": "pdfs/saqr-almadar-01.pdf",
+    "pagesCount": 32,
+    "summary": "في مدينة تتحكم بها الأبراج الرقمية، يكتشف الطيار السابق رامي درعاً شمسياً قديماً يمنحه قوة التحليق بسرعة الصوت لحماية الأحياء السفلية من عصابات الظل."
+  },
+  {
+    "id": "comic-02",
+    "title": "حراس الواحة المفقودة",
+    "author": "ليلى الشهابي",
+    "genre": "فانتازيا عربية",
+    "cover": "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'><rect width='120' height='120' fill='%23f77f00'/><circle cx='60' cy='46' r='26' fill='%23fcbf49'/><path d='M0 85 Q35 65 60 85 T120 85 L120 120 L0 120 Z' fill='%23003049'/><path d='M25 88 L42 52 L58 88 Z' fill='%23d62828'/><path d='M62 88 L82 44 L102 88 Z' fill='%23eae2b7'/><circle cx='60' cy='46' r='9' fill='%23ffffff'/></svg>",
+    "pdfUrl": "pdfs/hurras-alwaha-02.pdf",
+    "pagesCount": 28,
+    "summary": "رحلة شقيقين عبر كثبان الربع الغامض للعثور على بوابة المياه الأبدية قبل أن تبتلع العاصفة الرملية قريتهما إلى الأبد."
+  },
+  {
+    "id": "comic-03",
+    "title": "سايبر بغداد 2099",
+    "author": "يوسف الكاظمي",
+    "genre": "خيال علمي",
+    "cover": "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'><rect width='120' height='120' fill='%230b091a'/><path d='M10 120 L10 55 L30 40 L30 120 Z' fill='%23240046'/><path d='M35 120 L35 28 L60 15 L85 28 L85 120 Z' fill='%233c096c' stroke='%2300f5d4' stroke-width='2'/><path d='M90 120 L90 48 L110 60 L110 120 Z' fill='%23240046'/><circle cx='60' cy='52' r='14' fill='%23ff007f'/><line x1='20' y1='95' x2='100' y2='95' stroke='%2300f5d4' stroke-width='3'/></svg>",
+    "pdfUrl": "pdfs/cyber-baghdad-03.pdf",
+    "pagesCount": 36,
+    "summary": "مخترقة شبكات شابة تسرق شريحة ذاكرة سرية من أرشيف دجلة المعلق لتفاجأ بأنها تحمل خريطة لوعي صناعي يحاول تحرير الروبوتات."
+  },
+  {
+    "id": "comic-04",
+    "title": "شيفرة القبطان الأحمر",
+    "author": "عمر البحري",
+    "genre": "مغامرات وغموض",
+    "cover": "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'><rect width='120' height='120' fill='%231d3557'/><circle cx='60' cy='54' r='34' fill='%23e63946' stroke='%23f1faee' stroke-width='4'/><path d='M30 82 Q60 66 90 82 L82 108 L38 108 Z' fill='%23457b9d'/><polygon points='60,26 68,48 92,48 72,62 79,84 60,70 41,84 48,62 28,48 52,48' fill='%23ffd166'/></svg>",
+    "pdfUrl": "pdfs/captain-ahmar-04.pdf",
+    "pagesCount": 24,
+    "summary": "رسالة مشفرة داخل بوصلة نحاسية تقود طاقم غواصة استكشافية إلى سفينة أثرية غارقة تحمل أسرار مملكة بحرية منسية."
+  },
+  {
+    "id": "comic-05",
+    "title": "ميكا الصحراء: وحدة الرعد",
+    "author": "سلمان الدوسري",
+    "genre": "أكشن وميكا",
+    "cover": "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'><rect width='120' height='120' fill='%231b1b1e'/><polygon points='25,20 95,20 108,55 90,102 30,102 12,55' fill='%23fb5607' stroke='%23ffbe0b' stroke-width='4'/><polygon points='35,45 55,52 40,65' fill='%2300bbf9'/><polygon points='85,45 65,52 80,65' fill='%2300bbf9'/><rect x='42' y='78' width='36' height='10' rx='3' fill='%23ffffff'/></svg>",
+    "pdfUrl": "pdfs/mecha-raad-05.pdf",
+    "pagesCount": 40,
+    "summary": "يتحد ثلاثة طيارين شبان لتشغيل الروبوت العملاق رعد-7 وصد هجوم الآلات التعدينية المارقة التي تهدد محطات الطاقة الشمسية."
+  },
+  {
+    "id": "comic-06",
+    "title": "أكاديمية الظلال السبع",
+    "author": "نورة العلي",
+    "genre": "غموض وإثارة",
+    "cover": "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'><rect width='120' height='120' fill='%2314213d'/><circle cx='60' cy='60' r='44' fill='%23000000' stroke='%23fca311' stroke-width='4'/><path d='M60 16 A44 44 0 0 1 60 104 A22 22 0 0 1 60 60 A22 22 0 0 0 60 16 Z' fill='%23e5e5e5'/><circle cx='60' cy='38' r='7' fill='%23e63946'/><circle cx='60' cy='82' r='7' fill='%23fca311'/></svg>",
+    "pdfUrl": "pdfs/academy-shadows-06.pdf",
+    "pagesCount": 30,
+    "summary": "في مدرسة ليلية لا يدخلها إلا الموهوبون في فنون الاستنتاج، تختفي اللوحة السابعة من القاعة الكبرى لتبدأ مطاردة بين سبعة طلاب."
+  },
+  {
+    "id": "comic-07",
+    "title": "عداء الأسطح",
+    "author": "كريم زيدان",
+    "genre": "كوميديا وحركة",
+    "cover": "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'><rect width='120' height='120' fill='%23ffbe0b'/><rect x='0' y='78' width='40' height='42' fill='%232b2d42'/><rect x='45' y='62' width='35' height='58' fill='%23ef233c'/><rect x='85' y='84' width='35' height='36' fill='%232b2d42'/><circle cx='58' cy='32' r='14' fill='%233a86ff' stroke='%23000000' stroke-width='3'/><path d='M42 46 L74 38 L66 64 L48 58 Z' fill='%23ffffff' stroke='%23000000' stroke-width='3'/></svg>",
+    "pdfUrl": "pdfs/rooftop-runner-07.pdf",
+    "pagesCount": 22,
+    "summary": "ساعي طرود متهور يستخدم حذاءً نفاثاً لتوصيل الطلبات المستحيلة فوق أسطح المدينة خلال خمس دقائق مهما كانت العقبات الكوميدية."
+  },
+  {
+    "id": "comic-08",
+    "title": "نجم الأندلس الغامض",
+    "author": "سارة الحسن",
+    "genre": "مغامرات تاريخية",
+    "cover": "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'><rect width='120' height='120' fill='%23264653'/><rect x='25' y='25' width='70' height='70' fill='%23e9c46a' stroke='%23ffffff' stroke-width='3'/><rect x='25' y='25' width='70' height='70' transform='rotate(45 60 60)' fill='%23e76f51' stroke='%23ffffff' stroke-width='3'/><circle cx='60' cy='60' r='16' fill='%232a9d8f' stroke='%23ffffff' stroke-width='3'/></svg>",
+    "pdfUrl": "pdfs/andalus-star-08.pdf",
+    "pagesCount": 34,
+    "summary": "مخطوطة فلكية مفقودة في قصر قديم تكشف عن أداة ميكانيكية مدهشة صممت لقياس مدارات الكواكب قبل قرون، ويسعى الجميع لامتلاكها."
+  },
+  {
+    "id": "comic-09",
+    "title": "البرق الأزرق: العودة",
+    "author": "مازن التميمي",
+    "genre": "أبطال خارقون",
+    "cover": "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'><rect width='120' height='120' fill='%2303045e'/><circle cx='60' cy='60' r='46' fill='%230077b6' stroke='%2390e0ef' stroke-width='4'/><polygon points='68,14 34,64 58,64 48,106 88,52 62,52' fill='%23ffd60a' stroke='%23ffffff' stroke-width='2'/></svg>",
+    "pdfUrl": "pdfs/blue-bolt-09.pdf",
+    "pagesCount": 26,
+    "summary": "بعد اختفاء دام خمس سنوات، يعود البطل الكهربائي في عاصفة مغناطيسية ليواجه شبيهاً آلياً ينتحل اسمه ويسيطر على شبكة الكهرباء."
+  },
+  {
+    "id": "comic-10",
+    "title": "كوكب المرايا السبع",
+    "author": "هند السالم",
+    "genre": "خيال علمي",
+    "cover": "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'><rect width='120' height='120' fill='%2310002b'/><ellipse cx='60' cy='60' rx='50' ry='18' transform='rotate(-25 60 60)' fill='none' stroke='%2300f5d4' stroke-width='5'/><circle cx='60' cy='60' r='26' fill='%239d4edd' stroke='%23ffffff' stroke-width='3'/><circle cx='94' cy='28' r='8' fill='%23ffbe0b'/><circle cx='24' cy='90' r='6' fill='%23ff007f'/></svg>",
+    "pdfUrl": "pdfs/mirror-planet-10.pdf",
+    "pagesCount": 38,
+    "summary": "تهبط مركبة الاستكشاف على كوكب تتكون قشرته من بلورات عاكسة، ليكتشف الرواد أن كل انعكاس يفتح نافذة على احتمال مختلف للمستقبل."
+  },
+  {
+    "id": "comic-11",
+    "title": "فارس الحبر والورق",
+    "author": "فراس الخطيب",
+    "genre": "فانتازيا عربية",
+    "cover": "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'><rect width='120' height='120' fill='%23fff8e7'/><rect x='18' y='16' width='84' height='88' rx='8' fill='%23ffffff' stroke='%23111111' stroke-width='4'/><path d='M60 28 L82 62 L60 94 L38 62 Z' fill='%23d62828' stroke='%23111111' stroke-width='3'/><line x1='60' y1='28' x2='60' y2='62' stroke='%23111111' stroke-width='3'/><circle cx='60' cy='62' r='6' fill='%23ffd60a'/></svg>",
+    "pdfUrl": "pdfs/ink-knight-11.pdf",
+    "pagesCount": 28,
+    "summary": "رسام كوميكس يجد قلماً غامضاً يحول شخصياته المرسومة إلى حقيقة، فيضطر لدخول صفحات قصته لإيقاف الشرير الذي هرب من الإطار الأخير."
+  },
+  {
+    "id": "comic-12",
+    "title": "عصبة البوابات الصغيرة",
+    "author": "ريم النجار",
+    "genre": "كوميديا وحركة",
+    "cover": "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'><rect width='120' height='120' fill='%2306d6a0'/><circle cx='60' cy='60' r='42' fill='%23118ab2' stroke='%23073b4c' stroke-width='4'/><circle cx='60' cy='60' r='26' fill='%23ffd166' stroke='%23073b4c' stroke-width='3'/><polygon points='60,38 78,74 42,74' fill='%23ef476f' stroke='%23073b4c' stroke-width='3'/></svg>",
+    "pdfUrl": "pdfs/mini-portals-12.pdf",
+    "pagesCount": 20,
+    "summary": "أربعة أصدقاء يعثرون على جهاز يفتح نوافذ صغيرة عائمة فوق أي مكان، ويستخدمونها في مغامرات طريفة لحل مشكلات الحي اليومية."
+  }
+]
