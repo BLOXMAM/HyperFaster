@@ -94,5 +94,9 @@
   "rostrick-build/ai-drafts/settings.html.json": {
     "op": "add",
     "timestamp": 1795354541841
+  },
+  "settings.html": {
+    "op": "add",
+    "timestamp": 1795354549302
   }
 }
