@@ -1,0 +1,1468 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1, user-scalable=no">
+<title>تحدي الذاكرة للأبطال - كوميكس أوفرلاي</title>
+<style>
+:root{
+  --primary:#D90429;
+  --primary-dark:#8D0801;
+  --accent:#FFB703;
+  --highlight:#FB8500;
+  --control:#2B2D42;
+  --bg:#12131C;
+  --surface:#1C1E2E;
+  --surface-2:#25283D;
+  --text:#F8F9FA;
+  --text-muted:#B8C0D2;
+  --success:#10B981;
+  --border:#3A3E5C;
+}
+*{
+  box-sizing:border-box;
+  -webkit-tap-highlight-color:transparent;
+}
+html,body{
+  margin:0;
+  padding:0;
+  background-color:var(--bg);
+  color:var(--text);
+  font-family:Tahoma,Arial,sans-serif;
+  min-height:100vh;
+  overflow-x:hidden;
+}
+body{
+  background-image:
+    radial-gradient(rgba(255,183,3,0.06) 1.5px, transparent 1.5px),
+    radial-gradient(rgba(217,4,41,0.08) 1.5px, transparent 1.5px);
+  background-size:20px 20px;
+  background-position:0 0, 10px 10px;
+  padding-bottom:calc(84px + env(safe-area-inset-bottom));
+}
+a{
+  text-decoration:none;
+  color:inherit;
+}
+button{
+  font-family:inherit;
+  cursor:pointer;
+  border:none;
+  outline:none;
+  background:none;
+  color:inherit;
+}
+button:active, a:active{
+  transform:scale(0.96);
+}
+
+/* App Bar */
+.app-bar{
+  position:sticky;
+  top:0;
+  z-index:50;
+  background:linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%);
+  border-bottom:3px solid #000000;
+  box-shadow:0 4px 0 rgba(0,0,0,0.45);
+  padding-top:env(safe-area-inset-top);
+}
+.app-bar-inner{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:8px 12px;
+  min-height:58px;
+}
+.app-bar-right{
+  display:flex;
+  align-items:center;
+  min-width:0;
+}
+.icon-btn{
+  width:44px;
+  height:44px;
+  min-width:44px;
+  border-radius:12px;
+  background:rgba(0,0,0,0.28);
+  border:2px solid rgba(255,255,255,0.2);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  transition:background 0.15s ease, transform 0.12s ease;
+}
+.icon-btn.active-toggle{
+  background:var(--accent);
+  color:#111111;
+  border-color:#000000;
+}
+.title-wrap{
+  margin-right:10px;
+  min-width:0;
+}
+.app-title{
+  font-size:17px;
+  font-weight:bold;
+  line-height:1.2;
+  color:#FFFFFF;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  text-shadow:1px 2px 0 #000000;
+}
+.app-subtitle{
+  font-size:11px;
+  color:var(--accent);
+  font-weight:bold;
+  margin-top:2px;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+.app-bar-actions{
+  display:flex;
+  align-items:center;
+}
+.app-bar-actions > *{
+  margin-right:8px;
+}
+
+/* Main Container */
+.container{
+  max-width:640px;
+  margin:0 auto;
+  padding:12px;
+}
+
+/* Game Info Banner (from games.json) */
+.comic-banner{
+  display:flex;
+  align-items:center;
+  background:var(--surface);
+  border:2px solid #000000;
+  border-radius:14px;
+  padding:10px 12px;
+  box-shadow:4px 4px 0 #000000;
+  margin-bottom:12px;
+}
+.banner-cover{
+  width:48px;
+  height:48px;
+  min-width:48px;
+  border-radius:10px;
+  border:2px solid var(--accent);
+  background:var(--control);
+  overflow:hidden;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  margin-left:10px;
+}
+.banner-cover img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
+}
+.banner-text{
+  flex:1;
+  min-width:0;
+}
+.banner-desc{
+  font-size:12px;
+  color:var(--text-muted);
+  line-height:1.45;
+  margin:0;
+}
+.banner-badge{
+  display:inline-block;
+  margin-top:5px;
+  background:rgba(255,183,3,0.16);
+  color:var(--accent);
+  border:1px solid var(--accent);
+  border-radius:999px;
+  padding:2px 8px;
+  font-size:10px;
+  font-weight:bold;
+}
+.banner-error{
+  font-size:12px;
+  color:var(--accent);
+  background:rgba(251,133,0,0.12);
+  border:1px dashed var(--highlight);
+  border-radius:10px;
+  padding:8px 10px;
+  margin-bottom:10px;
+  display:none;
+}
+
+/* Difficulty Tabs */
+.difficulty-bar{
+  display:flex;
+  align-items:center;
+  background:var(--surface);
+  border:2px solid #000000;
+  border-radius:14px;
+  padding:5px;
+  margin-bottom:12px;
+  box-shadow:3px 3px 0 #000000;
+}
+.diff-btn{
+  flex:1;
+  min-height:44px;
+  border-radius:10px;
+  font-size:13px;
+  font-weight:bold;
+  color:var(--text-muted);
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  transition:all 0.18s ease;
+  margin-left:4px;
+}
+.diff-btn:last-child{
+  margin-left:0;
+}
+.diff-btn span{
+  font-size:10px;
+  opacity:0.85;
+  margin-top:2px;
+}
+.diff-btn.active{
+  background:linear-gradient(135deg, var(--accent) 0%, var(--highlight) 100%);
+  color:#111111;
+  border:2px solid #000000;
+  box-shadow:0 2px 0 #000000;
+}
+
+/* HUD Stats */
+.hud-grid{
+  display:grid;
+  grid-template-columns:repeat(4, 1fr);
+  grid-gap:8px;
+  margin-bottom:12px;
+}
+.hud-card{
+  background:var(--control);
+  border:2px solid #000000;
+  border-radius:12px;
+  padding:7px 4px;
+  text-align:center;
+  box-shadow:2px 2px 0 #000000;
+  position:relative;
+}
+.hud-label{
+  font-size:10px;
+  color:var(--text-muted);
+  display:block;
+  margin-bottom:2px;
+}
+.hud-value{
+  font-size:16px;
+  font-weight:bold;
+  color:#FFFFFF;
+  font-variant-numeric:tabular-nums;
+}
+.hud-card.combo-active{
+  background:linear-gradient(135deg, var(--primary) 0%, var(--highlight) 100%);
+  border-color:var(--accent);
+}
+.hud-card.combo-active .hud-label{
+  color:#FFF3CD;
+}
+
+/* Best Record Strip */
+.record-strip{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  background:rgba(43,45,66,0.65);
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:7px 12px;
+  margin-bottom:12px;
+  font-size:12px;
+  color:var(--text-muted);
+}
+.record-strip strong{
+  color:var(--accent);
+}
+
+/* Floating Preview Frame Wrapper */
+.board-shell{
+  transition:all 0.25s ease;
+}
+.board-shell.overlay-mode{
+  max-width:330px;
+  margin:0 auto 12px auto;
+  background:var(--surface);
+  border:3px solid var(--accent);
+  border-radius:18px;
+  box-shadow:0 12px 28px rgba(0,0,0,0.75), 0 0 0 2px #000000;
+  overflow:hidden;
+}
+.overlay-window-bar{
+  display:none;
+  align-items:center;
+  justify-content:space-between;
+  background:linear-gradient(90deg, var(--primary-dark), var(--primary));
+  padding:7px 10px;
+  border-bottom:2px solid #000000;
+}
+.board-shell.overlay-mode .overlay-window-bar{
+  display:flex;
+}
+.overlay-win-title{
+  display:flex;
+  align-items:center;
+  font-size:12px;
+  font-weight:bold;
+  color:#FFFFFF;
+}
+.overlay-win-title svg{
+  margin-left:6px;
+}
+.overlay-win-link{
+  font-size:11px;
+  font-weight:bold;
+  background:var(--accent);
+  color:#111111;
+  padding:4px 9px;
+  border-radius:8px;
+  border:1.5px solid #000000;
+  min-height:30px;
+  display:flex;
+  align-items:center;
+}
+.board-inner{
+  padding:4px;
+}
+.board-shell.overlay-mode .board-inner{
+  padding:10px;
+}
+
+/* Memory Grid */
+.memory-grid{
+  display:grid;
+  grid-template-columns:repeat(4, 1fr);
+  grid-gap:9px;
+  perspective:900px;
+}
+.memory-grid.cols-4{
+  grid-template-columns:repeat(4, 1fr);
+}
+.memory-grid.cols-5{
+  grid-template-columns:repeat(5, 1fr);
+  grid-gap:7px;
+}
+.board-shell.overlay-mode .memory-grid{
+  grid-gap:6px;
+}
+
+/* Card 3D Flip */
+.card-btn{
+  position:relative;
+  width:100%;
+  padding-bottom:112%;
+  transform-style:preserve-3d;
+  transition:transform 0.36s cubic-bezier(0.22, 0.61, 0.36, 1);
+  border-radius:13px;
+  min-height:44px;
+}
+.card-btn.flipped,
+.card-btn.matched,
+.card-btn.peeked{
+  transform:rotateY(180deg);
+}
+.card-btn.matched .card-front{
+  border-color:var(--success);
+  box-shadow:0 0 0 2px var(--success), 0 4px 12px rgba(16,185,129,0.35);
+  background:linear-gradient(160deg, #16302B 0%, #1F2937 100%);
+}
+.card-btn.hint-glow .card-back{
+  border-color:var(--accent);
+  box-shadow:0 0 0 3px var(--accent);
+}
+.card-btn:active{
+  transform:scale(0.95);
+}
+.card-btn.flipped:active,
+.card-btn.matched:active{
+  transform:rotateY(180deg) scale(0.97);
+}
+.card-face{
+  position:absolute;
+  top:0;
+  right:0;
+  bottom:0;
+  left:0;
+  backface-visibility:hidden;
+  -webkit-backface-visibility:hidden;
+  border-radius:13px;
+  border:2.5px solid #000000;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  overflow:hidden;
+}
+.card-back{
+  background:linear-gradient(145deg, var(--primary) 0%, var(--primary-dark) 100%);
+  box-shadow:inset 0 0 0 2px rgba(255,183,3,0.35), 0 3px 0 #000000;
+}
+.card-back-pattern{
+  position:absolute;
+  top:0;
+  right:0;
+  bottom:0;
+  left:0;
+  background-image:radial-gradient(rgba(255,183,3,0.22) 2px, transparent 2px);
+  background-size:10px 10px;
+  opacity:0.75;
+}
+.card-back-emblem{
+  position:relative;
+  z-index:2;
+  width:38px;
+  height:38px;
+  border-radius:50%;
+  background:rgba(0,0,0,0.35);
+  border:2px solid var(--accent);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.board-shell.overlay-mode .card-back-emblem{
+  width:30px;
+  height:30px;
+}
+.card-front{
+  transform:rotateY(180deg);
+  background:linear-gradient(160deg, var(--surface-2) 0%, #151726 100%);
+  box-shadow:inset 0 0 0 2px rgba(255,255,255,0.08), 0 3px 0 #000000;
+  padding:5px;
+}
+.card-svg-wrap{
+  width:62%;
+  height:62%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.card-hero-label{
+  font-size:10px;
+  font-weight:bold;
+  color:var(--text);
+  margin-top:3px;
+  text-align:center;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  max-width:100%;
+}
+.memory-grid.cols-5 .card-hero-label,
+.board-shell.overlay-mode .card-hero-label{
+  font-size:9px;
+}
+
+/* Action Controls */
+.action-row{
+  display:flex;
+  align-items:center;
+  margin-top:14px;
+}
+.action-btn{
+  flex:1;
+  min-height:48px;
+  border-radius:12px;
+  border:2px solid #000000;
+  box-shadow:0 3px 0 #000000;
+  font-size:13px;
+  font-weight:bold;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:0 10px;
+  margin-left:8px;
+  transition:transform 0.12s ease;
+}
+.action-btn:last-child{
+  margin-left:0;
+}
+.action-btn svg{
+  margin-left:6px;
+}
+.btn-restart{
+  background:var(--control);
+  color:#FFFFFF;
+}
+.btn-hint{
+  background:linear-gradient(135deg, var(--accent) 0%, var(--highlight) 100%);
+  color:#111111;
+}
+.btn-hint:disabled{
+  opacity:0.45;
+  cursor:default;
+}
+
+/* Overlay Callout Card */
+.overlay-cta-card{
+  margin-top:14px;
+  background:linear-gradient(135deg, #1F2235 0%, #2B2D42 100%);
+  border:2px solid #000000;
+  border-radius:14px;
+  padding:12px;
+  box-shadow:4px 4px 0 #000000;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+}
+.overlay-cta-info{
+  flex:1;
+  min-width:0;
+  margin-left:10px;
+}
+.overlay-cta-title{
+  font-size:14px;
+  font-weight:bold;
+  color:var(--accent);
+  margin:0 0 3px 0;
+}
+.overlay-cta-sub{
+  font-size:11px;
+  color:var(--text-muted);
+  margin:0;
+  line-height:1.4;
+}
+.overlay-cta-btn{
+  min-height:44px;
+  padding:0 14px;
+  border-radius:11px;
+  background:linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+  border:2px solid #000000;
+  box-shadow:0 3px 0 #000000;
+  color:#FFFFFF;
+  font-size:12px;
+  font-weight:bold;
+  display:flex;
+  align-items:center;
+  white-space:nowrap;
+}
+.overlay-cta-btn svg{
+  margin-left:6px;
+}
+
+/* Bottom Navigation Bar */
+.bottom-nav{
+  position:fixed;
+  bottom:0;
+  right:0;
+  left:0;
+  z-index:45;
+  background:var(--surface);
+  border-top:3px solid #000000;
+  padding:6px 12px calc(6px + env(safe-area-inset-bottom)) 12px;
+  display:flex;
+  align-items:center;
+  justify-content:space-around;
+}
+.nav-item{
+  flex:1;
+  min-height:46px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  border-radius:10px;
+  color:var(--text-muted);
+  font-size:11px;
+  font-weight:bold;
+  margin-left:6px;
+}
+.nav-item:last-child{
+  margin-left:0;
+}
+.nav-item.active-nav{
+  background:rgba(255,183,3,0.14);
+  color:var(--accent);
+  border:1px solid rgba(255,183,3,0.35);
+}
+.nav-item svg{
+  margin-bottom:3px;
+}
+
+/* Modal */
+.modal-backdrop{
+  position:fixed;
+  top:0;
+  right:0;
+  bottom:0;
+  left:0;
+  background:rgba(8,9,14,0.82);
+  z-index:100;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:16px;
+}
+.modal-backdrop.show{
+  display:flex;
+}
+.modal-card{
+  width:100%;
+  max-width:380px;
+  background:var(--surface);
+  border:3px solid #000000;
+  border-radius:18px;
+  box-shadow:0 10px 0 #000000;
+  overflow:hidden;
+  animation:popIn 0.24s ease-out;
+}
+@keyframes popIn{
+  from{transform:scale(0.86);opacity:0;}
+  to{transform:scale(1);opacity:1;}
+}
+.modal-header{
+  background:linear-gradient(135deg, var(--primary) 0%, var(--highlight) 100%);
+  padding:16px;
+  text-align:center;
+  border-bottom:3px solid #000000;
+}
+.modal-title{
+  font-size:20px;
+  font-weight:bold;
+  color:#FFFFFF;
+  text-shadow:1px 2px 0 #000000;
+  margin:0;
+}
+.stars-row{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  margin-top:8px;
+}
+.stars-row svg{
+  margin:0 4px;
+}
+.modal-body{
+  padding:16px;
+}
+.record-badge{
+  display:none;
+  text-align:center;
+  background:rgba(255,183,3,0.16);
+  border:1.5px solid var(--accent);
+  color:var(--accent);
+  border-radius:10px;
+  padding:6px 10px;
+  font-size:12px;
+  font-weight:bold;
+  margin-bottom:12px;
+}
+.record-badge.show{
+  display:block;
+}
+.modal-stats{
+  display:grid;
+  grid-template-columns:repeat(3, 1fr);
+  grid-gap:8px;
+  margin-bottom:16px;
+}
+.m-stat{
+  background:var(--control);
+  border:2px solid #000000;
+  border-radius:10px;
+  padding:8px 4px;
+  text-align:center;
+}
+.m-stat span{
+  display:block;
+  font-size:10px;
+  color:var(--text-muted);
+}
+.m-stat strong{
+  font-size:16px;
+  color:#FFFFFF;
+}
+.modal-actions{
+  display:flex;
+  flex-direction:column;
+}
+.modal-btn{
+  min-height:46px;
+  border-radius:12px;
+  border:2px solid #000000;
+  box-shadow:0 3px 0 #000000;
+  font-size:14px;
+  font-weight:bold;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  margin-bottom:8px;
+}
+.modal-btn:last-child{
+  margin-bottom:0;
+}
+.modal-btn-primary{
+  background:linear-gradient(135deg, var(--accent) 0%, var(--highlight) 100%);
+  color:#111111;
+}
+.modal-btn-secondary{
+  background:var(--control);
+  color:#FFFFFF;
+}
+</style>
+<style id="rt-native">html,body{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;-webkit-tap-highlight-color:transparent;overscroll-behavior:none}input,textarea,select,[contenteditable],.rt-selectable,.rt-selectable *{-webkit-user-select:text;user-select:text}img,a{-webkit-user-drag:none}a,button,[role=button]{outline:none}</style>
+</head>
+<body>
+
+<header class="app-bar">
+  <div class="app-bar-inner">
+    <div class="app-bar-right">
+      <a href="games.html" class="icon-btn" aria-label="العودة إلى الألعاب">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="9 18 15 12 9 6"></polyline>
+        </svg>
+      </a>
+      <div class="title-wrap">
+        <div class="app-title" id="gameTitle">تحدي الذاكرة للأبطال</div>
+        <div class="app-subtitle" id="gameSubtitle">تطابق رموز الكوميكس • متوافق مع الطبقة العائمة</div>
+      </div>
+    </div>
+    <div class="app-bar-actions">
+      <button type="button" class="icon-btn" id="btnOverlayPreview" aria-label="معاينة النافذة العائمة" title="معاينة وضع النافذة العائمة">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="3" width="18" height="18" rx="3"></rect>
+          <rect x="9" y="9" width="10" height="10" rx="2" fill="currentColor" fill-opacity="0.25"></rect>
+        </svg>
+      </button>
+      <button type="button" class="icon-btn" id="btnSound" aria-label="تشغيل أو كتم الصوت">
+        <svg id="soundIconOn" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+          <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+          <path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>
+        </svg>
+        <svg id="soundIconOff" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="display:none;">
+          <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+          <line x1="23" y1="9" x2="17" y2="15"></line>
+          <line x1="17" y1="9" x2="23" y2="15"></line>
+        </svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main class="container">
+  <div class="banner-error" id="jsonNotice"></div>
+
+  <section class="comic-banner" id="comicBanner">
+    <div class="banner-cover" id="bannerCover">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#FFB703" stroke-width="2.2">
+        <polygon points="12 2 15 9 22 9 16.5 14 18.5 21 12 17 5.5 21 7.5 14 2 9 9 9"></polygon>
+      </svg>
+    </div>
+    <div class="banner-text">
+      <p class="banner-desc" id="gameDesc">طابق بطاقات الأبطال الخارقين بأسرع وقت وأقل عدد من الحركات لتحقيق سلسلة التتالي الذهبية.</p>
+      <span class="banner-badge" id="overlaySupportBadge">يدعم التشغيل في النافذة العائمة</span>
+    </div>
+  </section>
+
+  <section class="difficulty-bar" aria-label="اختيار مستوى الصعوبة">
+    <button type="button" class="diff-btn active" data-diff="easy">
+      وضع عائم سريع
+      <span>12 بطاقة (3×4)</span>
+    </button>
+    <button type="button" class="diff-btn" data-diff="medium">
+      تحدي الأبطال
+      <span>16 بطاقة (4×4)</span>
+    </button>
+    <button type="button" class="diff-btn" data-diff="hard">
+      أسطورة الكوميكس
+      <span>20 بطاقة (4×5)</span>
+    </button>
+  </section>
+
+  <section class="hud-grid">
+    <div class="hud-card">
+      <span class="hud-label">الوقت</span>
+      <span class="hud-value" id="hudTime">00:00</span>
+    </div>
+    <div class="hud-card">
+      <span class="hud-label">الحركات</span>
+      <span class="hud-value" id="hudMoves">0</span>
+    </div>
+    <div class="hud-card" id="comboCard">
+      <span class="hud-label">التتالي</span>
+      <span class="hud-value" id="hudCombo">x1</span>
+    </div>
+    <div class="hud-card">
+      <span class="hud-label">النقاط</span>
+      <span class="hud-value" id="hudScore">0</span>
+    </div>
+  </section>
+
+  <div class="record-strip">
+    <span>أفضل نتيجة لهذا المستوى: <strong id="bestScoreDisplay">0</strong></span>
+    <span>أسرع وقت: <strong id="bestTimeDisplay">--:--</strong></span>
+  </div>
+
+  <div class="board-shell" id="boardShell">
+    <div class="overlay-window-bar">
+      <div class="overlay-win-title">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FFB703" stroke-width="2.4">
+          <rect x="3" y="3" width="18" height="18" rx="3"></rect>
+          <path d="M9 3v18"></path>
+        </svg>
+        معاينة النافذة العائمة
+      </div>
+      <a href="overlay_hub.html" class="overlay-win-link">تشغيل حقيقي فوق التطبيقات</a>
+    </div>
+    <div class="board-inner">
+      <div class="memory-grid cols-4" id="memoryGrid" aria-live="polite"></div>
+    </div>
+  </div>
+
+  <div class="action-row">
+    <button type="button" class="action-btn btn-restart" id="btnRestart">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="23 4 23 10 17 10"></polyline>
+        <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path>
+      </svg>
+      جولة جديدة
+    </button>
+    <button type="button" class="action-btn btn-hint" id="btnHint">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M9 18h6"></path>
+        <path d="M10 22h4"></path>
+        <path d="M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2h6c0-.8.4-1.5 1-2A7 7 0 0 0 12 2z"></path>
+      </svg>
+      <span id="hintLabel">تلميح البطل (2)</span>
+    </button>
+  </div>
+
+  <section class="overlay-cta-card">
+    <div class="overlay-cta-info">
+      <h2 class="overlay-cta-title">العب فوق التطبيقات الأخرى</h2>
+      <p class="overlay-cta-sub">افتح لعبة تحدي الذاكرة داخل نافذة عائمة مصغرة أثناء تصفح الكوميكس أو أي تطبيق.</p>
+    </div>
+    <a href="overlay_hub.html" class="overlay-cta-btn">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="2" y="4" width="20" height="16" rx="3"></rect>
+        <rect x="11" y="10" width="9" height="8" rx="1.5" fill="currentColor" fill-opacity="0.3"></rect>
+      </svg>
+      الطبقة العائمة
+    </a>
+  </section>
+</main>
+
+<nav class="bottom-nav" aria-label="التنقل السريع">
+  <a href="games.html" class="nav-item active-nav">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="2" y="6" width="20" height="12" rx="4"></rect>
+      <line x1="6" y1="12" x2="10" y2="12"></line>
+      <line x1="8" y1="10" x2="8" y2="14"></line>
+      <circle cx="15" cy="11" r="1" fill="currentColor"></circle>
+      <circle cx="17.5" cy="13.5" r="1" fill="currentColor"></circle>
+    </svg>
+    الألعاب المصغرة
+  </a>
+  <a href="overlay_hub.html" class="nav-item">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+      <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+      <polyline points="2 17 12 22 22 17"></polyline>
+      <polyline points="2 12 12 17 22 12"></polyline>
+    </svg>
+    إدارة الطبقة العائمة
+  </a>
+</nav>
+
+<div class="modal-backdrop" id="winModal" role="dialog" aria-modal="true" aria-labelledby="winModalTitle">
+  <div class="modal-card">
+    <div class="modal-header">
+      <h2 class="modal-title" id="winModalTitle">انتصار بطولي!</h2>
+      <div class="stars-row" id="starsRow"></div>
+    </div>
+    <div class="modal-body">
+      <div class="record-badge" id="newRecordBadge">رقم قياسي جديد في هذا المستوى!</div>
+      <div class="modal-stats">
+        <div class="m-stat">
+          <span>النقاط</span>
+          <strong id="finalScore">0</strong>
+        </div>
+        <div class="m-stat">
+          <span>الوقت</span>
+          <strong id="finalTime">00:00</strong>
+        </div>
+        <div class="m-stat">
+          <span>الحركات</span>
+          <strong id="finalMoves">0</strong>
+        </div>
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="modal-btn modal-btn-primary" id="btnPlayAgain">العب مرة أخرى</button>
+        <a href="overlay_hub.html" class="modal-btn modal-btn-secondary">تشغيل في الطبقة العائمة</a>
+        <a href="games.html" class="modal-btn modal-btn-secondary">العودة إلى قائمة الألعاب</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  'use strict';
+
+  var STORAGE_KEY = 'comics_overlay_memory_records_v1';
+
+  var HERO_CARDS = [
+    {
+      id: 'falcon',
+      name: 'صقر المدار',
+      svg: '<svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg"><circle cx="40" cy="40" r="34" fill="#D90429" stroke="#FFB703" stroke-width="4"/><polygon points="40,12 49,32 70,32 53,45 59,66 40,53 21,66 27,45 10,32 31,32" fill="#FFB703"/><circle cx="40" cy="40" r="9" fill="#12131C"/></svg>'
+    },
+    {
+      id: 'shield',
+      name: 'الدرع الشمسي',
+      svg: '<svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg"><path d="M40 8 L68 18 V40 C68 58 40 72 40 72 C40 72 12 58 12 40 V18 Z" fill="#FB8500" stroke="#FFFFFF" stroke-width="4"/><path d="M40 18 L57 25 V39 C57 50 40 60 40 60 C40 60 23 50 23 39 V25 Z" fill="#1D3557"/><circle cx="40" cy="39" r="9" fill="#FFB703"/></svg>'
+    },
+    {
+      id: 'bolt',
+      name: 'البرق الخاطف',
+      svg: '<svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg"><rect x="10" y="10" width="60" height="60" rx="16" fill="#2B2D42" stroke="#00E5FF" stroke-width="4"/><polygon points="46,12 22,44 38,44 32,68 58,35 42,35" fill="#FFB703" stroke="#FFFFFF" stroke-width="2.5"/></svg>'
+    },
+    {
+      id: 'mask',
+      name: 'قناع الظل',
+      svg: '<svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg"><circle cx="40" cy="40" r="33" fill="#111827" stroke="#A855F7" stroke-width="4"/><path d="M16 32 Q40 20 64 32 L58 54 Q40 44 22 54 Z" fill="#7C3AED"/><polygon points="24,37 36,40 26,44" fill="#FFFFFF"/><polygon points="56,37 44,40 54,44" fill="#FFFFFF"/></svg>'
+    },
+    {
+      id: 'oasis',
+      name: 'جوهرة الواحة',
+      svg: '<svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg"><polygon points="40,8 68,32 56,70 24,70 12,32" fill="#06B6D4" stroke="#FFFFFF" stroke-width="3.5"/><polygon points="40,16 56,34 40,60 24,34" fill="#22D3EE"/><circle cx="40" cy="35" r="7" fill="#FFFFFF"/></svg>'
+    },
+    {
+      id: 'fist',
+      name: 'قبضة الحديد',
+      svg: '<svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg"><circle cx="40" cy="40" r="33" fill="#8D0801" stroke="#FFB703" stroke-width="4"/><rect x="22" y="25" width="36" height="26" rx="7" fill="#FFB703" stroke="#000000" stroke-width="3"/><line x1="31" y1="25" x2="31" y2="39" stroke="#000000" stroke-width="3"/><line x1="40" y1="25" x2="40" y2="39" stroke="#000000" stroke-width="3"/><line x1="49" y1="25" x2="49" y2="39" stroke="#000000" stroke-width="3"/><rect x="28" y="51" width="24" height="12" rx="4" fill="#D90429" stroke="#000000" stroke-width="2.5"/></svg>'
+    },
+    {
+      id: 'wing',
+      name: 'جناح النيون',
+      svg: '<svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg"><rect x="10" y="10" width="60" height="60" rx="16" fill="#0F172A" stroke="#EC4899" stroke-width="4"/><path d="M16 56 Q24 22 64 18 Q50 36 58 44 Q42 46 46 58 Q30 52 16 56 Z" fill="#EC4899" stroke="#00E5FF" stroke-width="3"/></svg>'
+    },
+    {
+      id: 'storm',
+      name: 'عين العاصفة',
+      svg: '<svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg"><circle cx="40" cy="40" r="33" fill="#064E3B" stroke="#10B981" stroke-width="4"/><path d="M14 40 Q40 16 66 40 Q40 64 14 40 Z" fill="#FFFFFF"/><circle cx="40" cy="40" r="12" fill="#10B981"/><circle cx="40" cy="40" r="5" fill="#000000"/></svg>'
+    },
+    {
+      id: 'blade',
+      name: 'نصل السراب',
+      svg: '<svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg"><circle cx="40" cy="40" r="33" fill="#1E293B" stroke="#F97316" stroke-width="4"/><polygon points="56,14 64,22 30,56 20,60 24,50" fill="#E2E8F0" stroke="#000000" stroke-width="2.5"/><rect x="16" y="52" width="14" height="6" rx="2" transform="rotate(-45 23 55)" fill="#FFB703"/></svg>'
+    },
+    {
+      id: 'galaxy',
+      name: 'شارة المجرة',
+      svg: '<svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg"><circle cx="40" cy="40" r="33" fill="#1E1B4B" stroke="#38BDF8" stroke-width="4"/><ellipse cx="40" cy="40" rx="26" ry="11" transform="rotate(-25 40 40)" fill="none" stroke="#FFB703" stroke-width="4"/><circle cx="40" cy="40" r="11" fill="#38BDF8"/><circle cx="40" cy="40" r="5" fill="#FFFFFF"/></svg>'
+    }
+  ];
+
+  var DIFFICULTIES = {
+    easy: { pairs: 6, cols: 4 },
+    medium: { pairs: 8, cols: 4 },
+    hard: { pairs: 10, cols: 5 }
+  };
+
+  var currentDiff = 'easy';
+  var cards = [];
+  var firstIdx = null;
+  var secondIdx = null;
+  var lockBoard = false;
+  var matchedCount = 0;
+  var moves = 0;
+  var combo = 0;
+  var score = 0;
+  var seconds = 0;
+  var timerId = null;
+  var timerStarted = false;
+  var hintsLeft = 2;
+  var soundEnabled = true;
+  var audioCtx = null;
+
+  var memoryGrid = document.getElementById('memoryGrid');
+  var hudTime = document.getElementById('hudTime');
+  var hudMoves = document.getElementById('hudMoves');
+  var hudCombo = document.getElementById('hudCombo');
+  var comboCard = document.getElementById('comboCard');
+  var hudScore = document.getElementById('hudScore');
+  var bestScoreDisplay = document.getElementById('bestScoreDisplay');
+  var bestTimeDisplay = document.getElementById('bestTimeDisplay');
+  var btnRestart = document.getElementById('btnRestart');
+  var btnHint = document.getElementById('btnHint');
+  var hintLabel = document.getElementById('hintLabel');
+  var btnSound = document.getElementById('btnSound');
+  var soundIconOn = document.getElementById('soundIconOn');
+  var soundIconOff = document.getElementById('soundIconOff');
+  var btnOverlayPreview = document.getElementById('btnOverlayPreview');
+  var boardShell = document.getElementById('boardShell');
+  var winModal = document.getElementById('winModal');
+  var btnPlayAgain = document.getElementById('btnPlayAgain');
+
+  function formatTime(totalSec){
+    var m = Math.floor(totalSec / 60);
+    var s = totalSec % 60;
+    return (m < 10 ? '0' + m : '' + m) + ':' + (s < 10 ? '0' + s : '' + s);
+  }
+
+  function loadRecords(){
+    try {
+      var raw = localStorage.getItem(STORAGE_KEY);
+      if (!raw) return {};
+      var parsed = JSON.parse(raw);
+      return parsed && typeof parsed === 'object' ? parsed : {};
+    } catch (e) {
+      return {};
+    }
+  }
+
+  function saveRecords(records){
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(records));
+    } catch (e) {
+      // localStorage may be disabled
+    }
+  }
+
+  function updateRecordDisplay(){
+    var records = loadRecords();
+    var rec = records[currentDiff];
+    if (rec) {
+      bestScoreDisplay.textContent = String(rec.bestScore || 0);
+      bestTimeDisplay.textContent = typeof rec.bestTime === 'number' ? formatTime(rec.bestTime) : '--:--';
+    } else {
+      bestScoreDisplay.textContent = '0';
+      bestTimeDisplay.textContent = '--:--';
+    }
+  }
+
+  function playTone(freq, duration, type, delay){
+    if (!soundEnabled) return;
+    try {
+      var AudioContextClass = window.AudioContext || window.webkitAudioContext;
+      if (!AudioContextClass) return;
+      if (!audioCtx) {
+        audioCtx = new AudioContextClass();
+      }
+      if (audioCtx.state === 'suspended') {
+        audioCtx.resume();
+      }
+      var startAt = audioCtx.currentTime + (delay || 0);
+      var osc = audioCtx.createOscillator();
+      var gain = audioCtx.createGain();
+      osc.type = type || 'sine';
+      osc.frequency.setValueAtTime(freq, startAt);
+      gain.gain.setValueAtTime(0.11, startAt);
+      gain.gain.exponentialRampToValueAtTime(0.001, startAt + duration);
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+      osc.start(startAt);
+      osc.stop(startAt + duration);
+    } catch (e) {
+      // Web Audio blocked or unavailable
+    }
+  }
+
+  function playFlipSound(){
+    playTone(520, 0.06, 'triangle', 0);
+  }
+  function playMatchSound(streak){
+    var base = 540 + Math.min(streak, 5) * 60;
+    playTone(base, 0.1, 'sine', 0);
+    playTone(base + 180, 0.14, 'triangle', 0.07);
+  }
+  function playMismatchSound(){
+    playTone(230, 0.11, 'sawtooth', 0);
+    playTone(170, 0.14, 'sawtooth', 0.09);
+  }
+  function playWinSound(){
+    playTone(523, 0.12, 'triangle', 0);
+    playTone(659, 0.12, 'triangle', 0.1);
+    playTone(784, 0.14, 'triangle', 0.2);
+    playTone(1046, 0.25, 'triangle', 0.32);
+  }
+
+  function shuffleArray(arr){
+    var copy = arr.slice();
+    for (var i = copy.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var tmp = copy[i];
+      copy[i] = copy[j];
+      copy[j] = tmp;
+    }
+    return copy;
+  }
+
+  function stopTimer(){
+    if (timerId !== null) {
+      clearInterval(timerId);
+      timerId = null;
+    }
+  }
+
+  function startTimer(){
+    if (timerStarted) return;
+    timerStarted = true;
+    timerId = setInterval(function(){
+      seconds += 1;
+      hudTime.textContent = formatTime(seconds);
+    }, 1000);
+  }
+
+  function updateHud(){
+    hudTime.textContent = formatTime(seconds);
+    hudMoves.textContent = String(moves);
+    var mult = combo > 1 ? combo : 1;
+    hudCombo.textContent = 'x' + mult;
+    if (combo >= 2) {
+      comboCard.classList.add('combo-active');
+    } else {
+      comboCard.classList.remove('combo-active');
+    }
+    hudScore.textContent = String(score);
+    hintLabel.textContent = 'تلميح البطل (' + hintsLeft + ')';
+    btnHint.disabled = hintsLeft <= 0 || lockBoard;
+  }
+
+  function createCardElement(cardData, index){
+    var btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'card-btn';
+    btn.setAttribute('data-index', String(index));
+    btn.setAttribute('aria-label', 'بطاقة بطل مغلقة');
+
+    var backFace = document.createElement('div');
+    backFace.className = 'card-face card-back';
+
+    var pattern = document.createElement('div');
+    pattern.className = 'card-back-pattern';
+    backFace.appendChild(pattern);
+
+    var emblem = document.createElement('div');
+    emblem.className = 'card-back-emblem';
+    emblem.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="#FFB703"><polygon points="12,2 15,9 22,9 16.5,14 18.5,21 12,17 5.5,21 7.5,14 2,9 9,9"/></svg>';
+    backFace.appendChild(emblem);
+
+    var frontFace = document.createElement('div');
+    frontFace.className = 'card-face card-front';
+
+    var svgWrap = document.createElement('div');
+    svgWrap.className = 'card-svg-wrap';
+    svgWrap.innerHTML = cardData.svg;
+    frontFace.appendChild(svgWrap);
+
+    var label = document.createElement('div');
+    label.className = 'card-hero-label';
+    label.textContent = cardData.name;
+    frontFace.appendChild(label);
+
+    btn.appendChild(backFace);
+    btn.appendChild(frontFace);
+
+    btn.addEventListener('click', function(){
+      handleCardClick(index);
+    });
+
+    return btn;
+  }
+
+  function initGame(){
+    stopTimer();
+    winModal.classList.remove('show');
+    firstIdx = null;
+    secondIdx = null;
+    lockBoard = false;
+    matchedCount = 0;
+    moves = 0;
+    combo = 0;
+    score = 0;
+    seconds = 0;
+    timerStarted = false;
+    hintsLeft = 2;
+
+    var config = DIFFICULTIES[currentDiff];
+    memoryGrid.className = 'memory-grid cols-' + config.cols;
+
+    var selectedHeroes = shuffleArray(HERO_CARDS).slice(0, config.pairs);
+    var deck = [];
+    for (var i = 0; i < selectedHeroes.length; i++) {
+      deck.push({ heroId: selectedHeroes[i].id, name: selectedHeroes[i].name, svg: selectedHeroes[i].svg, matched: false });
+      deck.push({ heroId: selectedHeroes[i].id, name: selectedHeroes[i].name, svg: selectedHeroes[i].svg, matched: false });
+    }
+    cards = shuffleArray(deck);
+
+    memoryGrid.innerHTML = '';
+    for (var k = 0; k < cards.length; k++) {
+      memoryGrid.appendChild(createCardElement(cards[k], k));
+    }
+
+    updateRecordDisplay();
+    updateHud();
+  }
+
+  function getCardNode(index){
+    return memoryGrid.querySelector('.card-btn[data-index="' + index + '"]');
+  }
+
+  function handleCardClick(index){
+    if (lockBoard) return;
+    if (index === firstIdx) return;
+    var card = cards[index];
+    if (!card || card.matched) return;
+
+    startTimer();
+    playFlipSound();
+
+    var node = getCardNode(index);
+    if (!node) return;
+    node.classList.add('flipped');
+    node.setAttribute('aria-label', card.name);
+
+    if (firstIdx === null) {
+      firstIdx = index;
+      return;
+    }
+
+    secondIdx = index;
+    moves += 1;
+    lockBoard = true;
+
+    var firstCard = cards[firstIdx];
+    var secondCard = cards[secondIdx];
+
+    if (firstCard.heroId === secondCard.heroId) {
+      firstCard.matched = true;
+      secondCard.matched = true;
+      matchedCount += 2;
+      combo += 1;
+      var pointsEarned = 100 * combo;
+      score += pointsEarned;
+
+      var n1 = getCardNode(firstIdx);
+      var n2 = getCardNode(secondIdx);
+      if (n1) n1.classList.add('matched');
+      if (n2) n2.classList.add('matched');
+
+      playMatchSound(combo);
+      firstIdx = null;
+      secondIdx = null;
+      lockBoard = false;
+      updateHud();
+
+      if (matchedCount === cards.length) {
+        finishGame();
+      }
+    } else {
+      combo = 0;
+      playMismatchSound();
+      updateHud();
+      var idxA = firstIdx;
+      var idxB = secondIdx;
+      setTimeout(function(){
+        var nodeA = getCardNode(idxA);
+        var nodeB = getCardNode(idxB);
+        if (nodeA) {
+          nodeA.classList.remove('flipped');
+          nodeA.setAttribute('aria-label', 'بطاقة بطل مغلقة');
+        }
+        if (nodeB) {
+          nodeB.classList.remove('flipped');
+          nodeB.setAttribute('aria-label', 'بطاقة بطل مغلقة');
+        }
+        firstIdx = null;
+        secondIdx = null;
+        lockBoard = false;
+        updateHud();
+      }, 650);
+    }
+  }
+
+  function finishGame(){
+    stopTimer();
+    playWinSound();
+
+    var config = DIFFICULTIES[currentDiff];
+    var timeBonus = Math.max(0, (config.pairs * 12 - seconds) * 5);
+    score += timeBonus;
+    updateHud();
+
+    var records = loadRecords();
+    var prev = records[currentDiff];
+    var isNewRecord = false;
+    if (!prev || score > prev.bestScore) {
+      isNewRecord = true;
+    }
+    var bestScore = prev ? Math.max(prev.bestScore || 0, score) : score;
+    var bestTime = prev && typeof prev.bestTime === 'number' ? Math.min(prev.bestTime, seconds) : seconds;
+    records[currentDiff] = {
+      bestScore: bestScore,
+      bestTime: bestTime
+    };
+    saveRecords(records);
+    updateRecordDisplay();
+
+    var stars = 1;
+    if (moves <= config.pairs * 1.6) {
+      stars = 3;
+    } else if (moves <= config.pairs * 2.3) {
+      stars = 2;
+    }
+
+    var starsRow = document.getElementById('starsRow');
+    starsRow.innerHTML = '';
+    for (var s = 1; s <= 3; s++) {
+      var fill = s <= stars ? '#FFB703' : 'rgba(0,0,0,0.35)';
+      var stroke = s <= stars ? '#000000' : 'rgba(255,255,255,0.4)';
+      starsRow.innerHTML += '<svg width="30" height="30" viewBox="0 0 24 24" fill="' + fill + '" stroke="' + stroke + '" stroke-width="1.8"><polygon points="12 2 15.1 8.6 22 9.3 16.8 14 18.4 21 12 17.3 5.6 21 7.2 14 2 9.3 8.9 8.6"/></svg>';
+    }
+
+    document.getElementById('finalScore').textContent = String(score);
+    document.getElementById('finalTime').textContent = formatTime(seconds);
+    document.getElementById('finalMoves').textContent = String(moves);
+
+    var badge = document.getElementById('newRecordBadge');
+    if (isNewRecord) {
+      badge.classList.add('show');
+    } else {
+      badge.classList.remove('show');
+    }
+
+    setTimeout(function(){
+      winModal.classList.add('show');
+    }, 360);
+  }
+
+  function triggerHint(){
+    if (hintsLeft <= 0 || lockBoard) return;
+    hintsLeft -= 1;
+    lockBoard = true;
+    updateHud();
+
+    var unmatchedNodes = [];
+    for (var i = 0; i < cards.length; i++) {
+      if (!cards[i].matched && i !== firstIdx) {
+        var n = getCardNode(i);
+        if (n) {
+          n.classList.add('peeked');
+          unmatchedNodes.push(n);
+        }
+      }
+    }
+    playTone(760, 0.14, 'sine', 0);
+
+    setTimeout(function(){
+      for (var j = 0; j < unmatchedNodes.length; j++) {
+        unmatchedNodes[j].classList.remove('peeked');
+      }
+      lockBoard = false;
+      updateHud();
+    }, 1100);
+  }
+
+  // Difficulty buttons
+  var diffButtons = document.querySelectorAll('.diff-btn');
+  for (var d = 0; d < diffButtons.length; d++) {
+    (function(btn){
+      btn.addEventListener('click', function(){
+        var chosen = btn.getAttribute('data-diff');
+        if (!chosen || chosen === currentDiff) return;
+        currentDiff = chosen;
+        for (var x = 0; x < diffButtons.length; x++) {
+          diffButtons[x].classList.remove('active');
+        }
+        btn.classList.add('active');
+        initGame();
+      });
+    })(diffButtons[d]);
+  }
+
+  btnRestart.addEventListener('click', initGame);
+  btnPlayAgain.addEventListener('click', initGame);
+  btnHint.addEventListener('click', triggerHint);
+
+  btnSound.addEventListener('click', function(){
+    soundEnabled = !soundEnabled;
+    if (soundEnabled) {
+      soundIconOn.style.display = 'block';
+      soundIconOff.style.display = 'none';
+      playFlipSound();
+    } else {
+      soundIconOn.style.display = 'none';
+      soundIconOff.style.display = 'block';
+    }
+  });
+
+  btnOverlayPreview.addEventListener('click', function(){
+    var active = boardShell.classList.toggle('overlay-mode');
+    if (active) {
+      btnOverlayPreview.classList.add('active-toggle');
+    } else {
+      btnOverlayPreview.classList.remove('active-toggle');
+    }
+  });
+
+  // Load metadata from games.json
+  function loadGameMetadata(){
+    var notice = document.getElementById('jsonNotice');
+    try {
+      fetch('games.json')
+        .then(function(response){
+          if (!response.ok) {
+            throw new Error('HTTP ' + response.status);
+          }
+          return response.json();
+        })
+        .then(function(list){
+          if (!Array.isArray(list)) return;
+          var found = null;
+          for (var i = 0; i < list.length; i++) {
+            var item = list[i];
+            if (item && (item.file === 'game_memory.html' || item.id === 'game-memory' || item.id === 'game-hero-memory')) {
+              found = item;
+              break;
+            }
+          }
+          if (found) {
+            if (found.title) {
+              document.getElementById('gameTitle').textContent = found.title;
+            }
+            if (found.description) {
+              document.getElementById('gameDesc').textContent = found.description;
+            }
+            if (found.cover) {
+              var coverBox = document.getElementById('bannerCover');
+              coverBox.innerHTML = '';
+              var img = document.createElement('img');
+              img.src = found.cover;
+              img.alt = found.title || 'تحدي الذاكرة للأبطال';
+              coverBox.appendChild(img);
+            }
+            if (found.supportsOverlay === false) {
+              document.getElementById('overlaySupportBadge').textContent = 'يعمل داخل التطبيق';
+            }
+          }
+        })
+        .catch(function(){
+          notice.style.display = 'block';
+          notice.textContent = 'تم تشغيل اللعبة بالوضع المحلي المباشر (تعذر قراءة ملف البيانات games.json).';
+        });
+    } catch (e) {
+      notice.style.display = 'block';
+      notice.textContent = 'تم تشغيل اللعبة بالوضع المحلي المباشر.';
+    }
+  }
+
+  initGame();
+  loadGameMetadata();
+})();
+</script>
+</body>
+</html>
