@@ -86,5 +86,13 @@
     "hidden": false,
     "searchEnabled": true,
     "searchNames": []
+  },
+  {
+    "file": "game_tap.html",
+    "title": "لعبة الضربة الخاطفة",
+    "icon": "fa-solid fa-file",
+    "hidden": false,
+    "searchEnabled": true,
+    "searchNames": []
   }
 ]
