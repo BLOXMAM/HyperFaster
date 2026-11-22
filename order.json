@@ -78,5 +78,13 @@
     "hidden": false,
     "searchEnabled": true,
     "searchNames": []
+  },
+  {
+    "file": "games.html",
+    "title": "الألعاب المصغرة العائمة",
+    "icon": "fa-solid fa-file",
+    "hidden": false,
+    "searchEnabled": true,
+    "searchNames": []
   }
 ]
