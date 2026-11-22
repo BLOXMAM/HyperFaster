@@ -1,146 +1,138 @@
 {
+  "about.html": {
+    "op": "sync",
+    "timestamp": 1795363594622
+  },
+  "admin.html": {
+    "op": "sync",
+    "timestamp": 1795363594622
+  },
   "app-assets/splash-logo.png": {
     "op": "sync",
-    "timestamp": 1794076482032
+    "timestamp": 1795363594622
   },
   "app_lazy_pages.json": {
     "op": "sync",
-    "timestamp": 1794076482032
+    "timestamp": 1795363594622
   },
   "app_logo.json": {
     "op": "sync",
-    "timestamp": 1794076482032
+    "timestamp": 1795363594622
   },
   "app_status.json": {
     "op": "sync",
-    "timestamp": 1794076482032
+    "timestamp": 1795363594622
   },
   "apppages.json": {
     "op": "sync",
-    "timestamp": 1794076482032
+    "timestamp": 1795363594622
+  },
+  "categories.html": {
+    "op": "sync",
+    "timestamp": 1795363594622
   },
   "checkser.json": {
-    "op": "update",
-    "timestamp": 1794145836362
+    "op": "sync",
+    "timestamp": 1795363594622
+  },
+  "favorites.html": {
+    "op": "sync",
+    "timestamp": 1795363594622
+  },
+  "game-details.html": {
+    "op": "sync",
+    "timestamp": 1795363594622
+  },
+  "game2d.html": {
+    "op": "sync",
+    "timestamp": 1795363594622
+  },
+  "games.json": {
+    "op": "sync",
+    "timestamp": 1795363594622
   },
   "home.html": {
-    "op": "update",
-    "timestamp": 1795360997627
+    "op": "sync",
+    "timestamp": 1795363594622
+  },
+  "homepage.json": {
+    "op": "sync",
+    "timestamp": 1795363594622
+  },
+  "index.html": {
+    "op": "sync",
+    "timestamp": 1795363594622
+  },
+  "library.html": {
+    "op": "sync",
+    "timestamp": 1795363594622
   },
   "order.json": {
-    "op": "update",
-    "timestamp": 1795362648328
+    "op": "sync",
+    "timestamp": 1795363594622
+  },
+  "overlay-guide.html": {
+    "op": "sync",
+    "timestamp": 1795363594622
+  },
+  "overlay-info.html": {
+    "op": "sync",
+    "timestamp": 1795363594622
+  },
+  "play.html": {
+    "op": "sync",
+    "timestamp": 1795363594622
+  },
+  "product.html": {
+    "op": "sync",
+    "timestamp": 1795363594622
+  },
+  "products.html": {
+    "op": "sync",
+    "timestamp": 1795363594622
+  },
+  "puzzle-game.html": {
+    "op": "sync",
+    "timestamp": 1795363594622
+  },
+  "puzzle-view.html": {
+    "op": "sync",
+    "timestamp": 1795363594622
+  },
+  "riddle.html": {
+    "op": "sync",
+    "timestamp": 1795363594622
+  },
+  "rostrick-admin.js": {
+    "op": "sync",
+    "timestamp": 1795363594622
+  },
+  "scores.html": {
+    "op": "sync",
+    "timestamp": 1795363594622
+  },
+  "settings.html": {
+    "op": "sync",
+    "timestamp": 1795363594622
+  },
+  "sm-custom-styles.json": {
+    "op": "sync",
+    "timestamp": 1795363594622
   },
   "splash.html": {
-    "op": "update",
-    "timestamp": 1795362959304
+    "op": "sync",
+    "timestamp": 1795363594622
   },
   "splash_config.json": {
     "op": "sync",
-    "timestamp": 1794076482032
+    "timestamp": 1795363594622
   },
   "var.json": {
     "op": "sync",
-    "timestamp": 1794076482032
+    "timestamp": 1795363594622
   },
   "version.txt": {
-    "op": "update",
-    "timestamp": 1795362860953
-  },
-  "assestslinks/rt-links.json": {
-    "op": "update",
-    "timestamp": 1795362793134
-  },
-  "sm-custom-styles.json": {
-    "op": "add",
-    "timestamp": 1794213506788
-  },
-  "index.html": {
-    "op": "update",
-    "timestamp": 1795362593448
-  },
-  "categories.html": {
-    "op": "update",
-    "timestamp": 1795354495260
-  },
-  "products.html": {
-    "op": "add",
-    "timestamp": 1795320801574
-  },
-  "product.html": {
-    "op": "add",
-    "timestamp": 1795342104413
-  },
-  "favorites.html": {
-    "op": "update",
-    "timestamp": 1795357626421
-  },
-  "game-details.html": {
-    "op": "add",
-    "timestamp": 1795354528793
-  },
-  "settings.html": {
-    "op": "update",
-    "timestamp": 1795361960632
-  },
-  ".github/workflows/build-apk.yml": {
-    "op": "update",
-    "timestamp": 1795354601339
-  },
-  "puzzle-game.html": {
-    "op": "add",
-    "timestamp": 1795357517350
-  },
-  "game2d.html": {
-    "op": "add",
-    "timestamp": 1795357560840
-  },
-  "about.html": {
-    "op": "add",
-    "timestamp": 1795357665084
-  },
-  "admin.html": {
-    "op": "update",
-    "timestamp": 1795362784322
-  },
-  "library.html": {
-    "op": "add",
-    "timestamp": 1795361813550
-  },
-  "play.html": {
-    "op": "add",
-    "timestamp": 1795361863398
-  },
-  "riddle.html": {
-    "op": "add",
-    "timestamp": 1795361896902
-  },
-  "overlay-info.html": {
-    "op": "add",
-    "timestamp": 1795361932025
-  },
-  "rostrick-admin.js": {
-    "op": "add",
-    "timestamp": 1795362014447
-  },
-  "puzzle-view.html": {
-    "op": "add",
-    "timestamp": 1795362646668
-  },
-  "overlay-guide.html": {
-    "op": "add",
-    "timestamp": 1795362702349
-  },
-  "scores.html": {
-    "op": "add",
-    "timestamp": 1795362746048
-  },
-  "homepage.json": {
-    "op": "add",
-    "timestamp": 1795362790586
-  },
-  "games.json": {
-    "op": "add",
-    "timestamp": 1795363310829
+    "op": "sync",
+    "timestamp": 1795363594622
   }
 }
