@@ -1,0 +1,8 @@
+{
+  "rules": [
+    {
+      "type": "application/pdf",
+      "page": "pdf_links.html"
+    }
+  ]
+}
