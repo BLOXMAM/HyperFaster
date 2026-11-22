@@ -90,5 +90,9 @@
   "game-details.html": {
     "op": "add",
     "timestamp": 1795354528793
+  },
+  "rostrick-build/ai-drafts/settings.html.json": {
+    "op": "add",
+    "timestamp": 1795354541841
   }
 }
