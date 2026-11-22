@@ -1,0 +1,1629 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>لعبة الضربة الخاطفة - كوميكس أوفرلاي</title>
+<style>
+:root{
+  --primary:#D90429;
+  --primary-dark:#8D0801;
+  --accent:#FFB703;
+  --highlight:#FB8500;
+  --control:#2B2D42;
+  --bg:#12131C;
+  --surface:#1C1E2D;
+  --surface-alt:#25283B;
+  --text:#FFFFFF;
+  --muted:#B8BDD0;
+  --success:#06D6A0;
+  --danger:#EF233C;
+  --border:#0B0C12;
+}
+*{
+  box-sizing:border-box;
+  -webkit-tap-highlight-color:transparent;
+}
+html,body{
+  margin:0;
+  padding:0;
+  background-color:var(--bg);
+  color:var(--text);
+  font-family:Tahoma,Arial,sans-serif;
+  min-height:100vh;
+  overflow-x:hidden;
+}
+body{
+  background-image:radial-gradient(rgba(255,183,3,0.08) 1px, transparent 1px);
+  background-size:16px 16px;
+  padding-top:env(safe-area-inset-top);
+  padding-bottom:env(safe-area-inset-bottom);
+}
+a{
+  text-decoration:none;
+  color:inherit;
+}
+button{
+  font-family:inherit;
+  border:none;
+  outline:none;
+  cursor:pointer;
+}
+.app-bar{
+  position:sticky;
+  top:0;
+  z-index:30;
+  background-color:var(--control);
+  border-bottom:3px solid var(--accent);
+  box-shadow:0 4px 12px rgba(0,0,0,0.45);
+  padding:8px 12px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+}
+.app-bar-right{
+  display:flex;
+  align-items:center;
+}
+.icon-btn{
+  min-width:44px;
+  min-height:44px;
+  border-radius:12px;
+  background-color:var(--surface-alt);
+  color:var(--text);
+  border:2px solid #0B0C12;
+  box-shadow:0 2px 0 #0B0C12;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  transition:transform 0.12s ease, background-color 0.15s ease;
+}
+.icon-btn:active{
+  transform:translateY(2px);
+  box-shadow:none;
+}
+.icon-btn-accent{
+  background-color:var(--primary);
+  color:#FFFFFF;
+}
+.icon-btn-gold{
+  background-color:var(--accent);
+  color:#12131C;
+}
+.app-title-wrap{
+  margin-right:10px;
+}
+.app-title{
+  font-size:17px;
+  font-weight:700;
+  margin:0;
+  line-height:1.2;
+  color:#FFFFFF;
+}
+.app-sub{
+  font-size:11px;
+  color:var(--accent);
+  margin:2px 0 0 0;
+  font-weight:700;
+}
+.app-bar-actions{
+  display:flex;
+  align-items:center;
+}
+.app-bar-actions > *{
+  margin-right:8px;
+}
+.app-bar-actions > *:first-child{
+  margin-right:0;
+}
+
+.main-wrap{
+  max-width:600px;
+  margin:0 auto;
+  padding:12px 12px 92px 12px;
+}
+
+.game-hero-card{
+  background-color:var(--surface);
+  border:3px solid #0B0C12;
+  border-radius:16px;
+  box-shadow:4px 4px 0 var(--primary-dark);
+  padding:12px;
+  margin-bottom:12px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+}
+.hero-left{
+  display:flex;
+  align-items:center;
+  flex:1;
+  min-width:0;
+}
+.hero-cover{
+  width:52px;
+  height:52px;
+  border-radius:12px;
+  border:2px solid var(--accent);
+  background-color:#10131F;
+  flex-shrink:0;
+  overflow:hidden;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.hero-cover img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
+}
+.hero-meta{
+  margin-right:10px;
+  min-width:0;
+}
+.hero-badge-row{
+  display:flex;
+  align-items:center;
+  flex-wrap:wrap;
+  margin-bottom:4px;
+}
+.comic-badge{
+  display:inline-flex;
+  align-items:center;
+  background-color:var(--accent);
+  color:#12131C;
+  font-size:11px;
+  font-weight:700;
+  padding:2px 8px;
+  border-radius:8px;
+  border:2px solid #0B0C12;
+  margin-left:6px;
+}
+.comic-badge-red{
+  background-color:var(--primary);
+  color:#FFFFFF;
+}
+.hero-desc{
+  font-size:12px;
+  color:var(--muted);
+  margin:0;
+  line-height:1.4;
+}
+.status-msg{
+  background-color:rgba(255,183,3,0.14);
+  border:1px solid var(--accent);
+  color:var(--accent);
+  font-size:12px;
+  padding:8px 10px;
+  border-radius:10px;
+  margin-bottom:12px;
+  display:none;
+}
+
+.stats-strip{
+  display:flex;
+  align-items:stretch;
+  justify-content:space-between;
+  margin-bottom:12px;
+}
+.stat-card{
+  flex:1;
+  background-color:var(--surface);
+  border:2px solid #0B0C12;
+  border-radius:14px;
+  box-shadow:0 3px 0 #0B0C12;
+  padding:8px 6px;
+  text-align:center;
+  margin-left:8px;
+}
+.stat-card:last-child{
+  margin-left:0;
+}
+.stat-label{
+  font-size:11px;
+  color:var(--muted);
+  margin-bottom:3px;
+}
+.stat-val{
+  font-size:18px;
+  font-weight:700;
+  color:var(--accent);
+}
+.stat-val.red{
+  color:#FF5A6E;
+}
+.stat-val.green{
+  color:var(--success);
+}
+
+.mode-tabs{
+  display:flex;
+  background-color:var(--surface);
+  border:2px solid #0B0C12;
+  border-radius:14px;
+  padding:4px;
+  margin-bottom:12px;
+}
+.mode-tab{
+  flex:1;
+  min-height:44px;
+  border-radius:10px;
+  background-color:transparent;
+  color:var(--muted);
+  font-size:13px;
+  font-weight:700;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  transition:background-color 0.15s ease, color 0.15s ease;
+}
+.mode-tab svg{
+  margin-left:6px;
+}
+.mode-tab.active{
+  background-color:var(--primary);
+  color:#FFFFFF;
+  box-shadow:0 2px 0 var(--primary-dark);
+}
+
+.overlay-bar{
+  background-color:var(--control);
+  border:2px solid #0B0C12;
+  border-radius:14px;
+  padding:8px 10px;
+  margin-bottom:12px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  flex-wrap:wrap;
+}
+.overlay-bar-left{
+  display:flex;
+  align-items:center;
+}
+.overlay-toggle-btn{
+  min-height:44px;
+  padding:0 12px;
+  border-radius:10px;
+  background-color:var(--surface-alt);
+  color:#FFFFFF;
+  border:2px solid var(--accent);
+  font-size:12px;
+  font-weight:700;
+  display:inline-flex;
+  align-items:center;
+  transition:transform 0.12s ease, background-color 0.15s ease;
+}
+.overlay-toggle-btn.on{
+  background-color:var(--accent);
+  color:#12131C;
+}
+.overlay-toggle-btn:active{
+  transform:scale(0.97);
+}
+.overlay-toggle-btn svg{
+  margin-left:6px;
+}
+.opacity-wrap{
+  display:flex;
+  align-items:center;
+  margin-right:8px;
+}
+.opacity-label{
+  font-size:11px;
+  color:var(--muted);
+  margin-left:6px;
+}
+.opacity-slider{
+  width:76px;
+  accent-color:var(--accent);
+}
+.launch-overlay-link{
+  min-height:44px;
+  padding:0 12px;
+  border-radius:10px;
+  background-color:var(--highlight);
+  color:#12131C;
+  font-size:12px;
+  font-weight:700;
+  border:2px solid #0B0C12;
+  box-shadow:0 2px 0 #0B0C12;
+  display:inline-flex;
+  align-items:center;
+}
+.launch-overlay-link:active{
+  transform:translateY(2px);
+  box-shadow:none;
+}
+.launch-overlay-link svg{
+  margin-left:5px;
+}
+
+.stage-wrapper{
+  transition:all 0.22s ease;
+}
+.stage-wrapper.floating-mode{
+  max-width:300px;
+  margin:0 auto 14px auto;
+  border:3px solid var(--accent);
+  border-radius:18px;
+  box-shadow:0 14px 32px rgba(0,0,0,0.75);
+  background-color:rgba(28,30,45,0.96);
+  overflow:hidden;
+}
+.floating-window-chrome{
+  display:none;
+  background-color:var(--control);
+  border-bottom:2px solid #0B0C12;
+  padding:6px 10px;
+  align-items:center;
+  justify-content:space-between;
+}
+.stage-wrapper.floating-mode .floating-window-chrome{
+  display:flex;
+}
+.chrome-title{
+  font-size:12px;
+  font-weight:700;
+  color:var(--accent);
+  display:flex;
+  align-items:center;
+}
+.chrome-dot{
+  width:10px;
+  height:10px;
+  border-radius:50%;
+  background-color:var(--success);
+  margin-left:6px;
+}
+.chrome-close-btn{
+  min-width:36px;
+  min-height:36px;
+  border-radius:8px;
+  background-color:var(--primary);
+  color:#FFFFFF;
+  font-size:11px;
+  font-weight:700;
+  padding:0 8px;
+}
+
+.arena-card{
+  background-color:var(--surface);
+  border:3px solid #0B0C12;
+  border-radius:18px;
+  box-shadow:5px 5px 0 #0B0C12;
+  padding:14px;
+  position:relative;
+  overflow:hidden;
+}
+.stage-wrapper.floating-mode .arena-card{
+  border:none;
+  border-radius:0;
+  box-shadow:none;
+  padding:10px;
+  background-color:transparent;
+}
+
+.arena-hud{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom:10px;
+  background-color:var(--surface-alt);
+  border:2px solid #0B0C12;
+  border-radius:12px;
+  padding:8px 10px;
+}
+.hud-item{
+  text-align:center;
+}
+.hud-lbl{
+  font-size:10px;
+  color:var(--muted);
+}
+.hud-num{
+  font-size:16px;
+  font-weight:700;
+  color:#FFFFFF;
+}
+.hud-num.accent{
+  color:var(--accent);
+}
+.hud-num.combo{
+  color:var(--success);
+}
+.timer-track{
+  width:100%;
+  height:8px;
+  background-color:#0B0C12;
+  border-radius:6px;
+  overflow:hidden;
+  margin-bottom:12px;
+}
+.timer-fill{
+  height:100%;
+  width:100%;
+  background-color:var(--accent);
+  transition:width 0.1s linear, background-color 0.2s ease;
+}
+
+.reaction-stage{
+  display:block;
+}
+.reaction-pad{
+  width:100%;
+  min-height:220px;
+  border-radius:16px;
+  border:4px solid #0B0C12;
+  box-shadow:inset 0 -6px 0 rgba(0,0,0,0.25);
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  padding:16px;
+  transition:background-color 0.12s ease, transform 0.08s ease;
+  user-select:none;
+  background-color:var(--control);
+  color:#FFFFFF;
+  position:relative;
+}
+.stage-wrapper.floating-mode .reaction-pad{
+  min-height:170px;
+  padding:10px;
+}
+.reaction-pad:active{
+  transform:scale(0.98);
+}
+.reaction-pad.state-waiting{
+  background-color:#8D0801;
+  border-color:var(--accent);
+}
+.reaction-pad.state-ready{
+  background-color:#06D6A0;
+  color:#0B0C12;
+  border-color:#FFFFFF;
+}
+.reaction-pad.state-early{
+  background-color:#FB8500;
+  color:#12131C;
+}
+.reaction-pad.state-result{
+  background-color:#2B2D42;
+}
+.reaction-icon{
+  margin-bottom:8px;
+}
+.reaction-main-txt{
+  font-size:22px;
+  font-weight:700;
+  margin:0 0 6px 0;
+}
+.reaction-sub-txt{
+  font-size:13px;
+  margin:0;
+  opacity:0.92;
+}
+.round-dots{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  margin-top:12px;
+}
+.round-dot{
+  width:28px;
+  height:28px;
+  border-radius:8px;
+  background-color:var(--surface-alt);
+  border:2px solid #0B0C12;
+  margin:0 4px;
+  font-size:11px;
+  font-weight:700;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:var(--muted);
+}
+.round-dot.done{
+  background-color:var(--accent);
+  color:#12131C;
+}
+.round-dot.active{
+  border-color:#FFFFFF;
+  background-color:var(--primary);
+  color:#FFFFFF;
+}
+
+.blitz-stage{
+  display:none;
+}
+.blitz-grid{
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:space-between;
+}
+.blitz-cell{
+  width:31.5%;
+  height:82px;
+  margin-bottom:8px;
+  border-radius:14px;
+  background-color:var(--surface-alt);
+  border:3px solid #0B0C12;
+  box-shadow:inset 0 -4px 0 rgba(0,0,0,0.35);
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  position:relative;
+  transition:transform 0.08s ease, background-color 0.1s ease;
+}
+.stage-wrapper.floating-mode .blitz-cell{
+  height:62px;
+}
+.blitz-cell:active{
+  transform:scale(0.93);
+}
+.blitz-cell.target-villain{
+  background-color:var(--primary);
+  border-color:var(--accent);
+  box-shadow:0 0 12px rgba(217,4,41,0.55);
+}
+.blitz-cell.target-gold{
+  background-color:var(--accent);
+  border-color:#FFFFFF;
+  color:#12131C;
+  box-shadow:0 0 14px rgba(255,183,3,0.65);
+}
+.blitz-cell.target-bomb{
+  background-color:#11121A;
+  border-color:#EF233C;
+}
+.blitz-cell.hit-flash{
+  background-color:var(--success);
+}
+.cell-pts{
+  font-size:10px;
+  font-weight:700;
+  margin-top:2px;
+}
+
+.callout-banner{
+  min-height:30px;
+  margin-top:10px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.comic-shout{
+  display:inline-block;
+  padding:4px 12px;
+  border-radius:10px;
+  background-color:var(--accent);
+  color:#12131C;
+  font-size:13px;
+  font-weight:700;
+  border:2px solid #0B0C12;
+  transform:rotate(-2deg);
+}
+.comic-shout.bad{
+  background-color:var(--danger);
+  color:#FFFFFF;
+}
+
+.action-row{
+  display:flex;
+  align-items:center;
+  margin-top:12px;
+}
+.btn-primary{
+  flex:1;
+  min-height:48px;
+  border-radius:14px;
+  background-color:var(--primary);
+  color:#FFFFFF;
+  font-size:15px;
+  font-weight:700;
+  border:3px solid #0B0C12;
+  box-shadow:0 4px 0 var(--primary-dark);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  transition:transform 0.1s ease;
+}
+.btn-primary:active{
+  transform:translateY(3px);
+  box-shadow:0 1px 0 var(--primary-dark);
+}
+.btn-primary svg{
+  margin-left:8px;
+}
+.btn-secondary{
+  min-height:48px;
+  padding:0 14px;
+  margin-right:8px;
+  border-radius:14px;
+  background-color:var(--surface-alt);
+  color:#FFFFFF;
+  font-size:13px;
+  font-weight:700;
+  border:2px solid #0B0C12;
+  box-shadow:0 3px 0 #0B0C12;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+}
+.btn-secondary:active{
+  transform:translateY(2px);
+  box-shadow:none;
+}
+
+.rank-card{
+  margin-top:12px;
+  background-color:var(--surface);
+  border:2px solid #0B0C12;
+  border-radius:14px;
+  padding:12px;
+}
+.rank-header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom:6px;
+}
+.rank-title{
+  font-size:14px;
+  font-weight:700;
+  color:var(--accent);
+}
+.rank-tier{
+  font-size:12px;
+  font-weight:700;
+  padding:3px 10px;
+  border-radius:8px;
+  background-color:var(--control);
+  border:1px solid var(--accent);
+}
+.rank-tips{
+  font-size:12px;
+  color:var(--muted);
+  margin:0;
+  line-height:1.5;
+}
+
+.bottom-nav{
+  position:fixed;
+  bottom:0;
+  left:0;
+  right:0;
+  z-index:40;
+  background-color:var(--control);
+  border-top:3px solid var(--accent);
+  padding:6px 12px calc(6px + env(safe-area-inset-bottom)) 12px;
+  display:flex;
+  align-items:center;
+  justify-content:space-around;
+}
+.nav-link{
+  flex:1;
+  min-height:46px;
+  border-radius:12px;
+  background-color:var(--surface);
+  border:2px solid #0B0C12;
+  color:#FFFFFF;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:13px;
+  font-weight:700;
+  margin-left:8px;
+  transition:transform 0.1s ease, background-color 0.15s ease;
+}
+.nav-link:last-child{
+  margin-left:0;
+}
+.nav-link.highlight{
+  background-color:var(--primary);
+  border-color:#0B0C12;
+}
+.nav-link:active{
+  transform:scale(0.97);
+}
+.nav-link svg{
+  margin-left:6px;
+}
+</style>
+<style id="rt-native">html,body{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;-webkit-tap-highlight-color:transparent;overscroll-behavior:none}input,textarea,select,[contenteditable],.rt-selectable,.rt-selectable *{-webkit-user-select:text;user-select:text}img,a{-webkit-user-drag:none}a,button,[role=button]{outline:none}</style>
+</head>
+<body>
+
+<header class="app-bar">
+  <div class="app-bar-right">
+    <a href="games.html" class="icon-btn" aria-label="العودة إلى قائمة الألعاب">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="9 18 15 12 9 6"></polyline>
+      </svg>
+    </a>
+    <div class="app-title-wrap">
+      <h1 class="app-title" id="gameTitleText">الضربة الخاطفة</h1>
+      <p class="app-sub">تحدي ردة الفعل السريع - متوافق مع الطبقة العائمة</p>
+    </div>
+  </div>
+  <div class="app-bar-actions">
+    <button type="button" id="sfxToggleBtn" class="icon-btn icon-btn-gold" aria-label="تبديل المؤثرات الصوتية">
+      <svg id="sfxOnIcon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+        <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+      </svg>
+      <svg id="sfxOffIcon" style="display:none" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+        <line x1="23" y1="9" x2="17" y2="15"></line>
+        <line x1="17" y1="9" x2="23" y2="15"></line>
+      </svg>
+    </button>
+    <a href="overlay_hub.html" class="icon-btn icon-btn-accent" aria-label="إدارة الطبقة العائمة">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="3" y="3" width="14" height="14" rx="2"></rect>
+        <path d="M9 17v2a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-8a2 2 0 0 0-2-2h-2"></path>
+      </svg>
+    </a>
+  </div>
+</header>
+
+<main class="main-wrap">
+
+  <div id="fetchStatusMsg" class="status-msg"></div>
+
+  <section class="game-hero-card">
+    <div class="hero-left">
+      <div class="hero-cover" id="heroCoverBox">
+        <svg width="36" height="36" viewBox="0 0 64 64" fill="none">
+          <circle cx="32" cy="32" r="28" fill="#D90429" stroke="#FFB703" stroke-width="4"/>
+          <polygon points="35,10 18,35 31,35 27,54 46,28 33,28" fill="#FFB703" stroke="#12131C" stroke-width="2"/>
+        </svg>
+      </div>
+      <div class="hero-meta">
+        <div class="hero-badge-row">
+          <span class="comic-badge" id="overlayBadgeText">يدعم النافذة العائمة</span>
+          <span class="comic-badge comic-badge-red">سرعة البرق</span>
+        </div>
+        <p class="hero-desc" id="gameDescText">اختبر سرعة استجابتك بالنقر الخاطف في وضع المبارزة أو هجوم الـ 30 ثانية فوق التطبيقات.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="stats-strip" aria-label="أعلى النتائج">
+    <div class="stat-card">
+      <div class="stat-label">أعلى نتيجة (الهجوم)</div>
+      <div class="stat-val" id="bestScoreVal">0</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">أسرع ضربة (برق)</div>
+      <div class="stat-val green" id="bestReactionVal">--</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">أعلى كومبو</div>
+      <div class="stat-val red" id="bestComboVal">x1</div>
+    </div>
+  </section>
+
+  <div class="mode-tabs" role="tablist">
+    <button type="button" class="mode-tab active" id="tabReaction" role="tab" aria-selected="true">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+      </svg>
+      وضع سرعة البرق
+    </button>
+    <button type="button" class="mode-tab" id="tabBlitz" role="tab" aria-selected="false">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="9"></circle>
+        <circle cx="12" cy="12" r="3"></circle>
+        <line x1="12" y1="3" x2="12" y2="7"></line>
+        <line x1="12" y1="17" x2="12" y2="21"></line>
+        <line x1="3" y1="12" x2="7" y2="12"></line>
+        <line x1="17" y1="12" x2="21" y2="12"></line>
+      </svg>
+      الهجوم الخاطف (30ث)
+    </button>
+  </div>
+
+  <div class="overlay-bar">
+    <div class="overlay-bar-left">
+      <button type="button" id="floatingToggleBtn" class="overlay-toggle-btn">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="4" y="4" width="16" height="16" rx="3"></rect>
+          <rect x="10" y="10" width="8" height="8" rx="1"></rect>
+        </svg>
+        <span id="floatingToggleLabel">معاينة عائم مصغر</span>
+      </button>
+      <div class="opacity-wrap" id="opacityControlWrap" style="display:none">
+        <span class="opacity-label">الشفافية</span>
+        <input type="range" id="opacitySlider" class="opacity-slider" min="55" max="100" value="96">
+      </div>
+    </div>
+    <a href="overlay_hub.html" class="launch-overlay-link">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+        <polyline points="15 3 21 3 21 9"></polyline>
+        <line x1="10" y1="14" x2="21" y2="3"></line>
+      </svg>
+      تشغيل فوق التطبيقات
+    </a>
+  </div>
+
+  <div class="stage-wrapper" id="stageWrapper">
+    <div class="floating-window-chrome">
+      <div class="chrome-title">
+        <span class="chrome-dot"></span>
+        نافذة عائمة - الضربة الخاطفة
+      </div>
+      <button type="button" class="chrome-close-btn" id="exitFloatingBtn">توسيع</button>
+    </div>
+
+    <div class="arena-card">
+      <div class="arena-hud">
+        <div class="hud-item">
+          <div class="hud-lbl" id="hudLeftLbl">الجولة</div>
+          <div class="hud-num accent" id="hudLeftVal">0 / 5</div>
+        </div>
+        <div class="hud-item">
+          <div class="hud-lbl" id="hudMidLbl">آخر ضربة</div>
+          <div class="hud-num" id="hudMidVal">--</div>
+        </div>
+        <div class="hud-item">
+          <div class="hud-lbl" id="hudRightLbl">المتوسط</div>
+          <div class="hud-num combo" id="hudRightVal">--</div>
+        </div>
+      </div>
+
+      <div class="timer-track" id="timerTrack" style="display:none">
+        <div class="timer-fill" id="timerFill"></div>
+      </div>
+
+      <div class="reaction-stage" id="reactionStage">
+        <button type="button" class="reaction-pad state-result" id="reactionPad">
+          <div class="reaction-icon" id="reactionIconBox">
+            <svg width="46" height="46" viewBox="0 0 24 24" fill="none" stroke="#FFB703" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+            </svg>
+          </div>
+          <div class="reaction-main-txt" id="reactionMainTxt">اضغط لبدء تحدي البرق</div>
+          <p class="reaction-sub-txt" id="reactionSubTxt">انتظر اللون الأخضر ثم انقر بأقصى سرعة ممكنة خلال 5 جولات</p>
+        </button>
+
+        <div class="round-dots" id="roundDots">
+          <div class="round-dot">1</div>
+          <div class="round-dot">2</div>
+          <div class="round-dot">3</div>
+          <div class="round-dot">4</div>
+          <div class="round-dot">5</div>
+        </div>
+      </div>
+
+      <div class="blitz-stage" id="blitzStage">
+        <div class="blitz-grid" id="blitzGrid"></div>
+      </div>
+
+      <div class="callout-banner">
+        <span class="comic-shout" id="calloutText">استعد للضربة الخاطفة!</span>
+      </div>
+
+      <div class="action-row">
+        <button type="button" class="btn-primary" id="mainStartBtn">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+            <polygon points="5 3 19 12 5 21 5 3"></polygon>
+          </svg>
+          <span id="mainStartLabel">ابدأ الجولة الآن</span>
+        </button>
+        <button type="button" class="btn-secondary" id="resetScoresBtn">تصفير</button>
+      </div>
+    </div>
+  </div>
+
+  <section class="rank-card">
+    <div class="rank-header">
+      <span class="rank-title">رتبة البطل الحالية</span>
+      <span class="rank-tier" id="heroRankBadge">مقاتل مبتدئ</span>
+    </div>
+    <p class="rank-tips" id="heroRankTip">تجنب القنابل السوداء في وضع الهجوم الخاطف، واستهدف النجوم الذهبية لمضاعفة الكومبو (+25 نقطة).</p>
+  </section>
+
+</main>
+
+<nav class="bottom-nav" aria-label="التنقل السفلي">
+  <a href="games.html" class="nav-link">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="2" y="6" width="20" height="12" rx="4"></rect>
+      <line x1="6" y1="12" x2="10" y2="12"></line>
+      <line x1="8" y1="10" x2="8" y2="14"></line>
+      <circle cx="15" cy="11" r="1"></circle>
+      <circle cx="18" cy="13" r="1"></circle>
+    </svg>
+    قائمة الألعاب
+  </a>
+  <a href="overlay_hub.html" class="nav-link highlight">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="3" y="3" width="14" height="14" rx="2"></rect>
+      <path d="M9 17v2a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-8a2 2 0 0 0-2-2h-2"></path>
+    </svg>
+    الطبقة العائمة
+  </a>
+</nav>
+
+<script>
+(function(){
+  "use strict";
+
+  var STORAGE_KEY = "comics_overlay_tap_stats_v1";
+  var stats = {
+    bestBlitz: 0,
+    bestReactionMs: 0,
+    bestCombo: 1,
+    sfxEnabled: true
+  };
+
+  function loadStats(){
+    try{
+      var raw = localStorage.getItem(STORAGE_KEY);
+      if(raw){
+        var parsed = JSON.parse(raw);
+        if(parsed && typeof parsed === "object"){
+          if(typeof parsed.bestBlitz === "number"){ stats.bestBlitz = parsed.bestBlitz; }
+          if(typeof parsed.bestReactionMs === "number"){ stats.bestReactionMs = parsed.bestReactionMs; }
+          if(typeof parsed.bestCombo === "number"){ stats.bestCombo = parsed.bestCombo; }
+          if(typeof parsed.sfxEnabled === "boolean"){ stats.sfxEnabled = parsed.sfxEnabled; }
+        }
+      }
+    }catch(e){}
+  }
+
+  function saveStats(){
+    try{
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(stats));
+    }catch(e){}
+  }
+
+  var synthCtx = null;
+  function playTone(freq, duration, type){
+    if(!stats.sfxEnabled){ return; }
+    try{
+      var Ctx = window.AudioContext || window.webkitAudioContext;
+      if(!Ctx){ return; }
+      if(!synthCtx){
+        synthCtx = new Ctx();
+      }
+      if(synthCtx.state === "suspended"){
+        synthCtx.resume();
+      }
+      var osc = synthCtx.createOscillator();
+      var gain = synthCtx.createGain();
+      osc.type = type || "triangle";
+      osc.frequency.setValueAtTime(freq, synthCtx.currentTime);
+      gain.gain.setValueAtTime(0.14, synthCtx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, synthCtx.currentTime + duration);
+      osc.connect(gain);
+      gain.connect(synthCtx.destination);
+      osc.start();
+      osc.stop(synthCtx.currentTime + duration);
+    }catch(e){}
+  }
+
+  var bestScoreEl = document.getElementById("bestScoreVal");
+  var bestReactionEl = document.getElementById("bestReactionVal");
+  var bestComboEl = document.getElementById("bestComboVal");
+  var heroRankBadge = document.getElementById("heroRankBadge");
+  var calloutEl = document.getElementById("calloutText");
+
+  var sfxToggleBtn = document.getElementById("sfxToggleBtn");
+  var sfxOnIcon = document.getElementById("sfxOnIcon");
+  var sfxOffIcon = document.getElementById("sfxOffIcon");
+
+  var tabReaction = document.getElementById("tabReaction");
+  var tabBlitz = document.getElementById("tabBlitz");
+  var reactionStage = document.getElementById("reactionStage");
+  var blitzStage = document.getElementById("blitzStage");
+  var timerTrack = document.getElementById("timerTrack");
+  var timerFill = document.getElementById("timerFill");
+
+  var hudLeftLbl = document.getElementById("hudLeftLbl");
+  var hudLeftVal = document.getElementById("hudLeftVal");
+  var hudMidLbl = document.getElementById("hudMidLbl");
+  var hudMidVal = document.getElementById("hudMidVal");
+  var hudRightLbl = document.getElementById("hudRightLbl");
+  var hudRightVal = document.getElementById("hudRightVal");
+
+  var mainStartBtn = document.getElementById("mainStartBtn");
+  var mainStartLabel = document.getElementById("mainStartLabel");
+  var resetScoresBtn = document.getElementById("resetScoresBtn");
+
+  var floatingToggleBtn = document.getElementById("floatingToggleBtn");
+  var floatingToggleLabel = document.getElementById("floatingToggleLabel");
+  var exitFloatingBtn = document.getElementById("exitFloatingBtn");
+  var stageWrapper = document.getElementById("stageWrapper");
+  var opacityControlWrap = document.getElementById("opacityControlWrap");
+  var opacitySlider = document.getElementById("opacitySlider");
+
+  var reactionPad = document.getElementById("reactionPad");
+  var reactionMainTxt = document.getElementById("reactionMainTxt");
+  var reactionSubTxt = document.getElementById("reactionSubTxt");
+  var reactionIconBox = document.getElementById("reactionIconBox");
+  var roundDots = document.getElementById("roundDots");
+
+  var blitzGrid = document.getElementById("blitzGrid");
+
+  var activeMode = "reaction";
+
+  function showCallout(text, isBad){
+    calloutEl.textContent = text;
+    if(isBad){
+      calloutEl.className = "comic-shout bad";
+    }else{
+      calloutEl.className = "comic-shout";
+    }
+  }
+
+  function updateSfxUI(){
+    if(stats.sfxEnabled){
+      sfxOnIcon.style.display = "block";
+      sfxOffIcon.style.display = "none";
+    }else{
+      sfxOnIcon.style.display = "none";
+      sfxOffIcon.style.display = "block";
+    }
+  }
+
+  function updateStatsUI(){
+    bestScoreEl.textContent = String(stats.bestBlitz);
+    bestReactionEl.textContent = stats.bestReactionMs > 0 ? (stats.bestReactionMs + " ms") : "--";
+    bestComboEl.textContent = "x" + stats.bestCombo;
+
+    var rank = "مقاتل مبتدئ";
+    if(stats.bestBlitz >= 450 || (stats.bestReactionMs > 0 && stats.bestReactionMs <= 210)){
+      rank = "أسطورة البرق الخارق";
+    }else if(stats.bestBlitz >= 280 || (stats.bestReactionMs > 0 && stats.bestReactionMs <= 270)){
+      rank = "سيد الضربة الخاطفة";
+    }else if(stats.bestBlitz >= 140 || (stats.bestReactionMs > 0 && stats.bestReactionMs <= 350)){
+      rank = "صقر الكوميكس السريع";
+    }
+    heroRankBadge.textContent = rank;
+  }
+
+  function loadGameMetadata(){
+    var statusEl = document.getElementById("fetchStatusMsg");
+    if(typeof fetch !== "function"){
+      return;
+    }
+    try{
+      fetch("games.json").then(function(response){
+        if(!response.ok){
+          throw new Error("HTTP " + response.status);
+        }
+        return response.json();
+      }).then(function(list){
+        if(!Array.isArray(list)){ return; }
+        var matched = null;
+        for(var i = 0; i < list.length; i++){
+          var item = list[i];
+          if(item && (item.file === "game_tap.html" || item.id === "game-tap" || item.id === "game-lightning-tap")){
+            matched = item;
+            break;
+          }
+        }
+        if(matched){
+          if(matched.title){
+            document.getElementById("gameTitleText").textContent = matched.title;
+          }
+          if(matched.description){
+            document.getElementById("gameDescText").textContent = matched.description;
+          }
+          if(matched.cover){
+            var img = document.createElement("img");
+            img.src = matched.cover;
+            img.alt = matched.title || "الضربة الخاطفة";
+            var coverBox = document.getElementById("heroCoverBox");
+            coverBox.innerHTML = "";
+            coverBox.appendChild(img);
+          }
+          var badge = document.getElementById("overlayBadgeText");
+          badge.textContent = matched.supportsOverlay === false ? "داخل التطبيق" : "يدعم النافذة العائمة";
+        }
+      }).catch(function(){
+        statusEl.textContent = "تم تشغيل الوضع المحلي السريع للعبة الضربة الخاطفة.";
+        statusEl.style.display = "block";
+      });
+    }catch(e){
+      statusEl.textContent = "تم تشغيل الوضع المحلي السريع للعبة الضربة الخاطفة.";
+      statusEl.style.display = "block";
+    }
+  }
+
+  var rState = "idle";
+  var rRound = 0;
+  var TOTAL_ROUNDS = 5;
+  var rTimes = [];
+  var rWaitTimer = null;
+  var rGoTimestamp = 0;
+
+  function setReactionIcon(mode){
+    if(mode === "wait"){
+      reactionIconBox.innerHTML = '<svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="#FFB703" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>';
+    }else if(mode === "go"){
+      reactionIconBox.innerHTML = '<svg width="48" height="48" viewBox="0 0 24 24" fill="#0B0C12" stroke="#0B0C12" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>';
+    }else if(mode === "warn"){
+      reactionIconBox.innerHTML = '<svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="#12131C" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>';
+    }else{
+      reactionIconBox.innerHTML = '<svg width="46" height="46" viewBox="0 0 24 24" fill="none" stroke="#FFB703" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>';
+    }
+  }
+
+  function updateRoundDots(){
+    var dots = roundDots.children;
+    for(var i = 0; i < dots.length; i++){
+      dots[i].className = "round-dot";
+      if(i < rTimes.length){
+        dots[i].className = "round-dot done";
+        dots[i].textContent = String(rTimes[i]);
+      }else if(i === rRound && (rState === "waiting" || rState === "ready")){
+        dots[i].className = "round-dot active";
+        dots[i].textContent = String(i + 1);
+      }else{
+        dots[i].textContent = String(i + 1);
+      }
+    }
+  }
+
+  function updateReactionHud(lastMs){
+    hudLeftLbl.textContent = "الجولة";
+    hudLeftVal.textContent = rTimes.length + " / " + TOTAL_ROUNDS;
+    hudMidLbl.textContent = "آخر ضربة";
+    hudMidVal.textContent = lastMs ? (lastMs + " ms") : "--";
+    hudRightLbl.textContent = "المتوسط";
+    if(rTimes.length > 0){
+      var sum = 0;
+      for(var i = 0; i < rTimes.length; i++){ sum += rTimes[i]; }
+      hudRightVal.textContent = Math.round(sum / rTimes.length) + " ms";
+    }else{
+      hudRightVal.textContent = "--";
+    }
+  }
+
+  function clearReactionTimer(){
+    if(rWaitTimer !== null){
+      clearTimeout(rWaitTimer);
+      rWaitTimer = null;
+    }
+  }
+
+  function startNextReactionRound(){
+    clearReactionTimer();
+    rState = "waiting";
+    reactionPad.className = "reaction-pad state-waiting";
+    setReactionIcon("wait");
+    reactionMainTxt.textContent = "استعد... لا تضغط الآن";
+    reactionSubTxt.textContent = "انتظر تحول اللوحة إلى اللون الأخضر";
+    mainStartLabel.textContent = "إعادة المحاولة";
+    updateRoundDots();
+
+    var delay = 1100 + Math.floor(Math.random() * 2100);
+    rWaitTimer = setTimeout(function(){
+      rState = "ready";
+      rGoTimestamp = Date.now();
+      reactionPad.className = "reaction-pad state-ready";
+      setReactionIcon("go");
+      reactionMainTxt.textContent = "اضرب الآن!";
+      reactionSubTxt.textContent = "انقر بأسرع ما يمكن!";
+      playTone(880, 0.08, "square");
+    }, delay);
+  }
+
+  function startReactionMatch(){
+    rRound = 0;
+    rTimes = [];
+    updateReactionHud(0);
+    showCallout("ركّز على الشاشة... الضربة القادمة!", false);
+    startNextReactionRound();
+  }
+
+  function handleReactionTap(){
+    if(rState === "idle" || rState === "finished"){
+      startReactionMatch();
+      return;
+    }
+    if(rState === "waiting"){
+      clearReactionTimer();
+      rState = "early";
+      reactionPad.className = "reaction-pad state-early";
+      setReactionIcon("warn");
+      reactionMainTxt.textContent = "ضربة مبكرة جداً!";
+      reactionSubTxt.textContent = "انقر للمحاولة مرة أخرى في هذه الجولة";
+      playTone(180, 0.18, "sawtooth");
+      showCallout("تسرعت! انتظر الإشارة الخضراء", true);
+      return;
+    }
+    if(rState === "early"){
+      startNextReactionRound();
+      return;
+    }
+    if(rState === "ready"){
+      var elapsed = Math.max(45, Date.now() - rGoTimestamp);
+      rTimes.push(elapsed);
+      rRound = rTimes.length;
+      playTone(660, 0.09, "triangle");
+
+      if(stats.bestReactionMs === 0 || elapsed < stats.bestReactionMs){
+        stats.bestReactionMs = elapsed;
+        saveStats();
+        updateStatsUI();
+      }
+      updateReactionHud(elapsed);
+      updateRoundDots();
+
+      if(elapsed <= 210){
+        showCallout("سرعة خارقة! " + elapsed + " ms", false);
+      }else if(elapsed <= 300){
+        showCallout("ضربة ممتازة! " + elapsed + " ms", false);
+      }else{
+        showCallout("جيد! " + elapsed + " ms", false);
+      }
+
+      if(rTimes.length >= TOTAL_ROUNDS){
+        rState = "finished";
+        var total = 0;
+        var fastest = rTimes[0];
+        for(var i = 0; i < rTimes.length; i++){
+          total += rTimes[i];
+          if(rTimes[i] < fastest){ fastest = rTimes[i]; }
+        }
+        var avg = Math.round(total / rTimes.length);
+        reactionPad.className = "reaction-pad state-result";
+        setReactionIcon("idle");
+        reactionMainTxt.textContent = "المتوسط: " + avg + " ms";
+        reactionSubTxt.textContent = "أسرع ضربة في الجولة: " + fastest + " ms — انقر للعب مجدداً";
+        mainStartLabel.textContent = "جولة جديدة";
+        playTone(1046, 0.16, "triangle");
+      }else{
+        rState = "early";
+        reactionPad.className = "reaction-pad state-result";
+        setReactionIcon("idle");
+        reactionMainTxt.textContent = elapsed + " ms";
+        reactionSubTxt.textContent = "انقر لبدء الجولة " + (rRound + 1) + " من " + TOTAL_ROUNDS;
+      }
+    }
+  }
+
+  var BLITZ_DURATION = 30;
+  var blitzRunning = false;
+  var blitzScore = 0;
+  var blitzCombo = 1;
+  var blitzTimeLeft = BLITZ_DURATION;
+  var blitzTickTimer = null;
+  var blitzSpawnTimer = null;
+  var cells = [];
+  var cellStates = [];
+
+  function buildBlitzGrid(){
+    blitzGrid.innerHTML = "";
+    cells = [];
+    cellStates = [];
+    for(var i = 0; i < 9; i++){
+      (function(idx){
+        var btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "blitz-cell";
+        btn.setAttribute("aria-label", "هدف " + (idx + 1));
+        btn.addEventListener("click", function(){
+          handleCellTap(idx);
+        });
+        blitzGrid.appendChild(btn);
+        cells.push(btn);
+        cellStates.push(null);
+      })(i);
+    }
+  }
+
+  function clearCell(idx){
+    if(cellStates[idx] && cellStates[idx].timer){
+      clearTimeout(cellStates[idx].timer);
+    }
+    cellStates[idx] = null;
+    if(cells[idx]){
+      cells[idx].className = "blitz-cell";
+      cells[idx].innerHTML = "";
+    }
+  }
+
+  function clearAllCells(){
+    for(var i = 0; i < 9; i++){
+      clearCell(i);
+    }
+  }
+
+  function updateBlitzHud(){
+    hudLeftLbl.textContent = "الوقت";
+    hudLeftVal.textContent = blitzTimeLeft + "ث";
+    hudMidLbl.textContent = "النقاط";
+    hudMidVal.textContent = String(blitzScore);
+    hudRightLbl.textContent = "الكومبو";
+    hudRightVal.textContent = "x" + blitzCombo;
+
+    var pct = Math.max(0, Math.round((blitzTimeLeft / BLITZ_DURATION) * 100));
+    timerFill.style.width = pct + "%";
+    timerFill.style.backgroundColor = blitzTimeLeft <= 7 ? "#EF233C" : "#FFB703";
+  }
+
+  function spawnTarget(){
+    if(!blitzRunning){ return; }
+    var freeIndices = [];
+    for(var i = 0; i < 9; i++){
+      if(!cellStates[i]){ freeIndices.push(i); }
+    }
+    if(freeIndices.length === 0){ return; }
+    var idx = freeIndices[Math.floor(Math.random() * freeIndices.length)];
+
+    var roll = Math.random();
+    var type = "villain";
+    var ttl = Math.max(620, 1250 - Math.floor((BLITZ_DURATION - blitzTimeLeft) * 16));
+    if(roll > 0.80){
+      type = "gold";
+      ttl = Math.max(540, ttl - 180);
+    }else if(roll < 0.16){
+      type = "bomb";
+      ttl = 1100;
+    }
+
+    var cell = cells[idx];
+    if(type === "villain"){
+      cell.className = "blitz-cell target-villain";
+      cell.innerHTML = '<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg><span class="cell-pts">+10</span>';
+    }else if(type === "gold"){
+      cell.className = "blitz-cell target-gold";
+      cell.innerHTML = '<svg width="32" height="32" viewBox="0 0 24 24" fill="#12131C" stroke="#12131C" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg><span class="cell-pts">+25</span>';
+    }else{
+      cell.className = "blitz-cell target-bomb";
+      cell.innerHTML = '<svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#EF233C" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="14" r="7"></circle><path d="M12 7V3"></path><path d="M15 4l2-2"></path></svg><span class="cell-pts" style="color:#EF233C">-30</span>';
+    }
+
+    var expireTimer = setTimeout(function(){
+      if(cellStates[idx] && cellStates[idx].type !== "bomb"){
+        blitzCombo = 1;
+        updateBlitzHud();
+      }
+      clearCell(idx);
+    }, ttl);
+
+    cellStates[idx] = { type: type, timer: expireTimer };
+  }
+
+  function handleCellTap(idx){
+    if(!blitzRunning){
+      startBlitz();
+      return;
+    }
+    var st = cellStates[idx];
+    if(!st){
+      blitzCombo = 1;
+      blitzScore = Math.max(0, blitzScore - 5);
+      playTone(160, 0.12, "sawtooth");
+      showCallout("ضربة في الفراغ! (-5)", true);
+      updateBlitzHud();
+      return;
+    }
+
+    var targetType = st.type;
+    clearCell(idx);
+
+    if(targetType === "bomb"){
+      blitzCombo = 1;
+      blitzScore = Math.max(0, blitzScore - 30);
+      playTone(120, 0.24, "sawtooth");
+      showCallout("بوم! تجنب القنابل (-30)", true);
+    }else{
+      var basePts = targetType === "gold" ? 25 : 10;
+      var gained = basePts * blitzCombo;
+      blitzScore += gained;
+      blitzCombo = Math.min(8, blitzCombo + 1);
+
+      if(blitzCombo > stats.bestCombo){
+        stats.bestCombo = blitzCombo;
+      }
+      if(blitzScore > stats.bestBlitz){
+        stats.bestBlitz = blitzScore;
+      }
+      saveStats();
+      updateStatsUI();
+
+      playTone(targetType === "gold" ? 980 : 620, 0.08, "triangle");
+      if(targetType === "gold"){
+        showCallout("ضربة ذهبية! +" + gained, false);
+      }else if(blitzCombo >= 4){
+        showCallout("كومبو x" + blitzCombo + "! +" + gained, false);
+      }else{
+        showCallout("باو! +" + gained, false);
+      }
+
+      cells[idx].className = "blitz-cell hit-flash";
+      setTimeout(function(){
+        if(cells[idx] && !cellStates[idx]){
+          cells[idx].className = "blitz-cell";
+        }
+      }, 110);
+    }
+    updateBlitzHud();
+  }
+
+  function stopBlitz(completed){
+    blitzRunning = false;
+    if(blitzTickTimer !== null){
+      clearInterval(blitzTickTimer);
+      blitzTickTimer = null;
+    }
+    if(blitzSpawnTimer !== null){
+      clearInterval(blitzSpawnTimer);
+      blitzSpawnTimer = null;
+    }
+    clearAllCells();
+    mainStartLabel.textContent = "ابدأ الهجوم الخاطف";
+    if(completed){
+      if(blitzScore > stats.bestBlitz){
+        stats.bestBlitz = blitzScore;
+        saveStats();
+        updateStatsUI();
+      }
+      playTone(880, 0.18, "triangle");
+      showCallout("انتهى الوقت! نتيجتك: " + blitzScore, false);
+    }
+  }
+
+  function startBlitz(){
+    stopBlitz(false);
+    blitzRunning = true;
+    blitzScore = 0;
+    blitzCombo = 1;
+    blitzTimeLeft = BLITZ_DURATION;
+    updateBlitzHud();
+    mainStartLabel.textContent = "إعادة تشغيل الهجوم";
+    showCallout("انطلق! اضرب الأهداف بسرعة", false);
+
+    spawnTarget();
+    blitzSpawnTimer = setInterval(function(){
+      if(!blitzRunning){ return; }
+      spawnTarget();
+      if(blitzTimeLeft <= 15 && Math.random() > 0.45){
+        spawnTarget();
+      }
+    }, 520);
+
+    blitzTickTimer = setInterval(function(){
+      if(!blitzRunning){ return; }
+      blitzTimeLeft -= 1;
+      updateBlitzHud();
+      if(blitzTimeLeft <= 0){
+        stopBlitz(true);
+      }
+    }, 1000);
+  }
+
+  function switchMode(mode){
+    activeMode = mode;
+    clearReactionTimer();
+    stopBlitz(false);
+
+    if(mode === "reaction"){
+      tabReaction.className = "mode-tab active";
+      tabReaction.setAttribute("aria-selected", "true");
+      tabBlitz.className = "mode-tab";
+      tabBlitz.setAttribute("aria-selected", "false");
+
+      reactionStage.style.display = "block";
+      blitzStage.style.display = "none";
+      timerTrack.style.display = "none";
+
+      rState = "idle";
+      rRound = 0;
+      rTimes = [];
+      reactionPad.className = "reaction-pad state-result";
+      setReactionIcon("idle");
+      reactionMainTxt.textContent = "اضغط لبدء تحدي البرق";
+      reactionSubTxt.textContent = "انتظر اللون الأخضر ثم انقر بأقصى سرعة ممكنة خلال 5 جولات";
+      mainStartLabel.textContent = "ابدأ الجولة الآن";
+      updateReactionHud(0);
+      updateRoundDots();
+      showCallout("استعد للضربة الخاطفة!", false);
+    }else{
+      tabBlitz.className = "mode-tab active";
+      tabBlitz.setAttribute("aria-selected", "true");
+      tabReaction.className = "mode-tab";
+      tabReaction.setAttribute("aria-selected", "false");
+
+      reactionStage.style.display = "none";
+      blitzStage.style.display = "block";
+      timerTrack.style.display = "block";
+
+      blitzScore = 0;
+      blitzCombo = 1;
+      blitzTimeLeft = BLITZ_DURATION;
+      updateBlitzHud();
+      mainStartLabel.textContent = "ابدأ الهجوم الخاطف";
+      showCallout("اضغط ابدأ واضرب الأهداف خلال 30 ثانية", false);
+    }
+  }
+
+  tabReaction.addEventListener("click", function(){
+    switchMode("reaction");
+  });
+
+  tabBlitz.addEventListener("click", function(){
+    switchMode("blitz");
+  });
+
+  reactionPad.addEventListener("click", handleReactionTap);
+
+  mainStartBtn.addEventListener("click", function(){
+    if(activeMode === "reaction"){
+      startReactionMatch();
+    }else{
+      startBlitz();
+    }
+  });
+
+  resetScoresBtn.addEventListener("click", function(){
+    stats.bestBlitz = 0;
+    stats.bestReactionMs = 0;
+    stats.bestCombo = 1;
+    saveStats();
+    updateStatsUI();
+    showCallout("تم تصفير سجل النتائج", false);
+  });
+
+  sfxToggleBtn.addEventListener("click", function(){
+    stats.sfxEnabled = !stats.sfxEnabled;
+    saveStats();
+    updateSfxUI();
+    if(stats.sfxEnabled){
+      playTone(720, 0.08, "triangle");
+    }
+  });
+
+  var isFloatingPreview = false;
+  function setFloatingPreview(on){
+    isFloatingPreview = on;
+    if(on){
+      stageWrapper.className = "stage-wrapper floating-mode";
+      floatingToggleBtn.className = "overlay-toggle-btn on";
+      floatingToggleLabel.textContent = "إلغاء المعاينة العائمة";
+      opacityControlWrap.style.display = "flex";
+      stageWrapper.style.opacity = String(Number(opacitySlider.value) / 100);
+    }else{
+      stageWrapper.className = "stage-wrapper";
+      floatingToggleBtn.className = "overlay-toggle-btn";
+      floatingToggleLabel.textContent = "معاينة عائم مصغر";
+      opacityControlWrap.style.display = "none";
+      stageWrapper.style.opacity = "1";
+    }
+  }
+
+  floatingToggleBtn.addEventListener("click", function(){
+    setFloatingPreview(!isFloatingPreview);
+  });
+
+  exitFloatingBtn.addEventListener("click", function(){
+    setFloatingPreview(false);
+  });
+
+  opacitySlider.addEventListener("input", function(){
+    if(isFloatingPreview){
+      stageWrapper.style.opacity = String(Number(opacitySlider.value) / 100);
+    }
+  });
+
+  loadStats();
+  updateSfxUI();
+  updateStatsUI();
+  buildBlitzGrid();
+  updateReactionHud(0);
+  updateRoundDots();
+  loadGameMetadata();
+})();
+</script>
+</body>
+</html>
