@@ -1,689 +1,664 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8">
+<meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-<title>لوحة التحكم</title>
+<title>لوحة المالك</title>
+<script src="rostrick-admin.js"></script>
 <style>
 :root {
-  --primary: #6200EE;
-  --primary-dark: #3700B3;
-  --accent: #03DAC6;
-  --highlight: #FF0266;
-  --control: #B0BEC5;
-  --bg: #F5F5F7;
-  --card-bg: #FFFFFF;
-  --text: #212121;
-  --text-sec: #757575;
-  --border: #E0E0E0;
-  --danger: #B00020;
-  --success: #018786;
+  --primary: #1A1A2E;
+  --primary-dark: #16213E;
+  --accent: #0F3460;
+  --highlight: #E94560;
+  --control: #FFFFFF;
 }
 
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+  font-family: system-ui, -apple-system, sans-serif;
   -webkit-tap-highlight-color: transparent;
 }
 
 body {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  background-color: var(--bg);
-  color: var(--text);
+  background-color: var(--primary);
+  color: var(--control);
+  min-height: 100vh;
   padding-top: env(safe-area-inset-top);
-  padding-bottom: calc(70px + env(safe-area-inset-bottom));
+  padding-bottom: env(safe-area-inset-bottom);
+  display: flex;
+  flex-direction: column;
+}
+
+/* Disable selection except where needed */
+body {
   -webkit-user-select: none;
   user-select: none;
 }
-
 .rt-selectable {
   -webkit-user-select: text;
   user-select: text;
 }
 
-header {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 56px;
-  background-color: var(--primary);
-  color: #FFFFFF;
+/* Header */
+.app-header {
+  background-color: var(--primary-dark);
+  padding: 16px 20px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 16px;
-  z-index: 100;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-  padding-top: env(safe-area-inset-top);
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  position: sticky;
+  top: 0;
+  z-index: 10;
 }
 
-header h1 {
+.app-title {
   font-size: 18px;
-  font-weight: 600;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
 }
 
-.header-actions button {
+.app-title svg {
+  width: 24px;
+  height: 24px;
+  fill: var(--highlight);
+  margin-left: 10px;
+}
+
+.btn-icon {
   background: none;
   border: none;
-  color: #FFFFFF;
-  padding: 8px;
-  border-radius: 50%;
-  cursor: pointer;
+  color: var(--control);
+  width: 44px;
+  height: 44px;
   display: flex;
   align-items: center;
   justify-content: center;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background 0.2s;
+  text-decoration: none;
 }
 
-.header-actions button:active {
-  background-color: rgba(255,255,255,0.2);
+.btn-icon:active {
+  background: rgba(255,255,255,0.1);
 }
 
+.btn-icon svg {
+  width: 22px;
+  height: 22px;
+  fill: currentColor;
+}
+
+/* Main Container */
 .container {
-  padding: 72px 16px 16px 16px;
+  padding: 20px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
   max-width: 600px;
+  width: 100%;
   margin: 0 auto;
 }
 
-.stats-grid {
-  display: flex;
-  margin-left: -8px;
-  margin-right: -8px;
-  margin-bottom: 16px;
+/* Login Form */
+.login-card {
+  background-color: var(--primary-dark);
+  border-radius: 16px;
+  padding: 24px;
+  margin-top: 20px;
+  border: 1px solid rgba(255,255,255,0.08);
 }
 
-.stat-card {
-  flex: 1;
-  background: var(--card-bg);
-  padding: 16px;
+.form-group {
+  margin-bottom: 18px;
+}
+
+.form-label {
+  display: block;
+  font-size: 14px;
+  margin-bottom: 8px;
+  color: rgba(255,255,255,0.8);
+}
+
+.form-input {
+  width: 100%;
+  height: 48px;
+  background-color: var(--primary);
+  border: 1px solid rgba(255,255,255,0.15);
   border-radius: 12px;
-  margin: 0 8px;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-  text-align: center;
+  padding: 0 16px;
+  color: var(--control);
+  font-size: 15px;
 }
 
-.stat-card h3 {
-  font-size: 24px;
-  color: var(--primary);
-  margin-bottom: 4px;
+.form-input:focus {
+  outline: none;
+  border-color: var(--highlight);
 }
 
-.stat-card p {
-  font-size: 12px;
-  color: var(--text-sec);
+textarea.form-input {
+  height: 100px;
+  padding: 12px 16px;
+  resize: vertical;
 }
 
-.section-title {
+.btn {
+  width: 100%;
+  height: 48px;
+  background-color: var(--highlight);
+  color: var(--control);
+  border: none;
+  border-radius: 12px;
   font-size: 16px;
   font-weight: 600;
-  margin-bottom: 12px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.2s;
+}
+
+.btn svg {
+  width: 20px;
+  height: 20px;
+  fill: currentColor;
+  margin-left: 8px;
+}
+
+.btn:active {
+  opacity: 0.85;
+}
+
+.btn-secondary {
+  background-color: var(--accent);
+}
+
+.info-text {
+  font-size: 13px;
+  color: rgba(255,255,255,0.5);
+  margin-top: 12px;
+  line-height: 1.5;
+}
+
+/* Editor View */
+.editor-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  margin-bottom: 20px;
 }
 
-.btn-primary {
-  background-color: var(--primary);
-  color: white;
-  border: none;
-  padding: 10px 16px;
-  border-radius: 8px;
-  font-size: 14px;
-  font-weight: 600;
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
+.item-list {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 90px;
 }
 
-.btn-primary svg {
-  margin-left: 6px;
-}
-
-.btn-primary:active {
+.item-card {
   background-color: var(--primary-dark);
-}
-
-.game-item-card {
-  background: var(--card-bg);
-  border-radius: 12px;
-  padding: 12px;
-  margin-bottom: 12px;
+  border-radius: 14px;
+  padding: 16px;
   display: flex;
   align-items: center;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+  border: 1px solid rgba(255,255,255,0.06);
+  margin-bottom: 12px;
 }
 
-.game-item-card img {
-  width: 48px;
-  height: 48px;
-  border-radius: 8px;
+.item-thumb {
+  width: 50px;
+  height: 50px;
+  border-radius: 10px;
   object-fit: cover;
-  margin-left: 12px;
+  background-color: var(--accent);
   flex-shrink: 0;
+  margin-left: 14px;
 }
 
-.game-item-info {
+.item-details {
   flex: 1;
   min-width: 0;
 }
 
-.game-item-info h4 {
-  font-size: 15px;
+.item-name {
+  font-size: 16px;
   font-weight: 600;
-  margin-bottom: 2px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  margin-bottom: 4px;
 }
 
-.game-item-info p {
+.item-meta {
   font-size: 12px;
-  color: var(--text-sec);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  color: rgba(255,255,255,0.5);
 }
 
-.game-item-actions {
+.item-actions {
   display: flex;
-  margin-right: 8px;
+  margin-right: 14px;
 }
 
-.game-item-actions > * {
-  margin-right: 4px;
-}
-
-.game-item-actions > *:first-child {
-  margin-right: 0;
-}
-
-.icon-btn {
-  background: none;
+.btn-sm {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  background-color: var(--accent);
   border: none;
-  padding: 8px;
-  border-radius: 50%;
-  cursor: pointer;
-  color: var(--text-sec);
+  color: var(--control);
   display: flex;
   align-items: center;
   justify-content: center;
+  cursor: pointer;
+  margin-left: 8px;
 }
 
-.icon-btn:active {
-  background-color: rgba(0,0,0,0.05);
+.btn-sm:last-child {
+  margin-left: 0;
 }
 
-.icon-btn.delete {
-  color: var(--danger);
+.btn-sm svg {
+  width: 18px;
+  height: 18px;
+  fill: currentColor;
 }
 
-/* Modal styles */
-.modal-overlay {
+.btn-sm.danger {
+  background-color: rgba(233, 69, 96, 0.2);
+  color: var(--highlight);
+}
+
+/* Floating Action Bar */
+.floating-bar {
+  position: fixed;
+  bottom: calc(20px + env(safe-area-inset-bottom));
+  left: 20px;
+  right: 20px;
+  max-width: 560px;
+  margin: 0 auto;
+  background-color: var(--primary-dark);
+  border-radius: 16px;
+  padding: 12px;
+  display: flex;
+  border: 1px solid rgba(255,255,255,0.1);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+  z-index: 10;
+}
+
+.floating-bar .btn {
+  flex: 1;
+  margin-left: 8px;
+}
+
+.floating-bar .btn:last-child {
+  margin-left: 0;
+}
+
+/* Modal */
+.modal {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0,0,0,0.5);
+  background-color: rgba(0,0,0,0.8);
+  z-index: 100;
+  display: none;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.modal.active {
+  display: flex;
+}
+
+.modal-content {
+  background-color: var(--primary-dark);
+  width: 100%;
+  max-width: 600px;
+  max-height: 90vh;
+  border-radius: 20px 20px 0 0;
+  padding: 24px;
+  overflow-y: auto;
+  border-top: 1px solid rgba(255,255,255,0.1);
+  animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
+}
+
+.modal-header {
   display: flex;
   align-items: center;
-  justify-content: center;
-  z-index: 1000;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.2s ease;
+  justify-content: space-between;
+  margin-bottom: 20px;
 }
 
-.modal-overlay.active {
-  opacity: 1;
-  pointer-events: auto;
-}
-
-.modal {
-  background: var(--card-bg);
-  width: 90%;
-  max-width: 450px;
-  border-radius: 16px;
-  padding: 20px;
-  max-height: 90vh;
-  overflow-y: auto;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.15);
-  transform: translateY(20px);
-  transition: transform 0.2s ease;
-}
-
-.modal-overlay.active .modal {
-  transform: translateY(0);
-}
-
-.modal h3 {
-  font-size: 18px;
-  margin-bottom: 16px;
-}
-
-.form-group {
-  margin-bottom: 14px;
-}
-
-.form-group label {
-  display: block;
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--text-sec);
-  margin-bottom: 6px;
-}
-
-.form-control {
-  width: 100%;
-  padding: 10px 12px;
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  font-size: 14px;
-  background: #FAFAFA;
-  color: var(--text);
-  outline: none;
-}
-
-.form-control:focus {
-  border-color: var(--primary);
-  background: #FFFFFF;
-}
-
-textarea.form-control {
-  resize: vertical;
-  min-height: 80px;
-}
-
-.modal-actions {
+.image-picker-container {
   display: flex;
-  justify-content: flex-end;
-  margin-top: 20px;
+  align-items: center;
+  margin-bottom: 18px;
 }
 
-.modal-actions > * {
-  margin-right: 8px;
-}
-
-.modal-actions > *:first-child {
-  margin-right: 0;
-}
-
-.btn-secondary {
-  background: transparent;
-  border: 1px solid var(--border);
-  color: var(--text);
-  padding: 10px 16px;
-  border-radius: 8px;
-  font-size: 14px;
-  font-weight: 600;
-  cursor: pointer;
-}
-
-.btn-secondary:active {
-  background-color: rgba(0,0,0,0.05);
+.preview-img {
+  width: 70px;
+  height: 70px;
+  border-radius: 14px;
+  object-fit: cover;
+  background-color: var(--accent);
+  border: 1px solid rgba(255,255,255,0.1);
+  margin-left: 16px;
 }
 
 .toast {
   position: fixed;
-  bottom: 80px;
+  top: 20px;
   left: 50%;
-  transform: translateX(-50%) translateY(20px);
-  background-color: #323232;
-  color: #FFFFFF;
-  padding: 10px 20px;
-  border-radius: 20px;
-  font-size: 13px;
-  box-shadow: 0 3px 10px rgba(0,0,0,0.2);
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.3s, transform 0.3s;
-  z-index: 2000;
+  transform: translateX(-50%) translateY(-100px);
+  background-color: #10b981;
+  color: white;
+  padding: 12px 24px;
+  border-radius: 12px;
+  font-weight: 600;
+  transition: transform 0.3s ease;
+  z-index: 1000;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
 }
 
-.toast.show {
-  opacity: 1;
+.toast.error {
+  background-color: var(--highlight);
+}
+
+.toast.active {
   transform: translateX(-50%) translateY(0);
-}
-
-nav {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 56px;
-  background: var(--card-bg);
-  border-top: 1px solid var(--border);
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  z-index: 99;
-  padding-bottom: env(safe-area-inset-bottom);
-}
-
-nav a {
-  flex: 1;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-decoration: none;
-  color: var(--text-sec);
-  font-size: 11px;
-}
-
-nav a svg {
-  width: 20px;
-  height: 20px;
-  margin-bottom: 2px;
-  fill: currentColor;
-}
-
-nav a.active {
-  color: var(--primary);
 }
 </style>
 <style id="rt-native">html,body{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;-webkit-tap-highlight-color:transparent;overscroll-behavior:none}input,textarea,select,[contenteditable],.rt-selectable,.rt-selectable *{-webkit-user-select:text;user-select:text}img,a{-webkit-user-drag:none}a,button,[role=button]{outline:none}</style>
 </head>
 <body>
 
-<header>
-  <h1>لوحة التحكم</h1>
-  <div class="header-actions">
-    <button onclick="exportJSON()" title="تصدير البيانات">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-    </button>
-  </div>
-</header>
-
-<div class="container">
-  <div class="stats-grid">
-    <div class="stat-card">
-      <h3 id="statTotalGames">0</h3>
-      <p>إجمالي الألعاب</p>
+  <header class="app-header">
+    <div class="app-title">
+      <svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/></svg>
+      لوحة المالك
     </div>
-    <div class="stat-card">
-      <h3 id="statTotalPlays">0</h3>
-      <p>مجموع اللعبات</p>
+    <a href="home.html" class="btn-icon" title="الرئيسية">
+      <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+    </a>
+  </header>
+
+  <div class="container" id="app-container">
+    <!-- Dynamic content injected here -->
+  </div>
+
+  <div id="toast" class="toast">تم الحفظ بنجاح</div>
+
+  <!-- Edit Modal -->
+  <div class="modal" id="edit-modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 id="modal-title">تعديل العنصر</h3>
+        <button class="btn-icon" onclick="closeModal()">
+          <svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </div>
+      <form id="item-form" onsubmit="saveItem(event)">
+        <div class="image-picker-container">
+          <img id="edit-img-preview" class="preview-img" src="" alt="معاينة">
+          <div>
+            <label class="form-label">صورة الغلاف</label>
+            <input type="file" id="image-file-input" accept="image/*" style="display:none" onchange="handleImagePick(event)">
+            <button type="button" class="btn btn-secondary" style="height:38px; padding:0 16px; font-size:14px;" onclick="document.getElementById('image-file-input').click()">اختيار صورة</button>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">عنوان اللعبة / اللغز</label>
+          <input type="text" id="edit-title" class="form-input" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">التصنيف</label>
+          <input type="text" id="edit-category" class="form-input" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">النوع (type)</label>
+          <input type="text" id="edit-type" class="form-input" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">الوصف</label>
+          <textarea id="edit-desc" class="form-input" required></textarea>
+        </div>
+        <div style="display:flex;">
+          <div class="form-group" style="flex:1; margin-left:12px;">
+            <label class="form-label">عدد مرات اللعب</label>
+            <input type="number" id="edit-plays" class="form-input" required>
+          </div>
+          <div class="form-group" style="flex:1;">
+            <label class="form-label">التقييم</label>
+            <input type="number" step="0.1" max="5" min="0" id="edit-rating" class="form-input" required>
+          </div>
+        </div>
+        <button type="submit" class="btn" style="width:100%;">حفظ التغييرات</button>
+      </form>
     </div>
   </div>
-
-  <div class="section-title">
-    <span>إدارة الألعاب والألغاز</span>
-    <button class="btn-primary" onclick="openAddModal()">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-      إضافة لعبة
-    </button>
-  </div>
-
-  <div id="gamesListContainer">
-    <!-- ديناميكي -->
-  </div>
-</div>
-
-<!-- Modal -->
-<div class="modal-overlay" id="gameModal">
-  <div class="modal">
-    <h3 id="modalTitle">إضافة لعبة جديدة</h3>
-    <form id="gameForm" onsubmit="handleFormSubmit(event)">
-      <input type="hidden" id="gameEditId">
-      <div class="form-group">
-        <label>عنوان اللعبة</label>
-        <input type="text" class="form-control" id="gameTitleInput" required>
-      </div>
-      <div class="form-group">
-        <label>الوصف</label>
-        <textarea class="form-control" id="gameDescInput" required></textarea>
-      </div>
-      <div class="form-group">
-        <label>التصنيف</label>
-        <input type="text" class="form-control" id="gameCatInput" required placeholder="مثال: ألغاز ذكاء">
-      </div>
-      <div class="form-group">
-        <label>النوع</label>
-        <select class="form-control" id="gameTypeInput">
-          <option value="puzzle-game">لعبة ألغاز (puzzle-game)</option>
-          <option value="game2d">لعبة 2D (game2d)</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label>رابط الأيقونة (SVG Data URI)</label>
-        <input type="text" class="form-control" id="gameImageInput" required placeholder="data:image/svg+xml;utf8,...">
-      </div>
-      <div class="modal-actions">
-        <button type="button" class="btn-secondary" onclick="closeModal()">إلغاء</button>
-        <button type="submit" class="btn-primary">حفظ</button>
-      </div>
-    </form>
-  </div>
-</div>
-
-<div class="toast" id="toast">تم الحفظ بنجاح</div>
-
-<nav>
-  <a href="home.html">
-    <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
-    الرئيسية
-  </a>
-  <a href="favorites.html">
-    <svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
-    المفضلة
-  </a>
-  <a href="about.html">
-    <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
-    حول
-  </a>
-  <a href="admin.html" class="active">
-    <svg viewBox="0 0 24 24"><path d="M19.43 12.98c.04-.32.07-.64.07-.98s-.03-.66-.07-.98l2.11-1.65c.19-.15.24-.42.12-.64l-2-3.46c-.12-.22-.39-.3-.61-.22l-2.49 1c-.52-.4-1.08-.73-1.69-.98l-.38-2.65C14.03 2.18 13.84 2 13.6 2h-4c-.24 0-.43.18-.47.42l-.38 2.65c-.61.25-1.17.59-1.69.98l-2.49-1c-.23-.09-.49 0-.61.22l-2 3.46c-.13.22-.07.49.12.64l2.11 1.65c-.04.32-.07.65-.07.98s.03.66.07.98l-2.11 1.65c-.19.15-.24.42-.12.64l2 3.46c.12.22.39.3.61.22l2.49-1c.52.4 1.08.73 1.69.98l.38 2.65c.04.24.23.42.47.42h4c.24 0 .43-.18.47-.42l.38-2.65c.61-.25 1.17-.59 1.69-.98l2.49 1c.23.09.49 0 .61-.22l2-3.46c.12-.22.07-.49-.12-.64l-2.11-1.65zM12 15.5c-1.93 0-3.5-1.57-3.5-3.5s1.57-3.5 3.5-3.5 3.5 1.57 3.5 3.5-1.57 3.5-3.5 3.5z"/></svg>
-    التحكم
-  </a>
-</nav>
 
 <script>
 let gamesData = [];
+let fileSha = null;
+let currentEditingIndex = null;
+let currentImageData = '';
 
-function showToast(message) {
-  const toast = document.getElementById('toast');
+function showToast(message, isError) {
+  var toast = document.getElementById('toast');
   toast.textContent = message;
-  toast.classList.add('show');
+  toast.className = 'toast ' + (isError ? 'error ' : '') + 'active';
   setTimeout(function() {
-    toast.classList.remove('show');
-  }, 2500);
+    toast.className = 'toast';
+  }, 3000);
 }
 
-async function loadGames() {
-  try {
-    const res = await fetch("games.json");
-    if (!res.ok) throw new Error();
-    gamesData = await res.json();
-  } catch (e) {
-    try {
-      const local = localStorage.getItem("admin_games_data");
-      if (local) {
-        gamesData = JSON.parse(local);
-      } else {
-        gamesData = [
-          {
-            "id": "game-1",
-            "title": "لغز أرقام الصناديق",
-            "description": "لعبة ألغاز كلاسيكية تعتمد على ترتيب الأرقام تصاعدياً بأقل عدد من الحركات لتشغيل الذاكرة.",
-            "category": "ألغاز ذكاء",
-            "type": "puzzle-game",
-            "plays": 1420,
-            "rating": 4.8,
-            "image": "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'><rect width='120' height='120' rx='20' fill='%236366f1'/><rect x='20' y='20' width='35' height='35' rx='8' fill='%23ffffff'/><text x='37' y='45' font-size='20' font-family='sans-serif' font-weight='bold' fill='%236366f1' text-anchor='middle'>1</text><rect x='65' y='20' width='35' height='35' rx='8' fill='%23ffffff'/><text x='82' y='45' font-size='20' font-family='sans-serif' font-weight='bold' fill='%236366f1' text-anchor='middle'>2</text><rect x='20' y='65' width='35' height='35' rx='8' fill='%23ffffff'/><text x='37' y='90' font-size='20' font-family='sans-serif' font-weight='bold' fill='%236366f1' text-anchor='middle'>3</text><rect x='65' y='65' width='35' height='35' rx='8' fill='%23f43f5e'/></svg>"
-          },
-          {
-            "id": "game-2",
-            "title": "مغامرة المربع السريع",
-            "description": "لعبة ثنائية الأبعاد حماسية تتطلب قفز الحواجز وتفادي العقبات المتحركة بسرعة وبدقة.",
-            "category": "ألعاب 2D",
-            "type": "game2d",
-            "plays": 2850,
-            "rating": 4.9,
-            "image": "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'><rect width='120' height='120' rx='20' fill='%2310b981'/><circle cx='60' cy='50' r='25' fill='%23ffffff'/><path d='M20 95 L100 95 L100 100 L20 100 Z' fill='%23ffffff'/></svg>"
-          }
-        ];
-      }
-    } catch(err) {
-      gamesData = [];
-    }
-  }
-  renderAdminPanel();
+function renderLogin() {
+  var container = document.getElementById('app-container');
+  container.innerHTML = `
+    <div class="login-card">
+      <h2 style="margin-bottom: 8px; font-size:20px;">تسجيل دخول المالك</h2>
+      <p class="info-text" style="margin-top:0; margin-bottom:20px;">أدخل بيانات مستودع GitHub الخاص بك للوصول إلى إدارة محتوى الألعاب.</p>
+      <form onsubmit="handleLogin(event)">
+        <div class="form-group">
+          <label class="form-label">اسم المستخدم (GitHub Username)</label>
+          <input type="text" id="gh-user" class="form-input" required autocomplete="username">
+        </div>
+        <div class="form-group">
+          <label class="form-label">اسم المستودع (Repository Name)</label>
+          <input type="text" id="gh-repo" class="form-input" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">رمز الوصول (Fine-grained Token)</label>
+          <input type="password" id="gh-token" class="form-input" required autocomplete="current-password">
+          <div class="info-text">يجب أن يمتلك الرمز صلاحيات القراءة والكتابة (Contents: read & write) على هذا المستودع فقط.</div>
+        </div>
+        <button type="submit" class="btn" style="width:100%;">دخول للوحة التحكم</button>
+      </form>
+    </div>
+  `;
 }
 
-function saveLocalData() {
-  try {
-    localStorage.setItem("admin_games_data", JSON.stringify(gamesData));
-  } catch(e) {}
-}
+function handleLogin(e) {
+  e.preventDefault();
+  var user = document.getElementById('gh-user').value.trim();
+  var repo = document.getElementById('gh-repo').value.trim();
+  var token = document.getElementById('gh-token').value.trim();
 
-function renderAdminPanel() {
-  const container = document.getElementById('gamesListContainer');
-  container.innerHTML = '';
-  
-  let totalPlays = 0;
-  
-  gamesData.forEach(function(game) {
-    totalPlays += (game.plays || 0);
-    
-    const card = document.createElement('div');
-    card.className = 'game-item-card';
-    
-    const img = document.createElement('img');
-    img.src = game.image || '';
-    card.appendChild(img);
-    
-    const info = document.createElement('div');
-    info.className = 'game-item-info rt-selectable';
-    
-    const title = document.createElement('h4');
-    title.textContent = game.title;
-    info.appendChild(title);
-    
-    const desc = document.createElement('p');
-    desc.textContent = game.category + ' • ' + (game.plays || 0) + ' لعب';
-    info.appendChild(desc);
-    
-    card.appendChild(info);
-    
-    const actions = document.createElement('div');
-    actions.className = 'game-item-actions';
-    
-    const editBtn = document.createElement('button');
-    editBtn.className = 'icon-btn';
-    editBtn.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>';
-    editBtn.onclick = function() { openEditModal(game.id); };
-    actions.appendChild(editBtn);
-    
-    const delBtn = document.createElement('button');
-    delBtn.className = 'icon-btn delete';
-    delBtn.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>';
-    delBtn.onclick = function() { deleteGame(game.id); };
-    actions.appendChild(delBtn);
-    
-    card.appendChild(actions);
-    container.appendChild(card);
+  window.RTAdmin.login(user, repo, token).then(function() {
+    loadGamesData();
+  }).catch(function(err) {
+    showToast('فشل تسجيل الدخول. تحقق من البيانات وصلاحيات الرمز.', true);
   });
+}
+
+function loadGamesData() {
+  window.RTAdmin.readJson('games.json').then(function(res) {
+    gamesData = res.data || [];
+    fileSha = res.sha;
+    renderEditor();
+  }).catch(function(err) {
+    showToast('حدث خطأ أثناء تحميل ملف games.json', true);
+    renderEditor();
+  });
+}
+
+function renderEditor() {
+  var container = document.getElementById('app-container');
+  var itemsHtml = '';
   
-  document.getElementById('statTotalGames').textContent = gamesData.length;
-  document.getElementById('statTotalPlays').textContent = totalPlays;
+  for (var i = 0; i < gamesData.length; i++) {
+    var game = gamesData[i];
+    itemsHtml += `
+      <div class="item-card">
+        <img class="item-thumb" src="${game.image || ''}" alt="">
+        <div class="item-details">
+          <div class="item-name rt-selectable">${game.title}</div>
+          <div class="item-meta">${game.category} • ${game.plays} لعب • <svg viewBox="0 0 24 24" style="width:12px;height:12px;fill:#fbbf24;vertical-align:middle;display:inline-block;"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg> ${game.rating}</div>
+        </div>
+        <div class="item-actions">
+          <button class="btn-sm" onclick="openEditModal(${i})">
+            <svg viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>
+          </button>
+          <button class="btn-sm danger" onclick="deleteItem(${i})">
+            <svg viewBox="0 0 24 24"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
+          </button>
+        </div>
+      </div>
+    `;
+  }
+
+  container.innerHTML = `
+    <div class="editor-header">
+      <h2 style="font-size:18px;">إدارة الألعاب والألغاز</h2>
+      <button class="btn-secondary" style="height:36px; padding:0 14px; border-radius:10px; border:none; color:white; font-weight:600; cursor:pointer;" onclick="logout()">تسجيل خروج</button>
+    </div>
+    <div class="item-list">
+      ${itemsHtml.length > 0 ? itemsHtml : '<p class="info-text" style="text-align:center; padding:40px 0;">لا توجد عناصر مضافة حالياً.</p>'}
+    </div>
+    <div class="floating-bar">
+      <button class="btn" onclick="openAddModal()">إضافة لعبة / لغز جديد</button>
+      <button class="btn btn-secondary" onclick="saveAllChanges()">حفظ في المستودع</button>
+    </div>
+  `;
+}
+
+function logout() {
+  try {
+    window.RTAdmin.logout();
+  } catch(e) {}
+  renderLogin();
 }
 
 function openAddModal() {
-  document.getElementById('modalTitle').textContent = 'إضافة لعبة جديدة';
-  document.getElementById('gameEditId').value = '';
-  document.getElementById('gameTitleInput').value = '';
-  document.getElementById('gameDescInput').value = '';
-  document.getElementById('gameCatInput').value = '';
-  document.getElementById('gameTypeInput').value = 'puzzle-game';
-  document.getElementById('gameImageInput').value = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'><rect width='120' height='120' rx='20' fill='%236200EE'/><text x='60' y='70' font-size='50' fill='%23ffffff' text-anchor='middle'>?</text></svg>";
-  
-  document.getElementById('gameModal').classList.add('active');
+  currentEditingIndex = null;
+  document.getElementById('modal-title').textContent = 'إضافة لعبة جديدة';
+  document.getElementById('edit-title').value = '';
+  document.getElementById('edit-category').value = '';
+  document.getElementById('edit-type').value = 'puzzle-game';
+  document.getElementById('edit-desc').value = '';
+  document.getElementById('edit-plays').value = '100';
+  document.getElementById('edit-rating').value = '4.5';
+  currentImageData = '';
+  document.getElementById('edit-img-preview').src = '';
+  document.getElementById('edit-modal').classList.add('active');
 }
 
-function openEditModal(id) {
-  const game = gamesData.find(function(g) { return g.id === id; });
-  if (!game) return;
-  
-  document.getElementById('modalTitle').textContent = 'تعديل اللعبة';
-  document.getElementById('gameEditId').value = game.id;
-  document.getElementById('gameTitleInput').value = game.title;
-  document.getElementById('gameDescInput').value = game.description;
-  document.getElementById('gameCatInput').value = game.category;
-  document.getElementById('gameTypeInput').value = game.type || 'puzzle-game';
-  document.getElementById('gameImageInput').value = game.image || '';
-  
-  document.getElementById('gameModal').classList.add('active');
+function openEditModal(index) {
+  currentEditingIndex = index;
+  var game = gamesData[index];
+  document.getElementById('modal-title').textContent = 'تعديل العنصر';
+  document.getElementById('edit-title').value = game.title || '';
+  document.getElementById('edit-category').value = game.category || '';
+  document.getElementById('edit-type').value = game.type || '';
+  document.getElementById('edit-desc').value = game.description || '';
+  document.getElementById('edit-plays').value = game.plays || 0;
+  document.getElementById('edit-rating').value = game.rating || 5.0;
+  currentImageData = game.image || '';
+  document.getElementById('edit-img-preview').src = currentImageData;
+  document.getElementById('edit-modal').classList.add('active');
 }
 
 function closeModal() {
-  document.getElementById('gameModal').classList.remove('active');
+  document.getElementById('edit-modal').classList.remove('active');
 }
 
-function handleFormSubmit(e) {
+function handleImagePick(e) {
+  var file = e.target.files[0];
+  if (!file) return;
+  window.RTAdmin.imageToDataUrl(file, 480, 0.7).then(function(dataUrl) {
+    currentImageData = dataUrl;
+    document.getElementById('edit-img-preview').src = dataUrl;
+  }).catch(function(err) {
+    showToast('فشل معالجة الصورة', true);
+  });
+}
+
+function saveItem(e) {
   e.preventDefault();
-  const editId = document.getElementById('gameEditId').value;
-  const title = document.getElementById('gameTitleInput').value;
-  const description = document.getElementById('gameDescInput').value;
-  const category = document.getElementById('gameCatInput').value;
-  const type = document.getElementById('gameTypeInput').value;
-  const image = document.getElementById('gameImageInput').value;
-  
-  if (editId) {
-    const game = gamesData.find(function(g) { return g.id === editId; });
-    if (game) {
-      game.title = title;
-      game.description = description;
-      game.category = category;
-      game.type = type;
-      game.image = image;
+  var newItem = {
+    id: currentEditingIndex !== null ? gamesData[currentEditingIndex].id : 'game-' + Date.now(),
+    title: document.getElementById('edit-title').value.trim(),
+    description: document.getElementById('edit-desc').value.trim(),
+    category: document.getElementById('edit-category').value.trim(),
+    type: document.getElementById('edit-type').value.trim(),
+    plays: parseInt(document.getElementById('edit-plays').value, 10) || 0,
+    rating: parseFloat(document.getElementById('edit-rating').value) || 5.0,
+    image: currentImageData
+  };
+
+  if (currentEditingIndex !== null) {
+    var existing = gamesData[currentEditingIndex];
+    for (var key in existing) {
+      if (newItem[key] === undefined) {
+        newItem[key] = existing[key];
+      }
     }
-    showToast('تم تحديث اللعبة بنجاح');
+    gamesData[currentEditingIndex] = newItem;
   } else {
-    const newGame = {
-      id: 'game-' + Date.now(),
-      title: title,
-      description: description,
-      category: category,
-      type: type,
-      plays: 0,
-      rating: 5.0,
-      image: image
-    };
-    gamesData.push(newGame);
-    showToast('تمت إضافة اللعبة بنجاح');
+    gamesData.push(newItem);
   }
-  
-  saveLocalData();
-  renderAdminPanel();
+
   closeModal();
+  renderEditor();
 }
 
-function deleteGame(id) {
-  if (confirm('هل أنت متأكد من حذف هذه اللعبة؟')) {
-    gamesData = gamesData.filter(function(g) { return g.id !== id; });
-    saveLocalData();
-    renderAdminPanel();
-    showToast('تم حذف اللعبة');
+function deleteItem(index) {
+  if (confirm('هل أنت متأكد من حذف هذا العنصر؟')) {
+    gamesData.splice(index, 1);
+    renderEditor();
   }
 }
 
-function exportJSON() {
-  const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(gamesData, null, 2));
-  const downloadAnchor = document.createElement('a');
-  downloadAnchor.setAttribute("href", dataStr);
-  downloadAnchor.setAttribute("download", "games.json");
-  document.body.appendChild(downloadAnchor);
-  downloadAnchor.click();
-  downloadAnchor.remove();
-  showToast('تم تصدير ملف games.json');
+function saveAllChanges() {
+  window.RTAdmin.writeJson('games.json', gamesData, fileSha).then(function(res) {
+    fileSha = res.sha;
+    showToast('تم الحفظ وتحديث التطبيق بنجاح', false);
+  }).catch(function(err) {
+    showToast('فشل الحفظ في المستودع: ' + (err.message || ''), true);
+  });
 }
 
-window.addEventListener('DOMContentLoaded', loadGames);
+// Init
+try {
+  if (window.RTAdmin.isLoggedIn()) {
+    loadGamesData();
+  } else {
+    renderLogin();
+  }
+} catch(e) {
+  renderLogin();
+}
 </script>
-
 </body>
 </html>
