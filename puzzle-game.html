@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>لعبة الألغاز الكلاسيكية</title>
+<style>
+:root {
+  --primary: #6200EE;
+  --primary-dark: #3700B3;
+  --accent: #03DAC6;
+  --highlight: #FF0266;
+  --control: #B0BEC5;
+  --bg: #F5F5F7;
+  --surface: #FFFFFF;
+  --text: #1C1B1F;
+  --text-secondary: #49454F;
+  --border: #E0E0E0;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  background-color: var(--bg);
+  color: var(--text);
+  padding-top: env(safe-area-inset-top);
+  padding-bottom: env(safe-area-inset-bottom);
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* App Bar */
+.app-bar {
+  background-color: var(--primary);
+  color: #FFFFFF;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  z-index: 10;
+}
+
+.app-bar h1 {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.icon-btn {
+  background: none;
+  border: none;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  color: #FFFFFF;
+  cursor: pointer;
+}
+
+.icon-btn:active {
+  background-color: rgba(255,255,255,0.15);
+}
+
+.icon-btn svg {
+  width: 24px;
+  height: 24px;
+  fill: currentColor;
+}
+
+/* Main Content Area */
+.content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Game Info Card */
+.game-info-card {
+  background-color: var(--surface);
+  border-radius: 12px;
+  padding: 16px;
+  width: 100%;
+  max-width: 400px;
+  margin-bottom: 16px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.game-info-card img {
+  width: 48px;
+  height: 48px;
+  border-radius: 8px;
+  object-fit: cover;
+  margin-left: 12px;
+}
+
+.game-meta {
+  flex: 1;
+}
+
+.game-meta h2 {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.game-meta p {
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+.stats-row {
+  display: flex;
+  margin-bottom: 16px;
+  width: 100%;
+  max-width: 400px;
+}
+
+.stat-box {
+  background-color: var(--surface);
+  padding: 10px 16px;
+  border-radius: 8px;
+  text-align: center;
+  flex: 1;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+}
+
+.stat-box + .stat-box {
+  margin-right: 16px;
+}
+
+.stat-box .label {
+  font-size: 11px;
+  color: var(--text-secondary);
+  display: block;
+  margin-bottom: 2px;
+}
+
+.stat-box .value {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--primary);
+}
+
+/* Puzzle Board */
+.board-container {
+  background-color: var(--surface);
+  border-radius: 16px;
+  padding: 16px;
+  width: 100%;
+  max-width: 360px;
+  aspect-ratio: 1;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  grid-gap: 10px;
+  margin-bottom: 20px;
+}
+
+.tile {
+  background-color: var(--primary);
+  color: #FFFFFF;
+  border-radius: 10px;
+  font-size: 28px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color 0.15s, transform 0.1s;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.tile:active {
+  transform: scale(0.95);
+  background-color: var(--primary-dark);
+}
+
+.tile.empty {
+  background-color: transparent;
+  box-shadow: none;
+  cursor: default;
+}
+
+/* Controls */
+.controls {
+  width: 100%;
+  max-width: 400px;
+  display: flex;
+}
+
+.btn {
+  flex: 1;
+  height: 48px;
+  border: none;
+  border-radius: 24px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+  transition: opacity 0.1s;
+}
+
+.btn + .btn {
+  margin-right: 12px;
+}
+
+.btn:active {
+  opacity: 0.85;
+}
+
+.btn-primary {
+  background-color: var(--primary);
+  color: #FFFFFF;
+}
+
+.btn-outline {
+  background-color: var(--surface);
+  color: var(--primary);
+  border: 1px solid var(--primary);
+}
+
+/* Win Overlay */
+.win-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0,0,0,0.6);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  padding: 24px;
+}
+
+.win-modal {
+  background-color: var(--surface);
+  border-radius: 20px;
+  padding: 24px;
+  width: 100%;
+  max-width: 320px;
+  text-align: center;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+}
+
+.win-modal h3 {
+  font-size: 20px;
+  color: var(--primary);
+  margin-bottom: 8px;
+}
+
+.win-modal p {
+  font-size: 14px;
+  color: var(--text-secondary);
+  margin-bottom: 20px;
+}
+
+/* Bottom Nav */
+.bottom-nav {
+  background-color: var(--surface);
+  height: 60px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  border-top: 1px solid var(--border);
+  z-index: 10;
+}
+
+.nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  color: var(--text-secondary);
+  font-size: 11px;
+  width: 100%;
+  height: 100%;
+}
+
+.nav-item.active {
+  color: var(--primary);
+}
+
+.nav-item svg {
+  width: 24px;
+  height: 24px;
+  fill: currentColor;
+  margin-bottom: 2px;
+}
+</style>
+<style id="rt-native">html,body{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;-webkit-tap-highlight-color:transparent;overscroll-behavior:none}input,textarea,select,[contenteditable],.rt-selectable,.rt-selectable *{-webkit-user-select:text;user-select:text}img,a{-webkit-user-drag:none}a,button,[role=button]{outline:none}</style>
+</head>
+<body>
+
+  <div class="app-bar">
+    <button class="icon-btn" onclick="location.href='home.html'">
+      <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+    </button>
+    <h1>لعبة الألغاز الكلاسيكية</h1>
+    <button class="icon-btn" id="fav-btn" onclick="toggleFavorite()">
+      <svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+    </button>
+  </div>
+
+  <div class="content">
+    <div class="game-info-card" id="game-info">
+      <div class="game-meta">
+        <h2 id="game-title">لغز أرقام الصناديق</h2>
+        <p id="game-desc">رتب الأرقام تصاعدياً من 1 إلى 8.</p>
+      </div>
+    </div>
+
+    <div class="stats-row">
+      <div class="stat-box">
+        <span class="label">الحركات</span>
+        <span class="value" id="moves-count">0</span>
+      </div>
+      <div class="stat-box">
+        <span class="label">الوقت</span>
+        <span class="value" id="timer">00:00</span>
+      </div>
+    </div>
+
+    <div class="board-container" id="board">
+      <!-- Generated dynamically -->
+    </div>
+
+    <div class="controls">
+      <button class="btn btn-outline" onclick="resetGame()">إعادة اللعب</button>
+      <button class="btn btn-primary" onclick="shuffleGame()">خلط جديد</button>
+    </div>
+  </div>
+
+  <div class="win-overlay" id="win-overlay">
+    <div class="win-modal">
+      <h3>أحسنت!</h3>
+      <p id="win-text">لقد أكملت اللغز بنجاح.</p>
+      <button class="btn btn-primary" onclick="resetGame()">لعب مرة أخرى</button>
+    </div>
+  </div>
+
+  <div class="bottom-nav">
+    <a href="home.html" class="nav-item">
+      <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+      الرئيسية
+    </a>
+    <a href="favorites.html" class="nav-item">
+      <svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+      المفضلة
+    </a>
+  </div>
+
+<script>
+  var board = [1, 2, 3, 4, 5, 6, 7, 8, ""];
+  var winningBoard = [1, 2, 3, 4, 5, 6, 7, 8, ""];
+  var moves = 0;
+  var timerSeconds = 0;
+  var timerInterval = null;
+  var gameStarted = false;
+  var currentGameId = "game-1";
+
+  // Web Audio API Sound Effects
+  function playClickSound() {
+    try {
+      var audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      var osc = audioCtx.createOscillator();
+      var gain = audioCtx.createGain();
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(400, audioCtx.currentTime);
+      gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+      osc.start();
+      osc.stop(audioCtx.currentTime + 0.1);
+    } catch (e) {}
+  }
+
+  function playWinSound() {
+    try {
+      var audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      [523.25, 659.25, 783.99, 1046.50].forEach(function(freq, index) {
+        var osc = audioCtx.createOscillator();
+        var gain = audioCtx.createGain();
+        osc.frequency.setValueAtTime(freq, audioCtx.currentTime + index * 0.1);
+        gain.gain.setValueAtTime(0.1, audioCtx.currentTime + index * 0.1);
+        gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + index * 0.1 + 0.15);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start(audioCtx.currentTime + index * 0.1);
+        osc.stop(audioCtx.currentTime + index * 0.1 + 0.15);
+      });
+    } catch (e) {}
+  }
+
+  async function loadGameData() {
+    try {
+      var res = await fetch("games.json");
+      var games = await res.json();
+      var game = games.find(function(g) { return g.type === "puzzle-game"; });
+      if (game) {
+        currentGameId = game.id;
+        document.getElementById("game-title").innerText = game.title;
+        document.getElementById("game-desc").innerText = game.description;
+        if (game.image) {
+          var card = document.getElementById("game-info");
+          var img = document.createElement("img");
+          img.src = game.image;
+          card.insertBefore(img, card.firstChild);
+        }
+      }
+    } catch (e) {
+      console.error("Could not load game details");
+    }
+    checkFavoriteState();
+  }
+
+  function checkFavoriteState() {
+    try {
+      var favs = JSON.parse(localStorage.getItem("favorites") || "[]");
+      var favBtn = document.getElementById("fav-btn");
+      if (favs.indexOf(currentGameId) !== -1) {
+        favBtn.style.color = "var(--highlight)";
+      } else {
+        favBtn.style.color = "#FFFFFF";
+      }
+    } catch (e) {}
+  }
+
+  function toggleFavorite() {
+    try {
+      var favs = JSON.parse(localStorage.getItem("favorites") || "[]");
+      var index = favs.indexOf(currentGameId);
+      if (index !== -1) {
+        favs.splice(index, 1);
+      } else {
+        favs.push(currentGameId);
+      }
+      localStorage.setItem("favorites", JSON.stringify(favs));
+      checkFavoriteState();
+    } catch (e) {}
+  }
+
+  function startTimer() {
+    if (timerInterval) return;
+    timerInterval = setInterval(function() {
+      timerSeconds++;
+      var mins = Math.floor(timerSeconds / 60);
+      var secs = timerSeconds % 60;
+      document.getElementById("timer").innerText = 
+        (mins < 10 ? "0" + mins : mins) + ":" + (secs < 10 ? "0" + secs : secs);
+    }, 1000);
+  }
+
+  function stopTimer() {
+    clearInterval(timerInterval);
+    timerInterval = null;
+  }
+
+  function renderBoard() {
+    var boardEl = document.getElementById("board");
+    boardEl.innerHTML = "";
+    board.forEach(function(val, idx) {
+      var tile = document.createElement("div");
+      tile.className = "tile" + (val === "" ? " empty" : "");
+      tile.innerText = val;
+      if (val !== "") {
+        tile.onclick = function() {
+          moveTile(idx);
+        };
+      }
+      boardEl.appendChild(tile);
+    });
+  }
+
+  function getValidMoves(emptyIdx) {
+    var row = Math.floor(emptyIdx / 3);
+    var col = emptyIdx % 3;
+    var valid = [];
+    if (row > 0) valid.push(emptyIdx - 3);
+    if (row < 2) valid.push(emptyIdx + 3);
+    if (col > 0) valid.push(emptyIdx - 1);
+    if (col < 2) valid.push(emptyIdx + 1);
+    return valid;
+  }
+
+  function moveTile(idx) {
+    var emptyIdx = board.indexOf("");
+    var validMoves = getValidMoves(emptyIdx);
+    
+    if (validMoves.indexOf(idx) !== -1) {
+      if (!gameStarted) {
+        gameStarted = true;
+        startTimer();
+      }
+      board[emptyIdx] = board[idx];
+      board[idx] = "";
+      moves++;
+      document.getElementById("moves-count").innerText = moves;
+      playClickSound();
+      renderBoard();
+      checkWin();
+    }
+  }
+
+  function shuffleGame() {
+    stopTimer();
+    timerSeconds = 0;
+    document.getElementById("timer").innerText = "00:00";
+    moves = 0;
+    document.getElementById("moves-count").innerText = moves;
+    gameStarted = false;
+    document.getElementById("win-overlay").style.display = "none";
+
+    var emptyIdx = board.indexOf("");
+    for (var i = 0; i < 100; i++) {
+      var valid = getValidMoves(emptyIdx);
+      var randomIdx = valid[Math.floor(Math.random() * valid.length)];
+      board[emptyIdx] = board[randomIdx];
+      board[randomIdx] = "";
+      emptyIdx = randomIdx;
+    }
+    renderBoard();
+  }
+
+  function resetGame() {
+    shuffleGame();
+  }
+
+  function checkWin() {
+    var isWin = true;
+    for (var i = 0; i < board.length; i++) {
+      if (board[i] !== winningBoard[i]) {
+        isWin = false;
+        break;
+      }
+    }
+    if (isWin) {
+      stopTimer();
+      playWinSound();
+      document.getElementById("win-text").innerText = "لقد أكملت اللغز في " + moves + " حركة و " + document.getElementById("timer").innerText + ".";
+      document.getElementById("win-overlay").style.display = "flex";
+    }
+  }
+
+  window.onload = function() {
+    loadGameData();
+    shuffleGame();
+  };
+</script>
+</body>
+</html>
