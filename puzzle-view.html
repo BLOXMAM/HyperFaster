@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>اللعبة - ألغاز و العاب ذكاء</title>
+<style>
+:root{
+  --primary:#6200EE;
+  --primary-dark:#3700B3;
+  --accent:#03DAC6;
+  --highlight:#FFEB3B;
+  --control:#B0BEC5;
+  --bg:#121212;
+  --surface:#1E1E1E;
+  --surface-light:#2C2C2C;
+  --text:#E0E0E0;
+  --text-dim:#9E9E9E;
+  --danger:#CF6679;
+  --success:#03DAC6;
+}
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+html, body {
+  background-color: var(--bg);
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  height: 100%;
+  overflow: hidden;
+  user-select: none;
+}
+.rt-selectable {
+  user-select: text;
+  -webkit-user-select: text;
+}
+.app-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding-top: env(safe-area-inset-top);
+  padding-bottom: env(safe-area-inset-bottom);
+}
+.app-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: var(--surface);
+  height: 56px;
+  padding: 0 16px;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  z-index: 10;
+}
+.app-bar-title {
+  font-size: 18px;
+  font-weight: bold;
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.icon-btn {
+  background: none;
+  border: none;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text);
+  border-radius: 50%;
+  cursor: pointer;
+}
+.icon-btn:active {
+  background-color: rgba(255,255,255,0.1);
+}
+.icon-btn svg {
+  width: 24px;
+  height: 24px;
+  fill: currentColor;
+}
+.content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+}
+.card {
+  background-color: var(--surface);
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 16px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+}
+.puzzle-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+.badge {
+  background-color: var(--surface-light);
+  color: var(--accent);
+  font-size: 12px;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-weight: bold;
+}
+.puzzle-title {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 8px;
+  color: var(--text);
+}
+.puzzle-desc {
+  font-size: 14px;
+  color: var(--text-dim);
+  line-height: 1.5;
+  margin-bottom: 16px;
+}
+.puzzle-image-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 16px;
+}
+.puzzle-image-container img {
+  max-width: 100%;
+  max-height: 200px;
+  border-radius: 8px;
+  object-fit: contain;
+}
+.interaction-area {
+  margin-top: auto;
+}
+.input-group {
+  margin-bottom: 16px;
+}
+.text-input {
+  width: 100%;
+  height: 48px;
+  background-color: var(--surface-light);
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 8px;
+  padding: 0 16px;
+  color: var(--text);
+  font-size: 16px;
+  outline: none;
+}
+.text-input:focus {
+  border-color: var(--accent);
+}
+.btn {
+  width: 100%;
+  height: 48px;
+  background-color: var(--primary);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+.btn:active {
+  background-color: var(--primary-dark);
+  transform: scale(0.98);
+}
+.btn-secondary {
+  background-color: transparent;
+  border: 1px solid var(--control);
+  color: var(--control);
+  margin-top: 8px;
+}
+.btn-secondary:active {
+  background-color: rgba(255,255,255,0.05);
+}
+.bottom-nav {
+  display: flex;
+  background-color: var(--surface);
+  height: 56px;
+  border-top: 1px solid rgba(255,255,255,0.1);
+}
+.nav-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-dim);
+  text-decoration: none;
+  font-size: 10px;
+}
+.nav-item.active {
+  color: var(--accent);
+}
+.nav-item svg {
+  width: 24px;
+  height: 24px;
+  fill: currentColor;
+  margin-bottom: 2px;
+}
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0,0,0,0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+}
+.modal-overlay.show {
+  opacity: 1;
+  pointer-events: auto;
+}
+.modal-card {
+  background-color: var(--surface);
+  width: 85%;
+  max-width: 320px;
+  border-radius: 16px;
+  padding: 24px;
+  text-align: center;
+  transform: scale(0.9);
+  transition: transform 0.2s ease;
+}
+.modal-overlay.show .modal-card {
+  transform: scale(1);
+}
+.modal-title {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+.modal-text {
+  font-size: 14px;
+  color: var(--text-dim);
+  margin-bottom: 20px;
+}
+.loader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  color: var(--text-dim);
+}
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid rgba(255,255,255,0.1);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin-bottom: 12px;
+}
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+</style>
+<style id="rt-native">html,body{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;-webkit-tap-highlight-color:transparent;overscroll-behavior:none}input,textarea,select,[contenteditable],.rt-selectable,.rt-selectable *{-webkit-user-select:text;user-select:text}img,a{-webkit-user-drag:none}a,button,[role=button]{outline:none}</style>
+</head>
+<body>
+
+<div class="app-container">
+  <!-- App Bar -->
+  <div class="app-bar">
+    <button class="icon-btn" onclick="goBack()" aria-label="رجوع">
+      <svg viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+    </button>
+    <div class="app-bar-title" id="appBarTitle">اللعبة</div>
+    <button class="icon-btn" onclick="showHint()" aria-label="مساعدة">
+      <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 16h-2v-2h2v2zm1.07-7.75l-.9.92C12.45 11.9 12 12.5 12 14h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H7c0-2.76 2.24-5 5-5s5 2.24 5 5c0 1.03-.42 1.98-1.03 2.75z"/></svg>
+    </button>
+  </div>
+
+  <!-- Main Content -->
+  <div class="content" id="mainContent">
+    <div class="loader" id="loader">
+      <div class="spinner"></div>
+      <div>جاري تحميل اللغز...</div>
+    </div>
+  </div>
+
+  <!-- Bottom Navigation -->
+  <div class="bottom-nav">
+    <a href="index.html" class="nav-item">
+      <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+      <span>الرئيسية</span>
+    </a>
+    <a href="scores.html" class="nav-item">
+      <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-2 10h-4v4h-2v-4H7v-2h4V7h2v4h4v2z"/></svg>
+      <span>النتائج</span>
+    </a>
+  </div>
+</div>
+
+<!-- Result Modal -->
+<div class="modal-overlay" id="resultModal">
+  <div class="modal-card">
+    <div class="modal-title" id="modalTitle">إجابة صحيحة!</div>
+    <div class="modal-text" id="modalText">لقد احتزت اللغز بنجاح وتم إضافة النقاط إلى رصيدك.</div>
+    <button class="btn" onclick="nextPuzzle()">لغز آخر</button>
+    <button class="btn btn-secondary" onclick="window.location.href='scores.html'">عرض النتائج</button>
+  </div>
+</div>
+
+<script>
+  let currentGame = null;
+  let allGames = [];
+  
+  // Web Audio API Sound Effect generator
+  function playBeep(success) {
+    try {
+      const AudioContext = window.AudioContext || window.webkitAudioContext;
+      if (!AudioContext) return;
+      const ctx = new AudioContext();
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      
+      osc.type = success ? 'triangle' : 'sawtooth';
+      osc.frequency.setValueAtTime(success ? 587.33 : 220, ctx.currentTime);
+      if (success) {
+        osc.frequency.exponentialRampToValueAtTime(880, ctx.currentTime + 0.15);
+      }
+      
+      gain.gain.setValueAtTime(0.1, ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + (success ? 0.3 : 0.2));
+      
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      
+      osc.start();
+      osc.stop(ctx.currentTime + (success ? 0.3 : 0.2));
+    } catch(e) {
+      // Audio not allowed or supported
+    }
+  }
+
+  function getQueryParam(param) {
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get(param);
+  }
+
+  function goBack() {
+    window.location.href = 'index.html';
+  }
+
+  function showHint() {
+    if (!currentGame) return;
+    alert("تلميح: " + (currentGame.description || "فكر خارج الصندوق!"));
+  }
+
+  function loadGameData() {
+    fetch('games.json')
+      .then(function(response) {
+        if (!response.ok) throw new Error('Network response was not ok');
+        return response.json();
+      })
+      .then(function(data) {
+        allGames = data;
+        const gameId = getQueryParam('id');
+        if (gameId && data.length > 0) {
+          for (let i = 0; i < data.length; i++) {
+            if (String(data[i].id) === String(gameId)) {
+              currentGame = data[i];
+              break;
+            }
+          }
+        }
+        if (!currentGame && data.length > 0) {
+          currentGame = data[0];
+        }
+        renderGame();
+      })
+      .catch(function(error) {
+        document.getElementById('mainContent').innerHTML = '<div class="loader"><div class="modal-title">عذراً</div><div class="modal-text">تعذر تحميل بيانات الألغاز. يرجى التحقق من اتصالك.</div><button class="btn" onclick="loadGameData()">إعادة المحاولة</button></div>';
+      });
+  }
+
+  function renderGame() {
+    if (!currentGame) return;
+    
+    document.getElementById('appBarTitle').textContent = currentGame.title || 'لغز ذكاء';
+    
+    let imageHtml = '';
+    if (currentGame.image) {
+      imageHtml = '<div class="puzzle-image-container"><img src="' + currentGame.image + '" alt="صورة اللغز"></div>';
+    }
+    
+    let html = '<div class="card">' +
+      '<div class="puzzle-header">' +
+        '<span class="badge">' + (currentGame.difficulty || 'متوسط') + '</span>' +
+        '<span class="badge" style="background:var(--primary); color:white;">ذكاء</span>' +
+      '</div>' +
+      '<div class="puzzle-title">' + (currentGame.title || '') + '</div>' +
+      '<div class="puzzle-desc rt-selectable">' + (currentGame.description || '') + '</div>' +
+      imageHtml +
+    '</div>' +
+    '<div class="interaction-area card">' +
+      '<div class="input-group">' +
+        '<input type="text" id="answerInput" class="text-input" placeholder="اكتب إجابتك هنا..." autocomplete="off">' +
+      '</div>' +
+      '<button class="btn" onclick="checkAnswer()">تحقق من الإجابة</button>' +
+      '<button class="btn btn-secondary" onclick="showHint()">طلب تلميح</button>' +
+    '</div>';
+
+    document.getElementById('mainContent').innerHTML = html;
+    
+    const input = document.getElementById('answerInput');
+    if (input) {
+      input.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+          checkAnswer();
+        }
+      });
+    }
+  }
+
+  function checkAnswer() {
+    const input = document.getElementById('answerInput');
+    if (!input || !currentGame) return;
+    
+    const userAns = input.value.trim().toLowerCase();
+    const correctAns = String(currentGame.solution || '').trim().toLowerCase();
+    
+    if (userAns === '') {
+      input.style.borderColor = 'var(--danger)';
+      setTimeout(function() { input.style.borderColor = 'rgba(255,255,255,0.2)'; }, 1000);
+      return;
+    }
+    
+    if (userAns === correctAns) {
+      playBeep(true);
+      saveScore();
+      document.getElementById('resultModal').classList.add('show');
+    } else {
+      playBeep(false);
+      input.style.borderColor = 'var(--danger)';
+      input.value = '';
+      input.placeholder = 'إجابة خاطئة، حاول مرة أخرى';
+      setTimeout(function() { 
+        input.style.borderColor = 'rgba(255,255,255,0.2)';
+        input.placeholder = 'اكتب إجابتك هنا...';
+      }, 1500);
+    }
+  }
+
+  function saveScore() {
+    try {
+      let scores = [];
+      const saved = localStorage.getItem('puzzle_scores');
+      if (saved) {
+        scores = JSON.parse(saved);
+      }
+      scores.push({
+        id: currentGame.id,
+        title: currentGame.title,
+        date: new Date().toISOString(),
+        points: 10
+      });
+      localStorage.setItem('puzzle_scores', JSON.stringify(scores));
+    } catch(e) {
+      // LocalStorage error
+    }
+  }
+
+  function nextPuzzle() {
+    document.getElementById('resultModal').classList.remove('show');
+    if (allGames.length === 0) {
+      goBack();
+      return;
+    }
+    const currentIndex = allGames.indexOf(currentGame);
+    if (currentIndex > -1 && currentIndex < allGames.length - 1) {
+      currentGame = allGames[currentIndex + 1];
+    } else {
+      currentGame = allGames[0];
+    }
+    renderGame();
+  }
+
+  window.onload = function() {
+    loadGameData();
+  };
+</script>
+</body>
+</html>
