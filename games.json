@@ -1,0 +1,82 @@
+[
+  {
+    "id": "game-flappy-hero",
+    "title": "البطل الطائر",
+    "file": "game_flappy.html",
+    "cover": "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'><rect width='120' height='120' rx='18' fill='%231a1a2e'/><circle cx='60' cy='60' r='44' fill='%23ff2e63'/><path d='M25 70 L55 45 L95 35 L68 65 L80 88 Z' fill='%23ffd60a' stroke='%231a1a2e' stroke-width='4'/><circle cx='72' cy='46' r='5' fill='%231a1a2e'/><path d='M16 92 H42 M78 96 H104' stroke='%2308d9d6' stroke-width='5' stroke-linecap='round'/></svg>",
+    "description": "حلّق بالبطل الخارق بين ناطحات السحاب وتجنب العوائق في تحدٍ سريع يناسب النافذة العائمة.",
+    "supportsOverlay": true
+  },
+  {
+    "id": "game-comic-puzzle",
+    "title": "ألغاز لوحات الكوميكس",
+    "file": "game_puzzle.html",
+    "cover": "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'><rect width='120' height='120' rx='18' fill='%230f3460'/><rect x='18' y='18' width='38' height='38' rx='6' fill='%23ffd60a' stroke='%23ffffff' stroke-width='3'/><rect x='64' y='18' width='38' height='38' rx='6' fill='%23ff2e63' stroke='%23ffffff' stroke-width='3'/><rect x='18' y='64' width='38' height='38' rx='6' fill='%2308d9d6' stroke='%23ffffff' stroke-width='3'/><path d='M68 68 H98 V98 H68 Z' fill='none' stroke='%23ffd60a' stroke-width='4' stroke-dasharray='6 5'/><polygon points='37,26 42,36 52,37 44,44 46,54 37,49 28,54 30,44 22,37 32,36' fill='%231a1a2e'/></svg>",
+    "description": "أعد ترتيب لوحات القصص المصورة المبعثرة لإكمال المشهد البطولي بأسرع وقت ممكن.",
+    "supportsOverlay": true
+  },
+  {
+    "id": "game-hero-memory",
+    "title": "تحدي الذاكرة للأبطال",
+    "file": "game_memory.html",
+    "cover": "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'><rect width='120' height='120' rx='18' fill='%23251b37'/><rect x='16' y='24' width='48' height='68' rx='10' fill='%2308d9d6' stroke='%23ffffff' stroke-width='4' transform='rotate(-8 40 58)'/><rect x='54' y='26' width='48' height='68' rx='10' fill='%23ff2e63' stroke='%23ffffff' stroke-width='4' transform='rotate(8 78 60)'/><polygon points='78,42 84,56 98,58 87,67 90,81 78,74 66,81 69,67 58,58 72,56' fill='%23ffd60a'/></svg>",
+    "description": "اختبر ذاكرتك عبر مطابقة شعارات الأبطال الخارقين وبطاقات القوى الخاصة في جولات متسارعة.",
+    "supportsOverlay": true
+  },
+  {
+    "id": "game-lightning-tap",
+    "title": "الضربة الخاطفة",
+    "file": "game_tap.html",
+    "cover": "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'><rect width='120' height='120' rx='18' fill='%231a1a2e'/><polygon points='60,10 74,34 102,26 88,52 110,70 82,78 88,106 60,90 34,106 40,78 12,70 34,52 20,26 48,34' fill='%23ff6b35'/><polygon points='66,22 44,62 60,62 50,98 80,54 62,54' fill='%23ffd60a' stroke='%231a1a2e' stroke-width='3'/></svg>",
+    "description": "اضغط بسرعة البرق على شارات الخطر قبل اختفائها وحطم رقمك القياسي فوق أي تطبيق.",
+    "supportsOverlay": true
+  },
+  {
+    "id": "game-meteor-glide",
+    "title": "انزلاق النيازك الفضائي",
+    "file": "game_flappy.html?theme=space",
+    "cover": "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'><rect width='120' height='120' rx='18' fill='%23120d31'/><circle cx='26' cy='28' r='4' fill='%23ffd60a'/><circle cx='94' cy='24' r='3' fill='%2308d9d6'/><circle cx='88' cy='92' r='16' fill='%23ff2e63' stroke='%23ffd60a' stroke-width='4'/><path d='M24 76 L62 42 L76 56 L38 90 Z' fill='%2308d9d6' stroke='%23ffffff' stroke-width='3'/><polygon points='62,42 84,30 76,56' fill='%23ffd60a'/></svg>",
+    "description": "قد المركبة الكونية وسط عاصفة الشهب المرسومة بأسلوب الكوميكس الكلاسيكي.",
+    "supportsOverlay": true
+  },
+  {
+    "id": "game-villain-mosaic",
+    "title": "فسيفساء الأشرار",
+    "file": "game_puzzle.html?pack=villains",
+    "cover": "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'><rect width='120' height='120' rx='18' fill='%233c096c'/><path d='M22 28 L60 18 L98 28 L90 90 L60 104 L30 90 Z' fill='%231a1a2e' stroke='%23ff2e63' stroke-width='4'/><polygon points='34,48 54,56 38,64' fill='%23ffd60a'/><polygon points='86,48 66,56 82,64' fill='%23ffd60a'/><path d='M42 78 L52 72 L60 78 L68 72 L78 78' fill='none' stroke='%2308d9d6' stroke-width='4' stroke-linecap='round'/></svg>",
+    "description": "تحدّ ذكاءك في تجميع أغلفة الأشرار الأسطوريين داخل شبكة ألغاز مصغرة.",
+    "supportsOverlay": false
+  },
+  {
+    "id": "game-cyber-cards",
+    "title": "بطاقات السايبر الخارقة",
+    "file": "game_memory.html?deck=cyber",
+    "cover": "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'><rect width='120' height='120' rx='18' fill='%230b132b'/><rect x='22' y='22' width='76' height='76' rx='12' fill='%231c2541' stroke='%2308d9d6' stroke-width='4'/><circle cx='60' cy='60' r='22' fill='none' stroke='%23ff2e63' stroke-width='5'/><circle cx='60' cy='60' r='9' fill='%23ffd60a'/><path d='M60 28 V38 M60 82 V92 M28 60 H38 M82 60 H92' stroke='%2308d9d6' stroke-width='4' stroke-linecap='round'/></svg>",
+    "description": "اكتشف الأزواج المتطابقة من أسلحة المستقبل ودروع النيون في جولة مركزة.",
+    "supportsOverlay": true
+  },
+  {
+    "id": "game-combo-smash",
+    "title": "سلسلة الضربات المتتالية",
+    "file": "game_tap.html?mode=combo",
+    "cover": "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'><rect width='120' height='120' rx='18' fill='%23ff2e63'/><circle cx='60' cy='60' r='42' fill='%23ffd60a' stroke='%231a1a2e' stroke-width='4'/><circle cx='60' cy='60' r='26' fill='%23ffffff' stroke='%231a1a2e' stroke-width='3'/><circle cx='60' cy='60' r='12' fill='%2308d9d6'/><path d='M18 24 L36 36 M102 24 L84 36 M18 96 L36 84 M102 96 L84 84' stroke='%231a1a2e' stroke-width='5' stroke-linecap='round'/></svg>",
+    "description": "حافظ على إيقاع النقر المتواصل لشحن طاقة الكوميكس ومضاعفة نقاطك.",
+    "supportsOverlay": true
+  },
+  {
+    "id": "game-sky-patrol",
+    "title": "دورية السماء السريعة",
+    "file": "game_flappy.html?theme=night",
+    "cover": "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'><rect width='120' height='120' rx='18' fill='%2316213e'/><rect x='16' y='64' width='20' height='44' fill='%230f3460'/><rect x='42' y='48' width='24' height='60' fill='%23533483'/><rect x='74' y='58' width='28' height='50' fill='%230f3460'/><path d='M24 34 Q58 14 96 30 L74 44 Z' fill='%23ffd60a' stroke='%23ff2e63' stroke-width='3'/><circle cx='86' cy='24' r='8' fill='%2308d9d6'/></svg>",
+    "description": "انطلق في دورية ليلية فوق المدينة المضيئة وتفادَ أبراج الليزر بضغطة واحدة.",
+    "supportsOverlay": true
+  },
+  {
+    "id": "game-cover-builder",
+    "title": "مركب أغلفة الأعداد الخاصة",
+    "file": "game_puzzle.html?pack=covers",
+    "cover": "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'><rect width='120' height='120' rx='18' fill='%231a1a2e'/><rect x='24' y='16' width='72' height='88' rx='8' fill='%23ffd60a' stroke='%23ffffff' stroke-width='4'/><rect x='32' y='24' width='56' height='18' rx='4' fill='%23ff2e63'/><rect x='32' y='48' width='26' height='46' rx='4' fill='%2308d9d6'/><rect x='62' y='48' width='26' height='22' rx='4' fill='%237b2cbf'/><rect x='62' y='74' width='26' height='20' rx='4' fill='%23ff6b35'/></svg>",
+    "description": "رتب قطع الأغلفة النادرة لأشهر سلاسل الكوميكس في وضع اللعب الكامل.",
+    "supportsOverlay": false
+  }
+]
