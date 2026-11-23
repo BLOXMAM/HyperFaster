@@ -1,13 +1,5 @@
 [
   {
-    "file": "games.html",
-    "title": "الألعاب المصغرة العائمة",
-    "icon": "fa-solid fa-file",
-    "hidden": false,
-    "searchEnabled": true,
-    "searchNames": []
-  },
-  {
     "file": "game_tap.html",
     "title": "لعبة الضربة الخاطفة",
     "icon": "fa-solid fa-file",
@@ -42,6 +34,14 @@
   {
     "file": "game_puzzle.html",
     "title": "game_puzzle",
+    "icon": "fa-solid fa-file",
+    "hidden": true,
+    "searchEnabled": true,
+    "searchNames": []
+  },
+  {
+    "file": "games.html",
+    "title": "games",
     "icon": "fa-solid fa-file",
     "hidden": true,
     "searchEnabled": true,
