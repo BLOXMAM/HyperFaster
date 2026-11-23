@@ -78,5 +78,9 @@
   "fileopen.json": {
     "op": "add",
     "timestamp": 1795376320128
+  },
+  "comics.html": {
+    "op": "add",
+    "timestamp": 1795409333094
   }
 }
