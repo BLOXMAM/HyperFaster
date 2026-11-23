@@ -1,0 +1,1268 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
+  <meta name="rostrick-statusbar" content="color=#0A0915; icons=light; overlay=false">
+  <title>ثعبان السايبر</title>
+  <style>
+    :root {
+      --primary: #6C3BFF;
+      --primary-dark: #4A22C9;
+      --accent: #00E5FF;
+      --highlight: #FF3D7F;
+      --control: #B8B5D1;
+      --bg-dark: #0A0915;
+      --card-bg: rgba(22, 18, 48, 0.85);
+      --card-border: rgba(108, 59, 255, 0.35);
+      --neon-glow: 0 0 12px rgba(0, 229, 255, 0.4);
+      --font-family: system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: #E2DFFA;
+      font-family: var(--font-family);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      padding-top: env(safe-area-inset-top);
+      padding-bottom: env(safe-area-inset-bottom);
+      overflow-x: hidden;
+    }
+
+    /* App Bar Header */
+    .app-header {
+      background: linear-gradient(180deg, rgba(16, 12, 38, 0.95) 0%, rgba(10, 9, 21, 0.9) 100%);
+      border-bottom: 1px solid rgba(108, 59, 255, 0.3);
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(8px);
+    }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+    }
+
+    .icon-btn {
+      background: rgba(108, 59, 255, 0.15);
+      border: 1px solid rgba(108, 59, 255, 0.4);
+      color: #FFFFFF;
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.2s, transform 0.1s, border-color 0.2s;
+    }
+
+    .icon-btn:active {
+      transform: scale(0.94);
+      background: rgba(108, 59, 255, 0.35);
+      border-color: var(--accent);
+    }
+
+    .icon-btn svg {
+      width: 22px;
+      height: 22px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .app-title-group {
+      margin-right: 12px;
+    }
+
+    .app-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: #FFFFFF;
+      display: flex;
+      align-items: center;
+    }
+
+    .app-title .badge {
+      font-size: 10px;
+      background: linear-gradient(135deg, var(--highlight), var(--primary));
+      color: #FFFFFF;
+      padding: 2px 6px;
+      border-radius: 6px;
+      margin-right: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+    }
+
+    .header-actions .icon-btn {
+      margin-left: 8px;
+    }
+
+    /* Layout Container */
+    .container {
+      padding: 16px;
+      max-width: 480px;
+      width: 100%;
+      margin: 0 auto;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Scoreboard */
+    .scoreboard {
+      display: flex;
+      justify-content: space-between;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 12px 16px;
+      margin-bottom: 16px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+    }
+
+    .score-box {
+      text-align: center;
+      flex: 1;
+    }
+
+    .score-box:not(:last-child) {
+      border-left: 1px solid rgba(184, 181, 209, 0.15);
+      margin-left: 8px;
+      padding-left: 8px;
+    }
+
+    .score-label {
+      font-size: 11px;
+      color: var(--control);
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .score-label svg {
+      width: 14px;
+      height: 14px;
+      margin-left: 4px;
+      stroke: currentColor;
+    }
+
+    .score-val {
+      font-size: 20px;
+      font-weight: 800;
+      color: #FFFFFF;
+      font-family: monospace, monospace;
+    }
+
+    .score-val.current {
+      color: var(--accent);
+      text-shadow: 0 0 8px rgba(0, 229, 255, 0.5);
+    }
+
+    .score-val.high {
+      color: var(--highlight);
+      text-shadow: 0 0 8px rgba(255, 61, 127, 0.5);
+    }
+
+    /* Game Stage Wrapper */
+    .game-stage {
+      position: relative;
+      width: 100%;
+      background: #05040B;
+      border: 2px solid var(--primary);
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: var(--neon-glow);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      aspect-ratio: 1 / 1;
+      margin-bottom: 16px;
+    }
+
+    canvas {
+      display: block;
+      width: 100%;
+      height: 100%;
+      background-color: #060511;
+    }
+
+    /* Overlay screens on Canvas */
+    .canvas-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(10, 9, 21, 0.85);
+      backdrop-filter: blur(4px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      text-align: center;
+      z-index: 10;
+      transition: opacity 0.2s ease;
+    }
+
+    .canvas-overlay.hidden {
+      display: none;
+    }
+
+    .overlay-icon {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: rgba(108, 59, 255, 0.2);
+      border: 2px solid var(--accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 12px;
+      color: var(--accent);
+      box-shadow: var(--neon-glow);
+    }
+
+    .overlay-icon svg {
+      width: 30px;
+      height: 30px;
+      stroke: currentColor;
+    }
+
+    .overlay-title {
+      font-size: 22px;
+      font-weight: 800;
+      color: #FFFFFF;
+      margin-bottom: 6px;
+    }
+
+    .overlay-desc {
+      font-size: 13px;
+      color: var(--control);
+      margin-bottom: 18px;
+      max-width: 260px;
+      line-height: 1.5;
+    }
+
+    .btn-main {
+      min-height: 48px;
+      padding: 0 24px;
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+      color: #FFFFFF;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 14px;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 15px rgba(108, 59, 255, 0.4);
+      transition: transform 0.1s, background 0.2s;
+      text-decoration: none;
+    }
+
+    .btn-main:active {
+      transform: scale(0.96);
+    }
+
+    .btn-main svg {
+      width: 20px;
+      height: 20px;
+      margin-left: 8px;
+      stroke: currentColor;
+    }
+
+    .btn-accent {
+      background: linear-gradient(135deg, #00E5FF 0%, #0099FF 100%);
+      color: #0A0915;
+      font-weight: 800;
+      box-shadow: 0 4px 15px rgba(0, 229, 255, 0.4);
+    }
+
+    /* Action bar controls */
+    .controls-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+    }
+
+    .control-btn {
+      min-height: 44px;
+      flex: 1;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      color: #FFFFFF;
+      font-size: 13px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: background 0.2s, border-color 0.2s;
+    }
+
+    .control-btn:not(:last-child) {
+      margin-left: 8px;
+    }
+
+    .control-btn:active {
+      background: rgba(108, 59, 255, 0.3);
+      border-color: var(--accent);
+    }
+
+    .control-btn svg {
+      width: 18px;
+      height: 18px;
+      margin-left: 6px;
+      stroke: currentColor;
+    }
+
+    /* Speed Selector */
+    .speed-selector {
+      display: flex;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 3px;
+      margin-bottom: 16px;
+    }
+
+    .speed-opt {
+      flex: 1;
+      min-height: 40px;
+      border: none;
+      background: transparent;
+      color: var(--control);
+      font-size: 12px;
+      font-weight: 700;
+      border-radius: 9px;
+      cursor: pointer;
+      transition: color 0.2s, background 0.2s;
+    }
+
+    .speed-opt.active {
+      background: var(--primary);
+      color: #FFFFFF;
+      box-shadow: 0 2px 8px rgba(108, 59, 255, 0.5);
+    }
+
+    /* Virtual Touch D-Pad Layout */
+    .dpad-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+
+    .dpad-cross {
+      position: relative;
+      width: 180px;
+      height: 180px;
+    }
+
+    .dpad-btn {
+      position: absolute;
+      width: 56px;
+      height: 56px;
+      background: rgba(22, 18, 48, 0.9);
+      border: 2px solid rgba(108, 59, 255, 0.6);
+      border-radius: 16px;
+      color: var(--accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+      transition: background 0.1s, transform 0.1s, border-color 0.1s;
+    }
+
+    .dpad-btn:active, .dpad-btn.pressed {
+      background: var(--primary);
+      border-color: var(--accent);
+      color: #FFFFFF;
+      transform: scale(0.92);
+      box-shadow: var(--neon-glow);
+    }
+
+    .dpad-btn svg {
+      width: 24px;
+      height: 24px;
+      stroke: currentColor;
+    }
+
+    .dpad-up { top: 0; left: 62px; }
+    .dpad-down { bottom: 0; left: 62px; }
+    .dpad-left { top: 62px; left: 0; }
+    .dpad-right { top: 62px; right: 0; }
+
+    .dpad-center {
+      position: absolute;
+      top: 62px;
+      left: 62px;
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: rgba(108, 59, 255, 0.1);
+      border: 1px dashed rgba(108, 59, 255, 0.3);
+      pointer-events: none;
+    }
+
+    /* Floating Window / Overlay Banner Card */
+    .overlay-card {
+      background: linear-gradient(135deg, rgba(255, 61, 127, 0.12) 0%, rgba(108, 59, 255, 0.15) 100%);
+      border: 1px solid rgba(255, 61, 127, 0.3);
+      border-radius: 16px;
+      padding: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: auto;
+    }
+
+    .overlay-card-info {
+      display: flex;
+      align-items: center;
+    }
+
+    .overlay-card-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      background: rgba(255, 61, 127, 0.2);
+      color: var(--highlight);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-left: 12px;
+      flex-shrink: 0;
+    }
+
+    .overlay-card-icon svg {
+      width: 22px;
+      height: 22px;
+      stroke: currentColor;
+    }
+
+    .overlay-card-text {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .overlay-card-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: #FFFFFF;
+    }
+
+    .overlay-card-sub {
+      font-size: 11px;
+      color: var(--control);
+      margin-top: 2px;
+    }
+
+    .overlay-card-btn {
+      background: var(--highlight);
+      color: #FFFFFF;
+      border: none;
+      min-height: 44px;
+      padding: 0 14px;
+      border-radius: 10px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 10px rgba(255, 61, 127, 0.4);
+      white-space: nowrap;
+    }
+
+    .overlay-card-btn:active {
+      transform: scale(0.95);
+    }
+
+    /* Custom Toast Notification */
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: rgba(16, 12, 38, 0.95);
+      border: 1px solid var(--accent);
+      color: #FFFFFF;
+      padding: 10px 20px;
+      border-radius: 25px;
+      font-size: 13px;
+      font-weight: 600;
+      box-shadow: 0 4px 20px rgba(0, 229, 255, 0.3);
+      z-index: 1000;
+      opacity: 0;
+      transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.3s ease;
+      pointer-events: none;
+      white-space: nowrap;
+    }
+
+    .toast.show {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+    }
+  </style>
+<style id="rt-native">html,body{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;-webkit-tap-highlight-color:transparent;overscroll-behavior:none}input,textarea,select,[contenteditable],.rt-selectable,.rt-selectable *{-webkit-user-select:text;user-select:text}img,a{-webkit-user-drag:none}a,button,[role=button]{outline:none}</style>
+</head>
+<body>
+
+  <!-- Top Navigation App Bar -->
+  <header class="app-header">
+    <div class="header-right">
+      <a href="games.html" class="icon-btn" aria-label="رجوع للألعاب">
+        <svg viewBox="0 0 24 24">
+          <polyline points="9 18 15 12 9 6"></polyline>
+        </svg>
+      </a>
+      <div class="app-title-group">
+        <div class="app-title">
+          <span class="badge">أركيد</span>
+          ثعبان السايبر
+        </div>
+      </div>
+    </div>
+    <div class="header-actions">
+      <button class="icon-btn" id="btnShare" aria-label="مشاركة النتيجة">
+        <svg viewBox="0 0 24 24">
+          <circle cx="18" cy="5" r="3"></circle>
+          <circle cx="6" cy="12" r="3"></circle>
+          <circle cx="18" cy="19" r="3"></circle>
+          <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+          <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+        </svg>
+      </button>
+      <a href="home.html" class="icon-btn" aria-label="الرئيسية">
+        <svg viewBox="0 0 24 24">
+          <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+          <polyline points="9 22 9 12 15 12 15 22"></polyline>
+        </svg>
+      </a>
+    </div>
+  </header>
+
+  <!-- Main Content Layout -->
+  <main class="container">
+
+    <!-- Scoreboard Header -->
+    <section class="scoreboard">
+      <div class="score-box">
+        <div class="score-label">
+          <svg viewBox="0 0 24 24" fill="none">
+            <circle cx="12" cy="12" r="8" stroke-width="2"></circle>
+            <circle cx="12" cy="12" r="3" fill="currentColor"></circle>
+          </svg>
+          النقاط الحالية
+        </div>
+        <div class="score-val current" id="valScore">0</div>
+      </div>
+      <div class="score-box">
+        <div class="score-label">
+          <svg viewBox="0 0 24 24" fill="none">
+            <path d="M6 9H18V21H6Z" stroke-width="2"></path>
+            <path d="M6 9L12 3L18 9" stroke-width="2"></path>
+          </svg>
+          بيانات السايبر
+        </div>
+        <div class="score-val" id="valFoodCount">0</div>
+      </div>
+      <div class="score-box">
+        <div class="score-label">
+          <svg viewBox="0 0 24 24" fill="none">
+            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" stroke-width="2"></polygon>
+          </svg>
+          أعلى رقم قياسي
+        </div>
+        <div class="score-val high" id="valHighScore">0</div>
+      </div>
+    </section>
+
+    <!-- Canvas Game Display -->
+    <section class="game-stage">
+      <canvas id="snakeCanvas" width="360" height="360"></canvas>
+
+      <!-- Start Overlay -->
+      <div class="canvas-overlay" id="overlayStart">
+        <div class="overlay-icon">
+          <svg viewBox="0 0 24 24" fill="none">
+            <polygon points="5 3 19 12 5 21 5 3" stroke-width="2" fill="currentColor"></polygon>
+          </svg>
+        </div>
+        <div class="overlay-title">ثعبان السايبر النيون</div>
+        <div class="overlay-desc">التقط عقد البيانات الرقمية وتجنب الاصطدام بالجدران أو بجسد الثعبان المتوهج.</div>
+        <button class="btn-main btn-accent" id="btnStartGame">
+          <svg viewBox="0 0 24 24" fill="none">
+            <polygon points="5 3 19 12 5 21 5 3" stroke-width="2" fill="currentColor"></polygon>
+          </svg>
+          ابدأ اللعب الآن
+        </button>
+      </div>
+
+      <!-- Pause Overlay -->
+      <div class="canvas-overlay hidden" id="overlayPause">
+        <div class="overlay-icon" style="color: var(--primary); border-color: var(--primary);">
+          <svg viewBox="0 0 24 24" fill="none">
+            <rect x="6" y="4" width="4" height="16" stroke-width="2" fill="currentColor"></rect>
+            <rect x="14" y="4" width="4" height="16" stroke-width="2" fill="currentColor"></rect>
+          </svg>
+        </div>
+        <div class="overlay-title">اللعبة متوقفة مؤقتاً</div>
+        <div class="overlay-desc">خذ استراحة سريعة ثم واصل تحطيم الرقم القياسي!</div>
+        <button class="btn-main" id="btnResumeGame">
+          <svg viewBox="0 0 24 24" fill="none">
+            <polygon points="5 3 19 12 5 21 5 3" stroke-width="2" fill="currentColor"></polygon>
+          </svg>
+          استئناف اللعب
+        </button>
+      </div>
+
+      <!-- Game Over Overlay -->
+      <div class="canvas-overlay hidden" id="overlayGameOver">
+        <div class="overlay-icon" style="color: var(--highlight); border-color: var(--highlight);">
+          <svg viewBox="0 0 24 24" fill="none">
+            <circle cx="12" cy="12" r="10" stroke-width="2"></circle>
+            <line x1="15" y1="9" x2="9" y2="15" stroke-width="2"></line>
+            <line x1="9" y1="9" x2="15" y2="15" stroke-width="2"></line>
+          </svg>
+        </div>
+        <div class="overlay-title">انتهت اللعبة!</div>
+        <div class="overlay-desc" id="finalScoreText">مجموع نقاطك: 0</div>
+        <button class="btn-main btn-accent" id="btnRestartGame">
+          <svg viewBox="0 0 24 24" fill="none">
+            <path d="M23 4v6h-6" stroke-width="2"></path>
+            <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10" stroke-width="2"></path>
+          </svg>
+          إعادة التحدي
+        </button>
+      </div>
+    </section>
+
+    <!-- Game Speed Selector -->
+    <div class="speed-selector">
+      <button class="speed-opt" data-speed="140">بطيء</button>
+      <button class="speed-opt active" data-speed="95">عادي</button>
+      <button class="speed-opt" data-speed="65">سايبر</button>
+    </div>
+
+    <!-- Quick Game Controls -->
+    <section class="controls-bar">
+      <button class="control-btn" id="btnPauseToggle">
+        <svg viewBox="0 0 24 24" fill="none" id="iconPauseBtn">
+          <rect x="6" y="4" width="4" height="16" stroke-width="2"></rect>
+          <rect x="14" y="4" width="4" height="16" stroke-width="2"></rect>
+        </svg>
+        <span id="labelPauseBtn">إيقاف مؤقت</span>
+      </button>
+      <button class="control-btn" id="btnReset">
+        <svg viewBox="0 0 24 24" fill="none">
+          <path d="M23 4v6h-6" stroke-width="2"></path>
+          <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10" stroke-width="2"></path>
+        </svg>
+        إعادة البدء
+      </button>
+    </section>
+
+    <!-- Virtual D-Pad -->
+    <section class="dpad-container">
+      <div class="dpad-cross">
+        <button class="dpad-btn dpad-up" id="btnUp" aria-label="أعلى">
+          <svg viewBox="0 0 24 24" fill="none">
+            <polyline points="18 15 12 9 6 15" stroke-width="2.5"></polyline>
+          </svg>
+        </button>
+        <button class="dpad-btn dpad-left" id="btnLeft" aria-label="يسار">
+          <svg viewBox="0 0 24 24" fill="none">
+            <polyline points="15 18 9 12 15 6" stroke-width="2.5"></polyline>
+          </svg>
+        </button>
+        <div class="dpad-center"></div>
+        <button class="dpad-btn dpad-right" id="btnRight" aria-label="يمين">
+          <svg viewBox="0 0 24 24" fill="none">
+            <polyline points="9 18 15 12 9 6" stroke-width="2.5"></polyline>
+          </svg>
+        </button>
+        <button class="dpad-btn dpad-down" id="btnDown" aria-label="أسفل">
+          <svg viewBox="0 0 24 24" fill="none">
+            <polyline points="6 9 12 15 18 9" stroke-width="2.5"></polyline>
+          </svg>
+        </button>
+      </div>
+    </section>
+
+    <!-- Floating Window / Overlay Banner Card -->
+    <div class="overlay-card">
+      <div class="overlay-card-info">
+        <div class="overlay-card-icon">
+          <svg viewBox="0 0 24 24" fill="none">
+            <rect x="3" y="3" width="18" height="18" rx="3" stroke-width="2"></rect>
+            <rect x="7" y="7" width="10" height="6" stroke-width="1.5"></rect>
+          </svg>
+        </div>
+        <div class="overlay-card-text">
+          <div class="overlay-card-title">الوضع العائم (Overlay)</div>
+          <div class="overlay-card-sub">العب أثناء استخدام التطبيقات الأخرى</div>
+        </div>
+      </div>
+      <button class="overlay-card-btn" id="btnLaunchOverlay">تشغيل عائم</button>
+    </div>
+
+  </main>
+
+  <!-- Toast Element -->
+  <div class="toast" id="toast"></div>
+
+  <!-- Game Script -->
+  <script>
+    (function () {
+      // Audio Context Synthesis for Sounds
+      var audioCtx = null;
+      function playSound(type) {
+        try {
+          if (!audioCtx) {
+            var AudioContext = window.AudioContext || window.webkitAudioContext;
+            if (AudioContext) audioCtx = new AudioContext();
+          }
+          if (!audioCtx) return;
+          if (audioCtx.state === 'suspended') {
+            audioCtx.resume();
+          }
+
+          var osc = audioCtx.createOscillator();
+          var gain = audioCtx.createGain();
+          osc.connect(gain);
+          gain.connect(audioCtx.destination);
+          var now = audioCtx.currentTime;
+
+          if (type === 'eat') {
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(440, now);
+            osc.frequency.exponentialRampToValueAtTime(880, now + 0.1);
+            gain.gain.setValueAtTime(0.15, now);
+            gain.gain.linearRampToValueAtTime(0.01, now + 0.1);
+            osc.start(now);
+            osc.stop(now + 0.1);
+          } else if (type === 'bonus') {
+            osc.type = 'triangle';
+            osc.frequency.setValueAtTime(587.33, now);
+            osc.frequency.exponentialRampToValueAtTime(1174.66, now + 0.16);
+            gain.gain.setValueAtTime(0.2, now);
+            gain.gain.linearRampToValueAtTime(0.01, now + 0.16);
+            osc.start(now);
+            osc.stop(now + 0.16);
+          } else if (type === 'die') {
+            osc.type = 'sawtooth';
+            osc.frequency.setValueAtTime(220, now);
+            osc.frequency.exponentialRampToValueAtTime(55, now + 0.28);
+            gain.gain.setValueAtTime(0.25, now);
+            gain.gain.linearRampToValueAtTime(0.01, now + 0.28);
+            osc.start(now);
+            osc.stop(now + 0.28);
+          } else if (type === 'turn') {
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(320, now);
+            gain.gain.setValueAtTime(0.04, now);
+            gain.gain.linearRampToValueAtTime(0.01, now + 0.03);
+            osc.start(now);
+            osc.stop(now + 0.03);
+          }
+        } catch (e) {}
+      }
+
+      // Haptic Feedback Bridge Wrapper
+      function triggerHaptic(style) {
+        try {
+          if (window.RosTrickDevice && typeof window.RosTrickDevice.haptic === 'function') {
+            window.RosTrickDevice.haptic(style || 'tick');
+          }
+        } catch (e) {}
+      }
+
+      // Toast Notification
+      var toastTimeout = null;
+      function showToast(msg) {
+        var t = document.getElementById('toast');
+        t.textContent = msg;
+        t.classList.add('show');
+        if (toastTimeout) clearTimeout(toastTimeout);
+        toastTimeout = setTimeout(function () {
+          t.classList.remove('show');
+        }, 2200);
+      }
+
+      // High Score Helper
+      var STORAGE_KEY = 'rostrick_snake_highscore';
+      function getHighScore() {
+        try {
+          var val = localStorage.getItem(STORAGE_KEY);
+          return val ? parseInt(val, 10) || 0 : 0;
+        } catch (e) {
+          return 0;
+        }
+      }
+
+      function setHighScore(score) {
+        try {
+          localStorage.setItem(STORAGE_KEY, score.toString());
+        } catch (e) {}
+      }
+
+      // Game Canvas Setup
+      var canvas = document.getElementById('snakeCanvas');
+      var ctx = canvas.getContext('2d');
+      var GRID_SIZE = 20; // 20x20 cells
+      var CELL_SIZE = canvas.width / GRID_SIZE; // 18px per cell
+
+      // Game States: IDLE, PLAYING, PAUSED, GAMEOVER
+      var gameState = 'IDLE';
+      var gameLoopTimer = null;
+      var speedMs = 95;
+
+      var snake = [];
+      var dir = { x: 1, y: 0 };
+      var nextDir = { x: 1, y: 0 };
+      var food = { x: 10, y: 10, type: 'cyan' };
+      var foodEaten = 0;
+      var currentScore = 0;
+      var highScore = getHighScore();
+
+      // UI Elements
+      var valScoreEl = document.getElementById('valScore');
+      var valFoodEl = document.getElementById('valFoodCount');
+      var valHighScoreEl = document.getElementById('valHighScore');
+      var overlayStart = document.getElementById('overlayStart');
+      var overlayPause = document.getElementById('overlayPause');
+      var overlayGameOver = document.getElementById('overlayGameOver');
+      var finalScoreText = document.getElementById('finalScoreText');
+      var labelPauseBtn = document.getElementById('labelPauseBtn');
+
+      valHighScoreEl.textContent = highScore;
+
+      function initSnake() {
+        snake = [
+          { x: 8, y: 10 },
+          { x: 7, y: 10 },
+          { x: 6, y: 10 }
+        ];
+        dir = { x: 1, y: 0 };
+        nextDir = { x: 1, y: 0 };
+        foodEaten = 0;
+        currentScore = 0;
+        updateScoreBoard();
+        spawnFood();
+      }
+
+      function updateScoreBoard() {
+        valScoreEl.textContent = currentScore;
+        valFoodEl.textContent = foodEaten;
+        valHighScoreEl.textContent = highScore;
+      }
+
+      function spawnFood() {
+        var valid = false;
+        var fx = 0, fy = 0;
+        while (!valid) {
+          fx = Math.floor(Math.random() * GRID_SIZE);
+          fy = Math.floor(Math.random() * GRID_SIZE);
+          valid = true;
+          for (var i = 0; i < snake.length; i++) {
+            if (snake[i].x === fx && snake[i].y === fy) {
+              valid = false;
+              break;
+            }
+          }
+        }
+        var isBonus = (foodEaten > 0 && foodEaten % 4 === 0);
+        food = {
+          x: fx,
+          y: fy,
+          type: isBonus ? 'magenta' : 'cyan'
+        };
+      }
+
+      function startGame() {
+        triggerHaptic('confirm');
+        initSnake();
+        gameState = 'PLAYING';
+        overlayStart.classList.add('hidden');
+        overlayPause.classList.add('hidden');
+        overlayGameOver.classList.add('hidden');
+        labelPauseBtn.textContent = 'إيقاف مؤقت';
+        if (gameLoopTimer) clearInterval(gameLoopTimer);
+        gameLoopTimer = setInterval(tick, speedMs);
+      }
+
+      function pauseGame() {
+        if (gameState === 'PLAYING') {
+          gameState = 'PAUSED';
+          clearInterval(gameLoopTimer);
+          overlayPause.classList.remove('hidden');
+          labelPauseBtn.textContent = 'استئناف';
+          triggerHaptic('tick');
+        }
+      }
+
+      function resumeGame() {
+        if (gameState === 'PAUSED') {
+          gameState = 'PLAYING';
+          overlayPause.classList.add('hidden');
+          labelPauseBtn.textContent = 'إيقاف مؤقت';
+          gameLoopTimer = setInterval(tick, speedMs);
+          triggerHaptic('tick');
+        }
+      }
+
+      function togglePause() {
+        if (gameState === 'PLAYING') {
+          pauseGame();
+        } else if (gameState === 'PAUSED') {
+          resumeGame();
+        } else if (gameState === 'IDLE' || gameState === 'GAMEOVER') {
+          startGame();
+        }
+      }
+
+      function gameOver() {
+        gameState = 'GAMEOVER';
+        clearInterval(gameLoopTimer);
+        playSound('die');
+        triggerHaptic('reject');
+
+        if (currentScore > highScore) {
+          highScore = currentScore;
+          setHighScore(highScore);
+          valHighScoreEl.textContent = highScore;
+          finalScoreText.textContent = 'رقم قياسي جديد! النقاط: ' + currentScore;
+        } else {
+          finalScoreText.textContent = 'مجموع نقاطك: ' + currentScore;
+        }
+
+        overlayGameOver.classList.remove('hidden');
+      }
+
+      function tick() {
+        dir = nextDir;
+        var head = { x: snake[0].x + dir.x, y: snake[0].y + dir.y };
+
+        // Wall collision check
+        if (head.x < 0 || head.x >= GRID_SIZE || head.y < 0 || head.y >= GRID_SIZE) {
+          gameOver();
+          return;
+        }
+
+        // Self collision check
+        for (var i = 0; i < snake.length; i++) {
+          if (snake[i].x === head.x && snake[i].y === head.y) {
+            gameOver();
+            return;
+          }
+        }
+
+        snake.unshift(head);
+
+        // Check food collision
+        if (head.x === food.x && head.y === food.y) {
+          foodEaten++;
+          if (food.type === 'magenta') {
+            currentScore += 30;
+            playSound('bonus');
+            triggerHaptic('confirm');
+          } else {
+            currentScore += 10;
+            playSound('eat');
+            triggerHaptic('click');
+          }
+
+          if (currentScore > highScore) {
+            highScore = currentScore;
+            setHighScore(highScore);
+          }
+
+          updateScoreBoard();
+          spawnFood();
+        } else {
+          snake.pop();
+        }
+
+        render();
+      }
+
+      // Canvas Rendering
+      function render() {
+        // Clear background
+        ctx.fillStyle = '#060511';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        // Draw grid lines (subtle neon matrix)
+        ctx.strokeStyle = 'rgba(108, 59, 255, 0.08)';
+        ctx.lineWidth = 1;
+        for (var x = 0; x <= canvas.width; x += CELL_SIZE) {
+          ctx.beginPath();
+          ctx.moveTo(x, 0);
+          ctx.lineTo(x, canvas.height);
+          ctx.stroke();
+        }
+        for (var y = 0; y <= canvas.height; y += CELL_SIZE) {
+          ctx.beginPath();
+          ctx.moveTo(0, y);
+          ctx.lineTo(canvas.width, y);
+          ctx.stroke();
+        }
+
+        // Draw Food
+        var fx = food.x * CELL_SIZE + CELL_SIZE / 2;
+        var fy = food.y * CELL_SIZE + CELL_SIZE / 2;
+        var radius = CELL_SIZE / 2 - 2;
+
+        ctx.save();
+        if (food.type === 'magenta') {
+          ctx.fillStyle = '#FF3D7F';
+          ctx.shadowColor = '#FF3D7F';
+          ctx.shadowBlur = 10;
+          ctx.beginPath();
+          ctx.arc(fx, fy, radius, 0, Math.PI * 2);
+          ctx.fill();
+        } else {
+          ctx.fillStyle = '#00E5FF';
+          ctx.shadowColor = '#00E5FF';
+          ctx.shadowBlur = 8;
+          ctx.beginPath();
+          ctx.arc(fx, fy, radius - 1, 0, Math.PI * 2);
+          ctx.fill();
+        }
+        ctx.restore();
+
+        // Draw Snake
+        for (var i = 0; i < snake.length; i++) {
+          var part = snake[i];
+          var px = part.x * CELL_SIZE;
+          var py = part.y * CELL_SIZE;
+
+          ctx.save();
+          if (i === 0) {
+            // Snake Head
+            ctx.fillStyle = '#00E5FF';
+            ctx.shadowColor = '#00E5FF';
+            ctx.shadowBlur = 12;
+            ctx.beginPath();
+            ctx.arc(px + CELL_SIZE / 2, py + CELL_SIZE / 2, CELL_SIZE / 2 - 1, 0, Math.PI * 2);
+            ctx.fill();
+
+            // Eyes
+            ctx.fillStyle = '#0A0915';
+            var eyeRadius = 2.5;
+            ctx.beginPath();
+            ctx.arc(px + CELL_SIZE / 3, py + CELL_SIZE / 3, eyeRadius, 0, Math.PI * 2);
+            ctx.arc(px + (CELL_SIZE * 2) / 3, py + CELL_SIZE / 3, eyeRadius, 0, Math.PI * 2);
+            ctx.fill();
+          } else {
+            // Snake Body
+            var alpha = Math.max(0.35, 1 - i / (snake.length + 3));
+            ctx.fillStyle = i % 2 === 0 ? 'rgba(108, 59, 255, ' + alpha + ')' : 'rgba(0, 229, 255, ' + alpha + ')';
+            ctx.shadowColor = '#6C3BFF';
+            ctx.shadowBlur = 4;
+            var margin = 2;
+            ctx.beginPath();
+            ctx.roundRect 
+              ? ctx.roundRect(px + margin, py + margin, CELL_SIZE - margin * 2, CELL_SIZE - margin * 2, 4)
+              : ctx.rect(px + margin, py + margin, CELL_SIZE - margin * 2, CELL_SIZE - margin * 2);
+            ctx.fill();
+          }
+          ctx.restore();
+        }
+      }
+
+      // Initial blank render
+      render();
+
+      // Controls & Direction handling
+      function changeDirection(newX, newY) {
+        if (gameState !== 'PLAYING') return;
+        // Prevent 180 degree reverse turns
+        if (dir.x + newX === 0 && dir.y + newY === 0) return;
+        nextDir = { x: newX, y: newY };
+        playSound('turn');
+        triggerHaptic('tick');
+      }
+
+      // D-Pad buttons listeners
+      document.getElementById('btnUp').addEventListener('click', function () { changeDirection(0, -1); });
+      document.getElementById('btnDown').addEventListener('click', function () { changeDirection(0, 1); });
+      document.getElementById('btnLeft').addEventListener('click', function () { changeDirection(-1, 0); });
+      document.getElementById('btnRight').addEventListener('click', function () { changeDirection(1, 0); });
+
+      // Swipe Touch Gestures on Canvas
+      var touchStartX = 0;
+      var touchStartY = 0;
+      canvas.addEventListener('touchstart', function (e) {
+        if (e.touches && e.touches.length > 0) {
+          touchStartX = e.touches[0].clientX;
+          touchStartY = e.touches[0].clientY;
+        }
+      }, { passive: true });
+
+      canvas.addEventListener('touchend', function (e) {
+        if (!e.changedTouches || e.changedTouches.length === 0) return;
+        var diffX = e.changedTouches[0].clientX - touchStartX;
+        var diffY = e.changedTouches[0].clientY - touchStartY;
+
+        if (Math.abs(diffX) > Math.abs(diffY)) {
+          // Horizontal Swipe
+          if (Math.abs(diffX) > 24) {
+            if (diffX > 0) {
+              changeDirection(1, 0); // Swipe Right
+            } else {
+              changeDirection(-1, 0); // Swipe Left
+            }
+          }
+        } else {
+          // Vertical Swipe
+          if (Math.abs(diffY) > 24) {
+            if (diffY > 0) {
+              changeDirection(0, 1); // Swipe Down
+            } else {
+              changeDirection(0, -1); // Swipe Up
+            }
+          }
+        }
+      }, { passive: true });
+
+      // Keyboard Controls for Testing/Accessibility
+      window.addEventListener('keydown', function (e) {
+        if (e.key === 'ArrowUp' || e.key === 'w' || e.key === 'W') changeDirection(0, -1);
+        else if (e.key === 'ArrowDown' || e.key === 's' || e.key === 'S') changeDirection(0, 1);
+        else if (e.key === 'ArrowLeft' || e.key === 'a' || e.key === 'A') changeDirection(-1, 0);
+        else if (e.key === 'ArrowRight' || e.key === 'd' || e.key === 'D') changeDirection(1, 0);
+        else if (e.key === ' ') togglePause();
+      });
+
+      // Speed selection listeners
+      var speedOpts = document.querySelectorAll('.speed-opt');
+      for (var i = 0; i < speedOpts.length; i++) {
+        speedOpts[i].addEventListener('click', function () {
+          for (var j = 0; j < speedOpts.length; j++) {
+            speedOpts[j].classList.remove('active');
+          }
+          this.classList.add('active');
+          speedMs = parseInt(this.getAttribute('data-speed'), 10) || 95;
+          if (gameState === 'PLAYING') {
+            clearInterval(gameLoopTimer);
+            gameLoopTimer = setInterval(tick, speedMs);
+          }
+          triggerHaptic('tick');
+        });
+      }
+
+      // Button listeners
+      document.getElementById('btnStartGame').addEventListener('click', startGame);
+      document.getElementById('btnResumeGame').addEventListener('click', resumeGame);
+      document.getElementById('btnRestartGame').addEventListener('click', startGame);
+      document.getElementById('btnPauseToggle').addEventListener('click', togglePause);
+      document.getElementById('btnReset').addEventListener('click', function () {
+        triggerHaptic('tick');
+        startGame();
+      });
+
+      // Share Button Listener
+      document.getElementById('btnShare').addEventListener('click', function () {
+        triggerHaptic('click');
+        var text = 'حققت ' + currentScore + ' نقطة في لعبة ثعبان السايبر على تطبيق الكوميكس والألعاب!';
+        if (window.RosTrickShare && typeof window.RosTrickShare.share === 'function') {
+          window.RosTrickShare.share({
+            title: 'ثعبان السايبر',
+            text: text,
+            url: window.location.href
+          });
+        } else if (navigator.clipboard) {
+          navigator.clipboard.writeText(text).then(function () {
+            showToast('تم نسخ النتيجة للحافظة!');
+          }).catch(function () {
+            showToast('نقاطك: ' + currentScore);
+          });
+        } else {
+          showToast('نقاطك: ' + currentScore);
+        }
+      });
+
+      // Launch Floating Window Overlay
+      document.getElementById('btnLaunchOverlay').addEventListener('click', function () {
+        triggerHaptic('confirm');
+        if (window.RosTrickOverlay && typeof window.RosTrickOverlay.canDraw === 'function') {
+          window.RosTrickOverlay.canDraw().then(function (can) {
+            if (!can) {
+              if (typeof window.RosTrickOverlay.requestPermission === 'function') {
+                window.RosTrickOverlay.requestPermission();
+              } else {
+                window.location.href = 'overlay-hub.html?section=game-snake';
+              }
+            } else {
+              window.RosTrickOverlay.create({
+                id: 'snake_overlay',
+                url: 'game-snake.html',
+                x: 20,
+                y: 100,
+                w: 320,
+                h: 420,
+                gravity: 'tr',
+                touchable: true
+              }).then(function () {
+                showToast('تم تشغيل النافذة العائمة!');
+              }).catch(function () {
+                window.location.href = 'overlay-hub.html?section=game-snake';
+              });
+            }
+          }).catch(function () {
+            window.location.href = 'overlay-hub.html?section=game-snake';
+          });
+        } else {
+          window.location.href = 'overlay-hub.html?section=game-snake';
+        }
+      });
+
+      // Native Back Button Handler
+      if (window.RosTrickBack && typeof window.RosTrickBack.onBack === 'function') {
+        window.RosTrickBack.onBack(function () {
+          if (gameState === 'PLAYING') {
+            pauseGame();
+            return true;
+          }
+          return false;
+        });
+      }
+
+    })();
+  </script>
+</body>
+</html>
