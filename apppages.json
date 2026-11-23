@@ -79,10 +79,6 @@
     "op": "update",
     "timestamp": 1795405021088
   },
-  "game_puzzle.html": {
-    "op": "add",
-    "timestamp": 1795370485200
-  },
   "fileopen.json": {
     "op": "add",
     "timestamp": 1795376320128
