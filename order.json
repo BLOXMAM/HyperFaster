@@ -1,13 +1,5 @@
 [
   {
-    "file": "game-details.html",
-    "title": "تفاصيل اللعبة",
-    "icon": "fa-solid fa-file",
-    "hidden": false,
-    "searchEnabled": true,
-    "searchNames": []
-  },
-  {
     "file": "puzzle-game.html",
     "title": "لعبة الألغاز الكلاسيكية",
     "icon": "fa-solid fa-file",
@@ -82,6 +74,14 @@
   {
     "file": "categories.html",
     "title": "categories",
+    "icon": "fa-solid fa-file",
+    "hidden": true,
+    "searchEnabled": true,
+    "searchNames": []
+  },
+  {
+    "file": "game-details.html",
+    "title": "game-details",
     "icon": "fa-solid fa-file",
     "hidden": true,
     "searchEnabled": true,
