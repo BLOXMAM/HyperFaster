@@ -1,0 +1,1307 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>عداء السايبر</title>
+<style>
+:root {
+  --primary: #6C3BFF;
+  --primary-dark: #4A22C9;
+  --accent: #00E5FF;
+  --highlight: #FF3D7F;
+  --control: #B8B5D1;
+  --bg-dark: #0A0915;
+  --bg-card: #15132A;
+  --bg-card-border: #2A2650;
+  --text-main: #FFFFFF;
+  --text-sub: #9E9BB8;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+body {
+  background-color: var(--bg-dark);
+  color: var(--text-main);
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  padding-top: var(--rt-statusbar-height, 0px);
+}
+
+/* App Bar */
+.app-header {
+  height: 56px;
+  background: rgba(21, 19, 42, 0.95);
+  border-bottom: 1px solid var(--bg-card-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 12px;
+  position: relative;
+  z-index: 20;
+  box-shadow: 0 4px 20px rgba(108, 59, 255, 0.2);
+}
+
+.header-title-box {
+  display: flex;
+  align-items: center;
+}
+
+.header-title-box .app-title {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: #fff;
+  letter-spacing: 0.5px;
+  text-shadow: 0 0 10px rgba(0, 229, 255, 0.5);
+  margin-right: 8px;
+}
+
+.badge-neon {
+  background: rgba(255, 61, 127, 0.2);
+  color: var(--highlight);
+  border: 1px solid var(--highlight);
+  font-size: 0.65rem;
+  font-weight: bold;
+  padding: 2px 6px;
+  border-radius: 4px;
+  margin-right: 6px;
+  text-shadow: 0 0 6px var(--highlight);
+}
+
+.btn-icon {
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  color: var(--control);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+  text-decoration: none;
+}
+
+.btn-icon:active {
+  background: rgba(108, 59, 255, 0.25);
+  color: var(--accent);
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+}
+
+/* Main Container */
+.game-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  background: radial-gradient(circle at center, #181436 0%, #0a0915 100%);
+}
+
+/* Score Bar */
+.hud-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 16px;
+  background: rgba(15, 13, 30, 0.8);
+  border-bottom: 1px solid rgba(108, 59, 255, 0.3);
+}
+
+.hud-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.hud-label {
+  font-size: 0.7rem;
+  color: var(--text-sub);
+  margin-bottom: 2px;
+}
+
+.hud-val {
+  font-size: 1.2rem;
+  font-weight: 800;
+  font-family: monospace, monospace;
+}
+
+.val-score {
+  color: var(--accent);
+  text-shadow: 0 0 8px rgba(0, 229, 255, 0.6);
+}
+
+.val-high {
+  color: var(--highlight);
+  text-shadow: 0 0 8px rgba(255, 61, 127, 0.6);
+}
+
+.val-speed {
+  color: #FFD60A;
+}
+
+/* Canvas Viewport */
+.canvas-wrapper {
+  flex: 1;
+  position: relative;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+  background: transparent;
+}
+
+/* Game Controls Area */
+.touch-controls {
+  padding: 12px 16px;
+  padding-bottom: 12px;
+  padding-bottom: calc(12px + env(safe-area-inset-bottom));
+  background: rgba(15, 13, 30, 0.95);
+  border-top: 1px solid var(--bg-card-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.btn-ctrl {
+  flex: 1;
+  height: 64px;
+  border-radius: 14px;
+  border: 2px solid;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: transform 0.1s, box-shadow 0.1s;
+  touch-action: manipulation;
+}
+
+.btn-jump {
+  background: linear-gradient(135deg, rgba(0, 229, 255, 0.2), rgba(108, 59, 255, 0.4));
+  border-color: var(--accent);
+  color: #fff;
+  margin-left: 8px;
+  box-shadow: 0 0 15px rgba(0, 229, 255, 0.3);
+}
+
+.btn-jump:active {
+  transform: scale(0.96);
+  background: linear-gradient(135deg, rgba(0, 229, 255, 0.4), rgba(108, 59, 255, 0.7));
+  box-shadow: 0 0 25px rgba(0, 229, 255, 0.6);
+}
+
+.btn-slide {
+  background: linear-gradient(135deg, rgba(255, 61, 127, 0.2), rgba(74, 34, 201, 0.4));
+  border-color: var(--highlight);
+  color: #fff;
+  margin-right: 8px;
+  box-shadow: 0 0 15px rgba(255, 61, 127, 0.3);
+}
+
+.btn-slide:active {
+  transform: scale(0.96);
+  background: linear-gradient(135deg, rgba(255, 61, 127, 0.4), rgba(74, 34, 201, 0.7));
+  box-shadow: 0 0 25px rgba(255, 61, 127, 0.6);
+}
+
+.ctrl-sub {
+  font-size: 0.7rem;
+  opacity: 0.8;
+  font-weight: normal;
+  margin-top: 2px;
+}
+
+/* Modals & Overlays */
+.overlay-screen {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(10, 9, 21, 0.88);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  text-align: center;
+  transition: opacity 0.3s;
+}
+
+.overlay-screen.hidden {
+  display: none !important;
+}
+
+.card-modal {
+  width: 100%;
+  max-width: 360px;
+  background: var(--bg-card);
+  border: 1px solid var(--primary);
+  border-radius: 20px;
+  padding: 24px;
+  box-shadow: 0 0 30px rgba(108, 59, 255, 0.4);
+}
+
+.modal-icon {
+  width: 64px;
+  height: 64px;
+  margin: 0 auto 16px auto;
+  border-radius: 50%;
+  background: rgba(108, 59, 255, 0.2);
+  border: 2px solid var(--accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--accent);
+  box-shadow: 0 0 15px rgba(0, 229, 255, 0.4);
+}
+
+.modal-title {
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: #fff;
+  margin-bottom: 8px;
+}
+
+.modal-desc {
+  font-size: 0.9rem;
+  color: var(--text-sub);
+  line-height: 1.5;
+  margin-bottom: 20px;
+}
+
+.btn-primary-action {
+  width: 100%;
+  height: 50px;
+  background: linear-gradient(90deg, var(--primary), var(--primary-dark));
+  border: 1px solid var(--accent);
+  color: #fff;
+  font-weight: bold;
+  font-size: 1.05rem;
+  border-radius: 12px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 15px rgba(108, 59, 255, 0.5);
+  margin-bottom: 12px;
+}
+
+.btn-primary-action:active {
+  transform: translateY(2px);
+  box-shadow: 0 2px 8px rgba(108, 59, 255, 0.5);
+}
+
+.btn-secondary-action {
+  width: 100%;
+  height: 44px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #fff;
+  font-size: 0.95rem;
+  font-weight: 600;
+  border-radius: 12px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+
+.btn-secondary-action:active {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.btn-icon-label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-icon-label svg {
+  margin-left: 8px;
+}
+
+.score-summary {
+  background: rgba(10, 9, 21, 0.6);
+  border-radius: 12px;
+  padding: 12px;
+  margin-bottom: 20px;
+  border: 1px solid rgba(108, 59, 255, 0.3);
+  display: flex;
+  justify-content: space-around;
+}
+
+.stat-box {
+  display: flex;
+  flex-direction: column;
+}
+
+.stat-label {
+  font-size: 0.75rem;
+  color: var(--text-sub);
+}
+
+.stat-val {
+  font-size: 1.3rem;
+  font-weight: 800;
+}
+
+.stat-score { color: var(--accent); }
+.stat-high { color: var(--highlight); }
+
+.quick-nav {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.quick-nav-link {
+  color: var(--control);
+  font-size: 0.85rem;
+  text-decoration: none;
+  margin: 0 10px;
+  display: flex;
+  align-items: center;
+}
+
+.quick-nav-link:active {
+  color: var(--accent);
+}
+
+.toast {
+  position: absolute;
+  bottom: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(108, 59, 255, 0.95);
+  color: #fff;
+  padding: 8px 18px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+  z-index: 100;
+  opacity: 0;
+  transition: opacity 0.3s;
+  pointer-events: none;
+  white-space: nowrap;
+}
+.toast.show {
+  opacity: 1;
+}
+</style>
+<style id="rt-native">html,body{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;-webkit-tap-highlight-color:transparent;overscroll-behavior:none}input,textarea,select,[contenteditable],.rt-selectable,.rt-selectable *{-webkit-user-select:text;user-select:text}img,a{-webkit-user-drag:none}a,button,[role=button]{outline:none}</style>
+</head>
+<body>
+
+  <!-- App Header -->
+  <header class="app-header">
+    <div style="display: flex; align-items: center;">
+      <a href="games.html" id="btn-back" class="btn-icon" aria-label="الرجوع للألعاب">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="19" y1="12" x2="5" y2="12"></line>
+          <polyline points="12 19 5 12 12 5"></polyline>
+        </svg>
+      </a>
+      <div class="header-title-box">
+        <span class="app-title">عداء السايبر</span>
+        <span class="badge-neon">أركيد</span>
+      </div>
+    </div>
+
+    <div class="header-actions">
+      <button id="btn-overlay" class="btn-icon" aria-label="تشغيل كـ Overlay" title="تشغيل كـ Overlay">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+          <rect x="9" y="9" width="10" height="10" rx="1" ry="1"></rect>
+        </svg>
+      </button>
+
+      <button id="btn-sound" class="btn-icon" aria-label="الصوت" title="تشغيل / كتم الصوت">
+        <svg id="sound-icon-on" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+          <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+        </svg>
+        <svg id="sound-icon-off" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none;">
+          <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+          <line x1="23" y1="9" x2="17" y2="15"></line>
+          <line x1="17" y1="9" x2="23" y2="15"></line>
+        </svg>
+      </button>
+
+      <button id="btn-share" class="btn-icon" aria-label="مشاركة" title="مشاركة النتيجة">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="18" cy="5" r="3"></circle>
+          <circle cx="6" cy="12" r="3"></circle>
+          <circle cx="18" cy="19" r="3"></circle>
+          <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+          <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- Game Container -->
+  <main class="game-container">
+    <!-- HUD -->
+    <div class="hud-bar">
+      <div class="hud-item">
+        <span class="hud-label">النقاط</span>
+        <span class="hud-val val-score" id="ui-score">0</span>
+      </div>
+      <div class="hud-item" style="align-items: center;">
+        <span class="hud-label">السرعة</span>
+        <span class="hud-val val-speed" id="ui-speed">1.0x</span>
+      </div>
+      <div class="hud-item" style="align-items: flex-end;">
+        <span class="hud-label">أعلى نتيجة</span>
+        <span class="hud-val val-high" id="ui-highscore">0</span>
+      </div>
+    </div>
+
+    <!-- Canvas -->
+    <div class="canvas-wrapper">
+      <canvas id="gameCanvas"></canvas>
+
+      <!-- Start Menu Overlay -->
+      <div id="start-overlay" class="overlay-screen">
+        <div class="card-modal">
+          <div class="modal-icon">
+            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+            </svg>
+          </div>
+          <h2 class="modal-title">عداء السايبر</h2>
+          <p class="modal-desc">اقفز وازحف لتفادي حواجز النيون وتجمييع كبسولات الطاقة في المضمار الرقمي!</p>
+
+          <div class="score-summary">
+            <div class="stat-box">
+              <span class="stat-label">أعلى سجل</span>
+              <span class="stat-val stat-high" id="start-highscore-val">0</span>
+            </div>
+          </div>
+
+          <button id="btn-start-game" class="btn-primary-action">
+            <div class="btn-icon-label">
+              <span>انطلاق للعب</span>
+              <svg width="20" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polygon points="5 3 19 12 5 21 5 3"></polygon>
+              </svg>
+            </div>
+          </button>
+
+          <button id="btn-start-overlay" class="btn-secondary-action">
+            <div class="btn-icon-label">
+              <span>فتح النافذة العائمة (Overlay)</span>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="3" y="3" width="18" height="18" rx="2"></rect>
+                <rect x="9" y="9" width="10" height="10" rx="1"></rect>
+              </svg>
+            </div>
+          </button>
+
+          <div class="quick-nav">
+            <a href="games.html" class="quick-nav-link">صالة الألعاب</a>
+            <span style="color:var(--text-sub);">•</span>
+            <a href="home.html" class="quick-nav-link">الرئيسية</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Game Over Overlay -->
+      <div id="gameover-overlay" class="overlay-screen hidden">
+        <div class="card-modal">
+          <div class="modal-icon" style="border-color: var(--highlight); color: var(--highlight); box-shadow: 0 0 15px rgba(255, 61, 127, 0.4);">
+            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+              <line x1="12" y1="9" x2="12" y2="13"></line>
+              <line x1="12" y1="17" x2="12.01" y2="17"></line>
+            </svg>
+          </div>
+          <h2 class="modal-title">انتهت اللعبة!</h2>
+          <p class="modal-desc" id="gameover-desc">اصطدمت بحاجز نيون في مضمار السايبر!</p>
+
+          <div class="score-summary">
+            <div class="stat-box">
+              <span class="stat-label">النقاط الحالية</span>
+              <span class="stat-val stat-score" id="go-score-val">0</span>
+            </div>
+            <div class="stat-box">
+              <span class="stat-label">أفضل نتيجة</span>
+              <span class="stat-val stat-high" id="go-high-val">0</span>
+            </div>
+          </div>
+
+          <button id="btn-restart-game" class="btn-primary-action">
+            <div class="btn-icon-label">
+              <span>إعادة المحاولة</span>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="23 4 23 10 17 10"></polyline>
+                <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path>
+              </svg>
+            </div>
+          </button>
+
+          <button id="btn-share-final" class="btn-secondary-action">
+            <div class="btn-icon-label">
+              <span>مشاركة النتيجة</span>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle>
+                <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+                <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+              </svg>
+            </div>
+          </button>
+
+          <div class="quick-nav">
+            <a href="games.html" class="quick-nav-link">صالة الألعاب</a>
+            <span style="color:var(--text-sub);">•</span>
+            <a href="overlay-hub.html?section=runner" class="quick-nav-link">النافذة العائمة</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Controls -->
+    <div class="touch-controls">
+      <button id="btn-ctrl-jump" class="btn-ctrl btn-jump">
+        <span>قفز</span>
+        <span class="ctrl-sub">أو لمس للأعلى</span>
+      </button>
+
+      <button id="btn-ctrl-slide" class="btn-ctrl btn-slide">
+        <span>انزلاق</span>
+        <span class="ctrl-sub">أو لمس للأسفل</span>
+      </button>
+    </div>
+  </main>
+
+  <div id="toast" class="toast">تم النسخ بنجاح</div>
+
+<script>
+(function() {
+  // Sound System (Web Audio API)
+  var soundEnabled = true;
+  var audioCtx = null;
+
+  function initAudio() {
+    if (!audioCtx) {
+      var AudioContextClass = window.AudioContext || window.webkitAudioContext;
+      if (AudioContextClass) {
+        audioCtx = new AudioContextClass();
+      }
+    }
+    if (audioCtx && audioCtx.state === 'suspended') {
+      audioCtx.resume();
+    }
+  }
+
+  function playSound(type) {
+    if (!soundEnabled) return;
+    initAudio();
+    if (!audioCtx) return;
+
+    try {
+      var osc = audioCtx.createOscillator();
+      var gain = audioCtx.createGain();
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+
+      var now = audioCtx.currentTime;
+
+      if (type === 'jump') {
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(220, now);
+        osc.frequency.exponentialRampToValueAtTime(600, now + 0.15);
+        gain.gain.setValueAtTime(0.3, now);
+        gain.gain.exponentialRampToValueAtTime(0.01, now + 0.15);
+        osc.start(now);
+        osc.stop(now + 0.15);
+      } else if (type === 'slide') {
+        osc.type = 'sawtooth';
+        osc.frequency.setValueAtTime(400, now);
+        osc.frequency.exponentialRampToValueAtTime(150, now + 0.2);
+        gain.gain.setValueAtTime(0.2, now);
+        gain.gain.exponentialRampToValueAtTime(0.01, now + 0.2);
+        osc.start(now);
+        osc.stop(now + 0.2);
+      } else if (type === 'gem') {
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(587.33, now);
+        osc.frequency.setValueAtTime(880, now + 0.08);
+        gain.gain.setValueAtTime(0.25, now);
+        gain.gain.exponentialRampToValueAtTime(0.01, now + 0.2);
+        osc.start(now);
+        osc.stop(now + 0.2);
+      } else if (type === 'crash') {
+        osc.type = 'sawtooth';
+        osc.frequency.setValueAtTime(160, now);
+        osc.frequency.exponentialRampToValueAtTime(40, now + 0.3);
+        gain.gain.setValueAtTime(0.4, now);
+        gain.gain.exponentialRampToValueAtTime(0.01, now + 0.3);
+        osc.start(now);
+        osc.stop(now + 0.3);
+      } else if (type === 'click') {
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(440, now);
+        gain.gain.setValueAtTime(0.15, now);
+        gain.gain.exponentialRampToValueAtTime(0.01, now + 0.05);
+        osc.start(now);
+        osc.stop(now + 0.05);
+      }
+    } catch(e) {}
+  }
+
+  function triggerHaptic(type) {
+    if (window.RosTrickDevice && typeof window.RosTrickDevice.haptic === 'function') {
+      try {
+        window.RosTrickDevice.haptic(type || 'click');
+      } catch(e) {}
+    }
+  }
+
+  // Toast notice
+  function showToast(msg) {
+    var t = document.getElementById('toast');
+    if (t) {
+      t.textContent = msg;
+      t.classList.add('show');
+      setTimeout(function() {
+        t.classList.remove('show');
+      }, 2500);
+    }
+  }
+
+  // Native Back Button
+  if (window.RosTrickBack && typeof window.RosTrickBack.onBack === 'function') {
+    window.RosTrickBack.onBack(function() {
+      if (gameState === 'playing') {
+        gameOver();
+        return true;
+      }
+      return false;
+    });
+  }
+
+  // High Score Storage
+  var STORAGE_KEY = 'rostrick_runner_highscore';
+  function getHighScore() {
+    try {
+      var val = localStorage.getItem(STORAGE_KEY);
+      return val ? parseInt(val, 10) || 0 : 0;
+    } catch(e) {
+      return 0;
+    }
+  }
+  function saveHighScore(scoreVal) {
+    try {
+      var current = getHighScore();
+      if (scoreVal > current) {
+        localStorage.setItem(STORAGE_KEY, scoreVal.toString());
+        return true;
+      }
+    } catch(e) {}
+    return false;
+  }
+
+  // Canvas & Game Loop Setup
+  var canvas = document.getElementById('gameCanvas');
+  var ctx = canvas.getContext('2d');
+
+  var gameState = 'menu';
+  var score = 0;
+  var highScore = getHighScore();
+  var gameSpeed = 6;
+  var speedMultiplier = 1.0;
+  var animFrameId = null;
+  var distanceRun = 0;
+
+  // DOM Elements
+  var uiScore = document.getElementById('ui-score');
+  var uiSpeed = document.getElementById('ui-speed');
+  var uiHighScore = document.getElementById('ui-highscore');
+  var startOverlay = document.getElementById('start-overlay');
+  var gameoverOverlay = document.getElementById('gameover-overlay');
+  var startHighVal = document.getElementById('start-highscore-val');
+  var goScoreVal = document.getElementById('go-score-val');
+  var goHighVal = document.getElementById('go-high-val');
+
+  uiHighScore.textContent = highScore;
+  startHighVal.textContent = highScore;
+
+  // Canvas Resize
+  function resizeCanvas() {
+    var rect = canvas.parentElement.getBoundingClientRect();
+    canvas.width = rect.width;
+    canvas.height = rect.height;
+  }
+  window.addEventListener('resize', resizeCanvas);
+  resizeCanvas();
+
+  // Runner Object
+  var runner = {
+    x: 60,
+    y: 0,
+    width: 34,
+    height: 56,
+    normalHeight: 56,
+    slideHeight: 28,
+    vy: 0,
+    gravity: 0.8,
+    jumpPower: -13.5,
+    isGrounded: false,
+    isSliding: false,
+    slideTimer: 0,
+    jumpCount: 0,
+    maxJumps: 2
+  };
+
+  var groundY = 0;
+  var obstacles = [];
+  var gems = [];
+  var particles = [];
+  var bgStars = [];
+
+  for (var i = 0; i < 40; i++) {
+    bgStars.push({
+      x: Math.random() * 800,
+      y: Math.random() * 400,
+      size: Math.random() * 2 + 1,
+      speed: Math.random() * 0.5 + 0.2
+    });
+  }
+
+  function resetGame() {
+    score = 0;
+    speedMultiplier = 1.0;
+    gameSpeed = 6;
+    distanceRun = 0;
+    obstacles = [];
+    gems = [];
+    particles = [];
+
+    groundY = canvas.height - 70;
+    runner.y = groundY - runner.normalHeight;
+    runner.height = runner.normalHeight;
+    runner.vy = 0;
+    runner.isGrounded = true;
+    runner.isSliding = false;
+    runner.jumpCount = 0;
+
+    uiScore.textContent = '0';
+    uiSpeed.textContent = '1.0x';
+  }
+
+  function spawnObstacle() {
+    var type = Math.random();
+    var groundPos = groundY;
+
+    if (type < 0.5) {
+      obstacles.push({
+        x: canvas.width + 50,
+        y: groundPos - 40,
+        w: 30,
+        h: 40,
+        type: 'barrier',
+        color: '#FF3D7F'
+      });
+    } else if (type < 0.8) {
+      obstacles.push({
+        x: canvas.width + 50,
+        y: groundPos - 95,
+        w: 35,
+        h: 45,
+        type: 'laser',
+        color: '#00E5FF'
+      });
+    } else {
+      obstacles.push({
+        x: canvas.width + 50,
+        y: groundPos - 70,
+        w: 28,
+        h: 28,
+        type: 'drone',
+        color: '#FFD60A'
+      });
+    }
+
+    if (Math.random() < 0.6) {
+      gems.push({
+        x: canvas.width + 100,
+        y: groundPos - (type < 0.8 ? 90 : 35),
+        r: 10,
+        collected: false
+      });
+    }
+  }
+
+  function doJump() {
+    if (gameState !== 'playing') return;
+    if (runner.jumpCount < runner.maxJumps) {
+      runner.vy = runner.jumpPower;
+      runner.isGrounded = false;
+      runner.jumpCount++;
+      runner.isSliding = false;
+      runner.height = runner.normalHeight;
+      playSound('jump');
+      triggerHaptic('tick');
+
+      for (var j = 0; j < 6; j++) {
+        particles.push({
+          x: runner.x + runner.width / 2,
+          y: runner.y + runner.height,
+          vx: (Math.random() - 0.5) * 4,
+          vy: Math.random() * -2,
+          life: 15,
+          color: '#00E5FF'
+        });
+      }
+    }
+  }
+
+  function doSlide() {
+    if (gameState !== 'playing') return;
+    if (!runner.isSliding) {
+      runner.isSliding = true;
+      runner.height = runner.slideHeight;
+      runner.slideTimer = 35;
+      if (runner.isGrounded) {
+        runner.y = groundY - runner.slideHeight;
+      }
+      playSound('slide');
+      triggerHaptic('tick');
+    }
+  }
+
+  function update() {
+    if (gameState !== 'playing') return;
+
+    distanceRun += gameSpeed * speedMultiplier;
+    score = Math.floor(distanceRun / 10);
+    uiScore.textContent = score;
+
+    speedMultiplier = 1.0 + Math.floor(score / 150) * 0.15;
+    uiSpeed.textContent = speedMultiplier.toFixed(1) + 'x';
+
+    runner.vy += runner.gravity;
+    runner.y += runner.vy;
+
+    groundY = canvas.height - 70;
+
+    if (runner.isSliding) {
+      runner.slideTimer--;
+      if (runner.slideTimer <= 0) {
+        runner.isSliding = false;
+        runner.height = runner.normalHeight;
+        runner.y = groundY - runner.normalHeight;
+      }
+    }
+
+    var currentHeight = runner.isSliding ? runner.slideHeight : runner.normalHeight;
+    if (runner.y >= groundY - currentHeight) {
+      runner.y = groundY - currentHeight;
+      runner.vy = 0;
+      runner.isGrounded = true;
+      runner.jumpCount = 0;
+    }
+
+    var minGap = 200 / speedMultiplier;
+    var lastObs = obstacles[obstacles.length - 1];
+    if (!lastObs || (canvas.width - lastObs.x > minGap + Math.random() * 180)) {
+      spawnObstacle();
+    }
+
+    var currentSpeed = gameSpeed * speedMultiplier;
+    for (var i = obstacles.length - 1; i >= 0; i--) {
+      var obs = obstacles[i];
+      obs.x -= currentSpeed;
+
+      var rBox = {
+        x: runner.x + 4,
+        y: runner.y + 4,
+        w: runner.width - 8,
+        h: (runner.isSliding ? runner.slideHeight : runner.normalHeight) - 8
+      };
+
+      if (
+        rBox.x < obs.x + obs.w &&
+        rBox.x + rBox.w > obs.x &&
+        rBox.y < obs.y + obs.h &&
+        rBox.y + rBox.h > obs.y
+      ) {
+        gameOver();
+        return;
+      }
+
+      if (obs.x + obs.w < -50) {
+        obstacles.splice(i, 1);
+      }
+    }
+
+    for (var j = gems.length - 1; j >= 0; j--) {
+      var g = gems[j];
+      g.x -= currentSpeed;
+
+      var rBoxGem = {
+        x: runner.x,
+        y: runner.y,
+        w: runner.width,
+        h: runner.isSliding ? runner.slideHeight : runner.normalHeight
+      };
+
+      if (!g.collected &&
+          rBoxGem.x < g.x + g.r * 2 &&
+          rBoxGem.x + rBoxGem.w > g.x - g.r &&
+          rBoxGem.y < g.y + g.r * 2 &&
+          rBoxGem.y + rBoxGem.h > g.y - g.r) {
+        g.collected = true;
+        distanceRun += 200;
+        playSound('gem');
+        triggerHaptic('tick');
+
+        for (var p = 0; p < 8; p++) {
+          particles.push({
+            x: g.x,
+            y: g.y,
+            vx: (Math.random() - 0.5) * 6,
+            vy: (Math.random() - 0.5) * 6,
+            life: 20,
+            color: '#FFD60A'
+          });
+        }
+      }
+
+      if (g.x < -30) {
+        gems.splice(j, 1);
+      }
+    }
+
+    for (var k = particles.length - 1; k >= 0; k--) {
+      var part = particles[k];
+      part.x += part.vx;
+      part.y += part.vy;
+      part.life--;
+      if (part.life <= 0) {
+        particles.splice(k, 1);
+      }
+    }
+
+    for (var s = 0; s < bgStars.length; s++) {
+      bgStars[s].x -= bgStars[s].speed * speedMultiplier;
+      if (bgStars[s].x < 0) bgStars[s].x = canvas.width;
+    }
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    groundY = canvas.height - 70;
+
+    ctx.fillStyle = '#0A0915';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    ctx.fillStyle = '#6C3BFF';
+    for (var s = 0; s < bgStars.length; s++) {
+      var star = bgStars[s];
+      ctx.fillRect(star.x, star.y, star.size, star.size);
+    }
+
+    ctx.shadowBlur = 12;
+    ctx.shadowColor = '#00E5FF';
+    ctx.strokeStyle = '#00E5FF';
+    ctx.lineWidth = 3;
+
+    ctx.beginPath();
+    ctx.moveTo(0, groundY);
+    ctx.lineTo(canvas.width, groundY);
+    ctx.stroke();
+    ctx.shadowBlur = 0;
+
+    ctx.strokeStyle = 'rgba(108, 59, 255, 0.25)';
+    ctx.lineWidth = 1;
+    var gridOffset = (distanceRun * 0.5) % 30;
+    for (var gx = -gridOffset; gx < canvas.width; gx += 30) {
+      ctx.beginPath();
+      ctx.moveTo(gx, groundY);
+      ctx.lineTo(gx - 40, canvas.height);
+      ctx.stroke();
+    }
+
+    for (var i = 0; i < obstacles.length; i++) {
+      var obs = obstacles[i];
+      ctx.shadowBlur = 10;
+      ctx.shadowColor = obs.color;
+      ctx.fillStyle = obs.color;
+
+      if (obs.type === 'barrier') {
+        ctx.fillRect(obs.x, obs.y, obs.w, obs.h);
+        ctx.strokeStyle = '#FFFFFF';
+        ctx.strokeRect(obs.x + 2, obs.y + 2, obs.w - 4, obs.h - 4);
+      } else if (obs.type === 'laser') {
+        ctx.fillRect(obs.x, obs.y, obs.w, 12);
+        ctx.fillStyle = 'rgba(0, 229, 255, 0.3)';
+        ctx.fillRect(obs.x + 4, obs.y + 12, obs.w - 8, obs.h - 12);
+      } else if (obs.type === 'drone') {
+        ctx.beginPath();
+        ctx.moveTo(obs.x + obs.w / 2, obs.y);
+        ctx.lineTo(obs.x + obs.w, obs.y + obs.h / 2);
+        ctx.lineTo(obs.x + obs.w / 2, obs.y + obs.h);
+        ctx.lineTo(obs.x, obs.y + obs.h / 2);
+        ctx.closePath();
+        ctx.fill();
+      }
+      ctx.shadowBlur = 0;
+    }
+
+    for (var j = 0; j < gems.length; j++) {
+      var g = gems[j];
+      if (!g.collected) {
+        ctx.shadowBlur = 15;
+        ctx.shadowColor = '#FFD60A';
+        ctx.fillStyle = '#FFD60A';
+        ctx.beginPath();
+        ctx.arc(g.x, g.y, g.r, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.shadowBlur = 0;
+      }
+    }
+
+    for (var k = 0; k < particles.length; k++) {
+      var p = particles[k];
+      ctx.fillStyle = p.color;
+      ctx.fillRect(p.x, p.y, 4, 4);
+    }
+
+    ctx.shadowBlur = 15;
+    ctx.shadowColor = '#00E5FF';
+
+    var rx = runner.x;
+    var ry = runner.y;
+    var rw = runner.width;
+    var rh = runner.isSliding ? runner.slideHeight : runner.normalHeight;
+
+    if (runner.isSliding) {
+      ctx.fillStyle = '#00E5FF';
+      ctx.fillRect(rx, ry, rw + 10, rh);
+      ctx.fillStyle = '#FF3D7F';
+      ctx.fillRect(rx + rw, ry + 4, 8, 8);
+    } else {
+      // Runner torso / head when standing / jumping
+      ctx.fillStyle = '#00E5FF';
+      ctx.fillRect(rx, ry, rw, rh);
+      // Cyber visor glow
+      ctx.fillStyle = '#FF3D7F';
+      ctx.fillRect(rx + 18, ry + 10, 14, 8);
+      // Cyber trail / accent
+      ctx.fillStyle = '#6C3BFF';
+      ctx.fillRect(rx + 4, ry + 22, rw - 8, rh - 26);
+    }
+    ctx.shadowBlur = 0;
+  }
+
+  function loop() {
+    update();
+    draw();
+    if (gameState === 'playing') {
+      animFrameId = requestAnimationFrame(loop);
+    }
+  }
+
+  function startGame() {
+    resetGame();
+    gameState = 'playing';
+    startOverlay.classList.add('hidden');
+    gameoverOverlay.classList.add('hidden');
+    if (animFrameId) cancelAnimationFrame(animFrameId);
+    animFrameId = requestAnimationFrame(loop);
+  }
+
+  function gameOver() {
+    gameState = 'over';
+    playSound('crash');
+    triggerHaptic('confirm');
+
+    var isNewHigh = saveHighScore(score);
+    highScore = getHighScore();
+
+    uiHighScore.textContent = highScore;
+    goScoreVal.textContent = score;
+    goHighVal.textContent = highScore;
+
+    var desc = document.getElementById('gameover-desc');
+    if (isNewHigh) {
+      desc.textContent = 'رائع! رقم قياسي جديد على المضمار!';
+    } else {
+      desc.textContent = 'اصطدمت بحاجز نيون في مضمار السايبر!';
+    }
+
+    gameoverOverlay.classList.remove('hidden');
+  }
+
+  // Touch & Swipe Controls on Canvas Wrapper
+  var touchStartY = 0;
+  var touchStartX = 0;
+  var canvasWrapper = document.querySelector('.canvas-wrapper');
+
+  canvasWrapper.addEventListener('touchstart', function(e) {
+    if (e.touches.length > 0) {
+      touchStartY = e.touches[0].clientY;
+      touchStartX = e.touches[0].clientX;
+    }
+  }, { passive: true });
+
+  canvasWrapper.addEventListener('touchend', function(e) {
+    if (e.changedTouches.length > 0) {
+      var deltaY = e.changedTouches[0].clientY - touchStartY;
+      var deltaX = e.changedTouches[0].clientX - touchStartX;
+      if (Math.abs(deltaY) > Math.abs(deltaX)) {
+        if (deltaY < -25) {
+          doJump();
+        } else if (deltaY > 25) {
+          doSlide();
+        }
+      } else if (Math.abs(deltaX) < 15 && Math.abs(deltaY) < 15) {
+        doJump();
+      }
+    }
+  }, { passive: true });
+
+  // Keyboard Controls
+  window.addEventListener('keydown', function(e) {
+    if (e.code === 'Space' || e.code === 'ArrowUp') {
+      doJump();
+      e.preventDefault();
+    } else if (e.code === 'ArrowDown') {
+      doSlide();
+      e.preventDefault();
+    }
+  });
+
+  // Control Buttons
+  document.getElementById('btn-ctrl-jump').addEventListener('click', function(e) {
+    e.preventDefault();
+    doJump();
+  });
+
+  document.getElementById('btn-ctrl-slide').addEventListener('click', function(e) {
+    e.preventDefault();
+    doSlide();
+  });
+
+  // Start & Restart Buttons
+  document.getElementById('btn-start-game').addEventListener('click', function() {
+    playSound('click');
+    triggerHaptic('tick');
+    startGame();
+  });
+
+  document.getElementById('btn-restart-game').addEventListener('click', function() {
+    playSound('click');
+    triggerHaptic('tick');
+    startGame();
+  });
+
+  // Audio Toggle Button
+  var btnSound = document.getElementById('btn-sound');
+  var iconOn = document.getElementById('sound-icon-on');
+  var iconOff = document.getElementById('sound-icon-off');
+
+  btnSound.addEventListener('click', function() {
+    soundEnabled = !soundEnabled;
+    if (soundEnabled) {
+      iconOn.style.display = 'block';
+      iconOff.style.display = 'none';
+      playSound('click');
+    } else {
+      iconOn.style.display = 'none';
+      iconOff.style.display = 'block';
+    }
+    triggerHaptic('tick');
+  });
+
+  // Native Overlay Launch Bridge
+  function launchOverlay() {
+    triggerHaptic('tick');
+    if (window.RosTrickOverlay && typeof window.RosTrickOverlay.create === 'function') {
+      window.RosTrickOverlay.canDraw().then(function(allowed) {
+        if (!allowed) {
+          return window.RosTrickOverlay.requestPermission();
+        }
+        return true;
+      }).then(function(canRun) {
+        if (canRun) {
+          window.RosTrickOverlay.create({
+            id: 'runner-overlay',
+            url: 'overlay-hub.html?section=runner',
+            w: 320,
+            h: 460,
+            gravity: 'tr'
+          });
+          showToast('تم فتح عداء السايبر في النافذة العائمة');
+        } else {
+          showToast('يتطلب الإذن لعرض النافذة العائمة');
+        }
+      }).catch(function() {
+        window.location.href = 'overlay-hub.html?section=runner';
+      });
+    } else {
+      window.location.href = 'overlay-hub.html?section=runner';
+    }
+  }
+
+  document.getElementById('btn-overlay').addEventListener('click', launchOverlay);
+  document.getElementById('btn-start-overlay').addEventListener('click', launchOverlay);
+
+  // Share Functionality
+  function shareRunnerScore() {
+    triggerHaptic('tick');
+    var txt = 'حققت ' + score + ' نقطة في لعبة عداء السايبر! هل تحداك سنتي في مضمار النيون؟';
+    if (window.RosTrickShare && typeof window.RosTrickShare.share === 'function') {
+      window.RosTrickShare.share({
+        title: 'عداء السايبر',
+        text: txt,
+        url: window.location.href
+      });
+    } else if (navigator.clipboard) {
+      navigator.clipboard.writeText(txt).then(function() {
+        showToast('تم نسخ النتيجة بنجاح!');
+      }).catch(function() {
+        showToast('تعذر المشاركة');
+      });
+    } else {
+      showToast('المشاركة غير مدعومة');
+    }
+  }
+
+  document.getElementById('btn-share').addEventListener('click', shareRunnerScore);
+  document.getElementById('btn-share-final').addEventListener('click', shareRunnerScore);
+
+  // Initial Render
+  draw();
+})();
+</script>
+</body>
+</html>
