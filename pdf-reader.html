@@ -1,0 +1,1477 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+  <title>قارئ PDF</title>
+  <style>
+    :root {
+      --primary: #6C3BFF;
+      --primary-dark: #4A22C9;
+      --accent: #00E5FF;
+      --highlight: #FF3D7F;
+      --control: #B8B5D1;
+      --bg-dark: #0B0C10;
+      --card-bg: #141625;
+      --card-border: #232742;
+      --text-main: #F0F2FE;
+      --text-muted: #8E93B7;
+      --rt-statusbar-height: 0px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    .rt-selectable {
+      user-select: text;
+      -webkit-user-select: text;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      padding-top: var(--rt-statusbar-height);
+    }
+
+    /* Top App Bar */
+    .app-header {
+      background: linear-gradient(180deg, #181A2E 0%, var(--bg-dark) 100%);
+      border-bottom: 1px solid var(--card-border);
+      padding: 10px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      z-index: 50;
+      min-height: 58px;
+    }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+    }
+
+    .btn-icon {
+      background: #1C1F36;
+      border: 1px solid #2F3459;
+      color: var(--text-main);
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.1s, border-color 0.2s;
+      margin-left: 8px;
+    }
+
+    .btn-icon:last-child {
+      margin-left: 0;
+    }
+
+    .btn-icon:active {
+      transform: scale(0.94);
+      background: var(--primary-dark);
+      border-color: var(--accent);
+    }
+
+    .btn-icon svg {
+      width: 22px;
+      height: 22px;
+      fill: currentColor;
+    }
+
+    .btn-icon.accent-btn {
+      border-color: var(--accent);
+      color: var(--accent);
+      box-shadow: 0 0 8px rgba(0, 229, 255, 0.2);
+    }
+
+    .doc-info {
+      flex: 1;
+      margin: 0 12px;
+      overflow: hidden;
+    }
+
+    .doc-title {
+      font-size: 15px;
+      font-weight: 700;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      color: #FFFFFF;
+    }
+
+    .doc-subtitle {
+      font-size: 11px;
+      color: var(--text-muted);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      margin-top: 2px;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+    }
+
+    /* Document Selector Toolbar */
+    .document-strip {
+      background: #111320;
+      border-bottom: 1px solid var(--card-border);
+      padding: 8px 12px;
+      display: flex;
+      align-items: center;
+      overflow-x: auto;
+      white-space: nowrap;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .doc-chip {
+      background: #1B1E33;
+      border: 1px solid #2B2F52;
+      color: var(--control);
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      margin-left: 8px;
+      display: inline-flex;
+      align-items: center;
+      transition: all 0.2s;
+      height: 36px;
+    }
+
+    .doc-chip.active {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+      color: #FFFFFF;
+      border-color: var(--accent);
+      box-shadow: 0 0 10px rgba(108, 59, 255, 0.4);
+    }
+
+    .doc-chip svg {
+      width: 16px;
+      height: 16px;
+      margin-left: 6px;
+      fill: currentColor;
+    }
+
+    /* Main Viewport & Canvas area */
+    .reader-viewport {
+      flex: 1;
+      overflow: auto;
+      position: relative;
+      background: #06070B;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 16px;
+      touch-action: pan-x pan-y;
+    }
+
+    .reader-viewport.mode-contrast {
+      background: #000000;
+    }
+
+    .reader-viewport.mode-sepia {
+      background: #181410;
+    }
+
+    /* Notice Banner for Real PDF Limitations */
+    .pdf-notice {
+      background: rgba(108, 59, 255, 0.15);
+      border: 1px solid var(--primary);
+      border-radius: 12px;
+      padding: 10px 14px;
+      margin-bottom: 16px;
+      width: 100%;
+      max-width: 680px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .pdf-notice-text {
+      font-size: 12px;
+      color: var(--text-main);
+      line-height: 1.4;
+      flex: 1;
+      margin-left: 10px;
+    }
+
+    .btn-small {
+      background: var(--primary);
+      color: #FFF;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      white-space: nowrap;
+      min-height: 36px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .btn-small:active {
+      opacity: 0.85;
+    }
+
+    /* Rendered Page Sheet */
+    .page-sheet-container {
+      transition: transform 0.2s cubic-bezier(0.2, 0, 0.2, 1);
+      transform-origin: top center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+      max-width: 680px;
+    }
+
+    .page-sheet {
+      background: #1A1C2E;
+      border: 1px solid #2E3356;
+      border-radius: 14px;
+      width: 100%;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5), 0 0 1px rgba(0, 229, 255, 0.2);
+      padding: 24px;
+      margin-bottom: 24px;
+      position: relative;
+      overflow: hidden;
+      min-height: 520px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .mode-contrast .page-sheet {
+      background: #0F101A;
+      border-color: var(--accent);
+    }
+
+    .mode-sepia .page-sheet {
+      background: #231E17;
+      border-color: #5C4A31;
+    }
+
+    .page-sheet-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px stroke rgba(255, 255, 255, 0.1);
+      padding-bottom: 12px;
+      margin-bottom: 16px;
+    }
+
+    .page-brand {
+      display: flex;
+      align-items: center;
+      font-size: 11px;
+      font-weight: bold;
+      letter-spacing: 1px;
+      color: var(--accent);
+      text-transform: uppercase;
+    }
+
+    .page-num-badge {
+      background: rgba(108, 59, 255, 0.3);
+      color: var(--accent);
+      border: 1px solid var(--primary);
+      padding: 2px 10px;
+      border-radius: 12px;
+      font-size: 11px;
+      font-weight: bold;
+    }
+
+    /* Dynamic Content Panels inside pages */
+    .comic-panel-grid {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
+
+    .panel-box {
+      background: #101221;
+      border: 2px solid #2A2E4E;
+      border-radius: 10px;
+      padding: 14px;
+      margin-bottom: 14px;
+      position: relative;
+    }
+
+    .panel-box.highlight {
+      border-color: var(--highlight);
+      box-shadow: 0 0 12px rgba(255, 61, 127, 0.2);
+    }
+
+    .panel-box.neon-accent {
+      border-color: var(--accent);
+      box-shadow: 0 0 12px rgba(0, 229, 255, 0.2);
+    }
+
+    .panel-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--accent);
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+    }
+
+    .panel-art-preview {
+      width: 100%;
+      height: 180px;
+      background: #090A12;
+      border-radius: 8px;
+      margin: 10px 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      border: 1px solid #1E223D;
+    }
+
+    .panel-art-preview img, .panel-art-preview svg {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    .panel-text {
+      font-size: 13px;
+      line-height: 1.6;
+      color: var(--text-main);
+    }
+
+    .speech-bubble {
+      background: #222642;
+      border-radius: 12px;
+      border-bottom-right-radius: 2px;
+      padding: 10px 14px;
+      font-size: 13px;
+      color: #FFFFFF;
+      margin-top: 8px;
+      border: 1px solid #363C66;
+    }
+
+    .page-sheet-footer {
+      margin-top: auto;
+      padding-top: 14px;
+      border-top: 1px solid rgba(255,255,255,0.08);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    /* Floating / Bottom Navigation Bar */
+    .reader-controls-bar {
+      background: rgba(20, 22, 37, 0.95);
+      backdrop-filter: blur(12px);
+      border-top: 1px solid var(--card-border);
+      padding: 10px 14px;
+      display: flex;
+      flex-direction: column;
+      z-index: 50;
+      padding-bottom: calc(10px + env(safe-area-inset-bottom));
+    }
+
+    .controls-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .controls-row + .controls-row {
+      margin-top: 10px;
+    }
+
+    .pager-group {
+      display: flex;
+      align-items: center;
+    }
+
+    .page-input-wrapper {
+      display: flex;
+      align-items: center;
+      background: #0B0C14;
+      border: 1px solid #2D3256;
+      border-radius: 8px;
+      padding: 2px 8px;
+      margin: 0 6px;
+    }
+
+    .page-input {
+      background: transparent;
+      border: none;
+      color: var(--accent);
+      font-weight: bold;
+      font-size: 14px;
+      width: 32px;
+      text-align: center;
+      outline: none;
+    }
+
+    .page-total {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-right: 4px;
+    }
+
+    .zoom-group {
+      display: flex;
+      align-items: center;
+      background: #111322;
+      border: 1px solid #252948;
+      border-radius: 10px;
+      padding: 2px;
+    }
+
+    .btn-control-sm {
+      background: transparent;
+      border: none;
+      color: var(--text-main);
+      width: 38px;
+      height: 38px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+
+    .btn-control-sm:active {
+      background: var(--primary);
+    }
+
+    .btn-control-sm svg {
+      width: 18px;
+      height: 18px;
+      fill: currentColor;
+    }
+
+    .zoom-text {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--accent);
+      min-width: 44px;
+      text-align: center;
+    }
+
+    .mode-pills {
+      display: flex;
+      align-items: center;
+      overflow-x: auto;
+    }
+
+    .pill-btn {
+      background: #181B30;
+      border: 1px solid #2B3054;
+      color: var(--control);
+      padding: 6px 12px;
+      border-radius: 16px;
+      font-size: 11px;
+      font-weight: 600;
+      cursor: pointer;
+      margin-left: 6px;
+      white-space: nowrap;
+      height: 34px;
+      display: inline-flex;
+      align-items: center;
+    }
+
+    .pill-btn.active {
+      background: var(--primary);
+      color: #FFF;
+      border-color: var(--accent);
+    }
+
+    .pill-btn svg {
+      width: 14px;
+      height: 14px;
+      margin-left: 4px;
+      fill: currentColor;
+    }
+
+    /* Modal / Bottom Sheet for Settings & Documents */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(4px);
+      z-index: 100;
+      display: flex;
+      align-items: flex-end;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease;
+    }
+
+    .modal-overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .bottom-sheet {
+      background: #151728;
+      border-top: 2px solid var(--primary);
+      border-top-left-radius: 20px;
+      border-top-right-radius: 20px;
+      width: 100%;
+      max-height: 80vh;
+      padding: 20px;
+      overflow-y: auto;
+      transform: translateY(100%);
+      transition: transform 0.25s cubic-bezier(0.1, 0.9, 0.2, 1);
+    }
+
+    .modal-overlay.active .bottom-sheet {
+      transform: translateY(0);
+    }
+
+    .sheet-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+      border-bottom: 1px solid var(--card-border);
+      padding-bottom: 12px;
+    }
+
+    .sheet-title {
+      font-size: 16px;
+      font-weight: bold;
+      color: var(--accent);
+    }
+
+    .sheet-close {
+      background: transparent;
+      border: none;
+      color: var(--control);
+      cursor: pointer;
+    }
+
+    .sheet-close svg {
+      width: 24px;
+      height: 24px;
+      fill: currentColor;
+    }
+
+    .doc-list-item {
+      background: #1C1F36;
+      border: 1px solid #2E335A;
+      border-radius: 12px;
+      padding: 12px;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+    }
+
+    .doc-list-item:active {
+      border-color: var(--accent);
+      background: #252A4A;
+    }
+
+    .doc-item-title {
+      font-weight: bold;
+      font-size: 14px;
+      color: #FFF;
+    }
+
+    .doc-item-meta {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    /* Toast Notification */
+    .toast {
+      position: fixed;
+      bottom: 110px;
+      left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background: #241D40;
+      color: #FFF;
+      border: 1px solid var(--accent);
+      padding: 10px 18px;
+      border-radius: 24px;
+      font-size: 12px;
+      font-weight: 600;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.5);
+      z-index: 120;
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.25s ease;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    /* Thumbnail Quick Jump Bar */
+    .thumbnails-row {
+      display: flex;
+      overflow-x: auto;
+      padding: 8px 0;
+      margin-top: 10px;
+      border-top: 1px solid rgba(255,255,255,0.05);
+    }
+
+    .thumb-card {
+      width: 50px;
+      height: 70px;
+      background: #0D0E17;
+      border: 1px solid #262A4A;
+      border-radius: 6px;
+      margin-left: 8px;
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      color: var(--text-muted);
+      cursor: pointer;
+    }
+
+    .thumb-card.active {
+      border-color: var(--highlight);
+      background: var(--primary-dark);
+      color: #FFF;
+      box-shadow: 0 0 8px rgba(255, 61, 127, 0.4);
+    }
+
+    /* Custom File Input style */
+    #file-picker {
+      display: none;
+    }
+  </style>
+<style id="rt-native">html,body{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;-webkit-tap-highlight-color:transparent;overscroll-behavior:none}input,textarea,select,[contenteditable],.rt-selectable,.rt-selectable *{-webkit-user-select:text;user-select:text}img,a{-webkit-user-drag:none}a,button,[role=button]{outline:none}</style>
+</head>
+<body>
+
+  <!-- Hidden HTML File Input for local PDFs -->
+  <input type="file" id="file-picker" accept=".pdf,application/pdf">
+
+  <!-- App Header Bar -->
+  <header class="app-header">
+    <div class="header-right">
+      <a href="home.html" class="btn-icon" id="btn-back" title="الرئيسية">
+        <svg viewBox="0 0 24 24"><path d="M10 6L16 12L10 18 L8.59 16.59 L13.17 12 L8.59 7.41 Z"/></svg>
+      </a>
+      <button class="btn-icon" id="btn-open-file" title="فتح ملف محلي">
+        <svg viewBox="0 0 24 24"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM14 13v4h-4v-4H7l5-5 5 5h-3z"/></svg>
+      </button>
+    </div>
+
+    <div class="doc-info" id="header-doc-info">
+      <div class="doc-title" id="lbl-doc-title">جاري التحميل...</div>
+      <div class="doc-subtitle" id="lbl-doc-sub">قارئ مستندات PDF والقصص المصورة</div>
+    </div>
+
+    <div class="header-actions">
+      <button class="btn-icon accent-btn" id="btn-overlay" title="تشغيل في النافذة العائمة">
+        <svg viewBox="0 0 24 24"><path d="M19 3H5C3.89 3 3 3.89 3 5V19C3 20.1 3.89 21 5 21H19C20.1 21 21 20.1 21 19V5C21 3.89 20.1 3 19 3ZM19 19H5V5H19V19ZM11 7H17V13H15V10.41L10.41 15L9 13.59L13.59 9H11V7Z"/></svg>
+      </button>
+      <button class="btn-icon" id="btn-share" title="مشاركة / فتح خارجي">
+        <svg viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92 1.61 0 2.92-1.31 2.92-2.92s-1.31-2.92-2.92-2.92z"/></svg>
+      </button>
+      <button class="btn-icon" id="btn-list-modal" title="قائمة المستندات">
+        <svg viewBox="0 0 24 24"><path d="M4 6h16v2H4zm0 5h16v2H4zm0 5h16v2H4z"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- Document Strip Selection -->
+  <div class="document-strip" id="doc-strip">
+    <!-- Populated dynamically -->
+  </div>
+
+  <!-- Reader Viewport -->
+  <main class="reader-viewport" id="viewport">
+    
+    <!-- Real PDF Notice Bar -->
+    <div class="pdf-notice" id="notice-external" style="display:none;">
+      <div class="pdf-notice-text">
+        تم اكتشاف ملف PDF خارجي. لعرض الملف الأصلي بكامل تفاصيله وخطوطه، يمكنك فتحه مباشرة عبر القارئ الخارجي المفضل لديك.
+      </div>
+      <button class="btn-small" id="btn-external-view">فتح خارجي</button>
+    </div>
+
+    <!-- Sheet Wrapper -->
+    <div class="page-sheet-container" id="sheet-wrapper">
+      <article class="page-sheet" id="main-sheet">
+        <header class="page-sheet-header">
+          <div class="page-brand">
+            <svg style="width:16px;height:16px;margin-left:6px;fill:var(--accent)" viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-8 14H6v-2h6v2zm6-4H6v-2h12v2zm0-4H6V6h12v2z"/></svg>
+            <span id="sheet-brand-tag">PDF READER EXCLUSIVE</span>
+          </div>
+          <div class="page-num-badge" id="sheet-num-badge">صفحة 1</div>
+        </header>
+
+        <!-- Dynamic Panels Rendering -->
+        <div class="comic-panel-grid" id="sheet-content">
+          <!-- Dynamic contents injected here -->
+        </div>
+
+        <footer class="page-sheet-footer">
+          <span id="sheet-footer-title">كوميكس وألعاب أوفرلاي</span>
+          <span id="sheet-footer-page">1 / 1</span>
+        </footer>
+      </article>
+    </div>
+
+  </main>
+
+  <!-- Bottom Navigation & Reading Controls -->
+  <footer class="reader-controls-bar">
+    <div class="controls-row">
+      
+      <!-- Pager -->
+      <div class="pager-group">
+        <button class="btn-control-sm" id="btn-prev-page" title="الصفحة السابقة">
+          <svg viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+        </button>
+        <div class="page-input-wrapper">
+          <input type="number" id="input-page-num" class="page-input" value="1" min="1" max="100">
+          <span class="page-total" id="lbl-total-pages">/ 1</span>
+        </div>
+        <button class="btn-control-sm" id="btn-next-page" title="الصفحة التالية">
+          <svg viewBox="0 0 24 24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
+        </button>
+      </div>
+
+      <!-- Zoom Controls -->
+      <div class="zoom-group">
+        <button class="btn-control-sm" id="btn-zoom-out" title="تصغير">
+          <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14zm-2.5-4h5v1.5h-5V10z"/></svg>
+        </button>
+        <span class="zoom-text" id="lbl-zoom-level">100%</span>
+        <button class="btn-control-sm" id="btn-zoom-in" title="تكبير">
+          <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14zm2.5-4h-2v2H9v-2H7V9h2V7h1.5v2h2v1.5z"/></svg>
+        </button>
+        <button class="btn-control-sm" id="btn-zoom-reset" title="إعادة ضبط">
+          <svg viewBox="0 0 24 24"><path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/></svg>
+        </button>
+      </div>
+
+      <!-- Bookmark Action Button -->
+      <button class="btn-icon" id="btn-bookmark" title="حفظ الإشارة المرجعية">
+        <svg viewBox="0 0 24 24"><path d="M17 3H7c-1.1 0-1.99.9-1.99 2L5 21l7-3 7 3V5c0-1.1-.9-2-2-2z"/></svg>
+      </button>
+
+    </div>
+
+    <!-- Theme & Quick Thumbnails Row -->
+    <div class="controls-row">
+      <div class="mode-pills">
+        <button class="pill-btn active" id="mode-default" data-mode="normal">الوضع العادي</button>
+        <button class="pill-btn" id="mode-contrast" data-mode="contrast">تباين داكن</button>
+        <button class="pill-btn" id="mode-sepia" data-mode="sepia">نمط سيبيا</button>
+      </div>
+      <div style="font-size:11px;color:var(--text-muted);" id="lbl-status-saved">
+        آخر صفحة محفوظة تلقائياً
+      </div>
+    </div>
+
+    <!-- Horizontal Thumbnails Strip -->
+    <div class="thumbnails-row" id="thumbs-container">
+      <!-- Generated dynamically -->
+    </div>
+  </footer>
+
+  <!-- Documents List Bottom Sheet Modal -->
+  <div class="modal-overlay" id="modal-docs">
+    <div class="bottom-sheet">
+      <div class="sheet-header">
+        <div class="sheet-title">اختر مستنداً للقراءة</div>
+        <button class="sheet-close" id="btn-close-modal">
+          <svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </div>
+
+      <div id="modal-doc-list">
+        <!-- Rendered dynamically -->
+      </div>
+
+      <div style="margin-top:16px;text-align:center;">
+        <button class="btn-small" id="btn-modal-open-local" style="width:100%;height:44px;font-size:14px;">
+          فتح ملف PDF من جهازك
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Element -->
+  <div class="toast" id="toast-el">تم حفظ الصفحة المرجعية</div>
+
+  <script>
+    // State management
+    var documents = [
+      {
+        id: "comic-01",
+        title: "صقر المدار: فجر النيون",
+        author: "طارق المنصور",
+        genre: "أبطال خارقون",
+        pdfUrl: "pdfs/saqr-almadar-01.pdf",
+        pagesCount: 8,
+        summary: "في مدينة تتحكم بها الأبراج الرقمية، يكتشف الطيار السابق رامي درعاً شمسياً قديماً يمنحه قوة التحليق بسرعة الصوت.",
+        pagesData: [
+          {
+            title: "الفصل الأول: هبوط في أفق النيون",
+            panels: [
+              { type: "neon-accent", header: "القطاع 09 - برج الاتصالات الرئيسي", art: "city", text: "صوت صفارات الإنذار يملأ أزقة القطاع المظلمة بينما تصطف لوحات الإعلانات النيونية لتضيء ظلال البرج." },
+              { type: "highlight", header: "رامي ينطلق ببدلته المتطورة", art: "hero", speech: "إذا لم أصل إلى المحول المركزي خلال دقيقتين، ستتوقف الطاقة عن الأحياء السفلية بالكامل!" }
+            ]
+          },
+          {
+            title: "الفصل الثاني: المواجهة الحاسمة",
+            panels: [
+              { type: "", header: "المستشعر الشمسي يعمل بكفاءة 100%", art: "shield", text: "يمتص الدرع الضوئي جميع الضربات النيونية القادمة من الحراس الآليين ويعيد توجيهها." },
+              { type: "neon-accent", header: "اختراق الجدار الخارجي", art: "blast", speech: "الآن! ضربة السرعة الفائقة!" }
+            ]
+          }
+        ]
+      },
+      {
+        id: "comic-02",
+        title: "حراس الواحة المفقودة",
+        author: "ليلى الشهابي",
+        genre: "فانتازيا عربية",
+        pdfUrl: "pdfs/hurras-alwaha-02.pdf",
+        pagesCount: 6,
+        summary: "رحلة شقيقين عبر كثبان الربع الغامض للعثور على بوابة المياه الأبدية قبل أن تبتلع العاصفة قرية الكثبان.",
+        pagesData: [
+          {
+            title: "المشهد الأول: سر الخريطة الرملية",
+            panels: [
+              { type: "highlight", header: "في ظلال الكثبان الذهببة", art: "oasis", text: "تنساب الرمال لتكشف عن نقش نحاسي قديم يعود لحراس الواحة الأولى." },
+              { type: "neon-accent", header: "سارة تفحص العلامات", art: "hero", speech: "هذه ليست مجرد رسوم، إنها مفتاح البوابة المسدودة!" }
+            ]
+          }
+        ]
+      },
+      {
+        id: "doc-manual",
+        title: "دليل النيون التقني: بروتوكولات النافذة العائمة",
+        author: "فريق التطوير",
+        genre: "دليل إرشادي",
+        pdfUrl: "pdfs/neon-manual.pdf",
+        pagesCount: 5,
+        summary: "كتيب إرشادات تقني يوضح كيفية استخدام نظام النوافذ العائمة والتفاعل مع قارئ PDF أثناء اللعب.",
+        pagesData: [
+          {
+            title: "القسم 1: تشغيل القارئ العائم",
+            panels: [
+              { type: "neon-accent", header: "زر الـ Overlay العلوي", art: "shield", text: "اضغط على أيقونة النافذة العائمة في شريط العنوان العالي لتحويل القارئ إلى شاشة صغيرة فوق جميع التطبيقات." },
+              { type: "highlight", header: "التحكم بالمقاس والموقع", art: "city", speech: "يمكنك سحب النافذة العائمة إلى أي مكان على الشاشة لتتابع القراءة أثناء ممارسة الألعاب." }
+            ]
+          }
+        ]
+      }
+    ];
+
+    var currentDoc = documents[0];
+    var currentPage = 1;
+    var currentZoom = 1.0;
+    var isExternalPdfLoaded = false;
+    var externalPdfName = "";
+
+    // DOM Elements
+    var lblDocTitle = document.getElementById('lbl-doc-title');
+    var lblDocSub = document.getElementById('lbl-doc-sub');
+    var docStrip = document.getElementById('doc-strip');
+    var sheetWrapper = document.getElementById('sheet-wrapper');
+    var sheetContent = document.getElementById('sheet-content');
+    var sheetNumBadge = document.getElementById('sheet-num-badge');
+    var sheetFooterPage = document.getElementById('sheet-footer-page');
+    var sheetFooterTitle = document.getElementById('sheet-footer-title');
+    var inputPageNum = document.getElementById('input-page-num');
+    var lblTotalPages = document.getElementById('lbl-total-pages');
+    var lblZoomLevel = document.getElementById('lbl-zoom-level');
+    var viewport = document.getElementById('viewport');
+    var noticeExternal = document.getElementById('notice-external');
+    var thumbsContainer = document.getElementById('thumbs-container');
+    var modalDocs = document.getElementById('modal-docs');
+    var modalDocList = document.getElementById('modal-doc-list');
+    var toastEl = document.getElementById('toast-el');
+    var filePicker = document.getElementById('file-picker');
+
+    // Safe Native Haptic trigger
+    function triggerHaptic(type) {
+      if (window.RosTrickDevice && typeof window.RosTrickDevice.haptic === 'function') {
+        try {
+          window.RosTrickDevice.haptic(type || "click");
+        } catch(e) {}
+      }
+    }
+
+    // Safe LocalStorage
+    function getStoredVal(key) {
+      try {
+        return localStorage.getItem(key);
+      } catch(e) {
+        return null;
+      }
+    }
+
+    function setStoredVal(key, val) {
+      try {
+        localStorage.setItem(key, val);
+      } catch(e) {}
+    }
+
+    function showToast(msg) {
+      toastEl.textContent = msg;
+      toastEl.classList.add('show');
+      setTimeout(function() {
+        toastEl.classList.remove('show');
+      }, 2200);
+    }
+
+    // Helper to generate dynamic SVG art placeholders
+    function getArtSvg(artType) {
+      if (artType === 'hero') {
+        return '<svg viewBox="0 0 200 120" xmlns="http://www.w3.org/2000/svg"><rect width="200" height="120" fill="#0A0B16"/><circle cx="100" cy="50" r="30" fill="#6C3BFF"/><path d="M70 110 L100 60 L130 110 Z" fill="#00E5FF"/><circle cx="90" cy="45" r="4" fill="#FFF"/><circle cx="110" cy="45" r="4" fill="#FFF"/></svg>';
+      } else if (artType === 'city') {
+        return '<svg viewBox="0 0 200 120" xmlns="http://www.w3.org/2000/svg"><rect width="200" height="120" fill="#0D0E1A"/><rect x="20" y="40" width="30" height="80" fill="#181B33"/><rect x="60" y="20" width="45" height="100" fill="#24294D"/><rect x="115" y="50" width="35" height="70" fill="#181B33"/><rect x="160" y="30" width="25" height="90" fill="#2A1B4E"/><line x1="0" y1="110" x2="200" y2="110" stroke="#FF3D7F" stroke-width="3"/></svg>';
+      } else if (artType === 'shield') {
+        return '<svg viewBox="0 0 200 120" xmlns="http://www.w3.org/2000/svg"><rect width="200" height="120" fill="#070810"/><polygon points="100,15 140,35 140,75 100,105 60,75 60,35" fill="none" stroke="#00E5FF" stroke-width="4"/><circle cx="100" cy="60" r="18" fill="#FF3D7F"/></svg>';
+      } else if (artType === 'blast') {
+        return '<svg viewBox="0 0 200 120" xmlns="http://www.w3.org/2000/svg"><rect width="200" height="120" fill="#150818"/><polygon points="100,10 120,45 160,50 130,75 140,110 100,90 60,110 70,75 40,50 80,45" fill="#FF3D7F"/><polygon points="100,25 112,50 140,55 118,72 125,98 100,82 75,98 82,72 60,55 88,50" fill="#FFD60A"/></svg>';
+      } else {
+        return '<svg viewBox="0 0 200 120" xmlns="http://www.w3.org/2000/svg"><rect width="200" height="120" fill="#0E1222"/><path d="M20 90 Q100 30 180 90" fill="none" stroke="#00E5FF" stroke-width="3"/><circle cx="100" cy="50" r="20" fill="#FF3D7F"/></svg>';
+      }
+    }
+
+    // Load URL params & comics.json data
+    async function initData() {
+      try {
+        var res = await fetch("comics.json");
+        if (res.ok) {
+          var fetchedComics = await res.json();
+          if (Array.isArray(fetchedComics) && fetchedComics.length > 0) {
+            // merge fetched comics into documents array if they aren't duplicates
+            fetchedComics.forEach(function(item) {
+              var exists = false;
+              for (var i = 0; i < documents.length; i++) {
+                if (documents[i].id === item.id) {
+                  exists = true;
+                  break;
+                }
+              }
+              if (!exists) {
+                documents.push({
+                  id: item.id,
+                  title: item.title,
+                  author: item.author || "مؤلف الكوميكس",
+                  genre: item.genre || "قصة مصورة",
+                  pdfUrl: item.pdfUrl || ("pdfs/" + item.id + ".pdf"),
+                  pagesCount: item.pagesCount || (item.pages ? item.pages.length : 10),
+                  summary: item.summary || item.synopsis || "قصة مصورة ممتعة ضمن تطبيق الكوميكس والألعاب.",
+                  pagesData: item.pages ? item.pages.map(function(p, idx) {
+                    return {
+                      title: "صفحة " + (idx + 1) + ": " + (p.caption || item.title),
+                      panels: [
+                        { type: "neon-accent", header: item.title, art: "hero", text: p.caption || item.summary }
+                      ]
+                    };
+                  }) : null
+                });
+              }
+            });
+          }
+        }
+      } catch(e) {
+        console.log("Using built-in documents list.");
+      }
+
+      // Check URL search query
+      var params = new URLSearchParams(window.location.search);
+      var reqSource = params.get('source') || params.get('id');
+      if (reqSource) {
+        for (var d = 0; d < documents.length; d++) {
+          if (documents[d].id === reqSource || documents[d].pdfUrl === reqSource) {
+            currentDoc = documents[d];
+            break;
+          }
+        }
+      }
+
+      // Check Intent if opened via external app
+      if (window.RosTrickIntent) {
+        try {
+          var initialIntent = await window.RosTrickIntent.getInitial();
+          if (initialIntent && initialIntent.items && initialIntent.items.length > 0) {
+            var fileItem = initialIntent.items[0];
+            loadCustomPdfFile(fileItem.name || "مستند PDF مستلم", fileItem.url || "");
+          }
+        } catch(err) {}
+      }
+
+      renderDocChips();
+      renderModalDocList();
+      selectDocument(currentDoc.id);
+    }
+
+    function renderDocChips() {
+      docStrip.innerHTML = "";
+      documents.forEach(function(doc) {
+        var chip = document.createElement('div');
+        chip.className = 'doc-chip' + (doc.id === currentDoc.id ? ' active' : '');
+        chip.setAttribute('data-id', doc.id);
+        chip.innerHTML = '<svg viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>' + doc.title;
+        chip.addEventListener('click', function() {
+          triggerHaptic("click");
+          selectDocument(doc.id);
+        });
+        docStrip.appendChild(chip);
+      });
+    }
+
+    function renderModalDocList() {
+      modalDocList.innerHTML = "";
+      documents.forEach(function(doc) {
+        var item = document.createElement('div');
+        item.className = 'doc-list-item';
+        item.innerHTML = '<div>' +
+          '<div class="doc-item-title">' + doc.title + '</div>' +
+          '<div class="doc-item-meta">' + doc.genre + ' • ' + doc.pagesCount + ' صفحة</div>' +
+          '</div>' +
+          '<svg style="width:20px;height:20px;fill:var(--accent)" viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>';
+        item.addEventListener('click', function() {
+          triggerHaptic("click");
+          selectDocument(doc.id);
+          closeModal();
+        });
+        modalDocList.appendChild(item);
+      });
+    }
+
+    function selectDocument(docId) {
+      for (var i = 0; i < documents.length; i++) {
+        if (documents[i].id === docId) {
+          currentDoc = documents[i];
+          break;
+        }
+      }
+
+      isExternalPdfLoaded = false;
+      noticeExternal.style.display = "none";
+
+      // Restore saved last page from LocalStorage if available
+      var savedPage = getStoredVal('pdf_last_page_' + currentDoc.id);
+      if (savedPage) {
+        currentPage = parseInt(savedPage, 10) || 1;
+      } else {
+        currentPage = 1;
+      }
+
+      lblDocTitle.textContent = currentDoc.title;
+      lblDocSub.textContent = currentDoc.genre + " • " + currentDoc.author;
+      lblTotalPages.textContent = "/ " + currentDoc.pagesCount;
+      inputPageNum.value = currentPage;
+      inputPageNum.max = currentDoc.pagesCount;
+
+      renderDocChips();
+      renderThumbnails();
+      renderCurrentPage();
+    }
+
+    function loadCustomPdfFile(fileName, fileUrl) {
+      isExternalPdfLoaded = true;
+      externalPdfName = fileName;
+
+      currentDoc = {
+        id: "custom-" + Date.now(),
+        title: fileName,
+        author: "ملف محلي",
+        genre: "مستند PDF",
+        pdfUrl: fileUrl,
+        pagesCount: 12,
+        summary: "ملف PDF مستورد من ذاكرة الجهاز المحلية.",
+        pagesData: []
+      };
+
+      lblDocTitle.textContent = fileName;
+      lblDocSub.textContent = "مستند PDF محلي من الجهاز";
+      lblTotalPages.textContent = "/ " + currentDoc.pagesCount;
+      currentPage = 1;
+      inputPageNum.value = 1;
+      inputPageNum.max = 12;
+
+      noticeExternal.style.display = "flex";
+      renderThumbnails();
+      renderCurrentPage();
+      showToast("تم فتح المستند: " + fileName);
+    }
+
+    function renderCurrentPage() {
+      sheetContent.innerHTML = "";
+      sheetNumBadge.textContent = "صفحة " + currentPage;
+      sheetFooterPage.textContent = currentPage + " / " + currentDoc.pagesCount;
+      sheetFooterTitle.textContent = currentDoc.title;
+
+      if (isExternalPdfLoaded) {
+        // External PDF custom view page layout
+        var box = document.createElement('div');
+        box.className = 'panel-box neon-accent';
+        box.innerHTML = '<div class="panel-title">' +
+          '<svg style="width:18px;height:18px;margin-left:6px;fill:var(--accent)" viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-8 14H6v-2h6v2zm6-4H6v-2h12v2zm0-4H6V6h12v2z"/></svg>' +
+          'صفحة المستند المحلي رقم (' + currentPage + ')' +
+          '</div>' +
+          '<div class="panel-art-preview">' + getArtSvg('shield') + '</div>' +
+          '<div class="panel-text rt-selectable" style="margin-top:10px;">' +
+          'محتوى المعاينة لصفحة ' + currentPage + ' من ملف (' + externalPdfName + '). لقراءة النص الكامل بالخطوط المضمنة، يوصى بالضغط على "فتح خارجي".' +
+          '</div>' +
+          '<div class="speech-bubble">تذكر: يمكنك التفاعل مع هذا المستند وتنقل الصفحات وتدوين الإشارات المرجعية بشكل كامل.</div>';
+        sheetContent.appendChild(box);
+      } else {
+        // Built-in / JSON Comic Document Page
+        var pageInfo = null;
+        if (currentDoc.pagesData && currentDoc.pagesData.length >= currentPage) {
+          pageInfo = currentDoc.pagesData[currentPage - 1];
+        }
+
+        if (!pageInfo) {
+          pageInfo = {
+            title: "الصفحة " + currentPage + " - " + currentDoc.title,
+            panels: [
+              {
+                type: (currentPage % 2 === 0 ? "highlight" : "neon-accent"),
+                header: "لوحة الأحداث - الجزء " + currentPage,
+                art: (currentPage % 3 === 0 ? "city" : (currentPage % 2 === 0 ? "hero" : "blast")),
+                text: currentDoc.summary + " (تابع الأحداث في الصفحة " + currentPage + " من القصة).",
+                speech: "تتواصل المغامرة في هذا الفصل مع المزيد من التشويق والتحديات!"
+              }
+            ]
+          };
+        }
+
+        // Render page title header inside sheet if defined
+        if (pageInfo.title) {
+          var pageHeading = document.createElement('h3');
+          pageHeading.style.color = 'var(--text-main)';
+          pageHeading.style.fontSize = '15px';
+          pageHeading.style.marginBottom = '14px';
+          pageHeading.textContent = pageInfo.title;
+          sheetContent.appendChild(pageHeading);
+        }
+
+        pageInfo.panels.forEach(function(p) {
+          var panelDiv = document.createElement('div');
+          panelDiv.className = 'panel-box ' + (p.type || '');
+          var innerHtml = '<div class="panel-title">' + p.header + '</div>' +
+            '<div class="panel-art-preview">' + getArtSvg(p.art) + '</div>' +
+            '<div class="panel-text rt-selectable">' + p.text + '</div>';
+          if (p.speech) {
+            innerHtml += '<div class="speech-bubble rt-selectable">' + p.speech + '</div>';
+          }
+          panelDiv.innerHTML = innerHtml;
+          sheetContent.appendChild(panelDiv);
+        });
+      }
+
+      // Auto-save progress
+      setStoredVal('pdf_last_page_' + currentDoc.id, currentPage);
+      updateThumbActiveState();
+      viewport.scrollTop = 0;
+    }
+
+    function renderThumbnails() {
+      thumbsContainer.innerHTML = "";
+      var count = Math.min(currentDoc.pagesCount, 20);
+      for (var i = 1; i <= count; i++) {
+        (function(pageNum) {
+          var thumb = document.createElement('div');
+          thumb.className = 'thumb-card' + (pageNum === currentPage ? ' active' : '');
+          thumb.setAttribute('id', 'thumb-p-' + pageNum);
+          thumb.innerHTML = '<span style="font-weight:bold;">' + pageNum + '</span><span>صفحة</span>';
+          thumb.addEventListener('click', function() {
+            triggerHaptic("click");
+            goToPage(pageNum);
+          });
+          thumbsContainer.appendChild(thumb);
+        })(i);
+      }
+    }
+
+    function updateThumbActiveState() {
+      var allThumbs = thumbsContainer.querySelectorAll('.thumb-card');
+      allThumbs.forEach(function(t) {
+        t.classList.remove('active');
+      });
+      var activeT = document.getElementById('thumb-p-' + currentPage);
+      if (activeT) {
+        activeT.classList.add('active');
+        activeT.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+      }
+    }
+
+    function goToPage(num) {
+      if (num < 1) num = 1;
+      if (num > currentDoc.pagesCount) num = currentDoc.pagesCount;
+      currentPage = num;
+      inputPageNum.value = currentPage;
+      renderCurrentPage();
+    }
+
+    // Zoom Controls
+    function setZoom(scale) {
+      if (scale < 0.7) scale = 0.7;
+      if (scale > 2.2) scale = 2.2;
+      currentZoom = scale;
+      sheetWrapper.style.transform = 'scale(' + currentZoom + ')';
+      lblZoomLevel.textContent = Math.round(currentZoom * 100) + '%';
+    }
+
+    // Theme Mode Controller
+    function setThemeMode(mode) {
+      viewport.classList.remove('mode-contrast', 'mode-sepia');
+      document.querySelectorAll('.pill-btn').forEach(function(b) { b.classList.remove('active'); });
+
+      if (mode === 'contrast') {
+        viewport.classList.add('mode-contrast');
+        document.getElementById('mode-contrast').classList.add('active');
+      } else if (mode === 'sepia') {
+        viewport.classList.add('mode-sepia');
+        document.getElementById('mode-sepia').classList.add('active');
+      } else {
+        document.getElementById('mode-default').classList.add('active');
+      }
+    }
+
+    // Floating Overlay Launcher
+    function launchOverlay() {
+      triggerHaptic("click");
+      if (window.RosTrickOverlay && typeof window.RosTrickOverlay.canDraw === 'function') {
+        window.RosTrickOverlay.canDraw().then(function(can) {
+          if (!can) {
+            window.RosTrickOverlay.requestPermission();
+          } else {
+            window.RosTrickOverlay.create({
+              id: "pdf_float_reader",
+              url: "overlay-hub.html?section=pdf",
+              x: 10,
+              y: 40,
+              w: 320,
+              h: 480,
+              gravity: "tr",
+              touchable: true
+            }).then(function() {
+              showToast("تم فتح القارئ العائم فوق التطبيقات!");
+            }).catch(function() {
+              window.location.href = "overlay-hub.html?section=pdf";
+            });
+          }
+        }).catch(function() {
+          window.location.href = "overlay-hub.html?section=pdf";
+        });
+      } else {
+        window.location.href = "overlay-hub.html?section=pdf";
+      }
+    }
+
+    // Share & External View Functions
+    function shareDocument() {
+      triggerHaptic("click");
+      var shareData = {
+        title: currentDoc.title,
+        text: "أقرأ الآن: " + currentDoc.title + " عبر تطبيق الكوميكس والـ Overlay.",
+        url: window.location.href
+      };
+
+      if (window.RosTrickShare && typeof window.RosTrickShare.share === 'function') {
+        window.RosTrickShare.share(shareData);
+      } else if (navigator.clipboard) {
+        navigator.clipboard.writeText(shareData.title + " - " + shareData.text);
+        showToast("تم نسخ رابط ومعلومات المستند إلى الحافظة!");
+      } else {
+        showToast("شارك: " + currentDoc.title);
+      }
+    }
+
+    function openExternalPdf() {
+      triggerHaptic("click");
+      var urlToOpen = currentDoc.pdfUrl || window.location.href;
+      if (window.RosTrickApp && typeof window.RosTrickApp.openExternal === 'function') {
+        window.RosTrickApp.openExternal(urlToOpen);
+      } else {
+        shareDocument();
+      }
+    }
+
+    // Modals
+    function openModal() {
+      modalDocs.classList.add('active');
+    }
+
+    function closeModal() {
+      modalDocs.classList.remove('active');
+    }
+
+    // Event Listeners Registration
+    document.addEventListener('DOMContentLoaded', function() {
+      initData();
+
+      // Navigation Buttons
+      document.getElementById('btn-prev-page').addEventListener('click', function() {
+        triggerHaptic("click");
+        goToPage(currentPage - 1);
+      });
+
+      document.getElementById('btn-next-page').addEventListener('click', function() {
+        triggerHaptic("click");
+        goToPage(currentPage + 1);
+      });
+
+      inputPageNum.addEventListener('change', function() {
+        var val = parseInt(inputPageNum.value, 10);
+        if (!isNaN(val)) {
+          goToPage(val);
+        }
+      });
+
+      // Zoom Buttons
+      document.getElementById('btn-zoom-in').addEventListener('click', function() {
+        triggerHaptic("click");
+        setZoom(currentZoom + 0.15);
+      });
+
+      document.getElementById('btn-zoom-out').addEventListener('click', function() {
+        triggerHaptic("click");
+        setZoom(currentZoom - 0.15);
+      });
+
+      document.getElementById('btn-zoom-reset').addEventListener('click', function() {
+        triggerHaptic("click");
+        setZoom(1.0);
+      });
+
+      // Overlay Button
+      document.getElementById('btn-overlay').addEventListener('click', launchOverlay);
+
+      // Share Button
+      document.getElementById('btn-share').addEventListener('click', shareDocument);
+
+      // External Reader View
+      document.getElementById('btn-external-view').addEventListener('click', openExternalPdf);
+
+      // Bookmark Button
+      document.getElementById('btn-bookmark').addEventListener('click', function() {
+        triggerHaptic("click");
+        setStoredVal('pdf_bookmark_' + currentDoc.id, currentPage);
+        showToast("تم حفظ علامة الإشارة عند الصفحة " + currentPage);
+      });
+
+      // Local File Picker
+      document.getElementById('btn-open-file').addEventListener('click', function() {
+        triggerHaptic("click");
+        filePicker.click();
+      });
+
+      document.getElementById('btn-modal-open-local').addEventListener('click', function() {
+        closeModal();
+        filePicker.click();
+      });
+
+      filePicker.addEventListener('change', function(e) {
+        if (e.target.files && e.target.files.length > 0) {
+          var file = e.target.files[0];
+          var fileUrl = URL.createObjectURL(file);
+          loadCustomPdfFile(file.name, fileUrl);
+        }
+      });
+
+      // Document Modal List Trigger
+      document.getElementById('btn-list-modal').addEventListener('click', function() {
+        triggerHaptic("click");
+        openModal();
+      });
+
+      document.getElementById('btn-close-modal').addEventListener('click', closeModal);
+      modalDocs.addEventListener('click', function(e) {
+        if (e.target === modalDocs) closeModal();
+      });
+
+      // Theme mode pills
+      document.getElementById('mode-default').addEventListener('click', function() {
+        triggerHaptic("click");
+        setThemeMode('normal');
+      });
+      document.getElementById('mode-contrast').addEventListener('click', function() {
+        triggerHaptic("click");
+        setThemeMode('contrast');
+      });
+      document.getElementById('mode-sepia').addEventListener('click', function() {
+        triggerHaptic("click");
+        setThemeMode('sepia');
+      });
+
+      // Keyboard & Hardware Back Button Handling
+      if (window.RosTrickBack && typeof window.RosTrickBack.onBack === 'function') {
+        window.RosTrickBack.onBack(function() {
+          if (modalDocs.classList.contains('active')) {
+            closeModal();
+            return true;
+          }
+          if (currentZoom !== 1.0) {
+            setZoom(1.0);
+            return true;
+          }
+          window.location.href = "home.html";
+          return true;
+        });
+      }
+
+      // Swipe Gesture Support on Viewport for page turning
+      var touchStartX = 0;
+      var touchEndX = 0;
+
+      viewport.addEventListener('touchstart', function(e) {
+        if (e.touches && e.touches.length === 1) {
+          touchStartX = e.touches[0].clientX;
+        }
+      }, { passive: true });
+
+      viewport.addEventListener('touchend', function(e) {
+        if (e.changedTouches && e.changedTouches.length === 1) {
+          touchEndX = e.changedTouches[0].clientX;
+          var diff = touchEndX - touchStartX;
+          if (Math.abs(diff) > 70) {
+            if (diff > 0) {
+              // RTL: Swipe Right -> Previous Page
+              goToPage(currentPage - 1);
+            } else {
+              // RTL: Swipe Left -> Next Page
+              goToPage(currentPage + 1);
+            }
+          }
+        }
+      }, { passive: true });
+
+    });
+  </script>
+</body>
+</html>
