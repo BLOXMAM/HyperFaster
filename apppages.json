@@ -87,10 +87,6 @@
     "op": "update",
     "timestamp": 1795404534020
   },
-  "overlay_hub.html": {
-    "op": "add",
-    "timestamp": 1795369314305
-  },
   "games.html": {
     "op": "add",
     "timestamp": 1795369487480
