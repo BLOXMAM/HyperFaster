@@ -16,14 +16,6 @@
     "searchNames": []
   },
   {
-    "file": "about.html",
-    "title": "حول التطبيق",
-    "icon": "fa-solid fa-file",
-    "hidden": false,
-    "searchEnabled": true,
-    "searchNames": []
-  },
-  {
     "file": "overlay-info.html",
     "title": "الوضع العائم",
     "icon": "fa-solid fa-file",
@@ -60,6 +52,14 @@
     "title": "لعبة الضربة الخاطفة",
     "icon": "fa-solid fa-file",
     "hidden": false,
+    "searchEnabled": true,
+    "searchNames": []
+  },
+  {
+    "file": "about.html",
+    "title": "about",
+    "icon": "fa-solid fa-file",
+    "hidden": true,
     "searchEnabled": true,
     "searchNames": []
   },
