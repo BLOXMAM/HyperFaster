@@ -2,2134 +2,1921 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-<title>كوميكس أوفرلاي - الرئيسية ومكتبة الكوميكس</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1, user-scalable=no">
+<meta name="rostrick-statusbar" content="color=#0A0A16; icons=light; overlay=false">
+<meta name="rostrick-orientation" content="portrait">
+<title>الرئيسية — كوميكس وألعاب أوفرلاي</title>
 <style>
-:root {
-  --primary: #D90429;
-  --primary-dark: #8D0801;
-  --accent: #FFB703;
-  --highlight: #FB8500;
-  --control: #2B2D42;
-  --bg: #F4F5F8;
-  --surface: #FFFFFF;
-  --ink: #141625;
-  --muted: #5C6178;
-  --border: #141625;
-  --success: #0F9D58;
-}
-
-* {
-  box-sizing: border-box;
-  -webkit-tap-highlight-color: transparent;
-}
-
-html, body {
-  margin: 0;
-  padding: 0;
-  background-color: var(--bg);
-  color: var(--ink);
-  font-family: "Segoe UI", Tahoma, Arial, sans-serif;
-  line-height: 1.45;
-  overflow-x: hidden;
-}
-
-body {
-  background-image: radial-gradient(rgba(43, 45, 66, 0.08) 1.2px, transparent 1.2px);
-  background-size: 14px 14px;
-  padding-top: calc(64px + env(safe-area-inset-top));
-  padding-bottom: calc(82px + env(safe-area-inset-bottom));
-}
-
-a {
-  text-decoration: none;
-  color: inherit;
-}
-
-button {
-  font-family: inherit;
-  cursor: pointer;
-  border: none;
-  background: none;
-  padding: 0;
-  color: inherit;
-}
-
-/* Top App Bar */
-.app-bar {
-  position: fixed;
-  top: 0;
-  right: 0;
-  left: 0;
-  z-index: 50;
-  background: var(--control);
-  color: #FFFFFF;
-  border-bottom: 3px solid var(--ink);
-  padding-top: env(safe-area-inset-top);
-  box-shadow: 0 3px 0 rgba(20, 22, 37, 0.25);
-}
-
-.app-bar-inner {
-  height: 60px;
-  padding: 0 12px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.brand-wrap {
-  display: flex;
-  align-items: center;
-  min-width: 0;
-}
-
-.brand-logo {
-  width: 40px;
-  height: 40px;
-  background: var(--primary);
-  border: 2.5px solid #FFFFFF;
-  border-radius: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-left: 10px;
-  flex-shrink: 0;
-  box-shadow: 2px 2px 0 var(--accent);
-}
-
-.brand-text {
-  display: flex;
-  flex-direction: column;
-  min-width: 0;
-}
-
-.brand-title {
-  font-size: 17px;
-  font-weight: 800;
-  letter-spacing: -0.2px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.brand-sub {
-  font-size: 11px;
-  color: var(--accent);
-  font-weight: 700;
-}
-
-.app-bar-actions {
-  display: flex;
-  align-items: center;
-  flex-shrink: 0;
-}
-
-.icon-btn {
-  min-width: 44px;
-  min-height: 44px;
-  border-radius: 10px;
-  background: rgba(255, 255, 255, 0.12);
-  border: 2px solid rgba(255, 255, 255, 0.22);
-  color: #FFFFFF;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-left: 8px;
-  transition: transform 0.12s ease, background-color 0.15s ease;
-}
-
-.icon-btn:last-child {
-  margin-left: 0;
-}
-
-.icon-btn:active {
-  transform: scale(0.94);
-  background: rgba(255, 183, 3, 0.3);
-}
-
-.overlay-pill-btn {
-  min-height: 44px;
-  padding: 0 10px;
-  border-radius: 10px;
-  background: var(--accent);
-  color: var(--ink);
-  border: 2px solid #FFFFFF;
-  font-size: 12px;
-  font-weight: 800;
-  display: flex;
-  align-items: center;
-  margin-left: 8px;
-  box-shadow: 2px 2px 0 var(--primary);
-  transition: transform 0.12s ease;
-}
-
-.overlay-pill-btn:active {
-  transform: translate(1px, 1px);
-  box-shadow: 1px 1px 0 var(--primary);
-}
-
-.overlay-pill-btn svg {
-  margin-left: 5px;
-  flex-shrink: 0;
-}
-
-/* Search Drawer inside header */
-.search-bar-panel {
-  display: none;
-  padding: 8px 12px 12px 12px;
-  background: var(--control);
-  border-top: 1px solid rgba(255, 255, 255, 0.14);
-}
-
-.search-bar-panel.open {
-  display: block;
-}
-
-.search-input-wrap {
-  display: flex;
-  align-items: center;
-  background: #FFFFFF;
-  border: 2.5px solid var(--ink);
-  border-radius: 12px;
-  padding: 0 10px;
-  min-height: 46px;
-}
-
-.search-input-wrap input {
-  flex: 1;
-  border: none;
-  outline: none;
-  font-size: 14px;
-  font-family: inherit;
-  color: var(--ink);
-  background: transparent;
-  padding: 8px 6px;
-}
-
-.clear-search-btn {
-  min-width: 36px;
-  min-height: 36px;
-  display: none;
-  align-items: center;
-  justify-content: center;
-  color: var(--muted);
-}
-
-.clear-search-btn.visible {
-  display: flex;
-}
-
-/* Main Container */
-.main-content {
-  max-width: 820px;
-  margin: 0 auto;
-  padding: 14px 12px 18px 12px;
-}
-
-/* Quick Floating Control Panel (Hero) */
-.control-hero {
-  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-  color: #FFFFFF;
-  border: 3px solid var(--ink);
-  border-radius: 16px;
-  padding: 14px;
-  box-shadow: 4px 4px 0 var(--ink);
-  position: relative;
-  overflow: hidden;
-  margin-bottom: 16px;
-}
-
-.control-hero::after {
-  content: "";
-  position: absolute;
-  top: -24px;
-  left: -24px;
-  width: 110px;
-  height: 110px;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(255, 183, 3, 0.28) 20%, transparent 70%);
-  pointer-events: none;
-}
-
-.hero-top {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  margin-bottom: 12px;
-}
-
-.hero-title-wrap {
-  flex: 1;
-  padding-left: 8px;
-}
-
-.hero-badge {
-  display: inline-flex;
-  align-items: center;
-  background: var(--accent);
-  color: var(--ink);
-  font-size: 11px;
-  font-weight: 800;
-  padding: 3px 9px;
-  border-radius: 999px;
-  border: 2px solid var(--ink);
-  margin-bottom: 6px;
-}
-
-.hero-badge-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: var(--success);
-  margin-left: 6px;
-  border: 1px solid var(--ink);
-}
-
-.hero-badge-dot.inactive {
-  background: var(--primary);
-}
-
-.hero-title {
-  margin: 0 0 4px 0;
-  font-size: 18px;
-  font-weight: 900;
-  line-height: 1.25;
-}
-
-.hero-desc {
-  margin: 0;
-  font-size: 12.5px;
-  color: rgba(255, 255, 255, 0.92);
-}
-
-.overlay-switch-btn {
-  min-width: 92px;
-  min-height: 44px;
-  padding: 8px 10px;
-  border-radius: 12px;
-  background: #FFFFFF;
-  color: var(--ink);
-  border: 2.5px solid var(--ink);
-  box-shadow: 2px 2px 0 var(--ink);
-  font-size: 12px;
-  font-weight: 800;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  transition: transform 0.12s ease, background-color 0.15s ease;
-}
-
-.overlay-switch-btn.active {
-  background: var(--accent);
-}
-
-.overlay-switch-btn:active {
-  transform: translate(2px, 2px);
-  box-shadow: none;
-}
-
-.quick-actions-grid {
-  display: flex;
-  flex-wrap: wrap;
-  margin-right: -4px;
-  margin-left: -4px;
-}
-
-.quick-action-item {
-  width: 33.333%;
-  padding: 4px;
-}
-
-.quick-action-link {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  min-height: 62px;
-  padding: 8px 6px;
-  background: rgba(43, 45, 66, 0.88);
-  color: #FFFFFF;
-  border: 2px solid var(--ink);
-  border-radius: 12px;
-  box-shadow: 2px 2px 0 var(--ink);
-  font-size: 11.5px;
-  font-weight: 700;
-  transition: transform 0.12s ease, background-color 0.15s ease;
-}
-
-.quick-action-link:active {
-  transform: translate(2px, 2px);
-  box-shadow: none;
-  background: var(--control);
-}
-
-.quick-action-link svg {
-  margin-bottom: 4px;
-  color: var(--accent);
-}
-
-/* Resume Reading Banner */
-.resume-banner {
-  display: none;
-  background: var(--surface);
-  border: 2.5px solid var(--ink);
-  border-radius: 14px;
-  padding: 10px 12px;
-  margin-bottom: 16px;
-  box-shadow: 3px 3px 0 var(--accent);
-  align-items: center;
-  justify-content: space-between;
-}
-
-.resume-banner.visible {
-  display: flex;
-}
-
-.resume-info {
-  display: flex;
-  align-items: center;
-  min-width: 0;
-  flex: 1;
-  padding-left: 10px;
-}
-
-.resume-icon {
-  width: 42px;
-  height: 42px;
-  border-radius: 10px;
-  background: var(--highlight);
-  color: #FFFFFF;
-  border: 2px solid var(--ink);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-left: 10px;
-  flex-shrink: 0;
-}
-
-.resume-text {
-  min-width: 0;
-}
-
-.resume-label {
-  font-size: 11px;
-  font-weight: 800;
-  color: var(--primary);
-}
-
-.resume-title {
-  font-size: 14px;
-  font-weight: 800;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.resume-meta {
-  font-size: 11.5px;
-  color: var(--muted);
-}
-
-.resume-go-btn {
-  min-height: 44px;
-  padding: 0 14px;
-  border-radius: 10px;
-  background: var(--control);
-  color: #FFFFFF;
-  font-size: 12.5px;
-  font-weight: 800;
-  border: 2px solid var(--ink);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-}
-
-.resume-go-btn:active {
-  transform: scale(0.96);
-}
-
-/* Section Headers */
-.section-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin: 18px 0 10px 0;
-}
-
-.section-title-group {
-  display: flex;
-  align-items: center;
-}
-
-.section-accent-bar {
-  width: 6px;
-  height: 22px;
-  background: var(--primary);
-  border: 1.5px solid var(--ink);
-  border-radius: 4px;
-  margin-left: 8px;
-}
-
-.section-accent-bar.yellow {
-  background: var(--accent);
-}
-
-.section-accent-bar.orange {
-  background: var(--highlight);
-}
-
-.section-title {
-  margin: 0;
-  font-size: 17px;
-  font-weight: 900;
-  color: var(--ink);
-}
-
-.section-more-link {
-  min-height: 44px;
-  padding: 0 10px;
-  display: inline-flex;
-  align-items: center;
-  font-size: 12.5px;
-  font-weight: 800;
-  color: var(--primary);
-  border-radius: 10px;
-}
-
-.section-more-link:active {
-  background: rgba(217, 4, 41, 0.08);
-}
-
-.section-more-link svg {
-  margin-right: 4px;
-}
-
-/* Filter Chips */
-.chips-scroll {
-  display: flex;
-  overflow-x: auto;
-  padding-bottom: 6px;
-  margin-bottom: 10px;
-  -webkit-overflow-scrolling: touch;
-}
-
-.chips-scroll::-webkit-scrollbar {
-  display: none;
-}
-
-.filter-chip {
-  min-height: 40px;
-  padding: 6px 14px;
-  border-radius: 999px;
-  background: var(--surface);
-  color: var(--ink);
-  border: 2px solid var(--ink);
-  font-size: 12.5px;
-  font-weight: 700;
-  white-space: nowrap;
-  margin-left: 8px;
-  flex-shrink: 0;
-  box-shadow: 2px 2px 0 rgba(20, 22, 37, 0.15);
-  transition: background-color 0.15s ease, color 0.15s ease;
-}
-
-.filter-chip:last-child {
-  margin-left: 0;
-}
-
-.filter-chip.active {
-  background: var(--ink);
-  color: var(--accent);
-}
-
-.filter-chip:active {
-  transform: scale(0.96);
-}
-
-/* Comics List Cards */
-.comics-grid {
-  display: flex;
-  flex-wrap: wrap;
-  margin-right: -5px;
-  margin-left: -5px;
-}
-
-.comic-col {
-  width: 100%;
-  padding: 5px;
-}
-
-@media (min-width: 600px) {
-  .comic-col {
-    width: 50%;
-  }
-}
-
-.comic-card {
-  background: var(--surface);
-  border: 2.5px solid var(--ink);
-  border-radius: 14px;
-  padding: 10px;
-  box-shadow: 3px 3px 0 var(--ink);
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  transition: transform 0.12s ease;
-}
-
-.comic-card-main {
-  display: flex;
-  align-items: stretch;
-  margin-bottom: 10px;
-}
-
-.comic-cover-wrap {
-  width: 92px;
-  height: 112px;
-  border-radius: 10px;
-  border: 2.5px solid var(--ink);
-  overflow: hidden;
-  background: var(--control);
-  flex-shrink: 0;
-  margin-left: 11px;
-  position: relative;
-}
-
-.comic-cover-wrap img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
-
-.comic-pages-tag {
-  position: absolute;
-  bottom: 4px;
-  left: 4px;
-  background: rgba(20, 22, 37, 0.88);
-  color: var(--accent);
-  font-size: 10px;
-  font-weight: 800;
-  padding: 2px 6px;
-  border-radius: 6px;
-}
-
-.comic-body {
-  flex: 1;
-  min-width: 0;
-  display: flex;
-  flex-direction: column;
-}
-
-.comic-top-row {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  margin-bottom: 4px;
-}
-
-.genre-badge {
-  display: inline-block;
-  background: var(--accent);
-  color: var(--ink);
-  border: 1.5px solid var(--ink);
-  font-size: 10.5px;
-  font-weight: 800;
-  padding: 2px 8px;
-  border-radius: 6px;
-  max-width: 140px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.fav-btn {
-  min-width: 44px;
-  min-height: 44px;
-  margin: -8px -6px -8px 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--muted);
-  border-radius: 10px;
-}
-
-.fav-btn.saved {
-  color: var(--primary);
-}
-
-.fav-btn:active {
-  transform: scale(0.9);
-}
-
-.comic-title {
-  margin: 0 0 2px 0;
-  font-size: 15px;
-  font-weight: 900;
-  color: var(--ink);
-  line-height: 1.3;
-}
-
-.comic-author {
-  font-size: 12px;
-  font-weight: 700;
-  color: var(--muted);
-  margin-bottom: 5px;
-}
-
-.comic-summary {
-  margin: 0;
-  font-size: 12px;
-  color: #393D52;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-
-.comic-actions {
-  display: flex;
-  align-items: center;
-  margin-top: auto;
-}
-
-.btn-read-primary {
-  flex: 1;
-  min-height: 44px;
-  border-radius: 10px;
-  background: var(--primary);
-  color: #FFFFFF;
-  border: 2px solid var(--ink);
-  font-size: 12.5px;
-  font-weight: 800;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-left: 7px;
-  box-shadow: 2px 2px 0 var(--ink);
-  transition: transform 0.12s ease;
-}
-
-.btn-read-primary:active {
-  transform: translate(2px, 2px);
-  box-shadow: none;
-}
-
-.btn-read-primary svg {
-  margin-left: 5px;
-}
-
-.btn-float-secondary {
-  min-height: 44px;
-  padding: 0 11px;
-  border-radius: 10px;
-  background: var(--accent);
-  color: var(--ink);
-  border: 2px solid var(--ink);
-  font-size: 12px;
-  font-weight: 800;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-left: 7px;
-  box-shadow: 2px 2px 0 var(--ink);
-  transition: transform 0.12s ease;
-}
-
-.btn-float-secondary:active {
-  transform: translate(2px, 2px);
-  box-shadow: none;
-}
-
-.btn-float-secondary svg {
-  margin-left: 4px;
-}
-
-.btn-info-outline {
-  min-width: 44px;
-  min-height: 44px;
-  border-radius: 10px;
-  background: var(--bg);
-  color: var(--ink);
-  border: 2px solid var(--ink);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.btn-info-outline:active {
-  background: #E2E4EC;
-}
-
-/* PDF Links Horizontal / List Cards */
-.pdf-scroll-list {
-  display: flex;
-  overflow-x: auto;
-  padding: 2px 2px 8px 2px;
-  -webkit-overflow-scrolling: touch;
-}
-
-.pdf-scroll-list::-webkit-scrollbar {
-  display: none;
-}
-
-.pdf-card {
-  width: 240px;
-  flex-shrink: 0;
-  background: var(--surface);
-  border: 2.5px solid var(--ink);
-  border-radius: 14px;
-  padding: 10px;
-  margin-left: 10px;
-  box-shadow: 3px 3px 0 var(--ink);
-  display: flex;
-  flex-direction: column;
-}
-
-.pdf-card:last-child {
-  margin-left: 0;
-}
-
-.pdf-card-head {
-  display: flex;
-  align-items: center;
-  margin-bottom: 8px;
-}
-
-.pdf-thumb {
-  width: 52px;
-  height: 52px;
-  border-radius: 10px;
-  border: 2px solid var(--ink);
-  background: var(--control);
-  overflow: hidden;
-  flex-shrink: 0;
-  margin-left: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--accent);
-}
-
-.pdf-thumb img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
-
-.pdf-meta {
-  min-width: 0;
-  flex: 1;
-}
-
-.pdf-cat {
-  display: inline-block;
-  font-size: 10.5px;
-  font-weight: 800;
-  color: var(--primary-dark);
-  background: rgba(251, 133, 0, 0.18);
-  padding: 2px 7px;
-  border-radius: 6px;
-  margin-bottom: 3px;
-}
-
-.pdf-title {
-  margin: 0;
-  font-size: 13.5px;
-  font-weight: 800;
-  color: var(--ink);
-  line-height: 1.3;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-
-.pdf-url-tag {
-  font-size: 11px;
-  color: var(--muted);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  margin-bottom: 9px;
-  direction: ltr;
-  text-align: right;
-}
-
-.pdf-open-btn {
-  margin-top: auto;
-  min-height: 44px;
-  border-radius: 10px;
-  background: var(--control);
-  color: #FFFFFF;
-  border: 2px solid var(--ink);
-  font-size: 12.5px;
-  font-weight: 800;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.pdf-open-btn svg {
-  margin-left: 6px;
-  color: var(--accent);
-}
-
-.pdf-open-btn:active {
-  background: var(--ink);
-}
-
-/* Mini-Games Strip */
-.games-grid {
-  display: flex;
-  flex-wrap: wrap;
-  margin-right: -5px;
-  margin-left: -5px;
-}
-
-.game-col {
-  width: 50%;
-  padding: 5px;
-}
-
-@media (min-width: 600px) {
-  .game-col {
-    width: 25%;
-  }
-}
-
-.game-card {
-  background: var(--control);
-  color: #FFFFFF;
-  border: 2.5px solid var(--ink);
-  border-radius: 14px;
-  padding: 10px;
-  box-shadow: 3px 3px 0 var(--ink);
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-}
-
-.game-cover-box {
-  position: relative;
-  width: 100%;
-  height: 104px;
-  border-radius: 10px;
-  border: 2px solid #FFFFFF;
-  overflow: hidden;
-  margin-bottom: 8px;
-  background: #141625;
-}
-
-.game-cover-box img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
-
-.game-overlay-chip {
-  position: absolute;
-  top: 6px;
-  right: 6px;
-  background: var(--accent);
-  color: var(--ink);
-  border: 1.5px solid var(--ink);
-  font-size: 10px;
-  font-weight: 800;
-  padding: 2px 6px;
-  border-radius: 6px;
-}
-
-.game-title {
-  margin: 0 0 4px 0;
-  font-size: 13.5px;
-  font-weight: 800;
-  color: #FFFFFF;
-}
-
-.game-desc {
-  margin: 0 0 10px 0;
-  font-size: 11px;
-  color: rgba(255, 255, 255, 0.8);
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-
-.game-btns {
-  margin-top: auto;
-  display: flex;
-  align-items: center;
-}
-
-.game-play-btn {
-  flex: 1;
-  min-height: 44px;
-  border-radius: 9px;
-  background: var(--highlight);
-  color: var(--ink);
-  border: 2px solid var(--ink);
-  font-size: 12px;
-  font-weight: 900;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-left: 6px;
-}
-
-.game-play-btn:active {
-  transform: scale(0.96);
-}
-
-.game-float-btn {
-  min-width: 44px;
-  min-height: 44px;
-  border-radius: 9px;
-  background: rgba(255, 255, 255, 0.14);
-  color: var(--accent);
-  border: 2px solid rgba(255, 255, 255, 0.3);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.game-float-btn:active {
-  background: rgba(255, 183, 3, 0.25);
-}
-
-/* Loading & Empty / Error States */
-.status-box {
-  background: var(--surface);
-  border: 2.5px dashed var(--muted);
-  border-radius: 14px;
-  padding: 20px 14px;
-  text-align: center;
-  margin: 8px 0;
-}
-
-.status-box p {
-  margin: 0 0 10px 0;
-  font-size: 13.5px;
-  font-weight: 700;
-  color: var(--muted);
-}
-
-.retry-btn {
-  min-height: 44px;
-  padding: 0 18px;
-  border-radius: 10px;
-  background: var(--primary);
-  color: #FFFFFF;
-  border: 2px solid var(--ink);
-  font-size: 13px;
-  font-weight: 800;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.skeleton-card {
-  height: 132px;
-  border-radius: 14px;
-  background: linear-gradient(90deg, #E5E7EF 25%, #F1F2F7 50%, #E5E7EF 75%);
-  background-size: 200% 100%;
-  animation: shimmer 1.2s infinite;
-  border: 2px solid #D1D4E0;
-  margin-bottom: 10px;
-}
-
-@keyframes shimmer {
-  0% { background-position: 200% 0; }
-  100% { background-position: -200% 0; }
-}
-
-/* Bottom Sheet Modal for Comic Details */
-.sheet-backdrop {
-  position: fixed;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  background: rgba(20, 22, 37, 0.68);
-  z-index: 90;
-  display: none;
-  align-items: flex-end;
-  justify-content: center;
-}
-
-.sheet-backdrop.open {
-  display: flex;
-}
-
-.bottom-sheet {
-  width: 100%;
-  max-width: 600px;
-  background: var(--surface);
-  border-top: 3px solid var(--ink);
-  border-right: 3px solid var(--ink);
-  border-left: 3px solid var(--ink);
-  border-top-right-radius: 20px;
-  border-top-left-radius: 20px;
-  padding: 14px 16px calc(18px + env(safe-area-inset-bottom)) 16px;
-  max-height: 85vh;
-  overflow-y: auto;
-  animation: slideUp 0.18s ease-out;
-}
-
-@keyframes slideUp {
-  from { transform: translateY(40px); opacity: 0.7; }
-  to { transform: translateY(0); opacity: 1; }
-}
-
-.sheet-handle {
-  width: 44px;
-  height: 5px;
-  background: #C7CBD8;
-  border-radius: 4px;
-  margin: 0 auto 12px auto;
-}
-
-.sheet-header {
-  display: flex;
-  align-items: flex-start;
-  margin-bottom: 12px;
-}
-
-.sheet-cover {
-  width: 86px;
-  height: 106px;
-  border-radius: 12px;
-  border: 2.5px solid var(--ink);
-  overflow: hidden;
-  flex-shrink: 0;
-  margin-left: 12px;
-}
-
-.sheet-cover img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
-
-.sheet-meta {
-  flex: 1;
-  min-width: 0;
-}
-
-.sheet-title {
-  margin: 4px 0;
-  font-size: 17px;
-  font-weight: 900;
-}
-
-.sheet-author {
-  font-size: 13px;
-  color: var(--muted);
-  font-weight: 700;
-  margin-bottom: 4px;
-}
-
-.sheet-pdf-path {
-  font-size: 11.5px;
-  background: var(--bg);
-  border: 1.5px solid #D1D4E0;
-  border-radius: 8px;
-  padding: 6px 8px;
-  margin-bottom: 10px;
-  direction: ltr;
-  text-align: right;
-  word-break: break-all;
-}
-
-.sheet-summary {
-  font-size: 13.5px;
-  color: var(--ink);
-  margin: 0 0 14px 0;
-  line-height: 1.55;
-}
-
-.sheet-actions {
-  display: flex;
-  flex-wrap: wrap;
-}
-
-.sheet-actions a,
-.sheet-actions button {
-  min-height: 46px;
-  border-radius: 12px;
-  font-size: 13px;
-  font-weight: 800;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 2px solid var(--ink);
-}
-
-.sheet-btn-read {
-  flex: 1;
-  background: var(--primary);
-  color: #FFFFFF;
-  margin-left: 8px;
-  box-shadow: 2px 2px 0 var(--ink);
-}
-
-.sheet-btn-float {
-  flex: 1;
-  background: var(--accent);
-  color: var(--ink);
-  box-shadow: 2px 2px 0 var(--ink);
-}
-
-.sheet-close-btn {
-  width: 100%;
-  margin-top: 10px;
-  background: var(--bg);
-  color: var(--ink);
-}
-
-/* Bottom Navigation Bar */
-.bottom-nav {
-  position: fixed;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  z-index: 60;
-  background: var(--surface);
-  border-top: 3px solid var(--ink);
-  padding-bottom: env(safe-area-inset-bottom);
-  box-shadow: 0 -2px 8px rgba(20, 22, 37, 0.08);
-}
-
-.bottom-nav-inner {
-  max-width: 820px;
-  margin: 0 auto;
-  height: 62px;
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
-}
-
-.nav-item {
-  flex: 1;
-  min-height: 52px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  color: var(--muted);
-  font-size: 10.5px;
-  font-weight: 700;
-  padding: 4px 2px;
-  border-radius: 10px;
-  transition: color 0.15s ease, transform 0.12s ease;
-}
-
-.nav-item svg {
-  margin-bottom: 3px;
-}
-
-.nav-item.active {
-  color: var(--primary);
-  font-weight: 900;
-}
-
-.nav-item.active .nav-icon-pill {
-  background: rgba(217, 4, 41, 0.13);
-  border-radius: 12px;
-  padding: 3px 12px;
-  margin-bottom: 2px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.nav-icon-pill {
-  padding: 3px 12px;
-  margin-bottom: 2px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.nav-icon-pill svg {
-  margin-bottom: 0;
-}
-
-.nav-item:active {
-  transform: scale(0.94);
-}
-
-/* Toast Notification */
-.toast {
-  position: fixed;
-  bottom: calc(78px + env(safe-area-inset-bottom));
-  right: 50%;
-  transform: translateX(50%) translateY(16px);
-  background: var(--ink);
-  color: #FFFFFF;
-  border: 2px solid var(--accent);
-  border-radius: 12px;
-  padding: 10px 16px;
-  font-size: 12.5px;
-  font-weight: 700;
-  z-index: 100;
-  opacity: 0;
-  pointer-events: none;
-  white-space: nowrap;
-  transition: opacity 0.2s ease, transform 0.2s ease;
-}
-
-.toast.show {
-  opacity: 1;
-  transform: translateX(50%) translateY(0);
+:root{
+  --primary:#6C3BFF;
+  --primary-dark:#4A22C9;
+  --accent:#00E5FF;
+  --highlight:#FF3D7F;
+  --control:#B8B5D1;
+  --bg:#0A0A16;
+  --bg-elevated:#13132B;
+  --bg-card:#181836;
+  --border-glow:rgba(108,59,255,0.42);
+  --text-main:#FFFFFF;
+  --text-muted:#B8B5D1;
+}
+*{
+  box-sizing:border-box;
+  -webkit-tap-highlight-color:transparent;
+}
+html,body{
+  margin:0;
+  padding:0;
+  background-color:var(--bg);
+  color:var(--text-main);
+  font-family:system-ui,-apple-system,"Segoe UI",Tahoma,Arial,sans-serif;
+  line-height:1.5;
+  overflow-x:hidden;
+}
+a{
+  color:inherit;
+  text-decoration:none;
+}
+button{
+  font-family:inherit;
+  color:inherit;
+  border:none;
+  background:none;
+  cursor:pointer;
+  padding:0;
+}
+img{
+  display:block;
+  max-width:100%;
+}
+.app-bg{
+  position:fixed;
+  top:0;
+  right:0;
+  bottom:0;
+  left:0;
+  z-index:0;
+  pointer-events:none;
+  background-image:
+    radial-gradient(circle at 15% 12%, rgba(108,59,255,0.22) 0%, transparent 42%),
+    radial-gradient(circle at 88% 28%, rgba(0,229,255,0.14) 0%, transparent 38%),
+    radial-gradient(circle at 50% 85%, rgba(255,61,127,0.12) 0%, transparent 45%),
+    radial-gradient(rgba(184,181,209,0.08) 1px, transparent 1px);
+  background-size:100% 100%, 100% 100%, 100% 100%, 18px 18px;
+}
+.app-shell{
+  position:relative;
+  z-index:1;
+  min-height:100vh;
+  padding-top:calc(68px + env(safe-area-inset-top));
+  padding-bottom:calc(86px + env(safe-area-inset-bottom));
+}
+.top-bar{
+  position:fixed;
+  top:0;
+  right:0;
+  left:0;
+  z-index:30;
+  padding-top:env(safe-area-inset-top);
+  background:rgba(10,10,22,0.92);
+  border-bottom:1px solid rgba(108,59,255,0.35);
+  box-shadow:0 6px 24px rgba(0,0,0,0.45);
+}
+.top-bar-inner{
+  height:64px;
+  padding:0 16px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+}
+.brand{
+  display:flex;
+  align-items:center;
+  min-width:0;
+}
+.brand-badge{
+  width:42px;
+  height:42px;
+  border-radius:12px;
+  background:linear-gradient(135deg,var(--primary),var(--highlight));
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  margin-left:10px;
+  box-shadow:0 0 16px rgba(108,59,255,0.55);
+  flex-shrink:0;
+}
+.brand-text{
+  min-width:0;
+}
+.brand-title{
+  font-size:16px;
+  font-weight:800;
+  letter-spacing:0.2px;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+.brand-sub{
+  font-size:11px;
+  color:var(--accent);
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+.top-actions{
+  display:flex;
+  align-items:center;
+  flex-shrink:0;
+}
+.overlay-status-btn{
+  min-height:44px;
+  padding:0 12px;
+  border-radius:22px;
+  background:rgba(0,229,255,0.12);
+  border:1px solid rgba(0,229,255,0.45);
+  color:var(--accent);
+  font-size:12px;
+  font-weight:700;
+  display:inline-flex;
+  align-items:center;
+  margin-left:8px;
+  transition:transform 0.14s ease, background-color 0.2s ease;
+}
+.overlay-status-btn.active{
+  background:rgba(255,61,127,0.18);
+  border-color:var(--highlight);
+  color:#FFFFFF;
+  box-shadow:0 0 14px rgba(255,61,127,0.4);
+}
+.overlay-status-btn:active{
+  transform:scale(0.95);
+}
+.status-dot{
+  width:8px;
+  height:8px;
+  border-radius:50%;
+  background:var(--accent);
+  margin-left:6px;
+  box-shadow:0 0 8px var(--accent);
+}
+.overlay-status-btn.active .status-dot{
+  background:var(--highlight);
+  box-shadow:0 0 8px var(--highlight);
+}
+.icon-btn{
+  width:44px;
+  height:44px;
+  border-radius:12px;
+  background:var(--bg-elevated);
+  border:1px solid rgba(184,181,209,0.2);
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  color:var(--control);
+  transition:transform 0.14s ease, border-color 0.2s ease;
+}
+.icon-btn:active{
+  transform:scale(0.92);
+  border-color:var(--accent);
+}
+.container{
+  padding:14px 16px 20px 16px;
+  max-width:720px;
+  margin:0 auto;
+}
+.intent-banner{
+  display:none;
+  margin-bottom:14px;
+  padding:14px;
+  border-radius:16px;
+  background:linear-gradient(135deg, rgba(0,229,255,0.18), rgba(108,59,255,0.25));
+  border:1px solid var(--accent);
+  box-shadow:0 0 18px rgba(0,229,255,0.2);
+}
+.intent-banner.visible{
+  display:block;
+}
+.intent-row{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+}
+.intent-info{
+  min-width:0;
+  margin-left:10px;
+}
+.intent-label{
+  font-size:12px;
+  color:var(--accent);
+  font-weight:700;
+}
+.intent-name{
+  font-size:14px;
+  font-weight:700;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+.hero-card{
+  position:relative;
+  overflow:hidden;
+  border-radius:20px;
+  padding:18px;
+  margin-bottom:18px;
+  background:linear-gradient(145deg, #1B1545 0%, #101028 60%, #241034 100%);
+  border:2px solid var(--primary);
+  box-shadow:0 8px 28px rgba(108,59,255,0.3), inset 0 0 24px rgba(0,229,255,0.08);
+}
+.hero-halftone{
+  position:absolute;
+  top:0;
+  left:0;
+  width:140px;
+  height:140px;
+  opacity:0.18;
+  pointer-events:none;
+  background-image:radial-gradient(var(--accent) 2px, transparent 2px);
+  background-size:10px 10px;
+}
+.hero-tag{
+  display:inline-flex;
+  align-items:center;
+  padding:4px 10px;
+  border-radius:999px;
+  background:rgba(255,61,127,0.2);
+  border:1px solid var(--highlight);
+  color:#FF9EC0;
+  font-size:11px;
+  font-weight:800;
+  margin-bottom:10px;
+}
+.hero-title{
+  margin:0 0 6px 0;
+  font-size:21px;
+  font-weight:900;
+  line-height:1.3;
+}
+.hero-desc{
+  margin:0 0 16px 0;
+  font-size:13px;
+  color:var(--text-muted);
+}
+.hero-actions{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:center;
+}
+.btn-neon{
+  min-height:44px;
+  padding:0 16px;
+  border-radius:12px;
+  background:linear-gradient(135deg, var(--primary), var(--primary-dark));
+  border:1px solid rgba(0,229,255,0.45);
+  color:#FFFFFF;
+  font-size:13px;
+  font-weight:800;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  box-shadow:0 4px 16px rgba(108,59,255,0.45);
+  margin-left:10px;
+  margin-bottom:8px;
+  transition:transform 0.14s ease, box-shadow 0.2s ease;
+}
+.btn-neon:active{
+  transform:scale(0.96);
+}
+.btn-accent{
+  min-height:44px;
+  padding:0 16px;
+  border-radius:12px;
+  background:rgba(0,229,255,0.14);
+  border:1px solid var(--accent);
+  color:var(--accent);
+  font-size:13px;
+  font-weight:800;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  margin-bottom:8px;
+  transition:transform 0.14s ease, background-color 0.2s ease;
+}
+.btn-accent:active{
+  transform:scale(0.96);
+  background:rgba(0,229,255,0.24);
+}
+.btn-highlight{
+  min-height:44px;
+  padding:0 14px;
+  border-radius:12px;
+  background:linear-gradient(135deg, var(--highlight), #C91E5A);
+  color:#FFFFFF;
+  font-size:13px;
+  font-weight:800;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  box-shadow:0 4px 14px rgba(255,61,127,0.4);
+  transition:transform 0.14s ease;
+}
+.btn-highlight:active{
+  transform:scale(0.96);
+}
+.btn-icon-svg{
+  margin-left:6px;
+  flex-shrink:0;
+}
+.resume-card{
+  display:none;
+  margin-bottom:18px;
+  padding:14px;
+  border-radius:16px;
+  background:var(--bg-card);
+  border:1px solid rgba(0,229,255,0.35);
+  box-shadow:0 4px 18px rgba(0,0,0,0.35);
+}
+.resume-card.visible{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+}
+.resume-meta{
+  min-width:0;
+  margin-left:12px;
+}
+.resume-kicker{
+  font-size:11px;
+  color:var(--accent);
+  font-weight:700;
+}
+.resume-title{
+  font-size:14px;
+  font-weight:800;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+.resume-sub{
+  font-size:12px;
+  color:var(--text-muted);
+}
+.section-header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom:12px;
+  margin-top:6px;
+}
+.section-title-wrap{
+  display:flex;
+  align-items:center;
+}
+.section-bar{
+  width:4px;
+  height:20px;
+  border-radius:4px;
+  background:linear-gradient(180deg,var(--accent),var(--primary));
+  margin-left:8px;
+}
+.section-title{
+  margin:0;
+  font-size:17px;
+  font-weight:900;
+}
+.section-link{
+  min-height:44px;
+  padding:0 10px;
+  display:inline-flex;
+  align-items:center;
+  font-size:13px;
+  font-weight:700;
+  color:var(--accent);
+  border-radius:10px;
+}
+.section-link:active{
+  background:rgba(0,229,255,0.12);
+}
+.portal-grid{
+  display:flex;
+  flex-direction:column;
+  margin-bottom:20px;
+}
+.portal-card{
+  background:var(--bg-card);
+  border:1px solid var(--border-glow);
+  border-radius:16px;
+  padding:14px;
+  margin-bottom:12px;
+  box-shadow:0 6px 20px rgba(0,0,0,0.32);
+  transition:transform 0.14s ease, border-color 0.2s ease;
+}
+.portal-card:last-child{
+  margin-bottom:0;
+}
+.portal-top{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom:10px;
+}
+.portal-main{
+  display:flex;
+  align-items:center;
+  min-width:0;
+}
+.portal-icon{
+  width:46px;
+  height:46px;
+  border-radius:13px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  margin-left:12px;
+  flex-shrink:0;
+}
+.portal-icon.comics{
+  background:rgba(108,59,255,0.22);
+  border:1px solid var(--primary);
+  color:#C4B5FF;
+}
+.portal-icon.pdf{
+  background:rgba(0,229,255,0.16);
+  border:1px solid var(--accent);
+  color:var(--accent);
+}
+.portal-icon.games{
+  background:rgba(255,61,127,0.18);
+  border:1px solid var(--highlight);
+  color:#FF8AB2;
+}
+.portal-info{
+  min-width:0;
+}
+.portal-name{
+  font-size:15px;
+  font-weight:800;
+}
+.portal-sub{
+  font-size:12px;
+  color:var(--text-muted);
+}
+.portal-badge{
+  padding:4px 10px;
+  border-radius:999px;
+  background:rgba(255,255,255,0.06);
+  border:1px solid rgba(184,181,209,0.22);
+  font-size:11px;
+  font-weight:700;
+  color:var(--control);
+  flex-shrink:0;
+}
+.portal-actions{
+  display:flex;
+  align-items:center;
+}
+.portal-enter{
+  flex:1;
+  min-height:44px;
+  border-radius:11px;
+  background:rgba(108,59,255,0.22);
+  border:1px solid rgba(108,59,255,0.55);
+  color:#FFFFFF;
+  font-size:13px;
+  font-weight:800;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  margin-left:8px;
+  transition:transform 0.14s ease;
+}
+.portal-enter:active{
+  transform:scale(0.97);
+}
+.portal-overlay-btn{
+  min-height:44px;
+  padding:0 14px;
+  border-radius:11px;
+  background:rgba(0,229,255,0.12);
+  border:1px solid rgba(0,229,255,0.45);
+  color:var(--accent);
+  font-size:12px;
+  font-weight:800;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  flex-shrink:0;
+  transition:transform 0.14s ease;
+}
+.portal-overlay-btn:active{
+  transform:scale(0.96);
+}
+.h-scroll{
+  display:flex;
+  overflow-x:auto;
+  padding-bottom:8px;
+  margin-bottom:18px;
+  -webkit-overflow-scrolling:touch;
+}
+.h-scroll::-webkit-scrollbar{
+  display:none;
+}
+.comic-card{
+  width:210px;
+  flex-shrink:0;
+  background:var(--bg-card);
+  border:1px solid var(--border-glow);
+  border-radius:16px;
+  overflow:hidden;
+  margin-left:12px;
+  display:flex;
+  flex-direction:column;
+  box-shadow:0 8px 20px rgba(0,0,0,0.35);
+}
+.comic-card:last-child{
+  margin-left:0;
+}
+.comic-cover-wrap{
+  position:relative;
+  height:140px;
+  background:#0E0E22;
+  overflow:hidden;
+  border-bottom:2px solid var(--primary);
+}
+.comic-cover-img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+.comic-genre{
+  position:absolute;
+  top:8px;
+  right:8px;
+  padding:3px 8px;
+  border-radius:8px;
+  background:rgba(10,10,22,0.86);
+  border:1px solid var(--accent);
+  color:var(--accent);
+  font-size:10px;
+  font-weight:800;
+}
+.comic-body{
+  padding:12px;
+  display:flex;
+  flex-direction:column;
+  flex:1;
+}
+.comic-title{
+  margin:0 0 4px 0;
+  font-size:14px;
+  font-weight:800;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+.comic-author{
+  font-size:11px;
+  color:var(--text-muted);
+  margin-bottom:8px;
+}
+.progress-track{
+  width:100%;
+  height:6px;
+  border-radius:4px;
+  background:rgba(255,255,255,0.1);
+  overflow:hidden;
+  margin-bottom:6px;
+}
+.progress-fill{
+  height:100%;
+  background:linear-gradient(90deg,var(--accent),var(--highlight));
+  border-radius:4px;
+}
+.comic-progress-text{
+  font-size:11px;
+  color:var(--control);
+  margin-bottom:10px;
+}
+.card-btn-row{
+  margin-top:auto;
+  display:flex;
+  align-items:center;
+}
+.card-primary-link{
+  flex:1;
+  min-height:44px;
+  border-radius:10px;
+  background:var(--primary);
+  color:#FFFFFF;
+  font-size:12px;
+  font-weight:800;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  margin-left:6px;
+}
+.card-primary-link:active{
+  background:var(--primary-dark);
+}
+.card-float-btn{
+  width:44px;
+  height:44px;
+  border-radius:10px;
+  background:rgba(0,229,255,0.12);
+  border:1px solid rgba(0,229,255,0.45);
+  color:var(--accent);
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  flex-shrink:0;
+}
+.card-float-btn:active{
+  transform:scale(0.94);
+}
+.pdf-box{
+  background:linear-gradient(135deg, #161838, #101A33);
+  border:1px solid rgba(0,229,255,0.42);
+  border-radius:18px;
+  padding:16px;
+  margin-bottom:20px;
+  box-shadow:0 8px 24px rgba(0,0,0,0.35);
+}
+.pdf-box-head{
+  display:flex;
+  align-items:flex-start;
+  margin-bottom:12px;
+}
+.pdf-box-icon{
+  width:48px;
+  height:48px;
+  border-radius:14px;
+  background:rgba(0,229,255,0.16);
+  border:1px solid var(--accent);
+  color:var(--accent);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  margin-left:12px;
+  flex-shrink:0;
+}
+.pdf-box-title{
+  margin:0 0 4px 0;
+  font-size:16px;
+  font-weight:800;
+}
+.pdf-box-desc{
+  margin:0;
+  font-size:12px;
+  color:var(--text-muted);
+}
+.pdf-last-note{
+  padding:10px 12px;
+  border-radius:12px;
+  background:rgba(10,10,22,0.55);
+  border:1px solid rgba(184,181,209,0.2);
+  font-size:12px;
+  color:var(--control);
+  margin-bottom:12px;
+}
+.games-list{
+  display:flex;
+  flex-direction:column;
+  margin-bottom:16px;
+}
+.game-card{
+  background:var(--bg-card);
+  border:1px solid rgba(255,61,127,0.35);
+  border-radius:16px;
+  padding:12px;
+  margin-bottom:12px;
+  display:flex;
+  align-items:center;
+  box-shadow:0 6px 20px rgba(0,0,0,0.32);
+}
+.game-card:last-child{
+  margin-bottom:0;
+}
+.game-thumb{
+  width:72px;
+  height:72px;
+  border-radius:14px;
+  overflow:hidden;
+  border:1px solid var(--highlight);
+  background:#0D0D20;
+  margin-left:12px;
+  flex-shrink:0;
+}
+.game-thumb img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+.game-info{
+  flex:1;
+  min-width:0;
+}
+.game-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom:3px;
+}
+.game-title{
+  margin:0;
+  font-size:15px;
+  font-weight:800;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+.game-score{
+  font-size:11px;
+  font-weight:800;
+  color:var(--accent);
+  background:rgba(0,229,255,0.12);
+  padding:2px 8px;
+  border-radius:8px;
+  flex-shrink:0;
+  margin-right:6px;
+}
+.game-desc{
+  margin:0 0 10px 0;
+  font-size:12px;
+  color:var(--text-muted);
+  display:-webkit-box;
+  -webkit-line-clamp:2;
+  -webkit-box-orient:vertical;
+  overflow:hidden;
+}
+.game-btns{
+  display:flex;
+  align-items:center;
+}
+.game-play-btn{
+  min-height:44px;
+  padding:0 14px;
+  border-radius:10px;
+  background:linear-gradient(135deg,var(--highlight),#C41B56);
+  color:#FFFFFF;
+  font-size:12px;
+  font-weight:800;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  margin-left:8px;
+}
+.game-play-btn:active{
+  transform:scale(0.96);
+}
+.game-overlay-btn{
+  min-height:44px;
+  padding:0 12px;
+  border-radius:10px;
+  background:rgba(108,59,255,0.2);
+  border:1px solid var(--primary);
+  color:#FFFFFF;
+  font-size:12px;
+  font-weight:700;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+}
+.game-overlay-btn:active{
+  transform:scale(0.96);
+}
+.state-box{
+  padding:18px;
+  border-radius:14px;
+  background:var(--bg-card);
+  border:1px dashed rgba(184,181,209,0.35);
+  text-align:center;
+  font-size:13px;
+  color:var(--text-muted);
+  width:100%;
+}
+.bottom-nav{
+  position:fixed;
+  right:0;
+  bottom:0;
+  left:0;
+  z-index:30;
+  background:rgba(12,12,26,0.96);
+  border-top:1px solid rgba(108,59,255,0.4);
+  padding-bottom:env(safe-area-inset-bottom);
+  box-shadow:0 -6px 24px rgba(0,0,0,0.5);
+}
+.bottom-nav-inner{
+  height:64px;
+  display:flex;
+  align-items:center;
+  justify-content:space-around;
+  max-width:720px;
+  margin:0 auto;
+  padding:0 4px;
+}
+.nav-item{
+  flex:1;
+  min-height:48px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  color:var(--control);
+  font-size:11px;
+  font-weight:700;
+  border-radius:12px;
+  transition:color 0.16s ease, transform 0.14s ease;
+}
+.nav-item:active{
+  transform:scale(0.93);
+}
+.nav-item.active{
+  color:var(--accent);
+}
+.nav-item.active .nav-icon-wrap{
+  background:rgba(0,229,255,0.14);
+  box-shadow:0 0 12px rgba(0,229,255,0.25);
+}
+.nav-icon-wrap{
+  width:38px;
+  height:28px;
+  border-radius:14px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  margin-bottom:2px;
+}
+.sheet-backdrop{
+  position:fixed;
+  top:0;
+  right:0;
+  bottom:0;
+  left:0;
+  z-index:50;
+  background:rgba(4,4,12,0.78);
+  display:none;
+  align-items:flex-end;
+  justify-content:center;
+}
+.sheet-backdrop.open{
+  display:flex;
+}
+.sheet-panel{
+  width:100%;
+  max-width:560px;
+  background:#151530;
+  border-top:2px solid var(--accent);
+  border-top-left-radius:22px;
+  border-top-right-radius:22px;
+  padding:18px 18px calc(22px + env(safe-area-inset-bottom)) 18px;
+  box-shadow:0 -12px 40px rgba(0,0,0,0.65);
+  max-height:85vh;
+  overflow-y:auto;
+}
+.sheet-handle{
+  width:42px;
+  height:4px;
+  border-radius:4px;
+  background:rgba(184,181,209,0.35);
+  margin:0 auto 14px auto;
+}
+.sheet-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom:12px;
+}
+.sheet-title{
+  margin:0;
+  font-size:17px;
+  font-weight:900;
+}
+.sheet-close{
+  width:44px;
+  height:44px;
+  border-radius:12px;
+  background:rgba(255,255,255,0.06);
+  color:var(--control);
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+}
+.sheet-status-box{
+  padding:12px;
+  border-radius:14px;
+  background:rgba(10,10,22,0.65);
+  border:1px solid rgba(108,59,255,0.4);
+  margin-bottom:14px;
+  font-size:13px;
+}
+.sheet-label{
+  display:block;
+  font-size:12px;
+  font-weight:800;
+  color:var(--control);
+  margin-bottom:8px;
+}
+.seg-row{
+  display:flex;
+  margin-bottom:14px;
+}
+.seg-btn{
+  flex:1;
+  min-height:44px;
+  border-radius:11px;
+  background:rgba(255,255,255,0.05);
+  border:1px solid rgba(184,181,209,0.22);
+  color:var(--control);
+  font-size:12px;
+  font-weight:800;
+  margin-left:8px;
+}
+.seg-btn:last-child{
+  margin-left:0;
+}
+.seg-btn.selected{
+  background:rgba(0,229,255,0.16);
+  border-color:var(--accent);
+  color:var(--accent);
+}
+.sheet-actions{
+  display:flex;
+  flex-direction:column;
+}
+.sheet-actions > *{
+  margin-bottom:10px;
+}
+.sheet-actions > *:last-child{
+  margin-bottom:0;
+}
+.toast{
+  position:fixed;
+  bottom:calc(78px + env(safe-area-inset-bottom));
+  left:50%;
+  transform:translateX(-50%) translateY(16px);
+  z-index:60;
+  background:#1D1D3D;
+  border:1px solid var(--accent);
+  color:#FFFFFF;
+  padding:10px 16px;
+  border-radius:12px;
+  font-size:13px;
+  font-weight:700;
+  box-shadow:0 8px 24px rgba(0,0,0,0.55);
+  opacity:0;
+  pointer-events:none;
+  transition:opacity 0.2s ease, transform 0.2s ease;
+  max-width:90%;
+  text-align:center;
+}
+.toast.show{
+  opacity:1;
+  transform:translateX(-50%) translateY(0);
 }
 </style>
 <style id="rt-native">html,body{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;-webkit-tap-highlight-color:transparent;overscroll-behavior:none}input,textarea,select,[contenteditable],.rt-selectable,.rt-selectable *{-webkit-user-select:text;user-select:text}img,a{-webkit-user-drag:none}a,button,[role=button]{outline:none}</style>
 </head>
 <body>
+<div class="app-bg" aria-hidden="true"></div>
 
-<header class="app-bar">
-  <div class="app-bar-inner">
-    <div class="brand-wrap">
-      <div class="brand-logo" aria-hidden="true">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
-          <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" fill="#FFB703" stroke="#FFFFFF"></polygon>
+<header class="top-bar">
+  <div class="top-bar-inner">
+    <div class="brand">
+      <div class="brand-badge" aria-hidden="true">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+          <path d="M13 2L4 14H11L10 22L20 10H13L13 2Z" fill="#FFFFFF" stroke="#00E5FF" stroke-width="1.5" stroke-linejoin="round"/>
         </svg>
       </div>
       <div class="brand-text">
-        <span class="brand-title">كوميكس أوفرلاي</span>
-        <span class="brand-sub">قصص مصورة وألعاب عائمة</span>
+        <div class="brand-title">نيون كوميكس وأركيد</div>
+        <div class="brand-sub">كوميكس • PDF • نوافذ عائمة</div>
       </div>
     </div>
-
-    <div class="app-bar-actions">
-      <a href="overlay_hub.html" class="overlay-pill-btn" aria-label="مركز الطبقة العائمة">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
-          <rect x="2" y="3" width="20" height="14" rx="2"></rect>
-          <rect x="11" y="9" width="9" height="6" rx="1" fill="#D90429" stroke="#141625"></rect>
-        </svg>
-        <span>العائم</span>
-      </a>
-      <button type="button" id="toggleSearchBtn" class="icon-btn" aria-label="بحث في المكتبة">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
-          <circle cx="11" cy="11" r="8"></circle>
-          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-        </svg>
+    <div class="top-actions">
+      <button type="button" id="topOverlayBtn" class="overlay-status-btn" aria-label="حالة النافذة العائمة">
+        <span class="status-dot"></span>
+        <span id="topOverlayLabel">العائم</span>
       </button>
-    </div>
-  </div>
-
-  <div id="searchBarPanel" class="search-bar-panel">
-    <div class="search-input-wrap">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#5C6178" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-        <circle cx="11" cy="11" r="8"></circle>
-        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-      </svg>
-      <input type="search" id="searchInput" placeholder="ابحث عن قصة كوميكس، مؤلف، أو ملف PDF..." aria-label="حقل البحث">
-      <button type="button" id="clearSearchBtn" class="clear-search-btn" aria-label="مسح البحث">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
-          <line x1="18" y1="6" x2="6" y2="18"></line>
-          <line x1="6" y1="6" x2="18" y2="18"></line>
+      <button type="button" id="shareAppBtn" class="icon-btn" aria-label="مشاركة التطبيق">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+          <circle cx="18" cy="5" r="3" stroke="currentColor" stroke-width="2"/>
+          <circle cx="6" cy="12" r="3" stroke="currentColor" stroke-width="2"/>
+          <circle cx="18" cy="19" r="3" stroke="currentColor" stroke-width="2"/>
+          <path d="M8.6 13.5L15.4 17.5M15.4 6.5L8.6 10.5" stroke="currentColor" stroke-width="2"/>
         </svg>
       </button>
     </div>
   </div>
 </header>
 
-<main class="main-content">
+<main class="app-shell">
+  <div class="container">
 
-  <!-- Quick Control Panel -->
-  <section class="control-hero" aria-label="لوحة التحكم السريعة">
-    <div class="hero-top">
-      <div class="hero-title-wrap">
-        <div class="hero-badge">
-          <span id="overlayStatusDot" class="hero-badge-dot inactive"></span>
-          <span id="overlayStatusText">الطبقة العائمة: جاهزة للتفعيل</span>
+    <section id="intentBanner" class="intent-banner" aria-live="polite">
+      <div class="intent-row">
+        <div class="intent-info">
+          <div class="intent-label">تم استلام ملف أو نص من تطبيق آخر</div>
+          <div id="intentName" class="intent-name">ملف جاهز للفتح</div>
         </div>
-        <h1 class="hero-title">اقرأ الكوميكس والعب فوق التطبيقات</h1>
-        <p class="hero-desc">تحكم سريع بالنافذة العائمة، قارئ ملفات PDF، والألعاب المصغرة الفورية.</p>
+        <a href="pdf-reader.html?source=intent" class="btn-accent" style="margin-bottom:0;">فتح في القارئ</a>
       </div>
-      <button type="button" id="quickOverlayToggleBtn" class="overlay-switch-btn">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M18.36 6.64a9 9 0 1 1-12.73 0"></path>
-          <line x1="12" y1="2" x2="12" y2="12"></line>
-        </svg>
-        <span id="quickOverlayBtnLabel">تفعيل سريع</span>
-      </button>
-    </div>
+    </section>
 
-    <div class="quick-actions-grid">
-      <div class="quick-action-item">
-        <a href="overlay_hub.html" class="quick-action-link">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-            <rect x="3" y="3" width="18" height="18" rx="3"></rect>
-            <rect x="10" y="10" width="9" height="8" rx="1.5" fill="#FFB703" stroke="#141625"></rect>
+    <section class="hero-card">
+      <div class="hero-halftone" aria-hidden="true"></div>
+      <div class="hero-tag">وضع النوافذ العائمة المدعوم</div>
+      <h1 class="hero-title">اقرأ الكوميكس والعب فوق أي تطبيق</h1>
+      <p class="hero-desc">بوابة موحدة لاستعراض القصص المصورة، قراءة ملفات PDF المحلية، وتشغيل ألعاب الأركيد بملء الشاشة أو داخل نافذة Overlay عائمة.</p>
+      <div class="hero-actions">
+        <button type="button" id="heroOverlayLaunch" class="btn-neon">
+          <svg class="btn-icon-svg" width="18" height="18" viewBox="0 0 24 24" fill="none">
+            <rect x="3" y="4" width="18" height="14" rx="3" stroke="#00E5FF" stroke-width="2"/>
+            <rect x="11" y="10" width="9" height="7" rx="2" fill="#FF3D7F"/>
           </svg>
-          <span>ضبط العائم</span>
-        </a>
+          <span>إطلاق النافذة العائمة</span>
+        </button>
+        <a href="overlay-hub.html" class="btn-accent">مركز الـ Overlay</a>
       </div>
-      <div class="quick-action-item">
-        <a href="reader.html" class="quick-action-link">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
-            <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+    </section>
+
+    <section id="resumeCard" class="resume-card" aria-live="polite">
+      <div class="resume-meta">
+        <div id="resumeKicker" class="resume-kicker">متابعة القراءة</div>
+        <div id="resumeTitle" class="resume-title">آخر قصة مفتوحة</div>
+        <div id="resumeSub" class="resume-sub">الصفحة 1</div>
+      </div>
+      <a id="resumeLink" href="comic-reader.html" class="btn-highlight">متابعة</a>
+    </section>
+
+    <div class="section-header">
+      <div class="section-title-wrap">
+        <span class="section-bar"></span>
+        <h2 class="section-title">أقسام التطبيق وإطلاق العائم</h2>
+      </div>
+    </div>
+
+    <section class="portal-grid">
+      <div class="portal-card">
+        <div class="portal-top">
+          <div class="portal-main">
+            <div class="portal-icon comics">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                <path d="M4 5.5C4 4.67 4.67 4 5.5 4H11.5V19H5.5C4.67 19 4 19.67 4 20.5V5.5Z" stroke="currentColor" stroke-width="2"/>
+                <path d="M20 5.5C20 4.67 19.33 4 18.5 4H12.5V19H18.5C19.33 19 20 19.67 20 20.5V5.5Z" stroke="currentColor" stroke-width="2"/>
+              </svg>
+            </div>
+            <div class="portal-info">
+              <div class="portal-name">مكتبة الكوميكس المصطنعة</div>
+              <div class="portal-sub">قصص ولوحات تفاعلية مع حفظ التقدم</div>
+            </div>
+          </div>
+          <span id="comicsCountBadge" class="portal-badge">...</span>
+        </div>
+        <div class="portal-actions">
+          <a href="comics.html" class="portal-enter">تصفح المكتبة</a>
+          <button type="button" class="portal-overlay-btn" data-overlay-section="comics">
+            <svg class="btn-icon-svg" width="16" height="16" viewBox="0 0 24 24" fill="none">
+              <rect x="4" y="4" width="16" height="16" rx="3" stroke="currentColor" stroke-width="2"/>
+              <path d="M12 8V16M8 12H16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+            <span>Overlay</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="portal-card">
+        <div class="portal-top">
+          <div class="portal-main">
+            <div class="portal-icon pdf">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                <path d="M14 2H7C5.9 2 5 2.9 5 4V20C5 21.1 5.9 22 7 22H17C18.1 22 19 21.1 19 20V7L14 2Z" stroke="currentColor" stroke-width="2"/>
+                <path d="M14 2V7H19" stroke="currentColor" stroke-width="2"/>
+                <path d="M8 13H16M8 17H13" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <div class="portal-info">
+              <div class="portal-name">قارئ PDF والملفات المستلمة</div>
+              <div class="portal-sub">فتح ملفات الجهاز مع حفظ آخر موضع ودعم القراءة العائمة</div>
+            </div>
+          </div>
+          <span id="pdfStatusBadge" class="portal-badge">جاهز</span>
+        </div>
+        <div class="portal-actions">
+          <a href="pdf-reader.html" class="portal-enter">فتح قارئ PDF</a>
+          <button type="button" class="portal-overlay-btn" data-overlay-section="pdf">
+            <svg class="btn-icon-svg" width="16" height="16" viewBox="0 0 24 24" fill="none">
+              <rect x="4" y="4" width="16" height="16" rx="3" stroke="currentColor" stroke-width="2"/>
+              <path d="M12 8V16M8 12H16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+            <span>Overlay</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="portal-card">
+        <div class="portal-top">
+          <div class="portal-main">
+            <div class="portal-icon games">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                <rect x="2" y="7" width="20" height="11" rx="5" stroke="currentColor" stroke-width="2"/>
+                <path d="M8 10V15M5.5 12.5H10.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                <circle cx="15.5" cy="11.5" r="1" fill="currentColor"/>
+                <circle cx="17.5" cy="13.5" r="1" fill="currentColor"/>
+              </svg>
+            </div>
+            <div class="portal-info">
+              <div class="portal-name">صالة الألعاب المصغرة</div>
+              <div class="portal-sub">ألعاب أركيد نيون سريعة بأعلى النتائج</div>
+            </div>
+          </div>
+          <span id="gamesCountBadge" class="portal-badge">...</span>
+        </div>
+        <div class="portal-actions">
+          <a href="games.html" class="portal-enter">دخول الصالة</a>
+          <button type="button" class="portal-overlay-btn" data-overlay-section="games">
+            <svg class="btn-icon-svg" width="16" height="16" viewBox="0 0 24 24" fill="none">
+              <rect x="4" y="4" width="16" height="16" rx="3" stroke="currentColor" stroke-width="2"/>
+              <path d="M12 8V16M8 12H16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+            <span>Overlay</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <div class="section-header">
+      <div class="section-title-wrap">
+        <span class="section-bar"></span>
+        <h2 class="section-title">أحدث قصص الكوميكس</h2>
+      </div>
+      <a href="comics.html" class="section-link">عرض الكل</a>
+    </div>
+    <section id="comicsCarousel" class="h-scroll" aria-label="قائمة قصص الكوميكس">
+      <div class="state-box">جاري تحميل مكتبة الكوميكس...</div>
+    </section>
+
+    <div class="section-header">
+      <div class="section-title-wrap">
+        <span class="section-bar"></span>
+        <h2 class="section-title">مركز قراءة PDF السريع</h2>
+      </div>
+      <a href="pdf-reader.html" class="section-link">فتح القارئ</a>
+    </div>
+    <section class="pdf-box">
+      <div class="pdf-box-head">
+        <div class="pdf-box-icon" aria-hidden="true">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <path d="M14 2H7C5.9 2 5 2.9 5 4V20C5 21.1 5.9 22 7 22H17C18.1 22 19 21.1 19 20V7L14 2Z" stroke="currentColor" stroke-width="2"/>
+            <path d="M14 2V7H19" stroke="currentColor" stroke-width="2"/>
           </svg>
-          <span>قارئ PDF</span>
-        </a>
+        </div>
+        <div>
+          <h3 class="pdf-box-title">إدارة وفتح مستندات PDF</h3>
+          <p class="pdf-box-desc">اختر ملفاً محلياً أو افتح ملفاً مستلماً عبر النظام، مع حفظ رقم آخر صفحة وتمرير المستند إلى عارض النظام الخارجي عند الحاجة.</p>
+        </div>
       </div>
-      <div class="quick-action-item">
-        <a href="pdf_links.html" class="quick-action-link">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
-            <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
-          </svg>
-          <span>روابط PDF</span>
-        </a>
+      <div id="pdfLastNote" class="pdf-last-note">لا يوجد ملف PDF محفوظ مؤخراً. اضغط لفتح القارئ واختيار ملف.</div>
+      <div class="portal-actions">
+        <a href="pdf-reader.html" class="portal-enter" style="background:rgba(0,229,255,0.16);border-color:var(--accent);color:#FFFFFF;">اختيار وفتح PDF</a>
+        <button type="button" class="portal-overlay-btn" data-overlay-section="pdf">تشغيل عائم</button>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- Resume Reading Banner -->
-  <section id="resumeBanner" class="resume-banner" aria-label="متابعة القراءة">
-    <div class="resume-info">
-      <div class="resume-icon">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
-          <polygon points="5 3 19 12 5 21 5 3"></polygon>
-        </svg>
+    <div class="section-header">
+      <div class="section-title-wrap">
+        <span class="section-bar"></span>
+        <h2 class="section-title">الألعاب المصغرة الفورية</h2>
       </div>
-      <div class="resume-text">
-        <div class="resume-label">متابعة آخر قراءة</div>
-        <div id="resumeTitle" class="resume-title">قصة محفوظة</div>
-        <div id="resumeMeta" class="resume-meta">صفحة 1</div>
-      </div>
+      <a href="games.html" class="section-link">كل الألعاب</a>
     </div>
-    <a id="resumeLink" href="reader.html" class="resume-go-btn">استئناف</a>
-  </section>
+    <section id="gamesList" class="games-list" aria-label="قائمة الألعاب المصغرة">
+      <div class="state-box">جاري تحميل الألعاب...</div>
+    </section>
 
-  <!-- Latest Comics Section -->
-  <div class="section-header">
-    <div class="section-title-group">
-      <span class="section-accent-bar"></span>
-      <h2 class="section-title">أحدث قصص الكوميكس</h2>
-    </div>
-    <a href="favorites.html" class="section-more-link">
-      <span>المفضلة والسجل</span>
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-        <polyline points="15 18 9 12 15 6"></polyline>
-      </svg>
-    </a>
   </div>
-
-  <div id="genreChips" class="chips-scroll" role="tablist" aria-label="تصنيف القصص"></div>
-
-  <div id="comicsContainer">
-    <div class="skeleton-card"></div>
-    <div class="skeleton-card"></div>
-  </div>
-
-  <!-- Linked PDF Files Section -->
-  <div class="section-header">
-    <div class="section-title-group">
-      <span class="section-accent-bar orange"></span>
-      <h2 class="section-title">ملفات وروابط PDF المرتبطة</h2>
-    </div>
-    <a href="pdf_links.html" class="section-more-link">
-      <span>إدارة الكل</span>
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-        <polyline points="15 18 9 12 15 6"></polyline>
-      </svg>
-    </a>
-  </div>
-
-  <div id="pdfsContainer">
-    <div class="skeleton-card"></div>
-  </div>
-
-  <!-- Floating Mini-Games Section -->
-  <div class="section-header">
-    <div class="section-title-group">
-      <span class="section-accent-bar yellow"></span>
-      <h2 class="section-title">الألعاب المصغرة العائمة</h2>
-    </div>
-    <a href="games.html" class="section-more-link">
-      <span>كل الألعاب</span>
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-        <polyline points="15 18 9 12 15 6"></polyline>
-      </svg>
-    </a>
-  </div>
-
-  <div id="gamesContainer">
-    <div class="skeleton-card"></div>
-  </div>
-
 </main>
 
-<!-- Comic Detail Bottom Sheet -->
-<div id="comicSheetBackdrop" class="sheet-backdrop" role="dialog" aria-modal="true" aria-labelledby="sheetTitle">
-  <div class="bottom-sheet">
-    <div class="sheet-handle"></div>
-    <div class="sheet-header">
-      <div class="sheet-cover">
-        <img id="sheetCoverImg" src="" alt="غلاف القصة">
-      </div>
-      <div class="sheet-meta">
-        <span id="sheetGenre" class="genre-badge">تصنيف</span>
-        <h3 id="sheetTitle" class="sheet-title rt-selectable">عنوان القصة</h3>
-        <div id="sheetAuthor" class="sheet-author">المؤلف</div>
-        <div id="sheetPages" class="comic-author">0 صفحة</div>
-      </div>
-    </div>
-    <div id="sheetPdfPath" class="sheet-pdf-path rt-selectable"></div>
-    <p id="sheetSummary" class="sheet-summary rt-selectable"></p>
-    <div class="sheet-actions">
-      <a id="sheetReadBtn" href="reader.html" class="sheet-btn-read">فتح في القارئ</a>
-      <a id="sheetFloatBtn" href="overlay_hub.html" class="sheet-btn-float">قراءة عائمة</a>
-    </div>
-    <button type="button" id="sheetCloseBtn" class="sheet-close-btn">إغلاق</button>
-  </div>
-</div>
-
-<!-- Toast -->
-<div id="toast" class="toast" role="status" aria-live="polite"></div>
-
-<!-- Bottom Navigation Bar -->
 <nav class="bottom-nav" aria-label="التنقل الرئيسي">
   <div class="bottom-nav-inner">
     <a href="home.html" class="nav-item active" aria-current="page">
-      <span class="nav-icon-pill">
-        <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
-          <polyline points="9 22 9 12 15 12 15 22"></polyline>
+      <span class="nav-icon-wrap">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+          <path d="M3 10.5L12 3L21 10.5V20C21 20.55 20.55 21 20 21H15V14H9V21H4C3.45 21 3 20.55 3 20V10.5Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
         </svg>
       </span>
       <span>الرئيسية</span>
     </a>
-    <a href="reader.html" class="nav-item">
-      <span class="nav-icon-pill">
-        <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
-          <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+    <a href="comics.html" class="nav-item">
+      <span class="nav-icon-wrap">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+          <path d="M4 5.5C4 4.67 4.67 4 5.5 4H11.5V19H5.5C4.67 19 4 19.67 4 20.5V5.5Z" stroke="currentColor" stroke-width="2"/>
+          <path d="M20 5.5C20 4.67 19.33 4 18.5 4H12.5V19H18.5C19.33 19 20 19.67 20 20.5V5.5Z" stroke="currentColor" stroke-width="2"/>
         </svg>
       </span>
-      <span>القارئ</span>
+      <span>الكوميكس</span>
     </a>
-    <a href="overlay_hub.html" class="nav-item">
-      <span class="nav-icon-pill">
-        <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-          <rect x="2" y="3" width="20" height="14" rx="2"></rect>
-          <rect x="11" y="9" width="9" height="6" rx="1"></rect>
+    <a href="pdf-reader.html" class="nav-item">
+      <span class="nav-icon-wrap">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+          <path d="M14 2H7C5.9 2 5 2.9 5 4V20C5 21.1 5.9 22 7 22H17C18.1 22 19 21.1 19 20V7L14 2Z" stroke="currentColor" stroke-width="2"/>
+          <path d="M14 2V7H19" stroke="currentColor" stroke-width="2"/>
         </svg>
       </span>
-      <span>العائم</span>
+      <span>PDF</span>
     </a>
     <a href="games.html" class="nav-item">
-      <span class="nav-icon-pill">
-        <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-          <rect x="2" y="6" width="20" height="12" rx="4"></rect>
-          <line x1="6" y1="12" x2="10" y2="12"></line>
-          <line x1="8" y1="10" x2="8" y2="14"></line>
-          <circle cx="15" cy="11" r="1"></circle>
-          <circle cx="17.5" cy="13" r="1"></circle>
+      <span class="nav-icon-wrap">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+          <rect x="2" y="7" width="20" height="11" rx="5" stroke="currentColor" stroke-width="2"/>
+          <path d="M8 10V15M5.5 12.5H10.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          <circle cx="16.5" cy="12.5" r="1.2" fill="currentColor"/>
         </svg>
       </span>
       <span>الألعاب</span>
     </a>
-    <a href="favorites.html" class="nav-item">
-      <span class="nav-icon-pill">
-        <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+    <a href="overlay-hub.html" class="nav-item">
+      <span class="nav-icon-wrap">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+          <rect x="3" y="4" width="18" height="14" rx="3" stroke="currentColor" stroke-width="2"/>
+          <rect x="11" y="10" width="9" height="7" rx="2" stroke="currentColor" stroke-width="2"/>
         </svg>
       </span>
-      <span>المفضلة</span>
+      <span>العائم</span>
     </a>
   </div>
 </nav>
 
+<div id="overlaySheet" class="sheet-backdrop" role="dialog" aria-modal="true" aria-labelledby="sheetTitle">
+  <div class="sheet-panel">
+    <div class="sheet-handle" aria-hidden="true"></div>
+    <div class="sheet-head">
+      <h3 id="sheetTitle" class="sheet-title">إطلاق النافذة العائمة (Overlay)</h3>
+      <button type="button" id="closeSheetBtn" class="sheet-close" aria-label="إغلاق">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+          <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+        </svg>
+      </button>
+    </div>
+
+    <div id="sheetStatusBox" class="sheet-status-box">جاري التحقق من حالة إذن النوافذ العائمة...</div>
+
+    <span class="sheet-label">القسم المطلوب داخل النافذة العائمة</span>
+    <div class="seg-row" id="sheetSectionSeg">
+      <button type="button" class="seg-btn selected" data-sec="comics">الكوميكس</button>
+      <button type="button" class="seg-btn" data-sec="pdf">PDF</button>
+      <button type="button" class="seg-btn" data-sec="games">الألعاب</button>
+    </div>
+
+    <span class="sheet-label">حجم النافذة العائمة</span>
+    <div class="seg-row" id="sheetSizeSeg">
+      <button type="button" class="seg-btn" data-size="compact">مصغّر</button>
+      <button type="button" class="seg-btn selected" data-size="medium">متوسط</button>
+      <button type="button" class="seg-btn" data-size="wide">كبير</button>
+    </div>
+
+    <div id="sheetActions" class="sheet-actions"></div>
+  </div>
+</div>
+
+<div id="toast" class="toast" role="status" aria-live="polite"></div>
+
 <script>
-(function() {
+(function(){
   "use strict";
 
-  var STORAGE_KEYS = {
-    favorites: "comics_overlay_favorites",
-    history: "comics_overlay_history",
-    overlayEnabled: "comics_overlay_active",
-    pendingComic: "comics_overlay_selected_comic",
-    pendingPdf: "comics_overlay_selected_pdf",
-    pendingGame: "comics_overlay_selected_game"
-  };
-
-  var state = {
-    comics: [],
-    pdfs: [],
-    games: [],
-    activeGenre: "الكل",
-    searchQuery: "",
-    favorites: [],
-    overlayActive: false
-  };
-
-  var comicsContainer = document.getElementById("comicsContainer");
-  var pdfsContainer = document.getElementById("pdfsContainer");
-  var gamesContainer = document.getElementById("gamesContainer");
-  var genreChipsEl = document.getElementById("genreChips");
-  var searchBarPanel = document.getElementById("searchBarPanel");
-  var toggleSearchBtn = document.getElementById("toggleSearchBtn");
-  var searchInput = document.getElementById("searchInput");
-  var clearSearchBtn = document.getElementById("clearSearchBtn");
-  var quickOverlayToggleBtn = document.getElementById("quickOverlayToggleBtn");
-  var overlayStatusDot = document.getElementById("overlayStatusDot");
-  var overlayStatusText = document.getElementById("overlayStatusText");
-  var quickOverlayBtnLabel = document.getElementById("quickOverlayBtnLabel");
-  var resumeBanner = document.getElementById("resumeBanner");
-  var resumeTitle = document.getElementById("resumeTitle");
-  var resumeMeta = document.getElementById("resumeMeta");
-  var resumeLink = document.getElementById("resumeLink");
-  var sheetBackdrop = document.getElementById("comicSheetBackdrop");
-  var sheetCloseBtn = document.getElementById("sheetCloseBtn");
-  var toastEl = document.getElementById("toast");
+  var OVERLAY_ID = "neon_overlay_hub";
+  var selectedSection = "comics";
+  var selectedItemId = "";
+  var selectedSize = "medium";
+  var comicsData = [];
+  var gamesData = [];
   var toastTimer = null;
 
-  function safeGetStorage(key, fallback) {
-    try {
-      var val = window.localStorage.getItem(key);
-      return val !== null ? val : fallback;
-    } catch (e) {
-      return fallback;
+  function safeGetStorage(key){
+    try{
+      var raw = localStorage.getItem(key);
+      return raw ? JSON.parse(raw) : null;
+    }catch(e){
+      return null;
     }
   }
 
-  function safeSetStorage(key, value) {
-    try {
-      window.localStorage.setItem(key, value);
-    } catch (e) {
-      /* Storage unavailable */
-    }
+  function safeSetStorage(key, val){
+    try{
+      localStorage.setItem(key, JSON.stringify(val));
+    }catch(e){}
   }
 
-  function safeParseJson(str, fallback) {
-    try {
-      var parsed = JSON.parse(str);
-      return parsed !== null ? parsed : fallback;
-    } catch (e) {
-      return fallback;
-    }
+  function haptic(kind){
+    try{
+      if(window.RosTrickDevice && typeof window.RosTrickDevice.haptic === "function"){
+        window.RosTrickDevice.haptic(kind || "click");
+      }
+    }catch(e){}
   }
 
-  function showToast(message) {
-    toastEl.textContent = message;
-    toastEl.classList.add("show");
-    if (toastTimer) {
-      clearTimeout(toastTimer);
-    }
-    toastTimer = setTimeout(function() {
-      toastEl.classList.remove("show");
-    }, 2400);
+  function showToast(msg){
+    var el = document.getElementById("toast");
+    if(!el) return;
+    el.textContent = msg;
+    el.classList.add("show");
+    if(toastTimer) clearTimeout(toastTimer);
+    toastTimer = setTimeout(function(){
+      el.classList.remove("show");
+    }, 2600);
   }
 
-  function createEl(tag, className, text) {
-    var el = document.createElement(tag);
-    if (className) {
-      el.className = className;
-    }
-    if (typeof text === "string") {
-      el.textContent = text;
-    }
-    return el;
+  function escapeText(str){
+    return str ? String(str) : "";
   }
 
-  function loadFavorites() {
-    var raw = safeGetStorage(STORAGE_KEYS.favorites, "[]");
-    var parsed = safeParseJson(raw, []);
-    state.favorites = Array.isArray(parsed) ? parsed : [];
+  function createEl(tag, cls, text){
+    var node = document.createElement(tag);
+    if(cls) node.className = cls;
+    if(typeof text === "string") node.textContent = text;
+    return node;
   }
 
-  function isFavorite(id) {
-    return state.favorites.indexOf(id) !== -1;
+  function makeFloatSvg(){
+    var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    svg.setAttribute("width", "18");
+    svg.setAttribute("height", "18");
+    svg.setAttribute("viewBox", "0 0 24 24");
+    svg.setAttribute("fill", "none");
+    var r1 = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+    r1.setAttribute("x", "3");
+    r1.setAttribute("y", "4");
+    r1.setAttribute("width", "18");
+    r1.setAttribute("height", "14");
+    r1.setAttribute("rx", "3");
+    r1.setAttribute("stroke", "currentColor");
+    r1.setAttribute("stroke-width", "2");
+    var r2 = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+    r2.setAttribute("x", "11");
+    r2.setAttribute("y", "10");
+    r2.setAttribute("width", "9");
+    r2.setAttribute("height", "7");
+    r2.setAttribute("rx", "2");
+    r2.setAttribute("fill", "currentColor");
+    svg.appendChild(r1);
+    svg.appendChild(r2);
+    return svg;
   }
 
-  function toggleFavorite(id, title) {
-    var idx = state.favorites.indexOf(id);
-    if (idx === -1) {
-      state.favorites.push(id);
-      showToast("تمت إضافة \"" + title + "\" إلى المفضلة");
-    } else {
-      state.favorites.splice(idx, 1);
-      showToast("تمت إزالة \"" + title + "\" من المفضلة");
-    }
-    safeSetStorage(STORAGE_KEYS.favorites, JSON.stringify(state.favorites));
-    renderComics();
-  }
+  function loadProgressAndResume(){
+    var progressMap = safeGetStorage("comic_progress");
+    var pdfLast = safeGetStorage("pdf_last_doc");
 
-  function loadOverlayStatus() {
-    var raw = safeGetStorage(STORAGE_KEYS.overlayEnabled, "false");
-    state.overlayActive = raw === "true";
-    updateOverlayUI();
-  }
+    var resumeCard = document.getElementById("resumeCard");
+    var resumeKicker = document.getElementById("resumeKicker");
+    var resumeTitle = document.getElementById("resumeTitle");
+    var resumeSub = document.getElementById("resumeSub");
+    var resumeLink = document.getElementById("resumeLink");
 
-  function updateOverlayUI() {
-    if (state.overlayActive) {
-      overlayStatusDot.classList.remove("inactive");
-      overlayStatusText.textContent = "الطبقة العائمة: نشطة فوق التطبيقات";
-      quickOverlayBtnLabel.textContent = "إيقاف";
-      quickOverlayToggleBtn.classList.add("active");
-    } else {
-      overlayStatusDot.classList.add("inactive");
-      overlayStatusText.textContent = "الطبقة العائمة: جاهزة للتفعيل";
-      quickOverlayBtnLabel.textContent = "تفعيل سريع";
-      quickOverlayToggleBtn.classList.remove("active");
-    }
-  }
-
-  function checkResumeReading() {
-    var raw = safeGetStorage(STORAGE_KEYS.history, "[]");
-    var historyList = safeParseJson(raw, []);
-    if (Array.isArray(historyList) && historyList.length > 0) {
-      var latest = historyList[0];
-      if (latest && latest.title) {
-        resumeTitle.textContent = latest.title;
-        var pageNum = latest.lastPage || 1;
-        resumeMeta.textContent = "توقفت عند الصفحة " + pageNum;
-        var targetUrl = "reader.html";
-        if (latest.comicId) {
-          targetUrl += "?comicId=" + encodeURIComponent(latest.comicId);
-          if (latest.pdfUrl) {
-            targetUrl += "&pdfUrl=" + encodeURIComponent(latest.pdfUrl);
-          }
-        } else if (latest.pdfUrl) {
-          targetUrl += "?pdfUrl=" + encodeURIComponent(latest.pdfUrl);
+    var latestComic = null;
+    if(progressMap && typeof progressMap === "object"){
+      var keys = Object.keys(progressMap);
+      for(var i = 0; i < keys.length; i++){
+        var k = keys[i];
+        var item = progressMap[k];
+        if(item && (!latestComic || (item.updatedAt || 0) > (latestComic.updatedAt || 0))){
+          latestComic = { id: k, page: item.page || 1, total: item.total || 0, title: item.title || "", updatedAt: item.updatedAt || 0 };
         }
-        resumeLink.setAttribute("href", targetUrl);
-        resumeBanner.classList.add("visible");
       }
+    }
+
+    var pdfTime = pdfLast && pdfLast.updatedAt ? pdfLast.updatedAt : 0;
+    var comicTime = latestComic ? latestComic.updatedAt : 0;
+
+    if(latestComic && comicTime >= pdfTime){
+      var foundTitle = latestComic.title;
+      if(!foundTitle && comicsData.length){
+        for(var j = 0; j < comicsData.length; j++){
+          if(comicsData[j].id === latestComic.id){
+            foundTitle = comicsData[j].title;
+            break;
+          }
+        }
+      }
+      resumeKicker.textContent = "متابعة قراءة الكوميكس";
+      resumeTitle.textContent = foundTitle || "قصة قيد القراءة";
+      resumeSub.textContent = latestComic.total ? ("الصفحة " + latestComic.page + " من " + latestComic.total) : ("الصفحة " + latestComic.page);
+      resumeLink.setAttribute("href", "comic-reader.html?id=" + encodeURIComponent(latestComic.id));
+      resumeCard.classList.add("visible");
+    } else if(pdfLast && pdfLast.name){
+      resumeKicker.textContent = "متابعة قراءة PDF";
+      resumeTitle.textContent = pdfLast.name;
+      resumeSub.textContent = "آخر صفحة: " + (pdfLast.page || 1);
+      resumeLink.setAttribute("href", "pdf-reader.html");
+      resumeCard.classList.add("visible");
+    }
+
+    var pdfNote = document.getElementById("pdfLastNote");
+    var pdfBadge = document.getElementById("pdfStatusBadge");
+    if(pdfLast && pdfLast.name){
+      pdfNote.textContent = "آخر مستند: " + pdfLast.name + " (صفحة " + (pdfLast.page || 1) + ")";
+      pdfBadge.textContent = "ص " + (pdfLast.page || 1);
     }
   }
 
-  function buildHeartSvg(filled) {
-    var fillAttr = filled ? "#D90429" : "none";
-    var strokeAttr = filled ? "#D90429" : "currentColor";
-    return '<svg width="21" height="21" viewBox="0 0 24 24" fill="' + fillAttr + '" stroke="' + strokeAttr + '" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>';
-  }
-
-  function renderGenreChips() {
-    genreChipsEl.innerHTML = "";
-    var genres = ["الكل"];
-    state.comics.forEach(function(item) {
-      if (item.genre && genres.indexOf(item.genre) === -1) {
-        genres.push(item.genre);
-      }
-    });
-
-    genres.forEach(function(genre) {
-      var btn = createEl("button", "filter-chip" + (state.activeGenre === genre ? " active" : ""), genre);
-      btn.type = "button";
-      btn.setAttribute("role", "tab");
-      btn.setAttribute("aria-selected", state.activeGenre === genre ? "true" : "false");
-      btn.addEventListener("click", function() {
-        state.activeGenre = genre;
-        renderGenreChips();
-        renderComics();
-      });
-      genreChipsEl.appendChild(btn);
-    });
-  }
-
-  function matchesQuery(text, query) {
-    if (!query) {
-      return true;
-    }
-    if (!text) {
-      return false;
-    }
-    return String(text).toLowerCase().indexOf(query.toLowerCase()) !== -1;
-  }
-
-  function renderComics() {
-    comicsContainer.innerHTML = "";
-    var q = state.searchQuery.trim();
-    var filtered = state.comics.filter(function(comic) {
-      var genreOk = state.activeGenre === "الكل" || comic.genre === state.activeGenre;
-      var queryOk = !q || matchesQuery(comic.title, q) || matchesQuery(comic.author, q) || matchesQuery(comic.genre, q) || matchesQuery(comic.summary, q);
-      return genreOk && queryOk;
-    });
-
-    if (filtered.length === 0) {
-      var emptyBox = createEl("div", "status-box");
-      var p = createEl("p", "", "لا توجد قصص مطابقة لخيارات البحث أو التصنيف الحالية.");
-      emptyBox.appendChild(p);
-      if (state.activeGenre !== "الكل" || q) {
-        var resetBtn = createEl("button", "retry-btn", "عرض جميع القصص");
-        resetBtn.type = "button";
-        resetBtn.addEventListener("click", function() {
-          state.activeGenre = "الكل";
-          state.searchQuery = "";
-          searchInput.value = "";
-          clearSearchBtn.classList.remove("visible");
-          renderGenreChips();
-          renderComics();
-          renderPdfs();
-        });
-        emptyBox.appendChild(resetBtn);
-      }
-      comicsContainer.appendChild(emptyBox);
-      return;
-    }
-
-    var grid = createEl("div", "comics-grid");
-
-    filtered.forEach(function(comic) {
-      var col = createEl("div", "comic-col");
-      var card = createEl("article", "comic-card");
-
-      var mainRow = createEl("div", "comic-card-main");
-      var coverWrap = createEl("div", "comic-cover-wrap");
-      var img = document.createElement("img");
-      img.src = comic.cover || "";
-      img.alt = comic.title || "غلاف قصة";
-      coverWrap.appendChild(img);
-
-      if (comic.pagesCount) {
-        var pagesTag = createEl("span", "comic-pages-tag", comic.pagesCount + " ص");
-        coverWrap.appendChild(pagesTag);
-      }
-
-      var body = createEl("div", "comic-body");
-      var topRow = createEl("div", "comic-top-row");
-      var genreBadge = createEl("span", "genre-badge", comic.genre || "كوميكس");
-
-      var saved = isFavorite(comic.id);
-      var favBtn = createEl("button", "fav-btn" + (saved ? " saved" : ""));
-      favBtn.type = "button";
-      favBtn.setAttribute("aria-label", saved ? "إزالة من المفضلة" : "إضافة إلى المفضلة");
-      favBtn.innerHTML = buildHeartSvg(saved);
-      favBtn.addEventListener("click", function() {
-        toggleFavorite(comic.id, comic.title || "القصة");
-      });
-
-      topRow.appendChild(genreBadge);
-      topRow.appendChild(favBtn);
-
-      var titleEl = createEl("h3", "comic-title rt-selectable", comic.title || "بدون عنوان");
-      var authorEl = createEl("div", "comic-author", "تأليف: " + (comic.author || "غير محدد"));
-      var summaryEl = createEl("p", "comic-summary", comic.summary || "");
-
-      body.appendChild(topRow);
-      body.appendChild(titleEl);
-      body.appendChild(authorEl);
-      body.appendChild(summaryEl);
-
-      mainRow.appendChild(coverWrap);
-      mainRow.appendChild(body);
-
-      var actionsRow = createEl("div", "comic-actions");
-
-      var readerHref = "reader.html?comicId=" + encodeURIComponent(comic.id || "");
-      if (comic.pdfUrl) {
-        readerHref += "&pdfUrl=" + encodeURIComponent(comic.pdfUrl);
-      }
-
-      var readLink = createEl("a", "btn-read-primary");
-      readLink.href = readerHref;
-      readLink.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg><span>قراءة الآن</span>';
-      readLink.addEventListener("click", function() {
-        safeSetStorage(STORAGE_KEYS.pendingComic, JSON.stringify(comic));
-      });
-
-      var floatLink = createEl("a", "btn-float-secondary");
-      floatLink.href = "overlay_hub.html?mode=comic&comicId=" + encodeURIComponent(comic.id || "");
-      floatLink.innerHTML = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"></rect><rect x="11" y="9" width="9" height="6" rx="1"></rect></svg><span>عائم</span>';
-      floatLink.addEventListener("click", function() {
-        safeSetStorage(STORAGE_KEYS.pendingComic, JSON.stringify(comic));
-      });
-
-      var infoBtn = createEl("button", "btn-info-outline");
-      infoBtn.type = "button";
-      infoBtn.setAttribute("aria-label", "تفاصيل القصة");
-      infoBtn.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>';
-      infoBtn.addEventListener("click", function() {
-        openComicSheet(comic);
-      });
-
-      actionsRow.appendChild(readLink);
-      actionsRow.appendChild(floatLink);
-      actionsRow.appendChild(infoBtn);
-
-      card.appendChild(mainRow);
-      card.appendChild(actionsRow);
-      col.appendChild(card);
-      grid.appendChild(col);
-    });
-
-    comicsContainer.appendChild(grid);
-  }
-
-  function renderPdfs() {
-    pdfsContainer.innerHTML = "";
-    var q = state.searchQuery.trim();
-    var filtered = state.pdfs.filter(function(pdf) {
-      return !q || matchesQuery(pdf.title, q) || matchesQuery(pdf.category, q) || matchesQuery(pdf.url, q);
-    });
-
-    if (filtered.length === 0) {
-      var emptyBox = createEl("div", "status-box");
-      emptyBox.appendChild(createEl("p", "", "لا توجد ملفات PDF مطابقة حالياً."));
-      pdfsContainer.appendChild(emptyBox);
-      return;
-    }
-
-    var scrollWrap = createEl("div", "pdf-scroll-list");
-
-    filtered.forEach(function(pdf) {
-      var card = createEl("article", "pdf-card");
-      var head = createEl("div", "pdf-card-head");
-
-      var thumb = createEl("div", "pdf-thumb");
-      if (pdf.image) {
-        var img = document.createElement("img");
-        img.src = pdf.image;
-        img.alt = pdf.title || "ملف PDF";
-        thumb.appendChild(img);
-      } else {
-        thumb.innerHTML = '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>';
-      }
-
-      var meta = createEl("div", "pdf-meta");
-      meta.appendChild(createEl("span", "pdf-cat", pdf.category || "PDF"));
-      meta.appendChild(createEl("h3", "pdf-title rt-selectable", pdf.title || "ملف PDF"));
-
-      head.appendChild(thumb);
-      head.appendChild(meta);
-
-      var urlTag = createEl("div", "pdf-url-tag rt-selectable", pdf.url || "");
-
-      var openBtn = createEl("a", "pdf-open-btn");
-      var href = "reader.html?pdfUrl=" + encodeURIComponent(pdf.url || "");
-      if (pdf.comicId) {
-        href += "&comicId=" + encodeURIComponent(pdf.comicId);
-      }
-      if (pdf.id) {
-        href += "&pdfId=" + encodeURIComponent(pdf.id);
-      }
-      openBtn.href = href;
-      openBtn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg><span>فتح في القارئ</span>';
-      openBtn.addEventListener("click", function() {
-        safeSetStorage(STORAGE_KEYS.pendingPdf, JSON.stringify(pdf));
-      });
-
-      card.appendChild(head);
-      card.appendChild(urlTag);
-      card.appendChild(openBtn);
-      scrollWrap.appendChild(card);
-    });
-
-    pdfsContainer.appendChild(scrollWrap);
-  }
-
-  function renderGames() {
-    gamesContainer.innerHTML = "";
-    if (state.games.length === 0) {
-      var emptyBox = createEl("div", "status-box");
-      emptyBox.appendChild(createEl("p", "", "لا توجد ألعاب مصغرة متاحة حالياً."));
-      gamesContainer.appendChild(emptyBox);
-      return;
-    }
-
-    var grid = createEl("div", "games-grid");
-
-    state.games.forEach(function(game) {
-      var col = createEl("div", "game-col");
-      var card = createEl("article", "game-card");
-
-      var coverBox = createEl("div", "game-cover-box");
-      var img = document.createElement("img");
-      img.src = game.cover || "";
-      img.alt = game.title || "لعبة مصغرة";
-      coverBox.appendChild(img);
-
-      if (game.supportsOverlay) {
-        coverBox.appendChild(createEl("span", "game-overlay-chip", "عائم مدعوم"));
-      }
-
-      var titleEl = createEl("h3", "game-title", game.title || "لعبة");
-      var descEl = createEl("p", "game-desc", game.description || "");
-
-      var btnsRow = createEl("div", "game-btns");
-
-      var playLink = createEl("a", "game-play-btn", "العب الآن");
-      playLink.href = "games.html?gameId=" + encodeURIComponent(game.id || "");
-      playLink.addEventListener("click", function() {
-        safeSetStorage(STORAGE_KEYS.pendingGame, JSON.stringify(game));
-      });
-
-      var floatLink = createEl("a", "game-float-btn");
-      floatLink.href = "overlay_hub.html?mode=game&gameId=" + encodeURIComponent(game.id || "");
-      floatLink.setAttribute("aria-label", "تشغيل في نافذة عائمة");
-      floatLink.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"></rect><rect x="11" y="9" width="9" height="6" rx="1"></rect></svg>';
-      floatLink.addEventListener("click", function() {
-        safeSetStorage(STORAGE_KEYS.pendingGame, JSON.stringify(game));
-      });
-
-      btnsRow.appendChild(playLink);
-      btnsRow.appendChild(floatLink);
-
-      card.appendChild(coverBox);
-      card.appendChild(titleEl);
-      card.appendChild(descEl);
-      card.appendChild(btnsRow);
-      col.appendChild(card);
-      grid.appendChild(col);
-    });
-
-    gamesContainer.appendChild(grid);
-  }
-
-  function renderErrorBox(container, message, retryFn) {
+  function renderComics(){
+    var container = document.getElementById("comicsCarousel");
+    var badge = document.getElementById("comicsCountBadge");
     container.innerHTML = "";
-    var box = createEl("div", "status-box");
-    box.appendChild(createEl("p", "", message));
-    var btn = createEl("button", "retry-btn", "إعادة المحاولة");
-    btn.type = "button";
-    btn.addEventListener("click", retryFn);
-    box.appendChild(btn);
-    container.appendChild(box);
-  }
 
-  function openComicSheet(comic) {
-    document.getElementById("sheetCoverImg").src = comic.cover || "";
-    document.getElementById("sheetGenre").textContent = comic.genre || "كوميكس";
-    document.getElementById("sheetTitle").textContent = comic.title || "";
-    document.getElementById("sheetAuthor").textContent = "المؤلف: " + (comic.author || "غير معروف");
-    document.getElementById("sheetPages").textContent = "عدد الصفحات: " + (comic.pagesCount || 0) + " صفحة";
-    document.getElementById("sheetPdfPath").textContent = "ملف PDF: " + (comic.pdfUrl || "غير مرتبط");
-    document.getElementById("sheetSummary").textContent = comic.summary || "";
-
-    var readHref = "reader.html?comicId=" + encodeURIComponent(comic.id || "");
-    if (comic.pdfUrl) {
-      readHref += "&pdfUrl=" + encodeURIComponent(comic.pdfUrl);
+    if(!comicsData.length){
+      badge.textContent = "0 قصص";
+      container.appendChild(createEl("div", "state-box", "لا توجد قصص كوميكس متاحة حالياً."));
+      return;
     }
-    var readBtn = document.getElementById("sheetReadBtn");
-    readBtn.setAttribute("href", readHref);
-    readBtn.onclick = function() {
-      safeSetStorage(STORAGE_KEYS.pendingComic, JSON.stringify(comic));
-    };
 
-    var floatBtn = document.getElementById("sheetFloatBtn");
-    floatBtn.setAttribute("href", "overlay_hub.html?mode=comic&comicId=" + encodeURIComponent(comic.id || ""));
-    floatBtn.onclick = function() {
-      safeSetStorage(STORAGE_KEYS.pendingComic, JSON.stringify(comic));
-    };
+    badge.textContent = comicsData.length + " قصص";
+    var progressMap = safeGetStorage("comic_progress") || {};
+    var limit = Math.min(comicsData.length, 6);
 
-    sheetBackdrop.classList.add("open");
+    for(var i = 0; i < limit; i++){
+      (function(comic){
+        var card = createEl("article", "comic-card");
+        var coverWrap = createEl("div", "comic-cover-wrap");
+
+        var img = document.createElement("img");
+        img.className = "comic-cover-img";
+        img.alt = escapeText(comic.title);
+        img.src = comic.cover || comic.image || "";
+        coverWrap.appendChild(img);
+
+        if(comic.genre){
+          coverWrap.appendChild(createEl("span", "comic-genre", comic.genre));
+        }
+        card.appendChild(coverWrap);
+
+        var body = createEl("div", "comic-body");
+        body.appendChild(createEl("h3", "comic-title", comic.title || "قصة بدون عنوان"));
+        body.appendChild(createEl("div", "comic-author", comic.author ? ("بقلم: " + comic.author) : "إصدار أصلي"));
+
+        var totalPages = comic.pagesCount || (comic.pages && comic.pages.length) || 12;
+        var prog = progressMap[comic.id];
+        var currentPage = prog && prog.page ? prog.page : 0;
+        var pct = currentPage > 0 ? Math.min(100, Math.round((currentPage / totalPages) * 100)) : 0;
+
+        var track = createEl("div", "progress-track");
+        var fill = createEl("div", "progress-fill");
+        fill.style.width = pct + "%";
+        track.appendChild(fill);
+        body.appendChild(track);
+
+        var pText = currentPage > 0 ? ("التقدم: " + currentPage + " / " + totalPages + " (" + pct + "%)") : (totalPages + " صفحة • جاهزة للقراءة");
+        body.appendChild(createEl("div", "comic-progress-text", pText));
+
+        var btnRow = createEl("div", "card-btn-row");
+        var readLink = createEl("a", "card-primary-link", currentPage > 0 ? "متابعة" : "قراءة");
+        readLink.setAttribute("href", "comic-reader.html?id=" + encodeURIComponent(comic.id));
+        btnRow.appendChild(readLink);
+
+        var floatBtn = createEl("button", "card-float-btn");
+        floatBtn.type = "button";
+        floatBtn.setAttribute("aria-label", "فتح في النافذة العائمة");
+        floatBtn.appendChild(makeFloatSvg());
+        floatBtn.addEventListener("click", function(){
+          haptic("click");
+          openOverlaySheet("comics", comic.id);
+        });
+        btnRow.appendChild(floatBtn);
+
+        body.appendChild(btnRow);
+        card.appendChild(body);
+        container.appendChild(card);
+      })(comicsData[i]);
+    }
   }
 
-  function closeComicSheet() {
-    sheetBackdrop.classList.remove("open");
+  function renderGames(){
+    var container = document.getElementById("gamesList");
+    var badge = document.getElementById("gamesCountBadge");
+    container.innerHTML = "";
+
+    if(!gamesData.length){
+      badge.textContent = "0 ألعاب";
+      container.appendChild(createEl("div", "state-box", "لا توجد ألعاب مسجلة حالياً."));
+      return;
+    }
+
+    badge.textContent = gamesData.length + " ألعاب";
+    var scores = safeGetStorage("game_scores") || {};
+    var limit = Math.min(gamesData.length, 4);
+
+    for(var i = 0; i < limit; i++){
+      (function(game){
+        var card = createEl("article", "game-card");
+
+        var thumb = createEl("div", "game-thumb");
+        var img = document.createElement("img");
+        img.alt = escapeText(game.title);
+        img.src = game.cover || game.image || "";
+        thumb.appendChild(img);
+        card.appendChild(thumb);
+
+        var info = createEl("div", "game-info");
+        var head = createEl("div", "game-head");
+        head.appendChild(createEl("h3", "game-title", game.title || "لعبة أركيد"));
+
+        var best = scores[game.id];
+        var scoreLabel = (typeof best === "number" && best > 0) ? ("أعلى نتيجة: " + best) : (game.badge || "أركيد");
+        head.appendChild(createEl("span", "game-score", scoreLabel));
+        info.appendChild(head);
+
+        info.appendChild(createEl("p", "game-desc", game.description || "لعبة مصغرة سريعة متوافقة مع النافذة العائمة."));
+
+        var btns = createEl("div", "game-btns");
+        var playLink = createEl("a", "game-play-btn", "العب الآن");
+        playLink.setAttribute("href", "games.html?id=" + encodeURIComponent(game.id));
+        btns.appendChild(playLink);
+
+        var floatBtn = createEl("button", "game-overlay-btn", "تشغيل عائم");
+        floatBtn.type = "button";
+        floatBtn.addEventListener("click", function(){
+          haptic("click");
+          openOverlaySheet("games", game.id);
+        });
+        btns.appendChild(floatBtn);
+
+        info.appendChild(btns);
+        card.appendChild(info);
+        container.appendChild(card);
+      })(gamesData[i]);
+    }
   }
 
-  async function loadComicsData() {
-    try {
-      var res = await fetch("comics.json");
-      if (!res.ok) {
-        throw new Error("HTTP " + res.status);
+  function loadJsonData(){
+    fetch("comics.json")
+      .then(function(res){
+        if(!res.ok) throw new Error("HTTP " + res.status);
+        return res.json();
+      })
+      .then(function(data){
+        comicsData = Array.isArray(data) ? data : [];
+        renderComics();
+        loadProgressAndResume();
+      })
+      .catch(function(){
+        var box = document.getElementById("comicsCarousel");
+        box.innerHTML = "";
+        var err = createEl("div", "state-box", "تعذر تحميل ملف comics.json. تأكد من وجود ملف البيانات.");
+        box.appendChild(err);
+        document.getElementById("comicsCountBadge").textContent = "غير متاح";
+      });
+
+    fetch("games.json")
+      .then(function(res){
+        if(!res.ok) throw new Error("HTTP " + res.status);
+        return res.json();
+      })
+      .then(function(data){
+        gamesData = Array.isArray(data) ? data : [];
+        renderGames();
+      })
+      .catch(function(){
+        var box = document.getElementById("gamesList");
+        box.innerHTML = "";
+        var err = createEl("div", "state-box", "تعذر تحميل ملف games.json. تأكد من وجود ملف البيانات.");
+        box.appendChild(err);
+        document.getElementById("gamesCountBadge").textContent = "غير متاح";
+      });
+  }
+
+  function updateTopOverlayBadge(){
+    var btn = document.getElementById("topOverlayBtn");
+    var lbl = document.getElementById("topOverlayLabel");
+    if(!window.RosTrickOverlay){
+      btn.classList.remove("active");
+      lbl.textContent = "معاينة الويب";
+      return;
+    }
+    Promise.resolve()
+      .then(function(){ return window.RosTrickOverlay.exists(OVERLAY_ID); })
+      .then(function(isActive){
+        if(isActive){
+          btn.classList.add("active");
+          lbl.textContent = "العائم نشط";
+          return true;
+        }
+        btn.classList.remove("active");
+        return window.RosTrickOverlay.canDraw().then(function(can){
+          lbl.textContent = can ? "جاهز للعائم" : "تفعيل العائم";
+          return false;
+        });
+      })
+      .catch(function(){
+        lbl.textContent = "العائم";
+      });
+  }
+
+  function buildOverlayUrl(){
+    var url = "overlay-hub.html?section=" + encodeURIComponent(selectedSection);
+    if(selectedItemId){
+      url += "&id=" + encodeURIComponent(selectedItemId);
+    }
+    safeSetStorage("overlay_launch_config", {
+      section: selectedSection,
+      itemId: selectedItemId,
+      updatedAt: Date.now()
+    });
+    return url;
+  }
+
+  function getSizeDp(){
+    if(selectedSize === "compact") return { w: 230, h: 300 };
+    if(selectedSize === "wide") return { w: 330, h: 460 };
+    return { w: 280, h: 380 };
+  }
+
+  function refreshSheetContent(){
+    var statusBox = document.getElementById("sheetStatusBox");
+    var actions = document.getElementById("sheetActions");
+    actions.innerHTML = "";
+
+    var secBtns = document.querySelectorAll("#sheetSectionSeg .seg-btn");
+    for(var i = 0; i < secBtns.length; i++){
+      if(secBtns[i].getAttribute("data-sec") === selectedSection){
+        secBtns[i].classList.add("selected");
+      }else{
+        secBtns[i].classList.remove("selected");
       }
-      var data = await res.json();
-      state.comics = Array.isArray(data) ? data : [];
-      renderGenreChips();
-      renderComics();
-    } catch (err) {
-      renderErrorBox(comicsContainer, "تعذر تحميل قائمة قصص الكوميكس من comics.json.", loadComicsData);
     }
-  }
 
-  async function loadPdfsData() {
-    try {
-      var res = await fetch("pdf_links.json");
-      if (!res.ok) {
-        throw new Error("HTTP " + res.status);
+    var sizeBtns = document.querySelectorAll("#sheetSizeSeg .seg-btn");
+    for(var j = 0; j < sizeBtns.length; j++){
+      if(sizeBtns[j].getAttribute("data-size") === selectedSize){
+        sizeBtns[j].classList.add("selected");
+      }else{
+        sizeBtns[j].classList.remove("selected");
       }
-      var data = await res.json();
-      state.pdfs = Array.isArray(data) ? data : [];
-      renderPdfs();
-    } catch (err) {
-      renderErrorBox(pdfsContainer, "تعذر تحميل روابط ملفات PDF من pdf_links.json.", loadPdfsData);
     }
-  }
 
-  async function loadGamesData() {
-    try {
-      var res = await fetch("games.json");
-      if (!res.ok) {
-        throw new Error("HTTP " + res.status);
+    if(!window.RosTrickOverlay){
+      statusBox.textContent = "ميزة النوافذ العائمة الحقيقية فوق التطبيقات تعمل داخل تطبيق أندرويد فقط (RosTrickOverlay غير متوفر في متصفح المعاينة). يمكنك فتح مركز العائم كصفحة عادية الآن.";
+      var fallbackLink = createEl("a", "btn-neon", "فتح صفحة مركز العائم");
+      fallbackLink.setAttribute("href", buildOverlayUrl());
+      fallbackLink.style.marginLeft = "0";
+      actions.appendChild(fallbackLink);
+      return;
+    }
+
+    statusBox.textContent = "جاري فحص حالة النظام...";
+
+    Promise.all([
+      window.RosTrickOverlay.canDraw(),
+      window.RosTrickOverlay.exists(OVERLAY_ID)
+    ]).then(function(res){
+      var canDraw = !!res[0];
+      var isRunning = !!res[1];
+
+      if(!canDraw){
+        statusBox.textContent = "لعرض قارئ الكوميكس أو أدوات PDF أو الألعاب المصغرة فوق التطبيقات الأخرى، يحتاج النظام إلى إذن الظهور فوق التطبيقات الأخرى. بالضغط أدناه ستفتح شاشة إعدادات أندرويد الرسمية لمنح الإذن.";
+        var permBtn = createEl("button", "btn-highlight", "منح إذن الظهور فوق التطبيقات");
+        permBtn.type = "button";
+        permBtn.addEventListener("click", function(){
+          haptic("click");
+          window.RosTrickOverlay.requestPermission().then(function(granted){
+            updateTopOverlayBadge();
+            refreshSheetContent();
+            if(granted){
+              haptic("confirm");
+              showToast("تم تفعيل إذن النوافذ العائمة");
+            }else{
+              showToast("لم يتم منح الإذن بعد");
+            }
+          }).catch(function(){
+            showToast("تعذر فتح إعدادات الإذن");
+          });
+        });
+        actions.appendChild(permBtn);
+      }else{
+        statusBox.textContent = isRunning
+          ? "النافذة العائمة نشطة حالياً فوق التطبيقات. يمكنك تحديث محتواها أو إغلاقها."
+          : "إذن النظام ممنوح وجاهز. اضغط لتشغيل النافذة العائمة فوق أي تطبيق.";
+
+        var launchBtn = createEl("button", "btn-neon", isRunning ? "تحديث وإظهار النافذة العائمة" : "إطلاق النافذة العائمة الآن");
+        launchBtn.type = "button";
+        launchBtn.style.marginLeft = "0";
+        launchBtn.addEventListener("click", function(){
+          haptic("confirm");
+          launchRealOverlay();
+        });
+        actions.appendChild(launchBtn);
+
+        if(isRunning){
+          var closeOvBtn = createEl("button", "btn-accent", "إغلاق النافذة العائمة الحالية");
+          closeOvBtn.type = "button";
+          closeOvBtn.addEventListener("click", function(){
+            haptic("click");
+            window.RosTrickOverlay.destroy(OVERLAY_ID).then(function(){
+              updateTopOverlayBadge();
+              refreshSheetContent();
+              showToast("تم إغلاق النافذة العائمة");
+            }).catch(function(){
+              showToast("تعذر إغلاق النافذة");
+            });
+          });
+          actions.appendChild(closeOvBtn);
+        }
       }
-      var data = await res.json();
-      state.games = Array.isArray(data) ? data : [];
-      renderGames();
-    } catch (err) {
-      renderErrorBox(gamesContainer, "تعذر تحميل قائمة الألعاب المصغرة من games.json.", loadGamesData);
+
+      var openPageLink = createEl("a", "btn-accent", "فتح مركز العائم بملء الشاشة");
+      openPageLink.setAttribute("href", buildOverlayUrl());
+      actions.appendChild(openPageLink);
+    }).catch(function(){
+      statusBox.textContent = "حدث خطأ أثناء التحقق من خدمة النوافذ العائمة.";
+    });
+  }
+
+  function launchRealOverlay(){
+    if(!window.RosTrickOverlay){
+      showToast("متاح داخل تطبيق أندرويد فقط");
+      return;
+    }
+    var targetUrl = buildOverlayUrl();
+    var dims = getSizeDp();
+
+    window.RosTrickOverlay.exists(OVERLAY_ID).then(function(exists){
+      if(exists){
+        return window.RosTrickOverlay.destroy(OVERLAY_ID).catch(function(){});
+      }
+      return null;
+    }).then(function(){
+      return window.RosTrickOverlay.create({
+        id: OVERLAY_ID,
+        url: targetUrl,
+        x: 16,
+        y: 84,
+        w: dims.w,
+        h: dims.h,
+        gravity: "tr",
+        touchable: true,
+        focusable: false,
+        alpha: 0.98,
+        bg: "#101024",
+        keep: true
+      });
+    }).then(function(){
+      updateTopOverlayBadge();
+      closeOverlaySheet();
+      showToast("تم تشغيل النافذة العائمة بنجاح");
+    }).catch(function(err){
+      var code = err && err.code ? err.code : "";
+      if(code === "no_permission"){
+        showToast("يرجى منح إذن الظهور فوق التطبيقات أولاً");
+        refreshSheetContent();
+      }else{
+        showToast("تعذر إنشاء النافذة العائمة");
+      }
+    });
+  }
+
+  function openOverlaySheet(section, itemId){
+    selectedSection = section || "comics";
+    selectedItemId = itemId || "";
+    var sheet = document.getElementById("overlaySheet");
+    sheet.classList.add("open");
+    refreshSheetContent();
+  }
+
+  function closeOverlaySheet(){
+    document.getElementById("overlaySheet").classList.remove("open");
+  }
+
+  function handleIntentData(intent){
+    if(!intent) return;
+    var banner = document.getElementById("intentBanner");
+    var nameEl = document.getElementById("intentName");
+    var label = "";
+    if(intent.items && intent.items.length > 0){
+      label = intent.items[0].name || "ملف مستلم";
+    }else if(intent.text){
+      label = intent.subject || intent.text;
+    }
+    if(label){
+      nameEl.textContent = label;
+      banner.classList.add("visible");
     }
   }
 
-  // Event Listeners
-  toggleSearchBtn.addEventListener("click", function() {
-    var isOpen = searchBarPanel.classList.toggle("open");
-    if (isOpen) {
-      searchInput.focus();
+  function initNativeBridges(){
+    updateTopOverlayBadge();
+
+    if(window.RosTrickOverlay && typeof window.RosTrickOverlay.on === "function"){
+      window.RosTrickOverlay.on("permission", function(){ updateTopOverlayBadge(); });
+      window.RosTrickOverlay.on("closed", function(){ updateTopOverlayBadge(); });
+      window.RosTrickOverlay.on("ready", function(){ updateTopOverlayBadge(); });
     }
-  });
 
-  searchInput.addEventListener("input", function() {
-    state.searchQuery = searchInput.value || "";
-    if (state.searchQuery.length > 0) {
-      clearSearchBtn.classList.add("visible");
-    } else {
-      clearSearchBtn.classList.remove("visible");
+    if(window.RosTrickIntent){
+      if(typeof window.RosTrickIntent.getInitial === "function"){
+        Promise.resolve(window.RosTrickIntent.getInitial()).then(handleIntentData).catch(function(){});
+      }
+      if(typeof window.RosTrickIntent.on === "function"){
+        window.RosTrickIntent.on(handleIntentData);
+      }
     }
-    renderComics();
-    renderPdfs();
-  });
+    window.addEventListener("rostrick-intent", function(ev){
+      if(ev && ev.detail) handleIntentData(ev.detail);
+    });
 
-  clearSearchBtn.addEventListener("click", function() {
-    searchInput.value = "";
-    state.searchQuery = "";
-    clearSearchBtn.classList.remove("visible");
-    renderComics();
-    renderPdfs();
-    searchInput.focus();
-  });
-
-  quickOverlayToggleBtn.addEventListener("click", function() {
-    state.overlayActive = !state.overlayActive;
-    safeSetStorage(STORAGE_KEYS.overlayEnabled, state.overlayActive ? "true" : "false");
-    updateOverlayUI();
-    if (state.overlayActive) {
-      showToast("تم تفعيل وضع الاستعداد للنافذة العائمة");
-    } else {
-      showToast("تم إيقاف الوضع العائم السريع");
+    if(window.RosTrickBack){
+      if(typeof window.RosTrickBack.onBack === "function"){
+        window.RosTrickBack.onBack(function(){
+          var sheet = document.getElementById("overlaySheet");
+          if(sheet.classList.contains("open")){
+            closeOverlaySheet();
+            return true;
+          }
+          return false;
+        });
+      }
+      if(typeof window.RosTrickBack.doubleBackToExit === "function"){
+        window.RosTrickBack.doubleBackToExit({
+          onFirst: function(){
+            showToast("اضغط رجوع مرة أخرى للخروج");
+          }
+        });
+      }
     }
-  });
+  }
 
-  sheetCloseBtn.addEventListener("click", closeComicSheet);
-  sheetBackdrop.addEventListener("click", function(e) {
-    if (e.target === sheetBackdrop) {
-      closeComicSheet();
+  function bindEvents(){
+    document.getElementById("topOverlayBtn").addEventListener("click", function(){
+      haptic("click");
+      openOverlaySheet("comics", "");
+    });
+    document.getElementById("heroOverlayLaunch").addEventListener("click", function(){
+      haptic("click");
+      openOverlaySheet("comics", "");
+    });
+    document.getElementById("closeSheetBtn").addEventListener("click", function(){
+      haptic("tick");
+      closeOverlaySheet();
+    });
+    document.getElementById("overlaySheet").addEventListener("click", function(e){
+      if(e.target === this){
+        closeOverlaySheet();
+      }
+    });
+
+    var portalOvBtns = document.querySelectorAll("[data-overlay-section]");
+    for(var i = 0; i < portalOvBtns.length; i++){
+      (function(btn){
+        btn.addEventListener("click", function(){
+          haptic("click");
+          openOverlaySheet(btn.getAttribute("data-overlay-section"), "");
+        });
+      })(portalOvBtns[i]);
     }
-  });
 
-  // Init
-  loadFavorites();
-  loadOverlayStatus();
-  checkResumeReading();
-  loadComicsData();
-  loadPdfsData();
-  loadGamesData();
+    var secBtns = document.querySelectorAll("#sheetSectionSeg .seg-btn");
+    for(var j = 0; j < secBtns.length; j++){
+      (function(btn){
+        btn.addEventListener("click", function(){
+          haptic("tick");
+          selectedSection = btn.getAttribute("data-sec");
+          selectedItemId = "";
+          refreshSheetContent();
+        });
+      })(secBtns[j]);
+    }
+
+    var sizeBtns = document.querySelectorAll("#sheetSizeSeg .seg-btn");
+    for(var k = 0; k < sizeBtns.length; k++){
+      (function(btn){
+        btn.addEventListener("click", function(){
+          haptic("tick");
+          selectedSize = btn.getAttribute("data-size");
+          refreshSheetContent();
+        });
+      })(sizeBtns[k]);
+    }
+
+    document.getElementById("shareAppBtn").addEventListener("click", function(){
+      haptic("click");
+      var shareTitle = "نيون كوميكس وأركيد";
+      var shareText = "استمتع بقصص الكوميكس المصطنعة وقراءة ملفات PDF وألعاب الأركيد في النوافذ العائمة.";
+      if(window.RosTrickShare && typeof window.RosTrickShare.share === "function"){
+        window.RosTrickShare.share({ title: shareTitle, text: shareText });
+      }else if(navigator.clipboard && typeof navigator.clipboard.writeText === "function"){
+        navigator.clipboard.writeText(shareTitle + " - " + shareText).then(function(){
+          showToast("تم نسخ وصف التطبيق");
+        }).catch(function(){
+          showToast("المشاركة متاحة داخل التطبيق");
+        });
+      }else{
+        showToast("المشاركة متاحة داخل التطبيق");
+      }
+    });
+  }
+
+  bindEvents();
+  loadProgressAndResume();
+  loadJsonData();
+  initNativeBridges();
 })();
 </script>
 </body>
