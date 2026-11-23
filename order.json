@@ -40,14 +40,6 @@
     "searchNames": []
   },
   {
-    "file": "settings.html",
-    "title": "الإعدادات",
-    "icon": "fa-solid fa-file",
-    "hidden": false,
-    "searchEnabled": true,
-    "searchNames": []
-  },
-  {
     "file": "puzzle-view.html",
     "title": "اللعبة",
     "icon": "fa-solid fa-file",
@@ -136,14 +128,6 @@
     "searchNames": []
   },
   {
-    "file": "index.html",
-    "title": "index",
-    "icon": "fa-solid fa-file",
-    "hidden": true,
-    "searchEnabled": true,
-    "searchNames": []
-  },
-  {
     "file": "library.html",
     "title": "library",
     "icon": "fa-solid fa-file",
@@ -210,6 +194,14 @@
   {
     "file": "scores.html",
     "title": "scores",
+    "icon": "fa-solid fa-file",
+    "hidden": true,
+    "searchEnabled": true,
+    "searchNames": []
+  },
+  {
+    "file": "settings.html",
+    "title": "settings",
     "icon": "fa-solid fa-file",
     "hidden": true,
     "searchEnabled": true,
