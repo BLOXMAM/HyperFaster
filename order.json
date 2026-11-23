@@ -8,14 +8,6 @@
     "searchNames": []
   },
   {
-    "file": "favorites.html",
-    "title": "المفضلة",
-    "icon": "fa-solid fa-file",
-    "hidden": false,
-    "searchEnabled": true,
-    "searchNames": []
-  },
-  {
     "file": "overlay-info.html",
     "title": "الوضع العائم",
     "icon": "fa-solid fa-file",
@@ -56,40 +48,8 @@
     "searchNames": []
   },
   {
-    "file": "about.html",
-    "title": "about",
-    "icon": "fa-solid fa-file",
-    "hidden": true,
-    "searchEnabled": true,
-    "searchNames": []
-  },
-  {
     "file": "admin.html",
     "title": "admin",
-    "icon": "fa-solid fa-file",
-    "hidden": true,
-    "searchEnabled": true,
-    "searchNames": []
-  },
-  {
-    "file": "categories.html",
-    "title": "categories",
-    "icon": "fa-solid fa-file",
-    "hidden": true,
-    "searchEnabled": true,
-    "searchNames": []
-  },
-  {
-    "file": "game-details.html",
-    "title": "game-details",
-    "icon": "fa-solid fa-file",
-    "hidden": true,
-    "searchEnabled": true,
-    "searchNames": []
-  },
-  {
-    "file": "game2d.html",
-    "title": "game2d",
     "icon": "fa-solid fa-file",
     "hidden": true,
     "searchEnabled": true,
@@ -122,14 +82,6 @@
   {
     "file": "home.html",
     "title": "home",
-    "icon": "fa-solid fa-file",
-    "hidden": true,
-    "searchEnabled": true,
-    "searchNames": []
-  },
-  {
-    "file": "library.html",
-    "title": "library",
     "icon": "fa-solid fa-file",
     "hidden": true,
     "searchEnabled": true,
@@ -178,30 +130,6 @@
   {
     "file": "reader.html",
     "title": "reader",
-    "icon": "fa-solid fa-file",
-    "hidden": true,
-    "searchEnabled": true,
-    "searchNames": []
-  },
-  {
-    "file": "riddle.html",
-    "title": "riddle",
-    "icon": "fa-solid fa-file",
-    "hidden": true,
-    "searchEnabled": true,
-    "searchNames": []
-  },
-  {
-    "file": "scores.html",
-    "title": "scores",
-    "icon": "fa-solid fa-file",
-    "hidden": true,
-    "searchEnabled": true,
-    "searchNames": []
-  },
-  {
-    "file": "settings.html",
-    "title": "settings",
     "icon": "fa-solid fa-file",
     "hidden": true,
     "searchEnabled": true,
