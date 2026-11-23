@@ -1,13 +1,5 @@
 [
   {
-    "file": "overlay-info.html",
-    "title": "الوضع العائم",
-    "icon": "fa-solid fa-file",
-    "hidden": false,
-    "searchEnabled": true,
-    "searchNames": []
-  },
-  {
     "file": "games.html",
     "title": "الألعاب المصغرة العائمة",
     "icon": "fa-solid fa-file",
@@ -66,6 +58,14 @@
   {
     "file": "overlay-guide.html",
     "title": "overlay-guide",
+    "icon": "fa-solid fa-file",
+    "hidden": true,
+    "searchEnabled": true,
+    "searchNames": []
+  },
+  {
+    "file": "overlay-info.html",
+    "title": "overlay-info",
     "icon": "fa-solid fa-file",
     "hidden": true,
     "searchEnabled": true,
