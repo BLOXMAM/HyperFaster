@@ -16,14 +16,6 @@
     "searchNames": []
   },
   {
-    "file": "game_memory.html",
-    "title": "game_memory",
-    "icon": "fa-solid fa-file",
-    "hidden": true,
-    "searchEnabled": true,
-    "searchNames": []
-  },
-  {
     "file": "game_puzzle.html",
     "title": "game_puzzle",
     "icon": "fa-solid fa-file",
@@ -32,56 +24,8 @@
     "searchNames": []
   },
   {
-    "file": "game_tap.html",
-    "title": "game_tap",
-    "icon": "fa-solid fa-file",
-    "hidden": true,
-    "searchEnabled": true,
-    "searchNames": []
-  },
-  {
-    "file": "games.html",
-    "title": "games",
-    "icon": "fa-solid fa-file",
-    "hidden": true,
-    "searchEnabled": true,
-    "searchNames": []
-  },
-  {
     "file": "home.html",
     "title": "home",
-    "icon": "fa-solid fa-file",
-    "hidden": true,
-    "searchEnabled": true,
-    "searchNames": []
-  },
-  {
-    "file": "overlay-guide.html",
-    "title": "overlay-guide",
-    "icon": "fa-solid fa-file",
-    "hidden": true,
-    "searchEnabled": true,
-    "searchNames": []
-  },
-  {
-    "file": "overlay-info.html",
-    "title": "overlay-info",
-    "icon": "fa-solid fa-file",
-    "hidden": true,
-    "searchEnabled": true,
-    "searchNames": []
-  },
-  {
-    "file": "overlay_hub.html",
-    "title": "overlay_hub",
-    "icon": "fa-solid fa-file",
-    "hidden": true,
-    "searchEnabled": true,
-    "searchNames": []
-  },
-  {
-    "file": "puzzle-game.html",
-    "title": "puzzle-game",
     "icon": "fa-solid fa-file",
     "hidden": true,
     "searchEnabled": true,
