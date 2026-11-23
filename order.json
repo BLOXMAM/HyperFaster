@@ -30,5 +30,13 @@
     "hidden": true,
     "searchEnabled": true,
     "searchNames": []
+  },
+  {
+    "file": "comics.html",
+    "title": "مكتبة الكوميكس",
+    "icon": "fa-solid fa-file",
+    "hidden": false,
+    "searchEnabled": true,
+    "searchNames": []
   }
 ]
