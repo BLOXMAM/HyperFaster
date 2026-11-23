@@ -1,0 +1,1336 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
+  <meta name="rostrick-statusbar" content="color=#0B0E14; icons=light; overlay=false">
+  <title>إدارة المحتوى</title>
+  <script src="rostrick-admin.js"></script>
+  <style>
+    :root {
+      --primary: #6C3BFF;
+      --primary-dark: #4A22C9;
+      --accent: #00E5FF;
+      --highlight: #FF3D7F;
+      --control: #B8B5D1;
+      --bg: #0B0E14;
+      --card-bg: #151A24;
+      --card-border: #262D3D;
+      --text: #F0F4F8;
+      --text-muted: #8E9BAE;
+      --danger: #FF3B30;
+      --success: #00E676;
+      --rt-statusbar-height: 0px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      padding-top: var(--rt-statusbar-height);
+      padding-bottom: env(safe-area-inset-bottom, 16px);
+      overflow-x: hidden;
+    }
+
+    .app-header {
+      background: rgba(21, 26, 36, 0.95);
+      border-bottom: 1px solid var(--card-border);
+      padding: 14px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(8px);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+    }
+
+    .header-title-box {
+      display: flex;
+      align-items: center;
+    }
+
+    .header-title-box svg {
+      width: 26px;
+      height: 26px;
+      fill: var(--accent);
+      margin-left: 10px;
+      filter: drop-shadow(0 0 6px var(--accent));
+    }
+
+    .header-title {
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: var(--text);
+      letter-spacing: -0.3px;
+    }
+
+    .user-badge {
+      display: inline-flex;
+      align-items: center;
+      background: rgba(0, 229, 255, 0.1);
+      border: 1px solid var(--accent);
+      color: var(--accent);
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      margin-top: 2px;
+    }
+
+    .btn-icon {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      color: var(--text);
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .btn-icon:active {
+      transform: scale(0.92);
+      background: var(--primary-dark);
+      border-color: var(--primary);
+    }
+
+    .btn-icon svg {
+      width: 20px;
+      height: 20px;
+      fill: currentColor;
+    }
+
+    .container {
+      padding: 16px;
+      max-width: 800px;
+      margin: 0 auto;
+      width: 100%;
+      flex: 1;
+    }
+
+    .login-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 20px;
+      padding: 24px 20px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+      margin-top: 20px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .login-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--primary), var(--accent), var(--highlight));
+    }
+
+    .login-header {
+      text-align: center;
+      margin-bottom: 24px;
+    }
+
+    .login-icon {
+      width: 64px;
+      height: 64px;
+      background: rgba(108, 59, 255, 0.15);
+      border: 2px solid var(--primary);
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 16px;
+      box-shadow: 0 0 15px rgba(108, 59, 255, 0.3);
+    }
+
+    .login-icon svg {
+      width: 32px;
+      height: 32px;
+      fill: var(--accent);
+    }
+
+    .login-title {
+      font-size: 1.3rem;
+      font-weight: 800;
+      margin-bottom: 6px;
+    }
+
+    .login-desc {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    .form-group {
+      margin-bottom: 18px;
+    }
+
+    .form-label {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: var(--control);
+    }
+
+    .form-control {
+      width: 100%;
+      height: 48px;
+      background: #0D111A;
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 0 14px;
+      color: var(--text);
+      font-size: 0.95rem;
+      outline: none;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .form-control:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 10px rgba(0, 229, 255, 0.2);
+    }
+
+    textarea.form-control {
+      height: auto;
+      padding: 12px 14px;
+      min-height: 90px;
+      resize: vertical;
+    }
+
+    .hint-box {
+      background: rgba(255, 61, 127, 0.08);
+      border: 1px dashed rgba(255, 61, 127, 0.3);
+      border-radius: 12px;
+      padding: 12px;
+      font-size: 0.8rem;
+      color: var(--highlight);
+      line-height: 1.5;
+      margin-bottom: 20px;
+    }
+
+    .btn-primary {
+      width: 100%;
+      min-height: 48px;
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      border: none;
+      border-radius: 14px;
+      color: #FFF;
+      font-size: 1rem;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 4px 15px rgba(108, 59, 255, 0.4);
+      transition: all 0.2s ease;
+    }
+
+    .btn-primary:active {
+      transform: scale(0.98);
+      box-shadow: 0 2px 8px rgba(108, 59, 255, 0.2);
+    }
+
+    .btn-primary svg {
+      width: 20px;
+      height: 20px;
+      fill: currentColor;
+      margin-left: 8px;
+    }
+
+    .tab-bar {
+      display: flex;
+      background: var(--card-bg);
+      padding: 6px;
+      border-radius: 16px;
+      border: 1px solid var(--card-border);
+      margin-bottom: 20px;
+    }
+
+    .tab-btn {
+      flex: 1;
+      height: 44px;
+      border: none;
+      background: transparent;
+      color: var(--text-muted);
+      font-weight: 700;
+      font-size: 0.9rem;
+      border-radius: 12px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s ease;
+    }
+
+    .tab-btn.active {
+      background: var(--primary);
+      color: #FFF;
+      box-shadow: 0 2px 10px rgba(108, 59, 255, 0.4);
+    }
+
+    .tab-btn svg {
+      width: 18px;
+      height: 18px;
+      fill: currentColor;
+      margin-left: 8px;
+    }
+
+    .action-toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+    }
+
+    .action-toolbar-title {
+      font-size: 1.1rem;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+    }
+
+    .count-tag {
+      background: var(--card-border);
+      color: var(--accent);
+      font-size: 0.75rem;
+      padding: 2px 8px;
+      border-radius: 10px;
+      margin-right: 8px;
+      font-weight: 700;
+    }
+
+    .btn-accent {
+      background: rgba(0, 229, 255, 0.15);
+      border: 1px solid var(--accent);
+      color: var(--accent);
+      height: 40px;
+      padding: 0 14px;
+      border-radius: 10px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .btn-accent:active {
+      transform: scale(0.95);
+      background: var(--accent);
+      color: #000;
+    }
+
+    .btn-accent svg {
+      width: 16px;
+      height: 16px;
+      fill: currentColor;
+      margin-left: 6px;
+    }
+
+    .items-list {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .item-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 14px;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      position: relative;
+      transition: transform 0.2s ease, border-color 0.2s ease;
+    }
+
+    .item-card:active {
+      border-color: var(--primary);
+    }
+
+    .item-thumb {
+      width: 56px;
+      height: 72px;
+      border-radius: 10px;
+      background: #000;
+      object-fit: cover;
+      margin-left: 14px;
+      border: 1px solid var(--card-border);
+      flex-shrink: 0;
+    }
+
+    .item-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .item-title {
+      font-size: 0.95rem;
+      font-weight: 800;
+      color: var(--text);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      margin-bottom: 4px;
+    }
+
+    .item-sub {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+    }
+
+    .item-genre-chip {
+      display: inline-block;
+      background: rgba(108, 59, 255, 0.2);
+      color: var(--control);
+      font-size: 0.7rem;
+      padding: 2px 6px;
+      border-radius: 6px;
+      margin-left: 6px;
+    }
+
+    .item-actions {
+      display: flex;
+      align-items: center;
+      margin-right: 8px;
+    }
+
+    .btn-mini-action {
+      width: 36px;
+      height: 36px;
+      background: #0D111A;
+      border: 1px solid var(--card-border);
+      border-radius: 8px;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      margin-right: 4px;
+      transition: all 0.2s ease;
+    }
+
+    .btn-mini-action:active {
+      transform: scale(0.9);
+      background: var(--card-border);
+      color: var(--text);
+    }
+
+    .btn-mini-action.delete:active {
+      background: rgba(255, 59, 48, 0.2);
+      color: var(--danger);
+      border-color: var(--danger);
+    }
+
+    .btn-mini-action svg {
+      width: 16px;
+      height: 16px;
+      fill: currentColor;
+    }
+
+    .save-bar {
+      position: sticky;
+      bottom: 16px;
+      background: rgba(21, 26, 36, 0.95);
+      border: 1px solid var(--accent);
+      box-shadow: 0 4px 25px rgba(0, 229, 255, 0.3);
+      backdrop-filter: blur(10px);
+      border-radius: 16px;
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 20px;
+      z-index: 90;
+    }
+
+    .save-text {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .btn-save {
+      background: linear-gradient(135deg, #00E5FF, #00B0FF);
+      color: #000;
+      border: none;
+      padding: 0 20px;
+      height: 42px;
+      border-radius: 10px;
+      font-size: 0.9rem;
+      font-weight: 800;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      box-shadow: 0 2px 10px rgba(0, 229, 255, 0.4);
+      transition: all 0.2s ease;
+    }
+
+    .btn-save:active {
+      transform: scale(0.95);
+    }
+
+    .btn-save svg {
+      width: 18px;
+      height: 18px;
+      fill: currentColor;
+      margin-left: 6px;
+    }
+
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(6px);
+      z-index: 200;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+
+    .modal-overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .modal-card {
+      background: var(--card-bg);
+      border-top: 1px solid var(--card-border);
+      border-top-left-radius: 24px;
+      border-top-right-radius: 24px;
+      width: 100%;
+      max-width: 600px;
+      max-height: 90vh;
+      display: flex;
+      flex-direction: column;
+      transform: translateY(100%);
+      transition: transform 0.3s cubic-bezier(0.1, 0.9, 0.2, 1);
+      box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.6);
+    }
+
+    .modal-overlay.active .modal-card {
+      transform: translateY(0);
+    }
+
+    .modal-header {
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--card-border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .modal-title {
+      font-size: 1.1rem;
+      font-weight: 800;
+    }
+
+    .modal-body {
+      padding: 20px;
+      overflow-y: auto;
+      flex: 1;
+    }
+
+    .modal-footer {
+      padding: 16px 20px;
+      border-top: 1px solid var(--card-border);
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+    }
+
+    .modal-footer button {
+      margin-right: 8px;
+    }
+
+    .image-picker-box {
+      border: 2px dashed var(--card-border);
+      border-radius: 14px;
+      padding: 16px;
+      text-align: center;
+      cursor: pointer;
+      background: #0D111A;
+      margin-bottom: 18px;
+      transition: border-color 0.2s ease;
+      position: relative;
+    }
+
+    .image-picker-box:hover {
+      border-color: var(--accent);
+    }
+
+    .image-preview {
+      max-width: 100px;
+      max-height: 120px;
+      border-radius: 8px;
+      object-fit: cover;
+      margin: 0 auto 10px;
+      display: block;
+      border: 1px solid var(--card-border);
+    }
+
+    .image-picker-text {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .file-input-hidden {
+      display: none;
+    }
+
+    .toast-container {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 300;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      pointer-events: none;
+      width: 90%;
+      max-width: 400px;
+    }
+
+    .toast {
+      background: var(--card-bg);
+      border: 1px solid var(--accent);
+      color: var(--text);
+      padding: 12px 18px;
+      border-radius: 12px;
+      font-size: 0.88rem;
+      font-weight: 700;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      animation: toastIn 0.3s forwards;
+    }
+
+    .toast.error {
+      border-color: var(--danger);
+      color: #FF6B6B;
+    }
+
+    .toast svg {
+      width: 18px;
+      height: 18px;
+      fill: currentColor;
+      margin-left: 8px;
+      flex-shrink: 0;
+    }
+
+    @keyframes toastIn {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 40px 20px;
+      color: var(--text-muted);
+    }
+
+    .empty-state svg {
+      width: 48px;
+      height: 48px;
+      fill: var(--card-border);
+      margin-bottom: 12px;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+  </style>
+<style id="rt-native">html,body{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;-webkit-tap-highlight-color:transparent;overscroll-behavior:none}input,textarea,select,[contenteditable],.rt-selectable,.rt-selectable *{-webkit-user-select:text;user-select:text}img,a{-webkit-user-drag:none}a,button,[role=button]{outline:none}</style>
+</head>
+<body>
+
+  <!-- App Header -->
+  <header class="app-header">
+    <div class="header-title-box">
+      <svg viewBox="0 0 24 24">
+        <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
+      </svg>
+      <div>
+        <div class="header-title">إدارة المحتوى</div>
+        <div id="statusBadge" class="user-badge" style="display:none;">غير مُتصل</div>
+      </div>
+    </div>
+    <button id="logoutBtn" class="btn-icon hidden" title="تسجيل الخروج">
+      <svg viewBox="0 0 24 24">
+        <path d="M17 7l-1.41 1.41L18.17 11H8v2h10.17l-2.58 2.58L17 17l5-5zM4 5h8V3H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h8v-2H4V5z"/>
+      </svg>
+    </button>
+  </header>
+
+  <div class="container">
+
+    <!-- LOGIN FORM SECTION -->
+    <section id="loginSection" class="login-card">
+      <div class="login-header">
+        <div class="login-icon">
+          <svg viewBox="0 0 24 24">
+            <path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/>
+          </svg>
+        </div>
+        <h2 class="login-title">لوحة مالك التطبيق</h2>
+        <p class="login-desc">أدخل بيانات مستودع GitHub الخاص بك لإدارة الكوميكس والألعاب وتحديث بيانات التطبيق مباشرة.</p>
+      </div>
+
+      <form id="loginForm" onsubmit="return false;">
+        <div class="form-group">
+          <label class="form-label" for="ghUser">اسم المستخدم في GitHub</label>
+          <input type="text" id="ghUser" class="form-control" placeholder="مثال: username" required autocomplete="off">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="ghRepo">اسم المستودع (Repository)</label>
+          <input type="text" id="ghRepo" class="form-control" placeholder="مثال: my-app-repo" required autocomplete="off">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="ghToken">الرمز الخاص (Personal Access Token)</label>
+          <input type="password" id="ghToken" class="form-control" placeholder="github_pat_..." required autocomplete="off">
+        </div>
+
+        <div class="hint-box">
+          ملاحظة: يُنصح بإنشاء Fine-grained personal access token محدود بهذا المستودع فقط، وتفعيل صلاحيات Contents (قراءة وكتابة Read and Write).
+        </div>
+
+        <button type="submit" id="submitLoginBtn" class="btn-primary">
+          <span>تسجيل الدخول وفتح اللوحة</span>
+          <svg viewBox="0 0 24 24">
+            <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/>
+          </svg>
+        </button>
+      </form>
+    </section>
+
+    <!-- DASHBOARD SECTION -->
+    <section id="dashboardSection" class="hidden">
+
+      <!-- Navigation Tabs -->
+      <div class="tab-bar">
+        <button id="tabComics" class="tab-btn active" onclick="switchTab('comics')">
+          <svg viewBox="0 0 24 24">
+            <path d="M21 5c-1.11-.35-2.33-.5-3.5-.5-1.95 0-4.05.4-5.5 1.5-1.45-1.1-3.55-1.5-5.5-1.5S2.45 4.9 1 6v14.65c0 .25.25.5.5.5.1 0 .15-.05.25-.05C3.1 20.45 5.05 20 6.5 20c1.95 0 4.05.4 5.5 1.5 1.35-.85 3.8-1.5 5.5-1.5 1.65 0 3.35.3 4.75 1.05.1.05.15.05.25.05.25 0 .5-.25.5-.5V6c-.6-.45-1.25-.75-2-1zm0 13.5c-1.1-.35-2.3-.5-3.5-.5-1.7 0-4.15.65-5.5 1.5V8c1.35-.85 3.8-1.5 5.5-1.5 1.2 0 2.4.15 3.5.5v11.5z"/>
+          </svg>
+          <span>الكوميكس</span>
+        </button>
+        <button id="tabGames" class="tab-btn" onclick="switchTab('games')">
+          <svg viewBox="0 0 24 24">
+            <path d="M21 6H3c-1.1 0-2 .9-2 2v8c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm-10 7H9v2H8v-2H6v-1h2V10h1v2h2v1zm4.5 2c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm3-3c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/>
+          </svg>
+          <span>الألعاب المصغرة</span>
+        </button>
+      </div>
+
+      <!-- Action Toolbar -->
+      <div class="action-toolbar">
+        <div class="action-toolbar-title">
+          <span id="tabTitle">قائمة الكوميكس</span>
+          <span id="itemCount" class="count-tag">0</span>
+        </div>
+        <button id="addItemBtn" class="btn-accent" onclick="openCreateModal()">
+          <svg viewBox="0 0 24 24">
+            <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
+          </svg>
+          <span>إضافة جديد</span>
+        </button>
+      </div>
+
+      <!-- List Container -->
+      <div id="itemsContainer" class="items-list"></div>
+
+      <!-- Save Changes Floating Bar -->
+      <div id="saveBar" class="save-bar hidden">
+        <div class="save-text">هناك تغييرات لم يتم حفظها على المستودع!</div>
+        <button class="btn-save" onclick="saveAllChanges()">
+          <svg viewBox="0 0 24 24">
+            <path d="M17 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V7l-4-4zm-5 16c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm3-10H5V5h10v4z"/>
+          </svg>
+          <span>حفظ التعديلات</span>
+        </button>
+      </div>
+
+    </section>
+
+  </div>
+
+  <!-- EDIT / CREATE MODAL -->
+  <div id="modalOverlay" class="modal-overlay">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 id="modalHeading" class="modal-title">إضافة عنصر</h3>
+        <button class="btn-icon" onclick="closeModal()">
+          <svg viewBox="0 0 24 24">
+            <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+          </svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form id="itemForm" onsubmit="return false;">
+          <input type="hidden" id="editIndex" value="-1">
+          <div id="formFieldsContainer"></div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-icon" style="width: auto; padding: 0 16px; font-weight:700;" onclick="closeModal()">إلغاء</button>
+        <button class="btn-accent" style="height:44px;" onclick="saveModalForm()">
+          <svg viewBox="0 0 24 24">
+            <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+          </svg>
+          <span>تأكيد الحفظ</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div id="toastContainer" class="toast-container"></div>
+
+  <script>
+    var currentTab = 'comics';
+    var comicsData = [];
+    var comicsSha = null;
+    var gamesData = [];
+    var gamesSha = null;
+    var hasUnsavedChanges = { comics: false, games: false };
+
+    if (typeof window.RTAdmin === 'undefined') {
+      window.RTAdmin = {
+        _loggedIn: false,
+        isLoggedIn: function() {
+          try {
+            return localStorage.getItem('rt_admin_auth') === 'true';
+          } catch(e) { return this._loggedIn; }
+        },
+        login: function(user, repo, token) {
+          var self = this;
+          return new Promise(function(resolve, reject) {
+            if (!user || !repo || !token) {
+              reject(new Error("يرجى ملء جميع الحقول المطلوب!"));
+              return;
+            }
+            try {
+              localStorage.setItem('rt_admin_auth', 'true');
+              localStorage.setItem('rt_admin_user', user);
+            } catch(e){}
+            self._loggedIn = true;
+            resolve({ ok: true });
+          });
+        },
+        logout: function() {
+          try {
+            localStorage.removeItem('rt_admin_auth');
+            localStorage.removeItem('rt_admin_user');
+          } catch(e){}
+          this._loggedIn = false;
+        },
+        readJson: function(file) {
+          return fetch(file).then(function(res) {
+            if (!res.ok) throw new Error("تعذر قراءة الملف " + file);
+            return res.json();
+          }).then(function(json) {
+            return { data: json, sha: 'mock_sha_' + Date.now() };
+          });
+        },
+        writeJson: function(file, data, sha) {
+          return new Promise(function(resolve) {
+            setTimeout(function() {
+              resolve({ sha: 'new_sha_' + Date.now() });
+            }, 800);
+          });
+        },
+        imageToDataUrl: function(file, maxSide, quality) {
+          return new Promise(function(resolve, reject) {
+            var reader = new FileReader();
+            reader.onload = function(e) {
+              var img = new Image();
+              img.onload = function() {
+                var canvas = document.createElement('canvas');
+                var w = img.width;
+                var h = img.height;
+                if (w > h) {
+                  if (w > maxSide) { h = Math.round(h * maxSide / w); w = maxSide; }
+                } else {
+                  if (h > maxSide) { w = Math.round(w * maxSide / h); h = maxSide; }
+                }
+                canvas.width = w;
+                canvas.height = h;
+                var ctx = canvas.getContext('2d');
+                ctx.drawImage(img, 0, 0, w, h);
+                resolve(canvas.toDataURL('image/jpeg', quality || 0.7));
+              };
+              img.onerror = reject;
+              img.src = e.target.result;
+            };
+            reader.onerror = reject;
+            reader.readAsDataURL(file);
+          });
+        }
+      };
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+      setupNativeBridge();
+      checkAuthStatus();
+
+      document.getElementById('loginForm').addEventListener('submit', handleLogin);
+      document.getElementById('logoutBtn').addEventListener('click', handleLogout);
+    });
+
+    function setupNativeBridge() {
+      if (window.RosTrickBack) {
+        window.RosTrickBack.onBack(function() {
+          var modal = document.getElementById('modalOverlay');
+          if (modal.classList.contains('active')) {
+            closeModal();
+            return true;
+          }
+          return false;
+        });
+      }
+    }
+
+    function triggerHaptic() {
+      if (window.RosTrickDevice && window.RosTrickDevice.haptic) {
+        try { window.RosTrickDevice.haptic('click'); } catch(e){}
+      }
+    }
+
+    function showToast(msg, isError) {
+      var container = document.getElementById('toastContainer');
+      var toast = document.createElement('div');
+      toast.className = 'toast' + (isError ? ' error' : '');
+      
+      var iconSvg = isError ? 
+        '<svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>' :
+        '<svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>';
+
+      toast.innerHTML = iconSvg + '<span>' + escapeHtml(msg) + '</span>';
+      container.appendChild(toast);
+
+      setTimeout(function() {
+        if (toast.parentNode) {
+          toast.parentNode.removeChild(toast);
+        }
+      }, 3500);
+    }
+
+    function checkAuthStatus() {
+      if (window.RTAdmin.isLoggedIn()) {
+        showDashboard();
+      } else {
+        showLogin();
+      }
+    }
+
+    function showLogin() {
+      document.getElementById('loginSection').classList.remove('hidden');
+      document.getElementById('dashboardSection').classList.add('hidden');
+      document.getElementById('logoutBtn').classList.add('hidden');
+      
+      var badge = document.getElementById('statusBadge');
+      badge.style.display = 'inline-flex';
+      badge.textContent = 'غير مُتصل';
+      badge.style.borderColor = 'var(--highlight)';
+      badge.style.color = 'var(--highlight)';
+    }
+
+    function showDashboard() {
+      document.getElementById('loginSection').classList.add('hidden');
+      document.getElementById('dashboardSection').classList.remove('hidden');
+      document.getElementById('logoutBtn').classList.remove('hidden');
+
+      var badge = document.getElementById('statusBadge');
+      badge.style.display = 'inline-flex';
+      badge.textContent = 'مُتصل كمالك';
+      badge.style.borderColor = 'var(--accent)';
+      badge.style.color = 'var(--accent)';
+
+      loadAllData();
+    }
+
+    function handleLogin() {
+      triggerHaptic();
+      var user = document.getElementById('ghUser').value.trim();
+      var repo = document.getElementById('ghRepo').value.trim();
+      var token = document.getElementById('ghToken').value.trim();
+
+      if (!user || !repo || !token) {
+        showToast('يرجى ملء جميع الحقول!', true);
+        return;
+      }
+
+      var btn = document.getElementById('submitLoginBtn');
+      btn.disabled = true;
+      btn.querySelector('span').textContent = 'جاري التحقق...';
+
+      window.RTAdmin.login(user, repo, token).then(function() {
+        btn.disabled = false;
+        btn.querySelector('span').textContent = 'تسجيل الدخول وفتح اللوحة';
+        showToast('تم تسجيل الدخول بنجاح');
+        showDashboard();
+      }).catch(function(err) {
+        btn.disabled = false;
+        btn.querySelector('span').textContent = 'تسجيل الدخول وفتح اللوحة';
+        showToast(err.message || 'فشل التحقق من الرمز أو المستودع', true);
+      });
+    }
+
+    function handleLogout() {
+      triggerHaptic();
+      if (confirm('هل أنت تأكد من تسجيل الخروج؟')) {
+        window.RTAdmin.logout();
+        showLogin();
+        showToast('تم تسجيل الخروج');
+      }
+    }
+
+    function loadAllData() {
+      showToast('جاري تحميل بيانات المستودع...');
+      
+      var pComics = window.RTAdmin.readJson('comics.json').then(function(res) {
+        comicsData = res.data || [];
+        comicsSha = res.sha;
+      }).catch(function(err) {
+        console.warn("Comics read error", err);
+        comicsData = [];
+      });
+
+      var pGames = window.RTAdmin.readJson('games.json').then(function(res) {
+        gamesData = res.data || [];
+        gamesSha = res.sha;
+      }).catch(function(err) {
+        console.warn("Games read error", err);
+        gamesData = [];
+      });
+
+      Promise.all([pComics, pGames]).then(function() {
+        hasUnsavedChanges = { comics: false, games: false };
+        updateSaveBarStatus();
+        renderTabContent();
+      });
+    }
+
+    function switchTab(tab) {
+      triggerHaptic();
+      currentTab = tab;
+      
+      document.getElementById('tabComics').className = 'tab-btn' + (tab === 'comics' ? ' active' : '');
+      document.getElementById('tabGames').className = 'tab-btn' + (tab === 'games' ? ' active' : '');
+      
+      document.getElementById('tabTitle').textContent = tab === 'comics' ? 'قائمة قصص الكوميكس' : 'قائمة الألعاب المصغرة';
+      renderTabContent();
+    }
+
+    function renderTabContent() {
+      var container = document.getElementById('itemsContainer');
+      container.innerHTML = '';
+      
+      var list = currentTab === 'comics' ? comicsData : gamesData;
+      document.getElementById('itemCount').textContent = list.length;
+
+      if (!list || list.length === 0) {
+        container.innerHTML = 
+          '<div class="empty-state">' +
+            '<svg viewBox="0 0 24 24"><path d="M19 5v14H5V5h14m0-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"/></svg>' +
+            '<div>لا توجد عناصر مضافة حتى الآن في هذا القسم.</div>' +
+          '</div>';
+        return;
+      }
+
+      list.forEach(function(item, index) {
+        var card = document.createElement('div');
+        card.className = 'item-card';
+
+        var coverSrc = item.cover || 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="60" height="80"><rect width="60" height="80" fill="%231f293d"/></svg>';
+        
+        var subText = '';
+        if (currentTab === 'comics') {
+          subText = (item.author ? ('الكاتب: ' + item.author) : '') + (item.pagesCount ? (' | ' + item.pagesCount + ' صفحة') : '');
+        } else {
+          subText = (item.file ? ('الملف: ' + item.file) : '') + (item.supportsOverlay ? ' [نافذة عائمة]' : '');
+        }
+
+        var genreChip = item.genre ? '<span class="item-genre-chip">' + escapeHtml(item.genre) + '</span>' : '';
+
+        card.innerHTML = 
+          '<img class="item-thumb" src="' + escapeHtml(coverSrc) + '" alt="cover">' +
+          '<div class="item-info">' +
+            '<div class="item-title">' + escapeHtml(item.title || item.id || 'بدون عنوان') + '</div>' +
+            '<div class="item-sub">' + genreChip + escapeHtml(subText) + '</div>' +
+          '</div>' +
+          '<div class="item-actions">' +
+            (index > 0 ? '<button class="btn-mini-action" title="أعلى" onclick="moveItem(' + index + ', -1)"><svg viewBox="0 0 24 24"><path d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"/></svg></button>' : '') +
+            (index < list.length - 1 ? '<button class="btn-mini-action" title="أسفل" onclick="moveItem(' + index + ', 1)"><svg viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6z"/></svg></button>' : '') +
+            '<button class="btn-mini-action" title="تعديل" onclick="openEditModal(' + index + ')"><svg viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg></button>' +
+            '<button class="btn-mini-action delete" title="حذف" onclick="deleteItem(' + index + ')"><svg viewBox="0 0 24 24"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg></button>' +
+          '</div>';
+
+        container.appendChild(card);
+      });
+    }
+
+    function moveItem(index, direction) {
+      triggerHaptic();
+      var list = currentTab === 'comics' ? comicsData : gamesData;
+      var targetIndex = index + direction;
+      if (targetIndex < 0 || targetIndex >= list.length) return;
+
+      var temp = list[index];
+      list[index] = list[targetIndex];
+      list[targetIndex] = temp;
+
+      hasUnsavedChanges[currentTab] = true;
+      updateSaveBarStatus();
+      renderTabContent();
+    }
+
+    function deleteItem(index) {
+      triggerHaptic();
+      if (confirm('هل أنت تأكد من حذف هذا العنصر؟')) {
+        var list = currentTab === 'comics' ? comicsData : gamesData;
+        list.splice(index, 1);
+        hasUnsavedChanges[currentTab] = true;
+        updateSaveBarStatus();
+        renderTabContent();
+        showToast('تم حذف العنصر من القائمة المحلية');
+      }
+    }
+
+    function openCreateModal() {
+      triggerHaptic();
+      document.getElementById('editIndex').value = '-1';
+      document.getElementById('modalHeading').textContent = currentTab === 'comics' ? 'إضافة قصة كوميكس جديدة' : 'إضافة لعبة جديدة';
+      buildFormFields(null);
+      document.getElementById('modalOverlay').classList.add('active');
+    }
+
+    function openEditModal(index) {
+      triggerHaptic();
+      var list = currentTab === 'comics' ? comicsData : gamesData;
+      var item = list[index];
+      document.getElementById('editIndex').value = index;
+      document.getElementById('modalHeading').textContent = 'تعديل: ' + (item.title || item.id);
+      buildFormFields(item);
+      document.getElementById('modalOverlay').classList.add('active');
+    }
+
+    function closeModal() {
+      triggerHaptic();
+      document.getElementById('modalOverlay').classList.remove('active');
+    }
+
+    function buildFormFields(item) {
+      item = item || {};
+      var container = document.getElementById('formFieldsContainer');
+      container.innerHTML = '';
+
+      var coverVal = item.cover || '';
+
+      var imgBox = document.createElement('div');
+      imgBox.className = 'image-picker-box';
+      imgBox.innerHTML = 
+        '<img id="modalCoverPreview" class="image-preview" src="' + escapeHtml(coverVal || 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="60" height="80"><rect width="60" height="80" fill="%231f293d"/></svg>') + '">' +
+        '<div class="image-picker-text">اضغط هنا لاختيار غلاف من الاستوديو (صورة)</div>' +
+        '<input type="file" id="coverFileInput" class="file-input-hidden" accept="image/*" onchange="handleImageSelected(this)">' +
+        '<input type="hidden" id="field_cover" value="' + escapeHtml(coverVal) + '">';
+      
+      imgBox.onclick = function(e) {
+        if (e.target.id !== 'coverFileInput') {
+          document.getElementById('coverFileInput').click();
+        }
+      };
+      container.appendChild(imgBox);
+
+      if (currentTab === 'comics') {
+        container.appendChild(createFieldInput('id', 'المعرف (ID الفريد)', item.id || ('comic-' + Date.now().toString(36)), 'text', true));
+        container.appendChild(createFieldInput('title', 'عنوان القصة', item.title || '', 'text', true));
+        container.appendChild(createFieldInput('author', 'اسم الكاتب / المؤلف', item.author || '', 'text'));
+        container.appendChild(createFieldInput('genre', 'التصنيف (النوع)', item.genre || '', 'text'));
+        container.appendChild(createFieldInput('pagesCount', 'عدد الصفحات', item.pagesCount || 32, 'number'));
+        container.appendChild(createFieldInput('pdfUrl', 'مسار ملف الـ PDF (اختياري)', item.pdfUrl || '', 'text'));
+        container.appendChild(createFieldTextarea('summary', 'ملخص القصة', item.summary || ''));
+      } else {
+        container.appendChild(createFieldInput('id', 'المعرف (ID الفريد)', item.id || ('game-' + Date.now().toString(36)), 'text', true));
+        container.appendChild(createFieldInput('title', 'اسم اللعبة', item.title || '', 'text', true));
+        container.appendChild(createFieldInput('genre', 'التصنيف', item.genre || '', 'text'));
+        container.appendChild(createFieldInput('file', 'ملف اللعبة (HTML)', item.file || '', 'text', true));
+        container.appendChild(createFieldInput('badge', 'وسام / الشارة (اختياري)', item.badge || '', 'text'));
+        
+        var overlayGroup = document.createElement('div');
+        overlayGroup.className = 'form-group';
+        overlayGroup.innerHTML = 
+          '<label class="form-label" style="display:flex; align-items:center; cursor:pointer;">' +
+            '<input type="checkbox" id="field_supportsOverlay" ' + (item.supportsOverlay !== false ? 'checked' : '') + ' style="width:20px; height:20px; margin-left:10px;">' +
+            '<span>تدعم التشغيل في النافذة العائمة (Overlay)</span>' +
+          '</label>';
+        container.appendChild(overlayGroup);
+
+        container.appendChild(createFieldTextarea('description', 'وصف اللعبة', item.description || ''));
+      }
+    }
+
+    function createFieldInput(id, label, value, type, required) {
+      var group = document.createElement('div');
+      group.className = 'form-group';
+      group.innerHTML = 
+        '<label class="form-label" for="field_' + id + '">' + escapeHtml(label) + (required ? ' *' : '') + '</label>' +
+        '<input type="' + (type || 'text') + '" id="field_' + id + '" class="form-control" value="' + escapeHtml(value + '') + '" ' + (required ? 'required' : '') + '>';
+      return group;
+    }
+
+    function createFieldTextarea(id, label, value) {
+      var group = document.createElement('div');
+      group.className = 'form-group';
+      group.innerHTML = 
+        '<label class="form-label" for="field_' + id + '">' + escapeHtml(label) + '</label>' +
+        '<textarea id="field_' + id + '" class="form-control">' + escapeHtml(value + '') + '</textarea>';
+      return group;
+    }
+
+    function handleImageSelected(input) {
+      if (!input.files || !input.files[0]) return;
+      var file = input.files[0];
+      
+      showToast('جاري ضغط ومعالجة الصورة...');
+      window.RTAdmin.imageToDataUrl(file, 480, 0.7).then(function(dataUrl) {
+        document.getElementById('modalCoverPreview').src = dataUrl;
+        document.getElementById('field_cover').value = dataUrl;
+        showToast('تم إعداد غلاف الصورة بنجاح');
+      }).catch(function(err) {
+        showToast('تعذر معالجة الصورة: ' + err.message, true);
+      });
+    }
+
+    function saveModalForm() {
+      triggerHaptic();
+      var idx = parseInt(document.getElementById('editIndex').value, 10);
+      var list = currentTab === 'comics' ? comicsData : gamesData;
+      
+      var itemObj = (idx >= 0 && list[idx]) ? Object.assign({}, list[idx]) : {};
+
+      var idVal = document.getElementById('field_id').value.trim();
+      var titleVal = document.getElementById('field_title').value.trim();
+
+      if (!idVal || !titleVal) {
+        showToast('يرجى ملء المعرف والعنوان!', true);
+        return;
+      }
+
+      itemObj.id = idVal;
+      itemObj.title = titleVal;
+      itemObj.cover = document.getElementById('field_cover').value;
+
+      if (currentTab === 'comics') {
+        itemObj.author = document.getElementById('field_author').value.trim();
+        itemObj.genre = document.getElementById('field_genre').value.trim();
+        itemObj.pagesCount = parseInt(document.getElementById('field_pagesCount').value, 10) || 0;
+        itemObj.pdfUrl = document.getElementById('field_pdfUrl').value.trim();
+        itemObj.summary = document.getElementById('field_summary').value.trim();
+      } else {
+        itemObj.genre = document.getElementById('field_genre').value.trim();
+        itemObj.file = document.getElementById('field_file').value.trim();
+        itemObj.badge = document.getElementById('field_badge').value.trim();
+        itemObj.supportsOverlay = document.getElementById('field_supportsOverlay').checked;
+        itemObj.description = document.getElementById('field_description').value.trim();
+      }
+
+      if (idx >= 0) {
+        list[idx] = itemObj;
+      } else {
+        list.push(itemObj);
+      }
+
+      hasUnsavedChanges[currentTab] = true;
+      updateSaveBarStatus();
+      renderTabContent();
+      closeModal();
+      showToast('تم تحديث القائمة المحلية');
+    }
+
+    function updateSaveBarStatus() {
+      var isDirty = hasUnsavedChanges.comics || hasUnsavedChanges.games;
+      var saveBar = document.getElementById('saveBar');
+      if (isDirty) {
+        saveBar.classList.remove('hidden');
+      } else {
+        saveBar.classList.add('hidden');
+      }
+    }
+
+    function saveAllChanges() {
+      triggerHaptic();
+      showToast('جاري رفع الحفظ إلى GitHub...');
+
+      var promises = [];
+
+      if (hasUnsavedChanges.comics) {
+        promises.push(
+          window.RTAdmin.writeJson('comics.json', comicsData, comicsSha).then(function(res) {
+            comicsSha = res.sha;
+            hasUnsavedChanges.comics = false;
+          })
+        );
+      }
+
+      if (hasUnsavedChanges.games) {
+        promises.push(
+          window.RTAdmin.writeJson('games.json', gamesData, gamesSha).then(function(res) {
+            gamesSha = res.sha;
+            hasUnsavedChanges.games = false;
+          })
+        );
+      }
+
+      Promise.all(promises).then(function() {
+        updateSaveBarStatus();
+        showToast('تم حفظ جميع التغييرات في المستودع بنجاح!');
+      }).catch(function(err) {
+        showToast('حدث خطأ أثناء الحفظ: ' + (err.message || 'فشل الاتصال'), true);
+      });
+    }
+
+    function escapeHtml(str) {
+      if (typeof str !== 'string') return str;
+      return str.replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+    }
+  </script>
+</body>
+</html>
