@@ -1,0 +1,991 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="rostrick-statusbar" content="color=#0D0C1D; icons=light; overlay=true">
+  <title>الألعاب المصغرة - نيون أركيد</title>
+  <style>
+    :root {
+      --primary: #6C3BFF;
+      --primary-dark: #4A22C9;
+      --accent: #00E5FF;
+      --highlight: #FF3D7F;
+      --control: #B8B5D1;
+      --bg-dark: #0D0C1D;
+      --card-bg: #16142E;
+      --card-border: rgba(108, 59, 255, 0.35);
+      --card-glow: rgba(0, 229, 255, 0.15);
+      --text-main: #FFFFFF;
+      --text-muted: #A09CBF;
+      --rt-statusbar-height: 0px;
+    }
+
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+      -webkit-user-select: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+      padding-top: var(--rt-statusbar-height);
+      padding-bottom: env(safe-area-inset-bottom);
+    }
+
+    /* Top App Bar */
+    .app-header {
+      background: linear-gradient(180deg, rgba(22, 20, 46, 0.95) 0%, rgba(13, 12, 29, 0.9) 100%);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(108, 59, 255, 0.3);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 60px;
+    }
+
+    .header-title-box {
+      display: flex;
+      align-items: center;
+    }
+
+    .header-icon {
+      width: 32px;
+      height: 32px;
+      margin-left: 10px;
+      color: var(--accent);
+      filter: drop-shadow(0 0 6px var(--accent));
+    }
+
+    .header-title {
+      font-size: 1.2rem;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      background: linear-gradient(90deg, #FFFFFF, var(--accent));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .icon-btn {
+      min-width: 44px;
+      min-height: 44px;
+      border-radius: 12px;
+      border: 1px solid rgba(0, 229, 255, 0.3);
+      background: rgba(108, 59, 255, 0.15);
+      color: #FFFFFF;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-decoration: none;
+    }
+
+    .icon-btn:active {
+      transform: scale(0.92);
+      background: var(--primary);
+      box-shadow: 0 0 12px var(--accent);
+    }
+
+    .icon-btn svg {
+      width: 22px;
+      height: 22px;
+      fill: currentColor;
+    }
+
+    /* Container */
+    .container {
+      padding: 16px;
+      flex: 1;
+      max-width: 768px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    /* Stats Hero Banner */
+    .hero-banner {
+      background: linear-gradient(135deg, rgba(108, 59, 255, 0.3) 0%, rgba(255, 61, 127, 0.2) 100%);
+      border: 1px solid var(--accent);
+      border-radius: 20px;
+      padding: 18px;
+      margin-bottom: 20px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4), inset 0 0 15px rgba(0, 229, 255, 0.15);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-banner::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(0,229,255,0.08) 0%, transparent 60%);
+      pointer-events: none;
+    }
+
+    .hero-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    .hero-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #FFFFFF;
+      display: flex;
+      align-items: center;
+    }
+
+    .hero-title svg {
+      width: 20px;
+      height: 20px;
+      margin-left: 8px;
+      fill: var(--highlight);
+    }
+
+    .hero-badge {
+      background: rgba(255, 61, 127, 0.2);
+      border: 1px solid var(--highlight);
+      color: #FF7BA4;
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 20px;
+      text-transform: uppercase;
+    }
+
+    .stats-grid {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .stat-card {
+      flex: 1;
+      background: rgba(13, 12, 29, 0.6);
+      border-radius: 12px;
+      padding: 10px;
+      text-align: center;
+      border: 1px solid rgba(184, 181, 209, 0.15);
+    }
+
+    .stat-card:first-child {
+      margin-left: 10px;
+    }
+
+    .stat-val {
+      font-size: 1.3rem;
+      font-weight: 900;
+      color: var(--accent);
+      text-shadow: 0 0 8px rgba(0, 229, 255, 0.5);
+    }
+
+    .stat-lbl {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    /* Filters */
+    .filter-scroll {
+      display: flex;
+      overflow-x: auto;
+      white-space: nowrap;
+      margin-bottom: 20px;
+      padding-bottom: 4px;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .filter-scroll::-webkit-scrollbar {
+      display: none;
+    }
+
+    .filter-chip {
+      background: var(--card-bg);
+      border: 1px solid rgba(108, 59, 255, 0.3);
+      color: var(--control);
+      padding: 10px 18px;
+      border-radius: 25px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      cursor: pointer;
+      margin-left: 8px;
+      min-height: 44px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+    }
+
+    .filter-chip.active {
+      background: var(--primary);
+      border-color: var(--accent);
+      color: #FFFFFF;
+      box-shadow: 0 0 12px rgba(108, 59, 255, 0.6);
+    }
+
+    /* Section Title */
+    .section-title-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 14px;
+    }
+
+    .section-title {
+      font-size: 1.1rem;
+      font-weight: 800;
+      color: #FFFFFF;
+      display: flex;
+      align-items: center;
+    }
+
+    .section-title::before {
+      content: '';
+      display: inline-block;
+      width: 4px;
+      height: 18px;
+      background: var(--highlight);
+      margin-left: 8px;
+      border-radius: 2px;
+      box-shadow: 0 0 8px var(--highlight);
+    }
+
+    /* Game Cards Grid */
+    .games-grid {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 30px;
+    }
+
+    .game-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 18px;
+      margin-bottom: 16px;
+      padding: 16px;
+      position: relative;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.3);
+      transition: transform 0.2s, border-color 0.2s;
+      overflow: hidden;
+    }
+
+    .game-card:active {
+      transform: scale(0.99);
+      border-color: var(--accent);
+    }
+
+    .game-card-main {
+      display: flex;
+      align-items: flex-start;
+      margin-bottom: 14px;
+    }
+
+    .game-cover {
+      width: 84px;
+      height: 84px;
+      border-radius: 14px;
+      object-fit: cover;
+      background: #090814;
+      border: 1px solid rgba(0, 229, 255, 0.3);
+      margin-left: 14px;
+      flex-shrink: 0;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+    }
+
+    .game-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .game-header-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 4px;
+    }
+
+    .game-title {
+      font-size: 1.05rem;
+      font-weight: 800;
+      color: #FFFFFF;
+      line-height: 1.3;
+    }
+
+    .game-tag {
+      font-size: 0.7rem;
+      padding: 2px 8px;
+      border-radius: 6px;
+      background: rgba(108, 59, 255, 0.3);
+      color: var(--accent);
+      border: 1px solid rgba(0, 229, 255, 0.2);
+      white-space: nowrap;
+      margin-right: 6px;
+    }
+
+    .game-desc {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      line-height: 1.4;
+      margin-bottom: 8px;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .score-badge {
+      display: inline-flex;
+      align-items: center;
+      background: rgba(255, 61, 127, 0.12);
+      border: 1px solid rgba(255, 61, 127, 0.4);
+      color: #FFA3C4;
+      padding: 4px 10px;
+      border-radius: 8px;
+      font-size: 0.78rem;
+      font-weight: 700;
+    }
+
+    .score-badge svg {
+      width: 14px;
+      height: 14px;
+      fill: var(--highlight);
+      margin-left: 5px;
+    }
+
+    /* Card Action Buttons */
+    .game-actions {
+      display: flex;
+      border-top: 1px solid rgba(184, 181, 209, 0.1);
+      padding-top: 12px;
+      margin-top: 4px;
+    }
+
+    .btn-play-full {
+      flex: 2;
+      min-height: 44px;
+      background: linear-gradient(90deg, var(--primary) 0%, var(--primary-dark) 100%);
+      border: 1px solid var(--accent);
+      border-radius: 12px;
+      color: #FFFFFF;
+      font-size: 0.9rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      text-decoration: none;
+      box-shadow: 0 4px 12px rgba(108, 59, 255, 0.4);
+      transition: all 0.2s;
+    }
+
+    .btn-play-full:active {
+      transform: scale(0.96);
+      box-shadow: 0 0 15px var(--accent);
+    }
+
+    .btn-play-full svg {
+      width: 18px;
+      height: 18px;
+      margin-left: 6px;
+      fill: #FFFFFF;
+    }
+
+    .btn-play-overlay {
+      flex: 1;
+      min-height: 44px;
+      background: rgba(0, 229, 255, 0.1);
+      border: 1px solid var(--accent);
+      border-radius: 12px;
+      color: var(--accent);
+      font-size: 0.82rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      margin-right: 8px;
+      transition: all 0.2s;
+    }
+
+    .btn-play-overlay:active {
+      background: var(--accent);
+      color: var(--bg-dark);
+    }
+
+    .btn-play-overlay svg {
+      width: 16px;
+      height: 16px;
+      margin-left: 5px;
+      fill: currentColor;
+    }
+
+    .btn-share {
+      width: 44px;
+      height: 44px;
+      background: rgba(184, 181, 209, 0.1);
+      border: 1px solid rgba(184, 181, 209, 0.2);
+      border-radius: 12px;
+      color: var(--control);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      margin-right: 8px;
+      flex-shrink: 0;
+    }
+
+    .btn-share:active {
+      background: rgba(184, 181, 209, 0.3);
+      color: #FFFFFF;
+    }
+
+    .btn-share svg {
+      width: 18px;
+      height: 18px;
+      fill: currentColor;
+    }
+
+    /* Toast Notification */
+    .toast {
+      position: fixed;
+      bottom: 75px;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: var(--card-bg);
+      border: 1px solid var(--accent);
+      color: #FFFFFF;
+      padding: 12px 22px;
+      border-radius: 30px;
+      font-size: 0.88rem;
+      font-weight: 700;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8), 0 0 15px rgba(0, 229, 255, 0.4);
+      z-index: 1000;
+      opacity: 0;
+      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      pointer-events: none;
+      display: flex;
+      align-items: center;
+      white-space: nowrap;
+    }
+
+    .toast.show {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+    }
+
+    .toast svg {
+      width: 18px;
+      height: 18px;
+      margin-left: 8px;
+      fill: var(--accent);
+    }
+
+    /* Bottom Navigation Bar */
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 62px;
+      background: linear-gradient(0deg, rgba(13, 12, 29, 0.98) 0%, rgba(22, 20, 46, 0.95) 100%);
+      border-top: 1px solid rgba(108, 59, 255, 0.3);
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      z-index: 90;
+      padding-bottom: env(safe-area-inset-bottom);
+    }
+
+    .nav-item {
+      flex: 1;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: var(--control);
+      text-decoration: none;
+      font-size: 0.72rem;
+      font-weight: 600;
+      transition: color 0.2s;
+    }
+
+    .nav-item.active {
+      color: var(--accent);
+      font-weight: 800;
+    }
+
+    .nav-item svg {
+      width: 22px;
+      height: 22px;
+      fill: currentColor;
+      margin-bottom: 3px;
+    }
+
+    .nav-item.active svg {
+      filter: drop-shadow(0 0 6px var(--accent));
+    }
+
+    /* Loading Spinner */
+    .loading-box {
+      text-align: center;
+      padding: 40px 20px;
+      color: var(--text-muted);
+    }
+
+    .spinner {
+      width: 40px;
+      height: 40px;
+      border: 3px solid rgba(108, 59, 255, 0.2);
+      border-top-color: var(--accent);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      margin: 0 auto 14px;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+  </style>
+<style id="rt-native">html,body{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;-webkit-tap-highlight-color:transparent;overscroll-behavior:none}input,textarea,select,[contenteditable],.rt-selectable,.rt-selectable *{-webkit-user-select:text;user-select:text}img,a{-webkit-user-drag:none}a,button,[role=button]{outline:none}</style>
+</head>
+<body>
+
+  <!-- Top App Bar -->
+  <header class="app-header">
+    <div class="header-title-box">
+      <svg class="header-icon" viewBox="0 0 24 24">
+        <path d="M21,6H3A2,2 0 0,0 1,8V16A2,2 0 0,0 3,18H21A2,2 0 0,0 23,16V8A2,2 0 0,0 21,6M6,15H4V13H6V15M6,11H4V9H6V11M9,13H7V11H9V13M15,15H13V13H15V15M15,11H13V9H15V11M18,13H16V11H18V13M20,15H18V13H20V15Z"/>
+      </svg>
+      <h1 class="header-title">صالة الألعاب النيون</h1>
+    </div>
+    <a href="overlay-hub.html?section=games" class="icon-btn" title="فتح مركز النافذة العائمة" id="btn-overlay-hub">
+      <svg viewBox="0 0 24 24">
+        <path d="M19,3H5C3.89,3 3,3.89 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5C21,3.89 20.1,3 19,3M19,7H5V5H19V7M19,19H5V9H19V19M13,11H17V15H13V11Z"/>
+      </svg>
+    </a>
+  </header>
+
+  <!-- Main Content -->
+  <main class="container">
+
+    <!-- Stats Hero -->
+    <section class="hero-banner">
+      <div class="hero-header">
+        <div class="hero-title">
+          <svg viewBox="0 0 24 24"><path d="M12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22A10,10 0 0,1 2,12A10,10 0 0,1 12,2M12,4A8,8 0 0,0 4,12A8,8 0 0,0 12,20A8,8 0 0,0 20,12A8,8 0 0,0 12,4M12,6A6,6 0 0,1 18,12A6,6 0 0,1 12,18A6,6 0 0,1 6,12A6,6 0 0,1 12,6M12,8A4,4 0 0,0 8,12A4,4 0 0,0 12,16A4,4 0 0,0 16,12A4,4 0 0,0 12,8Z"/></svg>
+          إحصائيات اللاعب
+        </div>
+        <span class="hero-badge">وضع النيون نشط</span>
+      </div>
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-val" id="stat-total-games">4</div>
+          <div class="stat-lbl">الألعاب المتاحة</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-val" id="stat-total-score">0</div>
+          <div class="stat-lbl">مجموع النقاط القياسية</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Filters -->
+    <div class="filter-scroll" id="filters-bar">
+      <button class="filter-chip active" data-filter="all">جميع الألعاب</button>
+      <button class="filter-chip" data-filter="arcade">أركيد وتصويب</button>
+      <button class="filter-chip" data-filter="speed">سرعة وتحدي</button>
+      <button class="filter-chip" data-filter="puzzle">ألغاز وتفكير</button>
+    </div>
+
+    <!-- Section Title -->
+    <div class="section-title-wrap">
+      <h2 class="section-title">الألعاب المصغرة الفورية</h2>
+    </div>
+
+    <!-- Games Grid -->
+    <div class="games-grid" id="games-container">
+      <div class="loading-box">
+        <div class="spinner"></div>
+        <div>جاري تحميل الألعاب والتحديات...</div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Bottom Navigation Bar -->
+  <nav class="bottom-nav">
+    <a href="home.html" class="nav-item">
+      <svg viewBox="0 0 24 24"><path d="M10,20V14H14V20H19V12H22L12,3L2,12H5V20H10Z"/></svg>
+      <span>الرئيسية</span>
+    </a>
+    <a href="games.html" class="nav-item active">
+      <svg viewBox="0 0 24 24"><path d="M21,6H3A2,2 0 0,0 1,8V16A2,2 0 0,0 3,18H21A2,2 0 0,0 23,16V8A2,2 0 0,0 21,6M6,15H4V13H6V15M6,11H4V9H6V11M9,13H7V11H9V13M15,15H13V13H15V15M15,11H13V9H15V11M18,13H16V11H18V13M20,15H18V13H20V15Z"/></svg>
+      <span>الألعاب</span>
+    </a>
+    <a href="overlay-hub.html?section=games" class="nav-item">
+      <svg viewBox="0 0 24 24"><path d="M19,3H5C3.89,3 3,3.89 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5C21,3.89 20.1,3 19,3M19,7H5V5H19V7M19,19H5V9H19V19M13,11H17V15H13V11Z"/></svg>
+      <span>العائمة</span>
+    </a>
+  </nav>
+
+  <!-- Notification Toast -->
+  <div class="toast" id="toast">
+    <svg viewBox="0 0 24 24"><path d="M12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22A10,10 0 0,1 2,12A10,10 0 0,1 12,2M11,16.5L18,9.5L16.59,8.09L11,13.67L7.91,10.59L6.5,12L11,16.5Z"/></svg>
+    <span id="toast-text">تمت العملية بنجاح</span>
+  </div>
+
+  <script>
+    // System & Audio Setup
+    var audioCtx = null;
+
+    function playBeep(freq, type, duration) {
+      try {
+        if (!audioCtx) {
+          var AudioContext = window.AudioContext || window.webkitAudioContext;
+          if (AudioContext) audioCtx = new AudioContext();
+        }
+        if (audioCtx && audioCtx.state === 'suspended') {
+          audioCtx.resume();
+        }
+        if (!audioCtx) return;
+
+        var osc = audioCtx.createOscillator();
+        var gain = audioCtx.createGain();
+        osc.type = type || 'sine';
+        osc.frequency.setValueAtTime(freq || 440, audioCtx.currentTime);
+        gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + (duration || 0.15));
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + (duration || 0.15));
+      } catch (e) {
+        // Ignore web audio restrictions
+      }
+    }
+
+    function triggerHaptic() {
+      if (window.RosTrickDevice && typeof RosTrickDevice.haptic === 'function') {
+        try { RosTrickDevice.haptic('click'); } catch(e){}
+      }
+    }
+
+    function showToast(message) {
+      var toast = document.getElementById('toast');
+      var toastText = document.getElementById('toast-text');
+      toastText.textContent = message;
+      toast.classList.add('show');
+      setTimeout(function() {
+        toast.classList.remove('show');
+      }, 3000);
+    }
+
+    // Default primary mini-games list matching project structure
+    var defaultGames = [
+      {
+        id: "game-space",
+        title: "غزاة المجرة",
+        genre: "arcade",
+        genreName: "أركيد وتصويب",
+        file: "game-space.html",
+        cover: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'><rect width='120' height='120' rx='20' fill='%230B091A'/><polygon points='60,18 75,55 105,75 60,65 15,75 45,55' fill='%2300E5FF'/><circle cx='60' cy='42' r='8' fill='%23FF3D7F'/><line x1='60' y1='10' x2='60' y2='25' stroke='%23FF3D7F' stroke-width='4'/><circle cx='30' cy='25' r='2' fill='%23FFFFFF'/><circle cx='95' cy='30' r='3' fill='%23FFFFFF'/><circle cx='20' cy='90' r='2' fill='%23FFFFFF'/></svg>",
+        description: "لعبة تصويب فضائية مصغرة سريعة الإيقاع بأسلوب الأركيد مع تسجيل أعلى النقاط.",
+        scoreKey: "highscore_game-space"
+      },
+      {
+        id: "game-runner",
+        title: "عداء السايبر",
+        genre: "speed",
+        genreName: "سرعة وتحدي",
+        file: "game-runner.html",
+        cover: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'><rect width='120' height='120' rx='20' fill='%23120C24'/><path d='M25 90 L95 90' stroke='%236C3BFF' stroke-width='6'/><path d='M40 75 L55 45 L70 50 L85 25' fill='none' stroke='%23FF3D7F' stroke-width='5' stroke-linecap='round'/><circle cx='85' cy='25' r='7' fill='%2300E5FF'/><rect x='30' y='65' width='14' height='14' fill='%2300E5FF'/></svg>",
+        description: "لعبة قفز وتخطي عقبات لا نهائية بتأثيرات نيون مع سرعة متزايدة.",
+        scoreKey: "highscore_game-runner"
+      },
+      {
+        id: "game-puzzle",
+        title: "مصفوفة النيون",
+        genre: "puzzle",
+        genreName: "ألغاز وتفكير",
+        file: "game-puzzle.html",
+        cover: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'><rect width='120' height='120' rx='20' fill='%2316142E'/><rect x='20' y='20' width='36' height='36' rx='8' fill='%236C3BFF'/><rect x='64' y='20' width='36' height='36' rx='8' fill='%2300E5FF'/><rect x='20' y='64' width='36' height='36' rx='8' fill='%23FF3D7F'/><rect x='64' y='64' width='36' height='36' rx='8' fill='none' stroke='%2300E5FF' stroke-width='4' stroke-dasharray='6 4'/></svg>",
+        description: "لعبة ألغاز ومطابقة سريعة باللمس مع مستويات متدرجة ومؤقت زمني.",
+        scoreKey: "highscore_game-puzzle"
+      },
+      {
+        id: "game-snake",
+        title: "ثعبان السايبر",
+        genre: "arcade",
+        genreName: "أركيد وتصويب",
+        file: "game-snake.html",
+        cover: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'><rect width='120' height='120' rx='20' fill='%230A1224'/><path d='M20 70 H50 V40 H80 V60 H100' fill='none' stroke='%2300E5FF' stroke-width='10' stroke-linejoin='round' stroke-linecap='round'/><circle cx='100' cy='60' r='7' fill='%23FF3D7F'/><circle cx='30' cy='30' r='6' fill='%23FF3D7F'/></svg>",
+        description: "لعبة الثعبان الكلاسيكية بواجهة نيون وتحكم لمسي سلس وحفظ أعلى نتيجة.",
+        scoreKey: "highscore_game-snake"
+      }
+    ];
+
+    var allGamesData = [];
+    var currentFilter = 'all';
+
+    // Helper to get high score from localStorage safely
+    function getHighScore(key) {
+      try {
+        var score = localStorage.getItem(key);
+        return score ? parseInt(score, 10) : 0;
+      } catch (e) {
+        return 0;
+      }
+    }
+
+    // Load Games Data from games.json or Fallback
+    function loadGamesData() {
+      fetch('games.json')
+        .then(function(res) {
+          if (!res.ok) throw new Error('HTTP status ' + res.status);
+          return res.json();
+        })
+        .then(function(jsonData) {
+          if (Array.isArray(jsonData) && jsonData.length > 0) {
+            // Map external JSON format to inner structure if needed
+            allGamesData = jsonData.map(function(g) {
+              return {
+                id: g.id || 'game-' + Math.random().toString(36).substring(2,7),
+                title: g.title || 'لعبة نيون',
+                genre: g.genre || 'arcade',
+                genreName: g.genre === 'puzzle' ? 'ألغاز وتفكير' : (g.genre === 'speed' ? 'سرعة وتحدي' : 'أركيد وتصويب'),
+                file: g.file || 'game-space.html',
+                cover: g.cover || defaultGames[0].cover,
+                description: g.description || g.summary || 'لعبة مصغرة ممتعة دعمت وضع النيون.',
+                scoreKey: 'highscore_' + (g.id || 'game')
+              };
+            });
+          } else {
+            allGamesData = defaultGames;
+          }
+          renderGames();
+        })
+        .catch(function(err) {
+          // Fallback to offline defaults
+          allGamesData = defaultGames;
+          renderGames();
+        });
+    }
+
+    // Render Grid & Update Stats
+    function renderGames() {
+      var container = document.getElementById('games-container');
+      container.innerHTML = '';
+
+      var filtered = allGamesData.filter(function(g) {
+        if (currentFilter === 'all') return true;
+        return g.genre === currentFilter;
+      });
+
+      var totalHighScoreSum = 0;
+
+      if (filtered.length === 0) {
+        container.innerHTML = '<div class="loading-box">لا توجد ألعاب متطابقة مع التصنيف المختار</div>';
+        return;
+      }
+
+      filtered.forEach(function(game) {
+        var highScore = getHighScore(game.scoreKey);
+        totalHighScoreSum += highScore;
+
+        var card = document.createElement('div');
+        card.className = 'game-card';
+        card.innerHTML = 
+          '<div class="game-card-main">' +
+            '<img src="' + game.cover + '" alt="' + game.title + '" class="game-cover">' +
+            '<div class="game-info">' +
+              '<div class="game-header-row">' +
+                '<h3 class="game-title">' + game.title + '</h3>' +
+                '<span class="game-tag">' + game.genreName + '</span>' +
+              '</div>' +
+              '<p class="game-desc">' + game.description + '</p>' +
+              '<div class="score-badge">' +
+                '<svg viewBox="0 0 24 24"><path d="M12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22A10,10 0 0,1 2,12A10,10 0 0,1 12,2M12,4A8,8 0 0,0 4,12A8,8 0 0,0 12,20A8,8 0 0,0 20,12A8,8 0 0,0 12,4M12,6A6,6 0 0,1 18,12A6,6 0 0,1 12,18A6,6 0 0,1 6,12A6,6 0 0,1 12,6M12,8A4,4 0 0,0 8,12A4,4 0 0,0 12,16A4,4 0 0,0 16,12A4,4 0 0,0 12,8Z"/></svg>' +
+                'أعلى نتيجة: ' + highScore +
+              '</div>' +
+            '</div>' +
+          '</div>' +
+          '<div class="game-actions">' +
+            '<a href="' + game.file + '" class="btn-play-full" data-action="play">' +
+              '<svg viewBox="0 0 24 24"><path d="M8,5.14V19.14L19,12.14L8,5.14Z"/></svg>' +
+              'لعب بملء الشاشة' +
+            '</a>' +
+            '<button class="btn-play-overlay" data-file="' + game.file + '" data-title="' + game.title + '">' +
+              '<svg viewBox="0 0 24 24"><path d="M19,3H5C3.89,3 3,3.89 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5C21,3.89 20.1,3 19,3M19,7H5V5H19V7M19,19H5V9H19V19M13,11H17V15H13V11Z"/></svg>' +
+              'عائمة' +
+            '</button>' +
+            '<button class="btn-share" data-title="' + game.title + '" data-score="' + highScore + '" title="مشاركة النتيجة">' +
+              '<svg viewBox="0 0 24 24"><path d="M18,16.08C17.24,16.08 16.56,16.38 16.04,16.85L8.91,12.7C8.96,12.47 9,12.24 9,12C9,11.76 8.96,11.53 8.91,11.3L15.96,7.19C16.5,7.69 17.21,8 18,8A3,3 0 0,0 21,5A3,3 0 0,0 18,2A3,3 0 0,0 15,5C15,5.24 15.04,5.47 15.09,5.7L8.04,9.81C7.5,9.31 6.79,9 6,9A3,3 0 0,0 3,12A3,3 0 0,0 6,15C6.79,15 7.5,14.69 8.04,14.19L15.16,18.34C15.11,18.55 15.08,18.77 15.08,19A3,3 0 0,0 18.08,22A3,3 0 0,0 21.08,19A3,3 0 0,0 18.08,16.08Z"/></svg>' +
+            '</button>' +
+          '</div>';
+
+        container.appendChild(card);
+      });
+
+      // Update Statistics Header
+      document.getElementById('stat-total-games').textContent = allGamesData.length;
+      document.getElementById('stat-total-score').textContent = totalHighScoreSum;
+    }
+
+    // Filter Chips Event Listener
+    document.getElementById('filters-bar').addEventListener('click', function(e) {
+      var btn = e.target.closest('.filter-chip');
+      if (!btn) return;
+      
+      triggerHaptic();
+      playBeep(520, 'sine', 0.1);
+
+      var chips = document.querySelectorAll('.filter-chip');
+      chips.forEach(function(c) { c.classList.remove('active'); });
+      btn.classList.add('active');
+
+      currentFilter = btn.getAttribute('data-filter');
+      renderGames();
+    });
+
+    // Launch Game in Floating Overlay Window
+    async function launchOverlayGame(url, title) {
+      triggerHaptic();
+      playBeep(640, 'triangle', 0.15);
+
+      if (!window.RosTrickOverlay) {
+        showToast('النافذة العائمة متاحة داخل التطبيق الأصلي فقط');
+        return;
+      }
+
+      try {
+        var canDraw = await RosTrickOverlay.canDraw();
+        if (!canDraw) {
+          showToast('يرجى منح إذن الظهور فوق التطبيقات');
+          var granted = await RosTrickOverlay.requestPermission();
+          if (!granted) {
+            showToast('تم رفض إذن النافذة العائمة');
+            return;
+          }
+        }
+
+        var overlayId = 'game-overlay-win';
+        var opts = {
+          id: overlayId,
+          url: url,
+          x: 20,
+          y: 60,
+          w: 320,
+          h: 480,
+          gravity: 'tr',
+          touchable: true,
+          focusable: true,
+          alpha: 1.0,
+          bg: '#0D0C1D',
+          keep: true
+        };
+
+        if (await RosTrickOverlay.exists(overlayId)) {
+          await RosTrickOverlay.update(overlayId, opts);
+          await RosTrickOverlay.show(overlayId);
+        } else {
+          await RosTrickOverlay.create(opts);
+        }
+
+        showToast('تم فتح "' + title + '" في النافذة العائمة');
+      } catch (err) {
+        showToast('تعذر تشغيل النافذة العائمة حالياً');
+      }
+    }
+
+    // Share High Score
+    function shareGameScore(title, score) {
+      triggerHaptic();
+      playBeep(480, 'sine', 0.1);
+
+      var shareText = 'حققت نتيجة قياسية (' + score + ') في لعبة "' + title + '" على تطبيق نيون أركيد! هل تتحداني؟';
+
+      if (window.RosTrickShare && typeof RosTrickShare.share === 'function') {
+        RosTrickShare.share({
+          title: 'تحدي نيون أركيد - ' + title,
+          text: shareText
+        });
+      } else if (navigator.clipboard) {
+        navigator.clipboard.writeText(shareText).then(function() {
+          showToast('تم نسخ النتيجة إلى الحافظة');
+        }).catch(function() {
+          showToast('تعذر نسخ النتيجة');
+        });
+      } else {
+        showToast('خاصية المشاركة غير متاحة');
+      }
+    }
+
+    // Main Grid Click Actions Delegation
+    document.getElementById('games-container').addEventListener('click', function(e) {
+      var overlayBtn = e.target.closest('.btn-play-overlay');
+      if (overlayBtn) {
+        e.preventDefault();
+        var file = overlayBtn.getAttribute('data-file');
+        var title = overlayBtn.getAttribute('data-title');
+        launchOverlayGame(file, title);
+        return;
+      }
+
+      var shareBtn = e.target.closest('.btn-share');
+      if (shareBtn) {
+        e.preventDefault();
+        var title = shareBtn.getAttribute('data-title');
+        var score = shareBtn.getAttribute('data-score');
+        shareGameScore(title, score);
+        return;
+      }
+
+      var playBtn = e.target.closest('.btn-play-full');
+      if (playBtn) {
+        triggerHaptic();
+        playBeep(700, 'square', 0.12);
+      }
+    });
+
+    // Native Back Button Handler
+    if (window.RosTrickBack && typeof RosTrickBack.onBack === 'function') {
+      RosTrickBack.onBack(function() {
+        if (currentFilter !== 'all') {
+          currentFilter = 'all';
+          var chips = document.querySelectorAll('.filter-chip');
+          chips.forEach(function(c) {
+            c.classList.toggle('active', c.getAttribute('data-filter') === 'all');
+          });
+          renderGames();
+          return true;
+        }
+        window.location.href = 'home.html';
+        return true;
+      });
+    }
+
+    // Initial Load
+    window.addEventListener('DOMContentLoaded', function() {
+      loadGamesData();
+    });
+  </script>
+</body>
+</html>
