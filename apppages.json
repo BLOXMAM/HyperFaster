@@ -39,10 +39,6 @@
     "op": "update",
     "timestamp": 1795404556260
   },
-  "overlay-guide.html": {
-    "op": "sync",
-    "timestamp": 1795363594622
-  },
   "rostrick-admin.js": {
     "op": "update",
     "timestamp": 1795373503665
