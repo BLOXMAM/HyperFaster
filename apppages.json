@@ -35,10 +35,6 @@
     "op": "update",
     "timestamp": 1795372919547
   },
-  "game-details.html": {
-    "op": "sync",
-    "timestamp": 1795363594622
-  },
   "game2d.html": {
     "op": "sync",
     "timestamp": 1795363594622
