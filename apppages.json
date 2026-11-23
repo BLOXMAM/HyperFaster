@@ -55,10 +55,6 @@
     "op": "update",
     "timestamp": 1795375349449
   },
-  "index.html": {
-    "op": "sync",
-    "timestamp": 1795363594622
-  },
   "library.html": {
     "op": "sync",
     "timestamp": 1795363594622
