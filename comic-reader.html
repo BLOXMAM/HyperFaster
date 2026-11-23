@@ -1,0 +1,1057 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>قارئ الكوميكس - أوفرلاي نيون</title>
+  <style>
+    :root {
+      --primary: #6C3BFF;
+      --primary-dark: #4A22C9;
+      --accent: #00E5FF;
+      --highlight: #FF3D7F;
+      --control: #B8B5D1;
+      --bg-dark: #0A0A12;
+      --card-bg: #141422;
+      --card-border: #2A2A44;
+      --text-main: #F0F0FF;
+      --text-muted: #8E8EA8;
+      --rt-statusbar-height: 0px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      padding-top: var(--rt-statusbar-height);
+    }
+
+    .rt-selectable {
+      user-select: text;
+      -webkit-user-select: text;
+    }
+
+    /* Top App Bar */
+    .app-header {
+      height: 56px;
+      background: rgba(20, 20, 34, 0.95);
+      border-bottom: 1px solid var(--card-border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 12px;
+      position: relative;
+      z-index: 20;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+    }
+
+    .header-actions-right, .header-actions-left {
+      display: flex;
+      align-items: center;
+    }
+
+    .icon-btn {
+      width: 44px;
+      height: 44px;
+      border: none;
+      background: transparent;
+      color: var(--control);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 10px;
+      cursor: pointer;
+      margin-left: 2px;
+      margin-right: 2px;
+      transition: background-color 0.2s, color 0.2s, transform 0.1s;
+    }
+
+    .icon-btn:active {
+      background-color: rgba(108, 59, 255, 0.2);
+      color: var(--accent);
+      transform: scale(0.95);
+    }
+
+    .icon-btn svg {
+      width: 24px;
+      height: 24px;
+      fill: currentColor;
+    }
+
+    .header-title-container {
+      flex: 1;
+      margin: 0 8px;
+      overflow: hidden;
+      text-align: right;
+    }
+
+    .header-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text-main);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .header-subtitle {
+      font-size: 11px;
+      color: var(--accent);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      margin-top: 1px;
+    }
+
+    /* Progress & Status Bar */
+    .reader-status-bar {
+      height: 32px;
+      background: #0E0E1A;
+      border-bottom: 1px solid rgba(108, 59, 255, 0.2);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 16px;
+      font-size: 12px;
+      color: var(--text-muted);
+      position: relative;
+      z-index: 15;
+    }
+
+    .progress-track {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--primary), var(--accent));
+      width: 0%;
+      transition: width 0.3s ease;
+      box-shadow: 0 0 8px var(--accent);
+    }
+
+    .status-badge {
+      background: rgba(108, 59, 255, 0.2);
+      color: var(--accent);
+      padding: 2px 8px;
+      border-radius: 12px;
+      font-size: 11px;
+      font-weight: 600;
+      border: 1px solid rgba(0, 229, 255, 0.3);
+    }
+
+    /* Comic Canvas Main Viewport */
+    .viewport {
+      flex: 1;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #05050A;
+      background-image: 
+        radial-gradient(circle at 50% 50%, rgba(108, 59, 255, 0.05) 0%, transparent 70%),
+        linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+      background-size: 100% 100%, 20px 20px, 20px 20px;
+    }
+
+    .comic-stage {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.15s ease-out;
+      transform-origin: center center;
+      padding: 12px;
+    }
+
+    .panel-card {
+      max-width: 500px;
+      width: 100%;
+      max-height: 100%;
+      background: var(--card-bg);
+      border-radius: 16px;
+      border: 2px solid var(--card-border);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6), 0 0 15px rgba(108, 59, 255, 0.2);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      transition: opacity 0.2s ease, transform 0.2s ease;
+    }
+
+    .panel-card.page-transition {
+      opacity: 0.3;
+      transform: scale(0.96);
+    }
+
+    .panel-art-box {
+      position: relative;
+      width: 100%;
+      background: #000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 240px;
+      max-height: 60vh;
+      overflow: hidden;
+    }
+
+    .panel-art-box img, .panel-art-box svg {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: block;
+    }
+
+    .speech-bubble {
+      position: absolute;
+      background: #FFFFFF;
+      color: #101018;
+      padding: 10px 14px;
+      border-radius: 18px;
+      font-size: 13px;
+      font-weight: 700;
+      line-height: 1.4;
+      max-width: 80%;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+      border: 2px solid #101018;
+      z-index: 5;
+    }
+
+    .speech-bubble.top-right {
+      top: 14px;
+      right: 14px;
+      border-bottom-right-radius: 4px;
+    }
+
+    .speech-bubble.bottom-left {
+      bottom: 14px;
+      left: 14px;
+      border-top-left-radius: 4px;
+    }
+
+    .panel-caption-box {
+      padding: 14px 16px;
+      background: rgba(20, 20, 34, 0.98);
+      border-top: 1px solid var(--card-border);
+    }
+
+    .panel-caption-title {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--highlight);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 4px;
+    }
+
+    .panel-caption-text {
+      font-size: 14px;
+      line-height: 1.5;
+      color: var(--text-main);
+    }
+
+    /* Touch Gesture Arrows (Side Tap Targets) */
+    .tap-zone {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 22%;
+      z-index: 10;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+
+    .tap-zone:active {
+      opacity: 1;
+      background: rgba(108, 59, 255, 0.15);
+    }
+
+    .tap-zone-left {
+      left: 0;
+    }
+
+    .tap-zone-right {
+      right: 0;
+    }
+
+    .tap-indicator {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: rgba(0, 229, 255, 0.3);
+      color: var(--accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 12px var(--accent);
+    }
+
+    /* Floating Reader Toolbar */
+    .controls-bar {
+      height: 64px;
+      background: rgba(20, 20, 34, 0.96);
+      border-top: 1px solid var(--card-border);
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      padding: 0 8px;
+      position: relative;
+      z-index: 20;
+      box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.5);
+      margin-bottom: env(safe-area-inset-bottom, 0px);
+    }
+
+    .nav-btn-group {
+      display: flex;
+      align-items: center;
+    }
+
+    .action-pill {
+      height: 44px;
+      padding: 0 16px;
+      border-radius: 22px;
+      border: 1px solid var(--primary);
+      background: rgba(108, 59, 255, 0.15);
+      color: var(--text-main);
+      font-size: 13px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      margin-left: 4px;
+      margin-right: 4px;
+      transition: background 0.2s, transform 0.1s;
+    }
+
+    .action-pill svg {
+      width: 18px;
+      height: 18px;
+      fill: var(--accent);
+      margin-left: 6px;
+    }
+
+    .action-pill:active {
+      background: var(--primary);
+      transform: scale(0.96);
+    }
+
+    .zoom-indicator {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--control);
+      min-width: 44px;
+      text-align: center;
+    }
+
+    /* Modal Info Box */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(5, 5, 10, 0.85);
+      backdrop-filter: blur(4px);
+      z-index: 50;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease;
+    }
+
+    .modal-overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .modal-card {
+      width: 100%;
+      max-width: 420px;
+      background: var(--card-bg);
+      border: 2px solid var(--accent);
+      border-radius: 20px;
+      padding: 20px;
+      box-shadow: 0 0 25px rgba(0, 229, 255, 0.3);
+      transform: translateY(20px);
+      transition: transform 0.25s ease;
+    }
+
+    .modal-overlay.active .modal-card {
+      transform: translateY(0);
+    }
+
+    .modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 14px;
+      border-bottom: 1px solid var(--card-border);
+      padding-bottom: 10px;
+    }
+
+    .modal-title {
+      font-size: 17px;
+      font-weight: 800;
+      color: var(--accent);
+    }
+
+    .modal-body {
+      font-size: 13px;
+      line-height: 1.6;
+      color: var(--text-main);
+      margin-bottom: 18px;
+    }
+
+    .modal-btn {
+      width: 100%;
+      height: 44px;
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      border: none;
+      border-radius: 12px;
+      color: #FFF;
+      font-weight: 700;
+      font-size: 14px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal-btn:active {
+      opacity: 0.9;
+    }
+
+    /* Toast notification */
+    .toast {
+      position: fixed;
+      bottom: 80px;
+      left: 50%;
+      transform: translateX(-50%) translateY(50px);
+      background: rgba(11, 11, 20, 0.95);
+      border: 1px solid var(--accent);
+      color: var(--text-main);
+      padding: 10px 20px;
+      border-radius: 25px;
+      font-size: 13px;
+      font-weight: 600;
+      box-shadow: 0 4px 15px rgba(0, 229, 255, 0.3);
+      z-index: 60;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s, transform 0.3s;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+  </style>
+<style id="rt-native">html,body{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;-webkit-tap-highlight-color:transparent;overscroll-behavior:none}input,textarea,select,[contenteditable],.rt-selectable,.rt-selectable *{-webkit-user-select:text;user-select:text}img,a{-webkit-user-drag:none}a,button,[role=button]{outline:none}</style>
+</head>
+<body>
+
+  <!-- Top Navigation Header -->
+  <header class="app-header">
+    <div class="header-actions-right">
+      <button class="icon-btn" id="btn-back" title="رجوع إلى الكوميكس">
+        <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+      </button>
+    </div>
+
+    <div class="header-title-container">
+      <div class="header-title" id="comic-title">جاري التحميل...</div>
+      <div class="header-subtitle" id="comic-author">قارئ النيون التفاعلي</div>
+    </div>
+
+    <div class="header-actions-left">
+      <button class="icon-btn" id="btn-overlay" title="تشغيل في نافذة عائمة">
+        <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14zm-7-2h5v-5h-5v5z"/></svg>
+      </button>
+
+      <button class="icon-btn" id="btn-share" title="مشاركة القصة">
+        <svg viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92 1.61 0 2.92-1.31 2.92-2.92s-1.31-2.92-2.92-2.92z"/></svg>
+      </button>
+
+      <a href="home.html" class="icon-btn" title="الرئيسية">
+        <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+      </a>
+    </div>
+  </header>
+
+  <!-- Status & Progress Indicator -->
+  <div class="reader-status-bar">
+    <div class="progress-track">
+      <div class="progress-fill" id="progress-fill"></div>
+    </div>
+    <div id="page-counter">صفحة 1 من 1</div>
+    <div class="status-badge" id="genre-badge">كوميكس</div>
+    <div id="save-status">تم الحفظ تلقائياً</div>
+  </div>
+
+  <!-- Main Viewport stage -->
+  <main class="viewport" id="viewport">
+    <div class="tap-zone tap-zone-right" id="tap-prev" title="الصفحة السابقة">
+      <div class="tap-indicator">
+        <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+      </div>
+    </div>
+
+    <div class="tap-zone tap-zone-left" id="tap-next" title="الصفحة التالية">
+      <div class="tap-indicator">
+        <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
+      </div>
+    </div>
+
+    <div class="comic-stage" id="comic-stage">
+      <div class="panel-card" id="panel-card">
+        <div class="panel-art-box" id="panel-art-box">
+          <!-- Dynamic comic SVG art -->
+        </div>
+
+        <div class="panel-caption-box">
+          <div class="panel-caption-title" id="panel-title">مشهد 1</div>
+          <div class="panel-caption-text rt-selectable" id="panel-caption">جاري تحميل لوحات القصة المصورة...</div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Controls Toolbar -->
+  <footer class="controls-bar">
+    <div class="nav-btn-group">
+      <button class="icon-btn" id="btn-prev-page" title="الصفحة السابقة">
+        <svg viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+      </button>
+      
+      <button class="icon-btn" id="btn-next-page" title="الصفحة التالية">
+        <svg viewBox="0 0 24 24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
+      </button>
+    </div>
+
+    <div class="nav-btn-group">
+      <button class="icon-btn" id="btn-zoom-out" title="تصغير">
+        <svg viewBox="0 0 24 24"><path d="M19 13H5v-2h14v2z"/></svg>
+      </button>
+      <div class="zoom-indicator" id="zoom-text">100%</div>
+      <button class="icon-btn" id="btn-zoom-in" title="تكبير">
+        <svg viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
+      </button>
+      <button class="icon-btn" id="btn-zoom-reset" title="إعادة الضبط">
+        <svg viewBox="0 0 24 24"><path d="M12 5V1L7 6l5 5V7c3.31 0 6 2.69 6 6s-2.69 6-6 6-6-2.69-6-6H4c0 4.42 3.58 8 8 8s8-3.58 8-8-3.58-8-8-8z"/></svg>
+      </button>
+    </div>
+
+    <button class="action-pill" id="btn-info">
+      <svg viewBox="0 0 24 24"><path d="M11 17h2v-6h-2v6zm1-15C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm0-14c-.55 0-1 .45-1 1s.45 1 1 1 1-.45 1-1-.45-1-1-1z"/></svg>
+      الملخص
+    </button>
+  </footer>
+
+  <!-- Modal Details -->
+  <div class="modal-overlay" id="info-modal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div class="modal-title" id="modal-comic-title">تفاصيل الكوميكس</div>
+        <button class="icon-btn" id="btn-close-modal">
+          <svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </div>
+      <div class="modal-body rt-selectable" id="modal-comic-summary">
+        جاري تحميل تفاصيل الملخص...
+      </div>
+      <button class="modal-btn" id="btn-overlay-modal">
+        تشغيل الآن في النافذة العائمة (Overlay)
+      </button>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div class="toast" id="toast-msg">تم حفظ التقدم تلقائياً</div>
+
+  <script>
+    // System & Data state
+    var currentComicId = 'comic-01';
+    var comicData = null;
+    var currentPageIndex = 0;
+    var currentZoom = 1.0;
+    var touchStartX = 0;
+    var touchEndX = 0;
+
+    // Default fallback mock dataset if fetch fails or custom panels generation needed
+    var fallbackComic = {
+      id: 'comic-01',
+      title: 'صقر المدار: فجر النيون',
+      author: 'طارق المنصور',
+      genre: 'أبطال خارقون',
+      pagesCount: 6,
+      summary: 'في مدينة تتحكم بها الأبراج الرقمية، يكتشف الطيار السابق رامي درعاً شمسياً قديماً يمنحه قوة التحليق بسرعة الصوت لحماية الأحياء السفلية من عصابات الظل.',
+      pages: [
+        {
+          title: 'اللوحة 1: أضواء النيون الساطعة',
+          caption: 'تحت سقف برج المدار في القطاع 7، تلألأت أضواء النيون الباردة في ليلة ماطرة، حيث يسود الخوف والصمت.',
+          dialogue: 'رامي: هدوء مريب يسبق العاصفة... أجهزة الاستشعار لالتقاط الطاقة تشير لشيء غير عادي.',
+          art: "<svg viewBox='0 0 400 300' xmlns='http://www.w3.org/2000/svg'><rect width='400' height='300' fill='%230b0b16'/><path d='M0 220 L80 180 L160 210 L240 170 L320 220 L400 160 L400 300 L0 300 Z' fill='%2316162a'/><line x1='50' y1='0' x2='50' y2='300' stroke='%2300e5ff' stroke-width='2' stroke-dasharray='4 8'/><line x1='150' y1='0' x2='150' y2='300' stroke='%23ff3d7f' stroke-width='2' stroke-dasharray='6 6'/><circle cx='320' cy='80' r='45' fill='%236c3bff' opacity='0.4'/><polygon points='200,80 230,150 170,150' fill='%2300e5ff'/></svg>"
+        },
+        {
+          title: 'اللوحة 2: اكتشاف السر المفقود',
+          caption: 'في قبو المعمل المهجور، عثر رامي على القفاز الشمسي المشع بالطاقة الأيونية القديمة.',
+          dialogue: 'رامي: هذا الدرع... تم تصميمه قبل عقود لحماية المدينة! ينبض بحياة غريبة!',
+          art: "<svg viewBox='0 0 400 300' xmlns='http://www.w3.org/2000/svg'><rect width='400' height='300' fill='%23120a1f'/><circle cx='200' cy='150' r='90' fill='%23ff3d7f' opacity='0.2'/><polygon points='200,60 240,130 320,150 240,170 200,240 160,170 80,150 160,130' fill='%2300e5ff' stroke='%23ffffff' stroke-width='3'/><circle cx='200' cy='150' r='25' fill='%23ffd60a'/></svg>"
+        },
+        {
+          title: 'اللوحة 3: هجوم عصابة الظل',
+          caption: 'فجأة! اخترقت آلات المسح المظلمة سقف القبو بصرخات معدنية صامتة.',
+          dialogue: 'صوت مجهول: سلم الدرع الشمسي فوراً يا رامي وإلا دمرنا القطاع بأكمله!',
+          art: "<svg viewBox='0 0 400 300' xmlns='http://www.w3.org/2000/svg'><rect width='400' height='300' fill='%231c0813'/><path d='M0 0 L400 300 M400 0 L0 300' stroke='%23ff3d7f' stroke-width='5'/><polygon points='200,100 280,220 120,220' fill='%234a22c9' stroke='%2300e5ff' stroke-width='4'/><circle cx='200' cy='160' r='30' fill='%23ff3d7f'/></svg>"
+        },
+        {
+          title: 'اللوحة 4: انطلاق صقر المدار',
+          caption: 'بارتداء القفاز والدرع، اشتعلت سماء المعمل بإشعاع لا متناهٍ، وانطلق رامي كالشهاب.',
+          dialogue: 'رامي: لن تحكموا الظلام بعد اليوم! فجر النيون بدأ الآن!',
+          art: "<svg viewBox='0 0 400 300' xmlns='http://www.w3.org/2000/svg'><rect width='400' height='300' fill='%23071322'/><path d='M50 250 Q200 50 350 250' stroke='%2300e5ff' stroke-width='12' fill='none'/><polygon points='350,250 320,220 310,260' fill='%2300e5ff'/><circle cx='200' cy='130' r='50' fill='%23ff3d7f'/></svg>"
+        },
+        {
+          title: 'اللوحة 5: مواجهة فوق السحاب',
+          caption: 'اشتبك صقر المدار مع قائد سفن الظل فوق ناطحات السحاب المضاءة.',
+          dialogue: 'القائد المظلم: قوتك مؤقتة! سنطفئ نورك!\nرامي: النيون لا ينطفئ!',
+          art: "<svg viewBox='0 0 400 300' xmlns='http://www.w3.org/2000/svg'><rect width='400' height='300' fill='%23141428'/><rect x='40' y='100' width='80' height='200' fill='%232a2a44'/><rect x='280' y='60' width='90' height='240' fill='%232a2a44'/><circle cx='200' cy='100' r='60' fill='%23ffd60a'/><line x1='120' y1='100' x2='280' y2='100' stroke='%23ff3d7f' stroke-width='6'/></svg>"
+        },
+        {
+          title: 'اللوحة 6: بداية العصر الجديد',
+          caption: 'انتصر صقر المدار وأشرقت شمس نيون جديدة حاميةً سكان الأحياء السفلى.',
+          dialogue: 'رامي: طالما الدرع ينبض، ستظل المدينة آمنة.',
+          art: "<svg viewBox='0 0 400 300' xmlns='http://www.w3.org/2000/svg'><rect width='400' height='300' fill='%230a1c24'/><circle cx='200' cy='200' r='140' fill='%2300e5ff' opacity='0.3'/><polygon points='200,40 230,120 310,120 250,170 270,250 200,200 130,250 150,170 90,120 170,120' fill='%23ffd60a'/></svg>"
+        }
+      ]
+    };
+
+    // Helper Sound function (Web Audio API)
+    function playTurnSound() {
+      try {
+        var AudioCtx = window.AudioContext || window.webkitAudioContext;
+        if (!AudioCtx) return;
+        var ctx = new AudioCtx();
+        var osc = ctx.createOscillator();
+        var gain = ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(320, ctx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(140, ctx.currentTime + 0.07);
+        gain.gain.setValueAtTime(0.12, ctx.currentTime);
+        gain.gain.linearRampToValueAtTime(0.01, ctx.currentTime + 0.07);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start();
+        osc.stop(ctx.currentTime + 0.07);
+      } catch (e) {}
+    }
+
+    // Helper Haptic Feedback
+    function triggerHaptic(type) {
+      if (window.RosTrickDevice && window.RosTrickDevice.haptic) {
+        try {
+          window.RosTrickDevice.haptic(type || 'click');
+        } catch (e) {}
+      }
+    }
+
+    // Toast helper
+    function showToast(text) {
+      var toast = document.getElementById('toast-msg');
+      toast.textContent = text;
+      toast.classList.add('show');
+      setTimeout(function() {
+        toast.classList.remove('show');
+      }, 2000);
+    }
+
+    // LocalStorage handlers
+    function saveProgress(id, pageIdx) {
+      try {
+        var key = 'rostrick_comic_progress';
+        var dataStr = localStorage.getItem(key);
+        var data = dataStr ? JSON.parse(dataStr) : {};
+        data[id] = {
+          page: pageIdx,
+          updatedAt: Date.now()
+        };
+        localStorage.setItem(key, JSON.stringify(data));
+      } catch (e) {}
+    }
+
+    function loadSavedProgress(id) {
+      try {
+        var key = 'rostrick_comic_progress';
+        var dataStr = localStorage.getItem(key);
+        if (dataStr) {
+          var data = JSON.parse(dataStr);
+          if (data[id] && typeof data[id].page === 'number') {
+            return data[id].page;
+          }
+        }
+      } catch (e) {}
+      return 0;
+    }
+
+    // Parse URL Params
+    function getQueryParam(param) {
+      var query = window.location.search.substring(1);
+      var vars = query.split('&');
+      for (var i = 0; i < vars.length; i++) {
+        var pair = vars[i].split('=');
+        if (decodeURIComponent(pair[0]) === param) {
+          return decodeURIComponent(pair[1]);
+        }
+      }
+      return null;
+    }
+
+    // Load Comic Content
+    function initComicReader() {
+      var urlId = getQueryParam('id');
+      if (urlId) {
+        currentComicId = urlId;
+      }
+
+      // Fetch comics.json
+      fetch('comics.json')
+        .then(function(res) {
+          if (!res.ok) throw new Error('Network error');
+          return res.json();
+        })
+        .then(function(data) {
+          if (Array.isArray(data) && data.length > 0) {
+            var found = null;
+            for (var i = 0; i < data.length; i++) {
+              if (data[i].id === currentComicId) {
+                found = data[i];
+                break;
+              }
+            }
+            if (!found) found = data[0];
+            comicData = formatComicData(found);
+          } else {
+            comicData = fallbackComic;
+          }
+          setupReader();
+        })
+        .catch(function() {
+          comicData = fallbackComic;
+          setupReader();
+        });
+    }
+
+    function formatComicData(raw) {
+      var pages = [];
+      if (raw.pages && Array.isArray(raw.pages) && raw.pages.length > 0) {
+        pages = raw.pages;
+      } else {
+        // Generate pages if raw only contains basic metadata
+        var total = raw.pagesCount || 6;
+        for (var i = 1; i <= total; i++) {
+          pages.push({
+            title: 'لوحة ' + i + ' من ' + total,
+            caption: (raw.summary || raw.synopsis || 'حكاية نيون مشوقة وتفاصيل مليئة بالمغامرة.') + ' - القسم رقم ' + i,
+            dialogue: i === 1 ? 'البداية هنا في عالم النيون!' : 'استمر في استكشاف بقية المشاهد الحماسية.',
+            art: raw.cover || fallbackComic.pages[0].art
+          });
+        }
+      }
+      return {
+        id: raw.id || currentComicId,
+        title: raw.title || 'كوميكس بدون عنوان',
+        author: raw.author || 'كاتب مجهول',
+        genre: raw.genre || 'مغامرة',
+        summary: raw.summary || raw.synopsis || 'لا يوجد ملخص متاح.',
+        pages: pages
+      };
+    }
+
+    function setupReader() {
+      // Set Header Meta
+      document.getElementById('comic-title').textContent = comicData.title;
+      document.getElementById('comic-author').textContent = 'تأليف: ' + comicData.author;
+      document.getElementById('genre-badge').textContent = comicData.genre;
+      document.getElementById('modal-comic-title').textContent = comicData.title;
+      document.getElementById('modal-comic-summary').textContent = comicData.summary;
+
+      // Restore saved progress
+      var savedPage = loadSavedProgress(comicData.id);
+      if (savedPage < comicData.pages.length) {
+        currentPageIndex = savedPage;
+      } else {
+        currentPageIndex = 0;
+      }
+
+      renderPage(currentPageIndex);
+    }
+
+    function renderPage(index) {
+      if (!comicData || !comicData.pages || index < 0 || index >= comicData.pages.length) return;
+
+      var page = comicData.pages[index];
+      var panelCard = document.getElementById('panel-card');
+
+      // Visual Flip effect
+      panelCard.classList.add('page-transition');
+
+      setTimeout(function() {
+        document.getElementById('panel-title').textContent = page.title || ('مشهد ' + (index + 1));
+        document.getElementById('panel-caption').textContent = page.caption || '';
+        
+        var artBox = document.getElementById('panel-art-box');
+        artBox.innerHTML = '';
+
+        if (page.art) {
+          if (page.art.trim().indexOf('<svg') === 0) {
+            artBox.innerHTML = page.art;
+          } else {
+            var img = document.createElement('img');
+            img.src = page.art;
+            img.alt = page.title;
+            artBox.appendChild(img);
+          }
+        }
+
+        // Dialogue bubble overlay
+        if (page.dialogue) {
+          var bubble = document.createElement('div');
+          bubble.className = 'speech-bubble top-right rt-selectable';
+          bubble.textContent = page.dialogue;
+          artBox.appendChild(bubble);
+        }
+
+        // Progress status
+        var currentNum = index + 1;
+        var totalNum = comicData.pages.length;
+        document.getElementById('page-counter').textContent = 'صفحة ' + currentNum + ' من ' + totalNum;
+        
+        var pct = (currentNum / totalNum) * 100;
+        document.getElementById('progress-fill').style.width = pct + '%';
+
+        panelCard.classList.remove('page-transition');
+      }, 120);
+
+      // Save to localStorage
+      saveProgress(comicData.id, index);
+    }
+
+    function changePage(direction) {
+      if (!comicData) return;
+      var newIndex = currentPageIndex + direction;
+      if (newIndex >= 0 && newIndex < comicData.pages.length) {
+        currentPageIndex = newIndex;
+        playTurnSound();
+        triggerHaptic('tick');
+        renderPage(currentPageIndex);
+      } else if (newIndex >= comicData.pages.length) {
+        showToast('وصلت إلى نهاية الكوميكس!');
+        triggerHaptic('reject');
+      } else {
+        triggerHaptic('reject');
+      }
+    }
+
+    function updateZoom(delta) {
+      if (delta === 0) {
+        currentZoom = 1.0;
+      } else {
+        currentZoom += delta;
+        if (currentZoom < 0.8) currentZoom = 0.8;
+        if (currentZoom > 2.5) currentZoom = 2.5;
+      }
+
+      var stage = document.getElementById('comic-stage');
+      stage.style.transform = 'scale(' + currentZoom + ')';
+      document.getElementById('zoom-text').textContent = Math.round(currentZoom * 100) + '%';
+      triggerHaptic('click');
+    }
+
+    // Launch Floating Overlay Mode
+    function launchOverlayWindow() {
+      triggerHaptic('confirm');
+      var targetUrl = 'overlay-hub.html?section=comic&id=' + encodeURIComponent(currentComicId);
+
+      if (window.RosTrickOverlay) {
+        window.RosTrickOverlay.canDraw()
+          .then(function(can) {
+            if (!can) {
+              return window.RosTrickOverlay.requestPermission();
+            }
+            return true;
+          })
+          .then(function(granted) {
+            if (granted) {
+              return window.RosTrickOverlay.create({
+                id: 'comic_overlay_reader',
+                url: targetUrl,
+                w: 360,
+                h: 500,
+                x: 30,
+                y: 60,
+                gravity: 'tr',
+                touchable: true
+              });
+            } else {
+              window.location.href = targetUrl;
+            }
+          })
+          .catch(function() {
+            window.location.href = targetUrl;
+          });
+      } else {
+        window.location.href = targetUrl;
+      }
+    }
+
+    // Share Story
+    function shareComic() {
+      triggerHaptic('click');
+      var title = comicData ? comicData.title : 'قصة مصورة';
+      var shareText = 'أقرأ حالياً قصة "' + title + '" عبر تطبيق الكوميكس والألعاب!';
+      
+      if (window.RosTrickShare && window.RosTrickShare.share) {
+        window.RosTrickShare.share({
+          title: title,
+          text: shareText,
+          url: window.location.href
+        });
+      } else if (navigator.clipboard) {
+        navigator.clipboard.writeText(shareText + ' ' + window.location.href)
+          .then(function() {
+            showToast('تم نسخ رابط القصة للحافظة');
+          })
+          .catch(function() {
+            showToast(title);
+          });
+      } else {
+        showToast(title);
+      }
+    }
+
+    // Setup Back button bridge handler
+    if (window.RosTrickBack && window.RosTrickBack.onBack) {
+      window.RosTrickBack.onBack(function() {
+        var modal = document.getElementById('info-modal');
+        if (modal.classList.contains('active')) {
+          modal.classList.remove('active');
+          return true;
+        }
+        window.location.href = 'comics.html';
+        return true;
+      });
+    }
+
+    // Event Listeners Initialization
+    document.addEventListener('DOMContentLoaded', function() {
+      initComicReader();
+
+      // Hardware/App Bar Back Button
+      document.getElementById('btn-back').addEventListener('click', function() {
+        triggerHaptic('click');
+        window.location.href = 'comics.html';
+      });
+
+      // Overlay Action Buttons
+      document.getElementById('btn-overlay').addEventListener('click', launchOverlayWindow);
+      document.getElementById('btn-overlay-modal').addEventListener('click', function() {
+        document.getElementById('info-modal').classList.remove('active');
+        launchOverlayWindow();
+      });
+
+      // Share Action
+      document.getElementById('btn-share').addEventListener('click', shareComic);
+
+      // Page Nav Buttons
+      document.getElementById('btn-next-page').addEventListener('click', function() {
+        changePage(1);
+      });
+      document.getElementById('btn-prev-page').addEventListener('click', function() {
+        changePage(-1);
+      });
+
+      // Side Tap Zones (RTL: right zone goes to previous, left zone goes to next)
+      document.getElementById('tap-right').addEventListener('click', function() {
+        changePage(-1);
+      });
+      document.getElementById('tap-left').addEventListener('click', function() {
+        changePage(1);
+      });
+
+      // Zoom Controls
+      document.getElementById('btn-zoom-in').addEventListener('click', function() {
+        updateZoom(0.2);
+      });
+      document.getElementById('btn-zoom-out').addEventListener('click', function() {
+        updateZoom(-0.2);
+      });
+      document.getElementById('btn-zoom-reset').addEventListener('click', function() {
+        updateZoom(0);
+      });
+
+      // Modal Dialog controls
+      document.getElementById('btn-info').addEventListener('click', function() {
+        triggerHaptic('click');
+        document.getElementById('info-modal').classList.add('active');
+      });
+      document.getElementById('btn-close-modal').addEventListener('click', function() {
+        triggerHaptic('click');
+        document.getElementById('info-modal').classList.remove('active');
+      });
+
+      // Touch Swiping Gesture Support
+      var viewport = document.getElementById('viewport');
+      viewport.addEventListener('touchstart', function(e) {
+        if (e.touches.length === 1) {
+          touchStartX = e.touches[0].clientX;
+        }
+      }, { passive: true });
+
+      viewport.addEventListener('touchend', function(e) {
+        if (e.changedTouches.length === 1) {
+          touchEndX = e.changedTouches[0].clientX;
+          var diff = touchStartX - touchEndX;
+          // Swipe threshold: 50px
+          if (Math.abs(diff) > 50) {
+            if (diff > 0) {
+              // Swiped left -> Next page in RTL
+              changePage(1);
+            } else {
+              // Swiped right -> Previous page in RTL
+              changePage(-1);
+            }
+          }
+        }
+      }, { passive: true });
+    });
+  </script>
+</body>
+</html>
