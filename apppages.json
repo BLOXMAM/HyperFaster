@@ -1,8 +1,4 @@
 {
-  "admin.html": {
-    "op": "update",
-    "timestamp": 1795373492098
-  },
   "app-assets/splash-logo.png": {
     "op": "sync",
     "timestamp": 1795363594622
