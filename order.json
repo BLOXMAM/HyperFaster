@@ -1,21 +1,5 @@
 [
   {
-    "file": "home.html",
-    "title": "home",
-    "icon": "fa-solid fa-file",
-    "hidden": true,
-    "searchEnabled": true,
-    "searchNames": []
-  },
-  {
-    "file": "index.html",
-    "title": "الرئيسية",
-    "icon": "fa-solid fa-file",
-    "hidden": false,
-    "searchEnabled": true,
-    "searchNames": []
-  },
-  {
     "file": "game-details.html",
     "title": "تفاصيل اللعبة",
     "icon": "fa-solid fa-file",
@@ -92,6 +76,142 @@
     "title": "لعبة الضربة الخاطفة",
     "icon": "fa-solid fa-file",
     "hidden": false,
+    "searchEnabled": true,
+    "searchNames": []
+  },
+  {
+    "file": "admin.html",
+    "title": "admin",
+    "icon": "fa-solid fa-file",
+    "hidden": true,
+    "searchEnabled": true,
+    "searchNames": []
+  },
+  {
+    "file": "categories.html",
+    "title": "categories",
+    "icon": "fa-solid fa-file",
+    "hidden": true,
+    "searchEnabled": true,
+    "searchNames": []
+  },
+  {
+    "file": "game2d.html",
+    "title": "game2d",
+    "icon": "fa-solid fa-file",
+    "hidden": true,
+    "searchEnabled": true,
+    "searchNames": []
+  },
+  {
+    "file": "game_flappy.html",
+    "title": "game_flappy",
+    "icon": "fa-solid fa-file",
+    "hidden": true,
+    "searchEnabled": true,
+    "searchNames": []
+  },
+  {
+    "file": "game_memory.html",
+    "title": "game_memory",
+    "icon": "fa-solid fa-file",
+    "hidden": true,
+    "searchEnabled": true,
+    "searchNames": []
+  },
+  {
+    "file": "game_puzzle.html",
+    "title": "game_puzzle",
+    "icon": "fa-solid fa-file",
+    "hidden": true,
+    "searchEnabled": true,
+    "searchNames": []
+  },
+  {
+    "file": "home.html",
+    "title": "home",
+    "icon": "fa-solid fa-file",
+    "hidden": true,
+    "searchEnabled": true,
+    "searchNames": []
+  },
+  {
+    "file": "index.html",
+    "title": "index",
+    "icon": "fa-solid fa-file",
+    "hidden": true,
+    "searchEnabled": true,
+    "searchNames": []
+  },
+  {
+    "file": "library.html",
+    "title": "library",
+    "icon": "fa-solid fa-file",
+    "hidden": true,
+    "searchEnabled": true,
+    "searchNames": []
+  },
+  {
+    "file": "overlay-guide.html",
+    "title": "overlay-guide",
+    "icon": "fa-solid fa-file",
+    "hidden": true,
+    "searchEnabled": true,
+    "searchNames": []
+  },
+  {
+    "file": "pdf_links.html",
+    "title": "pdf_links",
+    "icon": "fa-solid fa-file",
+    "hidden": true,
+    "searchEnabled": true,
+    "searchNames": []
+  },
+  {
+    "file": "play.html",
+    "title": "play",
+    "icon": "fa-solid fa-file",
+    "hidden": true,
+    "searchEnabled": true,
+    "searchNames": []
+  },
+  {
+    "file": "product.html",
+    "title": "product",
+    "icon": "fa-solid fa-file",
+    "hidden": true,
+    "searchEnabled": true,
+    "searchNames": []
+  },
+  {
+    "file": "products.html",
+    "title": "products",
+    "icon": "fa-solid fa-file",
+    "hidden": true,
+    "searchEnabled": true,
+    "searchNames": []
+  },
+  {
+    "file": "reader.html",
+    "title": "reader",
+    "icon": "fa-solid fa-file",
+    "hidden": true,
+    "searchEnabled": true,
+    "searchNames": []
+  },
+  {
+    "file": "riddle.html",
+    "title": "riddle",
+    "icon": "fa-solid fa-file",
+    "hidden": true,
+    "searchEnabled": true,
+    "searchNames": []
+  },
+  {
+    "file": "scores.html",
+    "title": "scores",
+    "icon": "fa-solid fa-file",
+    "hidden": true,
     "searchEnabled": true,
     "searchNames": []
   }
