@@ -1,0 +1,2405 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1, user-scalable=no">
+<meta name="rostrick-statusbar" content="color=#0A0914; icons=light; anim=200">
+<meta name="rostrick-orientation" content="portrait">
+<title>مكتبة الكوميكس</title>
+<style>
+:root {
+  --primary: #6C3BFF;
+  --primary-dark: #4A22C9;
+  --accent: #00E5FF;
+  --highlight: #FF3D7F;
+  --control: #B8B5D1;
+  --bg-deep: #090812;
+  --bg-card: #131126;
+  --bg-card-2: #1A1734;
+  --border-glow: rgba(108, 59, 255, 0.35);
+  --text-main: #F5F4FF;
+  --text-muted: #9E9BBF;
+}
+
+* {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--bg-deep);
+  color: var(--text-main);
+  font-family: system-ui, -apple-system, "Segoe UI", Tahoma, Arial, sans-serif;
+  line-height: 1.5;
+  overflow-x: hidden;
+  min-height: 100%;
+}
+
+body {
+  background-image:
+    radial-gradient(circle at 15% 10%, rgba(108, 59, 255, 0.18) 0%, transparent 45%),
+    radial-gradient(circle at 85% 25%, rgba(0, 229, 255, 0.12) 0%, transparent 40%),
+    radial-gradient(circle at 50% 90%, rgba(255, 61, 127, 0.1) 0%, transparent 45%);
+  padding-top: env(safe-area-inset-top);
+  padding-bottom: calc(82px + env(safe-area-inset-bottom));
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+button, input, select {
+  font-family: inherit;
+}
+
+/* Top App Bar */
+.app-bar {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  background: rgba(10, 9, 20, 0.92);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(108, 59, 255, 0.3);
+  padding: 10px 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.app-bar-right {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  flex: 1;
+}
+
+.icon-btn {
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
+  min-height: 44px;
+  border-radius: 14px;
+  border: 1px solid rgba(184, 181, 209, 0.2);
+  background: rgba(26, 23, 52, 0.85);
+  color: var(--text-main);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.14s ease, border-color 0.2s ease, background 0.2s ease;
+  padding: 0;
+}
+
+.icon-btn:active {
+  transform: scale(0.93);
+  border-color: var(--accent);
+}
+
+.icon-btn.accent-btn {
+  border-color: rgba(0, 229, 255, 0.45);
+  color: var(--accent);
+  background: rgba(0, 229, 255, 0.1);
+}
+
+.app-bar-titles {
+  margin-right: 12px;
+  min-width: 0;
+}
+
+.app-title {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: 0.2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.app-subtitle {
+  margin: 0;
+  font-size: 12px;
+  color: var(--control);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.app-bar-actions {
+  display: flex;
+  align-items: center;
+}
+
+.app-bar-actions .icon-btn {
+  margin-right: 8px;
+}
+
+/* Main container */
+.container {
+  padding: 14px 14px 20px 14px;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+/* Search & Sort Row */
+.search-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.search-box {
+  position: relative;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  background: var(--bg-card);
+  border: 1.5px solid rgba(108, 59, 255, 0.4);
+  border-radius: 16px;
+  padding: 0 12px;
+  height: 48px;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.35);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.search-box:focus-within {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(0, 229, 255, 0.15);
+}
+
+.search-icon {
+  color: var(--control);
+  flex-shrink: 0;
+  margin-left: 8px;
+}
+
+.search-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--text-main);
+  font-size: 14px;
+  min-width: 0;
+  height: 100%;
+}
+
+.search-input::placeholder {
+  color: var(--text-muted);
+}
+
+.clear-search {
+  width: 36px;
+  height: 36px;
+  border: none;
+  background: rgba(184, 181, 209, 0.12);
+  color: var(--control);
+  border-radius: 10px;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 0;
+}
+
+.clear-search.visible {
+  display: inline-flex;
+}
+
+.sort-btn {
+  margin-right: 8px;
+  height: 48px;
+  min-width: 48px;
+  padding: 0 12px;
+  border-radius: 16px;
+  border: 1.5px solid rgba(108, 59, 255, 0.4);
+  background: var(--bg-card);
+  color: var(--text-main);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.14s ease, border-color 0.2s ease;
+}
+
+.sort-btn:active {
+  transform: scale(0.95);
+  border-color: var(--accent);
+}
+
+.sort-btn svg {
+  margin-left: 6px;
+  color: var(--accent);
+}
+
+/* Filter Chips */
+.chips-scroll {
+  display: flex;
+  align-items: center;
+  overflow-x: auto;
+  padding-bottom: 6px;
+  margin-bottom: 10px;
+  scrollbar-width: none;
+}
+
+.chips-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+.chip {
+  flex-shrink: 0;
+  min-height: 44px;
+  padding: 8px 16px;
+  border-radius: 999px;
+  border: 1px solid rgba(184, 181, 209, 0.22);
+  background: var(--bg-card);
+  color: var(--control);
+  font-size: 13px;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  margin-left: 8px;
+  transition: transform 0.14s ease, background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+.chip:last-child {
+  margin-left: 0;
+}
+
+.chip:active {
+  transform: scale(0.95);
+}
+
+.chip.active {
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  color: #FFFFFF;
+  border-color: var(--accent);
+  box-shadow: 0 0 14px rgba(108, 59, 255, 0.55);
+}
+
+.chip.status-chip.active {
+  background: linear-gradient(135deg, rgba(0, 229, 255, 0.22), rgba(108, 59, 255, 0.35));
+  color: var(--accent);
+  border-color: var(--accent);
+  box-shadow: 0 0 12px rgba(0, 229, 255, 0.25);
+}
+
+.chip-count {
+  margin-right: 6px;
+  font-size: 11px;
+  padding: 1px 7px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.14);
+}
+
+/* Continue Reading Spotlight */
+.spotlight {
+  display: none;
+  position: relative;
+  border-radius: 20px;
+  padding: 14px;
+  margin-bottom: 18px;
+  background: linear-gradient(135deg, rgba(108, 59, 255, 0.28), rgba(19, 17, 38, 0.95) 60%, rgba(0, 229, 255, 0.18));
+  border: 1.5px solid rgba(0, 229, 255, 0.45);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.45), 0 0 22px rgba(108, 59, 255, 0.22);
+  overflow: hidden;
+}
+
+.spotlight.visible {
+  display: block;
+}
+
+.spotlight-badge {
+  display: inline-flex;
+  align-items: center;
+  font-size: 11px;
+  font-weight: 800;
+  color: var(--accent);
+  background: rgba(0, 229, 255, 0.12);
+  border: 1px solid rgba(0, 229, 255, 0.35);
+  padding: 3px 10px;
+  border-radius: 999px;
+  margin-bottom: 10px;
+}
+
+.spotlight-badge svg {
+  margin-left: 5px;
+}
+
+.spotlight-body {
+  display: flex;
+  align-items: center;
+}
+
+.spotlight-cover {
+  width: 72px;
+  height: 92px;
+  border-radius: 12px;
+  object-fit: cover;
+  border: 2px solid rgba(0, 229, 255, 0.5);
+  background: #0F0D1D;
+  flex-shrink: 0;
+  margin-left: 12px;
+}
+
+.spotlight-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.spotlight-title {
+  margin: 0 0 3px 0;
+  font-size: 16px;
+  font-weight: 800;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.spotlight-meta {
+  font-size: 12px;
+  color: var(--control);
+  margin-bottom: 8px;
+}
+
+.progress-track {
+  width: 100%;
+  height: 7px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.1);
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--primary), var(--accent));
+  transition: width 0.35s ease;
+}
+
+.progress-fill.done {
+  background: linear-gradient(90deg, #00E5FF, #38EF7D);
+}
+
+.spotlight-actions {
+  display: flex;
+  align-items: center;
+  margin-top: 12px;
+}
+
+.btn-primary {
+  min-height: 44px;
+  padding: 0 16px;
+  border-radius: 13px;
+  border: none;
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  color: #FFFFFF;
+  font-size: 13px;
+  font-weight: 800;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(108, 59, 255, 0.45);
+  transition: transform 0.14s ease, filter 0.2s ease;
+}
+
+.btn-primary:active {
+  transform: scale(0.96);
+  filter: brightness(1.1);
+}
+
+.btn-primary svg {
+  margin-left: 6px;
+}
+
+.btn-neon {
+  min-height: 44px;
+  padding: 0 14px;
+  border-radius: 13px;
+  border: 1.5px solid var(--accent);
+  background: rgba(0, 229, 255, 0.1);
+  color: var(--accent);
+  font-size: 13px;
+  font-weight: 800;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  margin-right: 8px;
+  transition: transform 0.14s ease, background 0.2s ease;
+}
+
+.btn-neon:active {
+  transform: scale(0.96);
+  background: rgba(0, 229, 255, 0.22);
+}
+
+.btn-neon svg {
+  margin-left: 6px;
+}
+
+/* Section Header */
+.section-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.section-title {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--text-main);
+  display: flex;
+  align-items: center;
+}
+
+.section-title-bar {
+  display: inline-block;
+  width: 4px;
+  height: 16px;
+  border-radius: 4px;
+  background: linear-gradient(180deg, var(--accent), var(--highlight));
+  margin-left: 8px;
+}
+
+.section-count {
+  font-size: 12px;
+  color: var(--control);
+  font-weight: 700;
+}
+
+/* Comics Grid (no flex/grid gap for Chromium 78 safety) */
+.comics-grid {
+  display: flex;
+  flex-wrap: wrap;
+  margin-left: -6px;
+  margin-right: -6px;
+}
+
+.comic-col {
+  width: 100%;
+  padding: 0 6px 14px 6px;
+}
+
+@media (min-width: 600px) {
+  .comic-col {
+    width: 50%;
+  }
+}
+
+.comic-card {
+  position: relative;
+  background: linear-gradient(165deg, var(--bg-card-2), var(--bg-card));
+  border: 1.5px solid rgba(108, 59, 255, 0.35);
+  border-radius: 20px;
+  padding: 12px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.42);
+  transition: transform 0.15s ease, border-color 0.2s ease;
+}
+
+.comic-card:active {
+  transform: scale(0.985);
+}
+
+.comic-card.is-reading {
+  border-color: rgba(0, 229, 255, 0.5);
+}
+
+.comic-card.is-completed {
+  border-color: rgba(56, 239, 125, 0.45);
+}
+
+.comic-top {
+  display: flex;
+  align-items: flex-start;
+  cursor: pointer;
+}
+
+.cover-wrap {
+  position: relative;
+  width: 92px;
+  height: 118px;
+  border-radius: 14px;
+  overflow: hidden;
+  flex-shrink: 0;
+  margin-left: 12px;
+  border: 2px solid rgba(184, 181, 209, 0.22);
+  background: #0D0B1A;
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.5);
+}
+
+.cover-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.pages-pill {
+  position: absolute;
+  bottom: 5px;
+  right: 5px;
+  background: rgba(9, 8, 18, 0.86);
+  border: 1px solid rgba(0, 229, 255, 0.45);
+  color: var(--accent);
+  font-size: 10px;
+  font-weight: 800;
+  padding: 2px 7px;
+  border-radius: 999px;
+}
+
+.comic-meta-col {
+  flex: 1;
+  min-width: 0;
+}
+
+.comic-header-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.genre-tag {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 700;
+  color: #FF8FB5;
+  background: rgba(255, 61, 127, 0.14);
+  border: 1px solid rgba(255, 61, 127, 0.35);
+  padding: 2px 9px;
+  border-radius: 999px;
+  margin-bottom: 6px;
+}
+
+.fav-btn {
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
+  min-height: 44px;
+  margin-top: -8px;
+  margin-left: -8px;
+  border: none;
+  background: transparent;
+  color: var(--control);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border-radius: 12px;
+  transition: transform 0.14s ease, color 0.2s ease;
+}
+
+.fav-btn:active {
+  transform: scale(0.88);
+}
+
+.fav-btn.active {
+  color: var(--highlight);
+}
+
+.comic-title {
+  margin: 0 0 4px 0;
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--text-main);
+  line-height: 1.35;
+}
+
+.comic-author {
+  margin: 0 0 6px 0;
+  font-size: 12px;
+  color: var(--control);
+}
+
+.comic-summary {
+  margin: 0;
+  font-size: 12px;
+  color: var(--text-muted);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  line-height: 1.45;
+}
+
+/* Progress inside card */
+.card-progress {
+  margin-top: 12px;
+  padding-top: 10px;
+  border-top: 1px solid rgba(184, 181, 209, 0.12);
+}
+
+.progress-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 11px;
+  margin-bottom: 6px;
+}
+
+.status-label {
+  font-weight: 800;
+  display: inline-flex;
+  align-items: center;
+}
+
+.status-label.status-new {
+  color: var(--control);
+}
+
+.status-label.status-reading {
+  color: var(--accent);
+}
+
+.status-label.status-done {
+  color: #38EF7D;
+}
+
+.progress-nums {
+  color: var(--text-muted);
+  font-weight: 700;
+}
+
+.card-actions {
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.card-btn-read {
+  flex: 1;
+  min-height: 44px;
+  border-radius: 12px;
+  border: none;
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  color: #FFFFFF;
+  font-size: 13px;
+  font-weight: 800;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(108, 59, 255, 0.35);
+  transition: transform 0.14s ease;
+}
+
+.card-btn-read:active {
+  transform: scale(0.96);
+}
+
+.card-btn-read svg {
+  margin-left: 6px;
+}
+
+.card-btn-overlay {
+  min-width: 44px;
+  height: 44px;
+  padding: 0 12px;
+  margin-right: 8px;
+  border-radius: 12px;
+  border: 1.5px solid rgba(0, 229, 255, 0.45);
+  background: rgba(0, 229, 255, 0.08);
+  color: var(--accent);
+  font-size: 12px;
+  font-weight: 800;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.14s ease, background 0.2s ease;
+}
+
+.card-btn-overlay:active {
+  transform: scale(0.94);
+  background: rgba(0, 229, 255, 0.2);
+}
+
+.card-btn-overlay svg {
+  margin-left: 4px;
+}
+
+.card-btn-info {
+  width: 44px;
+  min-width: 44px;
+  height: 44px;
+  margin-right: 8px;
+  border-radius: 12px;
+  border: 1px solid rgba(184, 181, 209, 0.24);
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--control);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.14s ease;
+}
+
+.card-btn-info:active {
+  transform: scale(0.94);
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* States: Loading, Error, Empty */
+.state-box {
+  display: none;
+  text-align: center;
+  padding: 36px 18px;
+  background: var(--bg-card);
+  border: 1.5px dashed rgba(108, 59, 255, 0.4);
+  border-radius: 20px;
+  margin-top: 10px;
+}
+
+.state-box.visible {
+  display: block;
+}
+
+.state-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 18px;
+  margin: 0 auto 12px auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(108, 59, 255, 0.18);
+  color: var(--accent);
+}
+
+.state-title {
+  margin: 0 0 6px 0;
+  font-size: 16px;
+  font-weight: 800;
+}
+
+.state-desc {
+  margin: 0 0 16px 0;
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+/* Skeleton Loader */
+.skeleton-card {
+  background: var(--bg-card);
+  border: 1px solid rgba(108, 59, 255, 0.2);
+  border-radius: 20px;
+  padding: 14px;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+}
+
+.skeleton-thumb {
+  width: 84px;
+  height: 108px;
+  border-radius: 14px;
+  background: rgba(184, 181, 209, 0.1);
+  margin-left: 12px;
+  animation: pulseGlow 1.3s infinite ease-in-out;
+}
+
+.skeleton-lines {
+  flex: 1;
+}
+
+.skeleton-line {
+  height: 12px;
+  border-radius: 6px;
+  background: rgba(184, 181, 209, 0.1);
+  margin-bottom: 10px;
+  animation: pulseGlow 1.3s infinite ease-in-out;
+}
+
+.skeleton-line.short {
+  width: 55%;
+}
+
+@keyframes pulseGlow {
+  0% { opacity: 0.45; }
+  50% { opacity: 0.9; }
+  100% { opacity: 0.45; }
+}
+
+/* Bottom Sheet Modal */
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 80;
+  background: rgba(5, 4, 12, 0.78);
+  display: none;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.modal-backdrop.open {
+  display: flex;
+}
+
+.sheet {
+  width: 100%;
+  max-width: 600px;
+  max-height: 88vh;
+  overflow-y: auto;
+  background: #141229;
+  border-top: 2px solid var(--accent);
+  border-top-left-radius: 24px;
+  border-top-right-radius: 24px;
+  padding: 12px 16px calc(20px + env(safe-area-inset-bottom)) 16px;
+  box-shadow: 0 -10px 36px rgba(0, 0, 0, 0.7);
+  animation: slideUp 0.22s ease-out;
+}
+
+@keyframes slideUp {
+  from { transform: translateY(40px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+.sheet-handle {
+  width: 44px;
+  height: 5px;
+  border-radius: 999px;
+  background: rgba(184, 181, 209, 0.35);
+  margin: 0 auto 14px auto;
+}
+
+.sheet-head {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 14px;
+}
+
+.sheet-cover {
+  width: 96px;
+  height: 126px;
+  border-radius: 14px;
+  object-fit: cover;
+  border: 2px solid rgba(0, 229, 255, 0.5);
+  margin-left: 14px;
+  flex-shrink: 0;
+  background: #0D0B1A;
+}
+
+.sheet-head-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.sheet-title {
+  margin: 0 0 4px 0;
+  font-size: 18px;
+  font-weight: 800;
+}
+
+.sheet-author {
+  margin: 0 0 8px 0;
+  font-size: 13px;
+  color: var(--control);
+}
+
+.sheet-tags {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.sheet-tag {
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: rgba(108, 59, 255, 0.22);
+  border: 1px solid rgba(108, 59, 255, 0.45);
+  color: var(--text-main);
+  margin-left: 6px;
+  margin-bottom: 6px;
+}
+
+.sheet-tag.cyan {
+  background: rgba(0, 229, 255, 0.14);
+  border-color: rgba(0, 229, 255, 0.4);
+  color: var(--accent);
+}
+
+.sheet-synopsis {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(184, 181, 209, 0.15);
+  border-radius: 14px;
+  padding: 12px;
+  font-size: 13px;
+  color: var(--text-main);
+  line-height: 1.65;
+  margin-bottom: 14px;
+}
+
+.sheet-progress-box {
+  background: rgba(0, 229, 255, 0.06);
+  border: 1px solid rgba(0, 229, 255, 0.25);
+  border-radius: 14px;
+  padding: 12px;
+  margin-bottom: 14px;
+}
+
+.sheet-actions {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.sheet-btn-row {
+  display: flex;
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.sheet-btn-row:last-child {
+  margin-bottom: 0;
+}
+
+.btn-secondary {
+  flex: 1;
+  min-height: 44px;
+  padding: 0 14px;
+  border-radius: 13px;
+  border: 1px solid rgba(184, 181, 209, 0.28);
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text-main);
+  font-size: 13px;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.14s ease;
+}
+
+.btn-secondary:active {
+  transform: scale(0.96);
+}
+
+.btn-secondary svg {
+  margin-left: 6px;
+}
+
+.btn-danger {
+  flex: 1;
+  min-height: 44px;
+  padding: 0 14px;
+  margin-right: 8px;
+  border-radius: 13px;
+  border: 1px solid rgba(255, 61, 127, 0.45);
+  background: rgba(255, 61, 127, 0.1);
+  color: #FF8FB5;
+  font-size: 13px;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.btn-danger:active {
+  transform: scale(0.96);
+}
+
+.btn-danger svg {
+  margin-left: 6px;
+}
+
+/* Sort Option Sheet */
+.sort-option {
+  width: 100%;
+  min-height: 48px;
+  padding: 10px 14px;
+  margin-bottom: 8px;
+  border-radius: 14px;
+  border: 1px solid rgba(184, 181, 209, 0.18);
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--text-main);
+  font-size: 14px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+}
+
+.sort-option.active {
+  border-color: var(--accent);
+  background: rgba(0, 229, 255, 0.12);
+  color: var(--accent);
+}
+
+/* Overlay Permission Dialog */
+.perm-note {
+  font-size: 13px;
+  color: var(--control);
+  line-height: 1.6;
+  margin: 0 0 14px 0;
+}
+
+/* Toast Notification */
+.toast {
+  position: fixed;
+  bottom: calc(84px + env(safe-area-inset-bottom));
+  left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  background: rgba(20, 18, 41, 0.96);
+  border: 1.5px solid var(--accent);
+  color: var(--text-main);
+  padding: 10px 18px;
+  border-radius: 14px;
+  font-size: 13px;
+  font-weight: 700;
+  z-index: 120;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  max-width: 90%;
+  text-align: center;
+}
+
+.toast.visible {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* Bottom Navigation Bar */
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 50;
+  background: rgba(11, 10, 24, 0.96);
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
+  border-top: 1px solid rgba(108, 59, 255, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  padding: 6px 8px calc(6px + env(safe-area-inset-bottom)) 8px;
+}
+
+.nav-item {
+  flex: 1;
+  min-height: 50px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: var(--control);
+  font-size: 11px;
+  font-weight: 700;
+  border-radius: 14px;
+  transition: color 0.2s ease, background 0.2s ease, transform 0.14s ease;
+}
+
+.nav-item:active {
+  transform: scale(0.94);
+}
+
+.nav-item svg {
+  margin-bottom: 3px;
+}
+
+.nav-item.active {
+  color: var(--accent);
+  background: rgba(0, 229, 255, 0.1);
+}
+</style>
+<style id="rt-native">html,body{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;-webkit-tap-highlight-color:transparent;overscroll-behavior:none}input,textarea,select,[contenteditable],.rt-selectable,.rt-selectable *{-webkit-user-select:text;user-select:text}img,a{-webkit-user-drag:none}a,button,[role=button]{outline:none}</style>
+</head>
+<body>
+
+<header class="app-bar">
+  <div class="app-bar-right">
+    <a href="home.html" class="icon-btn" aria-label="العودة للرئيسية" id="backHomeBtn">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="9 18 15 12 9 6"></polyline>
+      </svg>
+    </a>
+    <div class="app-bar-titles">
+      <h1 class="app-title">مكتبة الكوميكس</h1>
+      <p class="app-subtitle" id="librarySubtitle">جاري تحميل القصص...</p>
+    </div>
+  </div>
+  <div class="app-bar-actions">
+    <button type="button" class="icon-btn accent-btn" id="openOverlayHubBtn" aria-label="النافذة العائمة">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="3" y="3" width="18" height="18" rx="3"></rect>
+        <rect x="11" y="10" width="8" height="7" rx="1.5" fill="currentColor" fill-opacity="0.25"></rect>
+      </svg>
+    </button>
+    <button type="button" class="icon-btn" id="reloadBtn" aria-label="تحديث المكتبة">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="23 4 23 10 17 10"></polyline>
+        <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path>
+      </svg>
+    </button>
+  </div>
+</header>
+
+<main class="container">
+  <div class="search-row">
+    <div class="search-box">
+      <svg class="search-icon" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="11" cy="11" r="8"></circle>
+        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+      </svg>
+      <input type="search" id="searchInput" class="search-input" placeholder="ابحث باسم القصة، المؤلف، أو الوصف..." autocomplete="off">
+      <button type="button" id="clearSearchBtn" class="clear-search" aria-label="مسح البحث">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+    <button type="button" id="sortBtn" class="sort-btn" aria-label="ترتيب القصص">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="4" y1="6" x2="20" y2="6"></line>
+        <line x1="7" y1="12" x2="17" y2="12"></line>
+        <line x1="10" y1="18" x2="14" y2="18"></line>
+      </svg>
+      <span id="sortLabel">ترتيب</span>
+    </button>
+  </div>
+
+  <!-- Status Filters -->
+  <div class="chips-scroll" id="statusChips" role="tablist" aria-label="فلترة حسب الحالة">
+    <button type="button" class="chip status-chip active" data-status="all">الكل <span class="chip-count" id="countAll">0</span></button>
+    <button type="button" class="chip status-chip" data-status="reading">قيد القراءة <span class="chip-count" id="countReading">0</span></button>
+    <button type="button" class="chip status-chip" data-status="done">مكتملة <span class="chip-count" id="countDone">0</span></button>
+    <button type="button" class="chip status-chip" data-status="new">لم تبدأ <span class="chip-count" id="countNew">0</span></button>
+    <button type="button" class="chip status-chip" data-status="fav">المفضلة <span class="chip-count" id="countFav">0</span></button>
+  </div>
+
+  <!-- Genre Filters -->
+  <div class="chips-scroll" id="genreChips" role="tablist" aria-label="فلترة حسب التصنيف"></div>
+
+  <!-- Continue Reading Spotlight -->
+  <section class="spotlight" id="spotlightSection" aria-label="واصل القراءة">
+    <div class="spotlight-badge">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+        <polygon points="5 3 19 12 5 21 5 3"></polygon>
+      </svg>
+      واصل القراءة من حيث توقفت
+    </div>
+    <div class="spotlight-body">
+      <img id="spotlightCover" class="spotlight-cover" src="" alt="">
+      <div class="spotlight-info">
+        <h2 class="spotlight-title" id="spotlightTitle"></h2>
+        <div class="spotlight-meta" id="spotlightMeta"></div>
+        <div class="progress-track">
+          <div class="progress-fill" id="spotlightFill" style="width: 0%;"></div>
+        </div>
+      </div>
+    </div>
+    <div class="spotlight-actions">
+      <a href="#" id="spotlightReadLink" class="btn-primary" style="flex: 1;">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+          <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+        </svg>
+        متابعة القراءة
+      </a>
+      <button type="button" id="spotlightOverlayBtn" class="btn-neon">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="3" width="18" height="18" rx="3"></rect>
+          <rect x="11" y="10" width="8" height="7" rx="1.5"></rect>
+        </svg>
+        نافذة عائمة
+      </button>
+    </div>
+  </section>
+
+  <!-- Section Head -->
+  <div class="section-head">
+    <h2 class="section-title"><span class="section-title-bar"></span>القصص المتاحة</h2>
+    <span class="section-count" id="resultsCount">0 قصة</span>
+  </div>
+
+  <!-- Loading Skeleton -->
+  <div id="loadingState">
+    <div class="skeleton-card">
+      <div class="skeleton-thumb"></div>
+      <div class="skeleton-lines">
+        <div class="skeleton-line short"></div>
+        <div class="skeleton-line"></div>
+        <div class="skeleton-line"></div>
+      </div>
+    </div>
+    <div class="skeleton-card">
+      <div class="skeleton-thumb"></div>
+      <div class="skeleton-lines">
+        <div class="skeleton-line short"></div>
+        <div class="skeleton-line"></div>
+        <div class="skeleton-line"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Error Box -->
+  <div id="errorState" class="state-box">
+    <div class="state-icon">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="10"></circle>
+        <line x1="12" y1="8" x2="12" y2="12"></line>
+        <line x1="12" y1="16" x2="12.01" y2="16"></line>
+      </svg>
+    </div>
+    <h3 class="state-title">تعذر تحميل مكتبة الكوميكس</h3>
+    <p class="state-desc" id="errorText">تأكد من وجود ملف البيانات comics.json وحاول مجدداً.</p>
+    <button type="button" id="retryBtn" class="btn-primary">إعادة المحاولة</button>
+  </div>
+
+  <!-- Empty Filter Box -->
+  <div id="emptyState" class="state-box">
+    <div class="state-icon">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="11" cy="11" r="8"></circle>
+        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+      </svg>
+    </div>
+    <h3 class="state-title">لا توجد قصص مطابقة</h3>
+    <p class="state-desc">جرّب تغيير كلمات البحث أو إزالة الفلاتر المفعّلة.</p>
+    <button type="button" id="resetFiltersBtn" class="btn-primary">عرض كل القصص</button>
+  </div>
+
+  <!-- Comics Grid -->
+  <div class="comics-grid" id="comicsGrid"></div>
+</main>
+
+<!-- Comic Detail Bottom Sheet -->
+<div class="modal-backdrop" id="detailModal" aria-hidden="true">
+  <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="sheetTitle">
+    <div class="sheet-handle"></div>
+    <div class="sheet-head">
+      <img id="sheetCover" class="sheet-cover" src="" alt="">
+      <div class="sheet-head-info">
+        <h3 id="sheetTitle" class="sheet-title rt-selectable"></h3>
+        <p id="sheetAuthor" class="sheet-author rt-selectable"></p>
+        <div class="sheet-tags" id="sheetTags"></div>
+      </div>
+    </div>
+    <div class="sheet-synopsis rt-selectable" id="sheetSynopsis"></div>
+    <div class="sheet-progress-box">
+      <div class="progress-row">
+        <span id="sheetStatusLabel" class="status-label"></span>
+        <span id="sheetProgressNums" class="progress-nums"></span>
+      </div>
+      <div class="progress-track">
+        <div id="sheetProgressFill" class="progress-fill" style="width: 0%;"></div>
+      </div>
+    </div>
+    <div class="sheet-actions">
+      <div class="sheet-btn-row">
+        <a href="#" id="sheetReadBtn" class="btn-primary" style="flex: 1;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+            <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+          </svg>
+          فتح في القارئ
+        </a>
+        <button type="button" id="sheetOverlayBtn" class="btn-neon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="3" width="18" height="18" rx="3"></rect>
+            <rect x="11" y="10" width="8" height="7" rx="1.5"></rect>
+          </svg>
+          تشغيل كـ Overlay
+        </button>
+      </div>
+      <div class="sheet-btn-row">
+        <button type="button" id="sheetShareBtn" class="btn-secondary">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="18" cy="5" r="3"></circle>
+            <circle cx="6" cy="12" r="3"></circle>
+            <circle cx="18" cy="19" r="3"></circle>
+            <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+            <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+          </svg>
+          مشاركة
+        </button>
+        <button type="button" id="sheetResetProgressBtn" class="btn-danger">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="1 4 1 10 7 10"></polyline>
+            <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path>
+          </svg>
+          تصفير التقدم
+        </button>
+      </div>
+      <div class="sheet-btn-row">
+        <button type="button" id="closeDetailBtn" class="btn-secondary">إغلاق</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Sort Sheet Modal -->
+<div class="modal-backdrop" id="sortModal" aria-hidden="true">
+  <div class="sheet" role="dialog" aria-modal="true" aria-label="ترتيب القصص">
+    <div class="sheet-handle"></div>
+    <h3 class="sheet-title" style="margin-bottom: 12px;">ترتيب مكتبة الكوميكس</h3>
+    <button type="button" class="sort-option active" data-sort="default">
+      <span>الترتيب الافتراضي</span>
+      <span>1-9</span>
+    </button>
+    <button type="button" class="sort-option" data-sort="recent">
+      <span>الأحدث قراءة</span>
+      <span>النشاط</span>
+    </button>
+    <button type="button" class="sort-option" data-sort="progress">
+      <span>الأعلى تقدماً</span>
+      <span>%</span>
+    </button>
+    <button type="button" class="sort-option" data-sort="title">
+      <span>حسب العنوان (أ - ي)</span>
+      <span>أبجدي</span>
+    </button>
+    <button type="button" id="closeSortBtn" class="btn-secondary" style="width: 100%; margin-top: 6px;">إغلاق</button>
+  </div>
+</div>
+
+<!-- Overlay Permission Explanation Modal -->
+<div class="modal-backdrop" id="overlayPermModal" aria-hidden="true">
+  <div class="sheet" role="dialog" aria-modal="true" aria-label="صلاحية النافذة العائمة">
+    <div class="sheet-handle"></div>
+    <h3 class="sheet-title" style="margin-bottom: 8px; color: var(--accent);">تفعيل وضع النافذة العائمة (Overlay)</h3>
+    <p class="perm-note">
+      يتيح لك هذا الوضع فتح قارئ الكوميكس المصغّر في نافذة عائمة فوق التطبيقات الأخرى لمتابعة القراءة في أي وقت.
+      لإتمام ذلك، سيطلب النظام منك السماح للتطبيق بالظهور فوق التطبيقات الأخرى.
+    </p>
+    <div class="sheet-btn-row">
+      <button type="button" id="confirmOverlayPermBtn" class="btn-primary" style="flex: 1;">منح الصلاحية والمتابعة</button>
+      <button type="button" id="cancelOverlayPermBtn" class="btn-secondary" style="flex: 0.7; margin-right: 8px;">إلغاء</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<nav class="bottom-nav" aria-label="التنقل الرئيسي">
+  <a href="home.html" class="nav-item">
+    <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+      <polyline points="9 22 9 12 15 12 15 22"></polyline>
+    </svg>
+    <span>الرئيسية</span>
+  </a>
+  <a href="comics.html" class="nav-item active" aria-current="page">
+    <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+      <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+    </svg>
+    <span>مكتبة الكوميكس</span>
+  </a>
+  <a href="overlay-hub.html?section=comics" class="nav-item">
+    <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="3" y="3" width="18" height="18" rx="3"></rect>
+      <rect x="11" y="10" width="8" height="7" rx="1.5"></rect>
+    </svg>
+    <span>النافذة العائمة</span>
+  </a>
+</nav>
+
+<script>
+(function () {
+  "use strict";
+
+  var PROGRESS_KEY = "comics_progress_v1";
+  var FAVORITES_KEY = "comics_favorites_v1";
+  var LAST_COMIC_KEY = "comics_last_read_id";
+
+  var state = {
+    comics: [],
+    progressMap: {},
+    favorites: [],
+    lastComicId: "",
+    statusFilter: "all",
+    genreFilter: "all",
+    searchQuery: "",
+    sortBy: "default",
+    activeComic: null,
+    pendingOverlayComicId: null
+  };
+
+  var el = {
+    librarySubtitle: document.getElementById("librarySubtitle"),
+    searchInput: document.getElementById("searchInput"),
+    clearSearchBtn: document.getElementById("clearSearchBtn"),
+    sortBtn: document.getElementById("sortBtn"),
+    sortLabel: document.getElementById("sortLabel"),
+    statusChips: document.getElementById("statusChips"),
+    genreChips: document.getElementById("genreChips"),
+    countAll: document.getElementById("countAll"),
+    countReading: document.getElementById("countReading"),
+    countDone: document.getElementById("countDone"),
+    countNew: document.getElementById("countNew"),
+    countFav: document.getElementById("countFav"),
+    spotlightSection: document.getElementById("spotlightSection"),
+    spotlightCover: document.getElementById("spotlightCover"),
+    spotlightTitle: document.getElementById("spotlightTitle"),
+    spotlightMeta: document.getElementById("spotlightMeta"),
+    spotlightFill: document.getElementById("spotlightFill"),
+    spotlightReadLink: document.getElementById("spotlightReadLink"),
+    spotlightOverlayBtn: document.getElementById("spotlightOverlayBtn"),
+    resultsCount: document.getElementById("resultsCount"),
+    loadingState: document.getElementById("loadingState"),
+    errorState: document.getElementById("errorState"),
+    errorText: document.getElementById("errorText"),
+    emptyState: document.getElementById("emptyState"),
+    comicsGrid: document.getElementById("comicsGrid"),
+    retryBtn: document.getElementById("retryBtn"),
+    reloadBtn: document.getElementById("reloadBtn"),
+    resetFiltersBtn: document.getElementById("resetFiltersBtn"),
+    openOverlayHubBtn: document.getElementById("openOverlayHubBtn"),
+    detailModal: document.getElementById("detailModal"),
+    sheetCover: document.getElementById("sheetCover"),
+    sheetTitle: document.getElementById("sheetTitle"),
+    sheetAuthor: document.getElementById("sheetAuthor"),
+    sheetTags: document.getElementById("sheetTags"),
+    sheetSynopsis: document.getElementById("sheetSynopsis"),
+    sheetStatusLabel: document.getElementById("sheetStatusLabel"),
+    sheetProgressNums: document.getElementById("sheetProgressNums"),
+    sheetProgressFill: document.getElementById("sheetProgressFill"),
+    sheetReadBtn: document.getElementById("sheetReadBtn"),
+    sheetOverlayBtn: document.getElementById("sheetOverlayBtn"),
+    sheetShareBtn: document.getElementById("sheetShareBtn"),
+    sheetResetProgressBtn: document.getElementById("sheetResetProgressBtn"),
+    closeDetailBtn: document.getElementById("closeDetailBtn"),
+    sortModal: document.getElementById("sortModal"),
+    closeSortBtn: document.getElementById("closeSortBtn"),
+    overlayPermModal: document.getElementById("overlayPermModal"),
+    confirmOverlayPermBtn: document.getElementById("confirmOverlayPermBtn"),
+    cancelOverlayPermBtn: document.getElementById("cancelOverlayPermBtn"),
+    toast: document.getElementById("toast")
+  };
+
+  var toastTimer = null;
+  function showToast(msg) {
+    el.toast.textContent = msg;
+    el.toast.classList.add("visible");
+    if (toastTimer) {
+      clearTimeout(toastTimer);
+    }
+    toastTimer = setTimeout(function () {
+      el.toast.classList.remove("visible");
+    }, 2600);
+  }
+
+  function triggerHaptic(type) {
+    if (window.RosTrickDevice && typeof window.RosTrickDevice.haptic === "function") {
+      try {
+        window.RosTrickDevice.haptic(type || "tick");
+      } catch (e) {}
+    }
+  }
+
+  function safeGetStorage(key, fallback) {
+    try {
+      var raw = localStorage.getItem(key);
+      if (!raw) {
+        return fallback;
+      }
+      return JSON.parse(raw);
+    } catch (e) {
+      return fallback;
+    }
+  }
+
+  function safeSetStorage(key, value) {
+    try {
+      localStorage.setItem(key, JSON.stringify(value));
+    } catch (e) {}
+  }
+
+  function safeGetString(key, fallback) {
+    try {
+      var v = localStorage.getItem(key);
+      return v ? v : fallback;
+    } catch (e) {
+      return fallback;
+    }
+  }
+
+  function safeSetString(key, val) {
+    try {
+      localStorage.setItem(key, val);
+    } catch (e) {}
+  }
+
+  function loadLocalState() {
+    var prog = safeGetStorage(PROGRESS_KEY, {});
+    state.progressMap = (prog && typeof prog === "object") ? prog : {};
+
+    var favs = safeGetStorage(FAVORITES_KEY, []);
+    state.favorites = Array.isArray(favs) ? favs : [];
+
+    state.lastComicId = safeGetString(LAST_COMIC_KEY, "");
+  }
+
+  function normalizeComic(item, idx) {
+    var pagesArr = Array.isArray(item.pages) ? item.pages : [];
+    var totalPages = 0;
+    if (typeof item.pagesCount === "number" && item.pagesCount > 0) {
+      totalPages = item.pagesCount;
+    } else if (pagesArr.length > 0) {
+      totalPages = pagesArr.length;
+    } else {
+      totalPages = 12;
+    }
+
+    var coverUrl = item.cover || item.image || "";
+    var summaryText = item.synopsis || item.summary || item.description || "قصة كوميكس تفاعلية متاحة للقراءة الآن.";
+
+    return {
+      index: idx,
+      id: String(item.id || ("comic-" + (idx + 1))),
+      title: String(item.title || "قصة بدون عنوان"),
+      author: String(item.author || "مؤلف غير محدد"),
+      genre: String(item.genre || "متنوع"),
+      cover: String(coverUrl),
+      synopsis: String(summaryText),
+      totalPages: totalPages,
+      hasInteractivePages: pagesArr.length > 0
+    };
+  }
+
+  function getComicProgress(comic) {
+    var entry = state.progressMap[comic.id];
+    var currentPage = 0;
+    var total = comic.totalPages;
+    var updatedAt = 0;
+
+    if (entry && typeof entry === "object") {
+      if (typeof entry.page === "number" && entry.page > 0) {
+        currentPage = entry.page;
+      }
+      if (typeof entry.total === "number" && entry.total > 0) {
+        total = entry.total;
+      }
+      if (typeof entry.updatedAt === "number") {
+        updatedAt = entry.updatedAt;
+      }
+    }
+
+    if (currentPage > total) {
+      currentPage = total;
+    }
+
+    var percent = total > 0 ? Math.round((currentPage / total) * 100) : 0;
+    var status = "new";
+    if (currentPage >= total && total > 0) {
+      status = "done";
+    } else if (currentPage > 0) {
+      status = "reading";
+    }
+
+    return {
+      page: currentPage,
+      total: total,
+      percent: percent,
+      status: status,
+      updatedAt: updatedAt
+    };
+  }
+
+  function isFavorite(id) {
+    return state.favorites.indexOf(id) !== -1;
+  }
+
+  function toggleFavorite(id) {
+    triggerHaptic("click");
+    var idx = state.favorites.indexOf(id);
+    if (idx === -1) {
+      state.favorites.push(id);
+      showToast("تمت الإضافة إلى المفضلة");
+    } else {
+      state.favorites.splice(idx, 1);
+      showToast("تمت الإزالة من المفضلة");
+    }
+    safeSetStorage(FAVORITES_KEY, state.favorites);
+    renderAll();
+  }
+
+  function getStatusText(status) {
+    if (status === "done") return "مكتملة";
+    if (status === "reading") return "قيد القراءة";
+    return "لم تبدأ بعد";
+  }
+
+  function buildGenreChips() {
+    var genres = [];
+    var i;
+    for (i = 0; i < state.comics.length; i++) {
+      var g = state.comics[i].genre;
+      if (g && genres.indexOf(g) === -1) {
+        genres.push(g);
+      }
+    }
+
+    el.genreChips.innerHTML = "";
+
+    function createGenreChip(label, value) {
+      var btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "chip" + (state.genreFilter === value ? " active" : "");
+      btn.textContent = label;
+      btn.setAttribute("data-genre", value);
+      btn.addEventListener("click", function () {
+        triggerHaptic("tick");
+        state.genreFilter = value;
+        buildGenreChips();
+        renderGrid();
+      });
+      return btn;
+    }
+
+    el.genreChips.appendChild(createGenreChip("كل التصنيفات", "all"));
+    for (i = 0; i < genres.length; i++) {
+      el.genreChips.appendChild(createGenreChip(genres[i], genres[i]));
+    }
+  }
+
+  function updateCounters() {
+    var all = state.comics.length;
+    var reading = 0;
+    var done = 0;
+    var brandNew = 0;
+    var fav = 0;
+
+    for (var i = 0; i < state.comics.length; i++) {
+      var c = state.comics[i];
+      var p = getComicProgress(c);
+      if (p.status === "reading") reading++;
+      else if (p.status === "done") done++;
+      else brandNew++;
+      if (isFavorite(c.id)) fav++;
+    }
+
+    el.countAll.textContent = String(all);
+    el.countReading.textContent = String(reading);
+    el.countDone.textContent = String(done);
+    el.countNew.textContent = String(brandNew);
+    el.countFav.textContent = String(fav);
+
+    el.librarySubtitle.textContent = all + " قصة متاحة • " + (reading + done) + " بدأتها";
+  }
+
+  function renderSpotlight() {
+    var target = null;
+    var bestTime = -1;
+    var i;
+
+    for (i = 0; i < state.comics.length; i++) {
+      var c = state.comics[i];
+      var p = getComicProgress(c);
+      if (p.status === "reading") {
+        if (c.id === state.lastComicId) {
+          target = c;
+          break;
+        }
+        if (p.updatedAt > bestTime) {
+          bestTime = p.updatedAt;
+          target = c;
+        }
+      }
+    }
+
+    if (!target) {
+      for (i = 0; i < state.comics.length; i++) {
+        if (state.comics[i].id === state.lastComicId) {
+          target = state.comics[i];
+          break;
+        }
+      }
+    }
+
+    if (!target) {
+      el.spotlightSection.classList.remove("visible");
+      return;
+    }
+
+    var prog = getComicProgress(target);
+    if (prog.page === 0) {
+      el.spotlightSection.classList.remove("visible");
+      return;
+    }
+
+    el.spotlightCover.src = target.cover;
+    el.spotlightCover.alt = target.title;
+    el.spotlightTitle.textContent = target.title;
+    el.spotlightMeta.textContent = "صفحة " + prog.page + " من " + prog.total + " (" + prog.percent + "%)";
+    el.spotlightFill.style.width = prog.percent + "%";
+    if (prog.status === "done") {
+      el.spotlightFill.classList.add("done");
+    } else {
+      el.spotlightFill.classList.remove("done");
+    }
+    el.spotlightReadLink.href = "comic-reader.html?id=" + encodeURIComponent(target.id);
+    el.spotlightReadLink.onclick = function () {
+      safeSetString(LAST_COMIC_KEY, target.id);
+    };
+    el.spotlightOverlayBtn.onclick = function () {
+      launchComicInOverlay(target.id);
+    };
+
+    el.spotlightSection.classList.add("visible");
+  }
+
+  function getFilteredComics() {
+    var q = state.searchQuery.trim().toLowerCase();
+    var list = [];
+
+    for (var i = 0; i < state.comics.length; i++) {
+      var c = state.comics[i];
+      var p = getComicProgress(c);
+
+      if (state.statusFilter === "reading" && p.status !== "reading") continue;
+      if (state.statusFilter === "done" && p.status !== "done") continue;
+      if (state.statusFilter === "new" && p.status !== "new") continue;
+      if (state.statusFilter === "fav" && !isFavorite(c.id)) continue;
+
+      if (state.genreFilter !== "all" && c.genre !== state.genreFilter) continue;
+
+      if (q) {
+        var hay = (c.title + " " + c.author + " " + c.genre + " " + c.synopsis).toLowerCase();
+        if (hay.indexOf(q) === -1) continue;
+      }
+
+      list.push(c);
+    }
+
+    if (state.sortBy === "recent") {
+      list.sort(function (a, b) {
+        return getComicProgress(b).updatedAt - getComicProgress(a).updatedAt;
+      });
+    } else if (state.sortBy === "progress") {
+      list.sort(function (a, b) {
+        return getComicProgress(b).percent - getComicProgress(a).percent;
+      });
+    } else if (state.sortBy === "title") {
+      list.sort(function (a, b) {
+        return a.title.localeCompare(b.title, "ar");
+      });
+    } else {
+      list.sort(function (a, b) {
+        return a.index - b.index;
+      });
+    }
+
+    return list;
+  }
+
+  function createSvgIcon(pathD, extra) {
+    var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    svg.setAttribute("width", extra && extra.size ? extra.size : "17");
+    svg.setAttribute("height", extra && extra.size ? extra.size : "17");
+    svg.setAttribute("viewBox", "0 0 24 24");
+    svg.setAttribute("fill", extra && extra.fill ? extra.fill : "none");
+    svg.setAttribute("stroke", "currentColor");
+    svg.setAttribute("stroke-width", "2.2");
+    svg.setAttribute("stroke-linecap", "round");
+    svg.setAttribute("stroke-linejoin", "round");
+    for (var i = 0; i < pathD.length; i++) {
+      var p = document.createElementNS("http://www.w3.org/2000/svg", pathD[i].tag || "path");
+      var attrs = pathD[i];
+      for (var k in attrs) {
+        if (Object.prototype.hasOwnProperty.call(attrs, k) && k !== "tag") {
+          p.setAttribute(k, attrs[k]);
+        }
+      }
+      svg.appendChild(p);
+    }
+    return svg;
+  }
+
+  function renderGrid() {
+    var list = getFilteredComics();
+    el.comicsGrid.innerHTML = "";
+    el.resultsCount.textContent = list.length + " قصة";
+
+    if (state.comics.length === 0) {
+      el.emptyState.classList.remove("visible");
+      return;
+    }
+
+    if (list.length === 0) {
+      el.emptyState.classList.add("visible");
+      return;
+    }
+    el.emptyState.classList.remove("visible");
+
+    for (var i = 0; i < list.length; i++) {
+      (function (comic) {
+        var prog = getComicProgress(comic);
+        var fav = isFavorite(comic.id);
+
+        var col = document.createElement("div");
+        col.className = "comic-col";
+
+        var card = document.createElement("article");
+        card.className = "comic-card";
+        if (prog.status === "reading") card.classList.add("is-reading");
+        else if (prog.status === "done") card.classList.add("is-completed");
+
+        var top = document.createElement("div");
+        top.className = "comic-top";
+        top.addEventListener("click", function () {
+          openDetailModal(comic);
+        });
+
+        var coverWrap = document.createElement("div");
+        coverWrap.className = "cover-wrap";
+
+        var img = document.createElement("img");
+        img.className = "cover-img";
+        img.src = comic.cover;
+        img.alt = comic.title;
+        coverWrap.appendChild(img);
+
+        var pill = document.createElement("span");
+        pill.className = "pages-pill";
+        pill.textContent = comic.totalPages + " ص";
+        coverWrap.appendChild(pill);
+
+        var metaCol = document.createElement("div");
+        metaCol.className = "comic-meta-col";
+
+        var headRow = document.createElement("div");
+        headRow.className = "comic-header-row";
+
+        var genreTag = document.createElement("span");
+        genreTag.className = "genre-tag";
+        genreTag.textContent = comic.genre;
+
+        var favBtn = document.createElement("button");
+        favBtn.type = "button";
+        favBtn.className = "fav-btn" + (fav ? " active" : "");
+        favBtn.setAttribute("aria-label", fav ? "إزالة من المفضلة" : "إضافة للمفضلة");
+        favBtn.appendChild(createSvgIcon([{
+          tag: "path",
+          d: "M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"
+        }], { size: "20", fill: fav ? "currentColor" : "none" }));
+        favBtn.addEventListener("click", function (ev) {
+          ev.stopPropagation();
+          toggleFavorite(comic.id);
+        });
+
+        headRow.appendChild(genreTag);
+        headRow.appendChild(favBtn);
+
+        var title = document.createElement("h3");
+        title.className = "comic-title";
+        title.textContent = comic.title;
+
+        var author = document.createElement("p");
+        author.className = "comic-author";
+        author.textContent = "تأليف: " + comic.author;
+
+        var summary = document.createElement("p");
+        summary.className = "comic-summary";
+        summary.textContent = comic.synopsis;
+
+        metaCol.appendChild(headRow);
+        metaCol.appendChild(title);
+        metaCol.appendChild(author);
+        metaCol.appendChild(summary);
+
+        top.appendChild(coverWrap);
+        top.appendChild(metaCol);
+
+        var bottomWrap = document.createElement("div");
+
+        var progBox = document.createElement("div");
+        progBox.className = "card-progress";
+
+        var progRow = document.createElement("div");
+        progRow.className = "progress-row";
+
+        var statusSpan = document.createElement("span");
+        statusSpan.className = "status-label status-" + prog.status;
+        statusSpan.textContent = getStatusText(prog.status);
+
+        var numsSpan = document.createElement("span");
+        numsSpan.className = "progress-nums";
+        numsSpan.textContent = prog.page > 0
+          ? ("صفحة " + prog.page + "/" + prog.total + " (" + prog.percent + "%)")
+          : (prog.total + " صفحة");
+
+        progRow.appendChild(statusSpan);
+        progRow.appendChild(numsSpan);
+
+        var track = document.createElement("div");
+        track.className = "progress-track";
+        var fill = document.createElement("div");
+        fill.className = "progress-fill" + (prog.status === "done" ? " done" : "");
+        fill.style.width = prog.percent + "%";
+        track.appendChild(fill);
+
+        progBox.appendChild(progRow);
+        progBox.appendChild(track);
+
+        var actions = document.createElement("div");
+        actions.className = "card-actions";
+
+        var readLink = document.createElement("a");
+        readLink.className = "card-btn-read";
+        readLink.href = "comic-reader.html?id=" + encodeURIComponent(comic.id);
+        readLink.appendChild(createSvgIcon([
+          { tag: "path", d: "M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" },
+          { tag: "path", d: "M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" }
+        ], { size: "16" }));
+        var readTxt = document.createElement("span");
+        readTxt.textContent = prog.status === "reading" ? "متابعة" : (prog.status === "done" ? "إعادة القراءة" : "ابدأ القراءة");
+        readLink.appendChild(readTxt);
+        readLink.addEventListener("click", function () {
+          triggerHaptic("click");
+          safeSetString(LAST_COMIC_KEY, comic.id);
+        });
+
+        var overlayBtn = document.createElement("button");
+        overlayBtn.type = "button";
+        overlayBtn.className = "card-btn-overlay";
+        overlayBtn.setAttribute("aria-label", "فتح في النافذة العائمة");
+        overlayBtn.appendChild(createSvgIcon([
+          { tag: "rect", x: "3", y: "3", width: "18", height: "18", rx: "3" },
+          { tag: "rect", x: "11", y: "10", width: "8", height: "7", rx: "1.5" }
+        ], { size: "16" }));
+        var ovTxt = document.createElement("span");
+        ovTxt.textContent = "عائم";
+        overlayBtn.appendChild(ovTxt);
+        overlayBtn.addEventListener("click", function () {
+          triggerHaptic("click");
+          launchComicInOverlay(comic.id);
+        });
+
+        var infoBtn = document.createElement("button");
+        infoBtn.type = "button";
+        infoBtn.className = "card-btn-info";
+        infoBtn.setAttribute("aria-label", "تفاصيل القصة");
+        infoBtn.appendChild(createSvgIcon([
+          { tag: "circle", cx: "12", cy: "12", r: "10" },
+          { tag: "line", x1: "12", y1: "16", x2: "12", y2: "12" },
+          { tag: "line", x1: "12", y1: "8", x2: "12.01", y2: "8" }
+        ], { size: "18" }));
+        infoBtn.addEventListener("click", function () {
+          triggerHaptic("tick");
+          openDetailModal(comic);
+        });
+
+        actions.appendChild(readLink);
+        actions.appendChild(overlayBtn);
+        actions.appendChild(infoBtn);
+
+        bottomWrap.appendChild(progBox);
+        bottomWrap.appendChild(actions);
+
+        card.appendChild(top);
+        card.appendChild(bottomWrap);
+        col.appendChild(card);
+        el.comicsGrid.appendChild(col);
+      })(list[i]);
+    }
+  }
+
+  function renderAll() {
+    updateCounters();
+    renderSpotlight();
+    renderGrid();
+  }
+
+  function openDetailModal(comic) {
+    state.activeComic = comic;
+    var prog = getComicProgress(comic);
+
+    el.sheetCover.src = comic.cover;
+    el.sheetCover.alt = comic.title;
+    el.sheetTitle.textContent = comic.title;
+    el.sheetAuthor.textContent = "تأليف: " + comic.author;
+
+    el.sheetTags.innerHTML = "";
+    var tag1 = document.createElement("span");
+    tag1.className = "sheet-tag";
+    tag1.textContent = comic.genre;
+    var tag2 = document.createElement("span");
+    tag2.className = "sheet-tag cyan";
+    tag2.textContent = comic.totalPages + " صفحة";
+    el.sheetTags.appendChild(tag1);
+    el.sheetTags.appendChild(tag2);
+
+    el.sheetSynopsis.textContent = comic.synopsis;
+
+    el.sheetStatusLabel.className = "status-label status-" + prog.status;
+    el.sheetStatusLabel.textContent = getStatusText(prog.status);
+    el.sheetProgressNums.textContent = "صفحة " + prog.page + " من " + prog.total + " (" + prog.percent + "%)";
+    el.sheetProgressFill.style.width = prog.percent + "%";
+    if (prog.status === "done") {
+      el.sheetProgressFill.classList.add("done");
+    } else {
+      el.sheetProgressFill.classList.remove("done");
+    }
+
+    el.sheetReadBtn.href = "comic-reader.html?id=" + encodeURIComponent(comic.id);
+    el.sheetReadBtn.onclick = function () {
+      safeSetString(LAST_COMIC_KEY, comic.id);
+    };
+
+    el.detailModal.classList.add("open");
+    el.detailModal.setAttribute("aria-hidden", "false");
+  }
+
+  function closeDetailModal() {
+    el.detailModal.classList.remove("open");
+    el.detailModal.setAttribute("aria-hidden", "true");
+    state.activeComic = null;
+  }
+
+  function openSortModal() {
+    var opts = el.sortModal.querySelectorAll(".sort-option");
+    for (var i = 0; i < opts.length; i++) {
+      var val = opts[i].getAttribute("data-sort");
+      if (val === state.sortBy) opts[i].classList.add("active");
+      else opts[i].classList.remove("active");
+    }
+    el.sortModal.classList.add("open");
+    el.sortModal.setAttribute("aria-hidden", "false");
+  }
+
+  function closeSortModal() {
+    el.sortModal.classList.remove("open");
+    el.sortModal.setAttribute("aria-hidden", "true");
+  }
+
+  function openOverlayPermModal() {
+    el.overlayPermModal.classList.add("open");
+    el.overlayPermModal.setAttribute("aria-hidden", "false");
+  }
+
+  function closeOverlayPermModal() {
+    el.overlayPermModal.classList.remove("open");
+    el.overlayPermModal.setAttribute("aria-hidden", "true");
+  }
+
+  async function createComicOverlayWindow(comicId) {
+    var targetUrl = "overlay-hub.html?section=comics" + (comicId ? ("&id=" + encodeURIComponent(comicId)) : "");
+    try {
+      var scr = { w: 360, h: 640 };
+      if (typeof window.RosTrickOverlay.screen === "function") {
+        var s = await window.RosTrickOverlay.screen();
+        if (s && s.w && s.h) scr = s;
+      }
+      var winW = Math.min(340, Math.max(260, Math.round(scr.w * 0.86)));
+      var winH = Math.min(480, Math.max(320, Math.round(scr.h * 0.62)));
+
+      if (typeof window.RosTrickOverlay.exists === "function" && await window.RosTrickOverlay.exists("comics_overlay")) {
+        await window.RosTrickOverlay.destroy("comics_overlay");
+      }
+
+      await window.RosTrickOverlay.create({
+        id: "comics_overlay",
+        url: targetUrl,
+        x: 16,
+        y: 80,
+        w: winW,
+        h: winH,
+        gravity: "tl",
+        touchable: true,
+        focusable: true,
+        alpha: 0.98,
+        keep: true
+      });
+      triggerHaptic("confirm");
+      showToast("تم تشغيل النافذة العائمة بنجاح");
+    } catch (err) {
+      triggerHaptic("reject");
+      var code = err && err.code ? err.code : "";
+      if (code === "no_permission") {
+        showToast("يرجى منح صلاحية الظهور فوق التطبيقات");
+      } else {
+        showToast("تعذر فتح النافذة العائمة، جاري فتح صفحة الأوفرلاي");
+        window.location.href = targetUrl;
+      }
+    }
+  }
+
+  async function launchComicInOverlay(comicId) {
+    var targetUrl = "overlay-hub.html?section=comics" + (comicId ? ("&id=" + encodeURIComponent(comicId)) : "");
+
+    if (!window.RosTrickOverlay) {
+      showToast("النافذة العائمة الحقيقية متاحة داخل التطبيق فقط، جاري فتح صفحة الأدوات");
+      setTimeout(function () {
+        window.location.href = targetUrl;
+      }, 650);
+      return;
+    }
+
+    try {
+      var allowed = await window.RosTrickOverlay.canDraw();
+      if (!allowed) {
+        state.pendingOverlayComicId = comicId || "";
+        openOverlayPermModal();
+        return;
+      }
+      await createComicOverlayWindow(comicId);
+    } catch (e) {
+      showToast("تعذر التحقق من صلاحية النافذة العائمة");
+    }
+  }
+
+  async function loadComics() {
+    el.loadingState.style.display = "block";
+    el.errorState.classList.remove("visible");
+    el.emptyState.classList.remove("visible");
+    el.comicsGrid.innerHTML = "";
+
+    try {
+      var res = await fetch("comics.json");
+      if (!res.ok) {
+        throw new Error("HTTP " + res.status);
+      }
+      var data = await res.json();
+      if (!Array.isArray(data)) {
+        throw new Error("صيغة بيانات غير صالحة");
+      }
+
+      var normalized = [];
+      for (var i = 0; i < data.length; i++) {
+        normalized.push(normalizeComic(data[i], i));
+      }
+
+      state.comics = normalized;
+      el.loadingState.style.display = "none";
+
+      buildGenreChips();
+      renderAll();
+    } catch (err) {
+      el.loadingState.style.display = "none";
+      el.librarySubtitle.textContent = "خطأ في التحميل";
+      el.errorText.textContent = "تعذر قراءة بيانات القصص من comics.json (" + (err && err.message ? err.message : "خطأ غير معروف") + ").";
+      el.errorState.classList.add("visible");
+    }
+  }
+
+  function bindEvents() {
+    el.searchInput.addEventListener("input", function () {
+      state.searchQuery = el.searchInput.value || "";
+      if (state.searchQuery.length > 0) {
+        el.clearSearchBtn.classList.add("visible");
+      } else {
+        el.clearSearchBtn.classList.remove("visible");
+      }
+      renderGrid();
+    });
+
+    el.clearSearchBtn.addEventListener("click", function () {
+      triggerHaptic("tick");
+      el.searchInput.value = "";
+      state.searchQuery = "";
+      el.clearSearchBtn.classList.remove("visible");
+      renderGrid();
+    });
+
+    var statusBtns = el.statusChips.querySelectorAll(".status-chip");
+    for (var i = 0; i < statusBtns.length; i++) {
+      (function (btn) {
+        btn.addEventListener("click", function () {
+          triggerHaptic("tick");
+          for (var j = 0; j < statusBtns.length; j++) {
+            statusBtns[j].classList.remove("active");
+          }
+          btn.classList.add("active");
+          state.statusFilter = btn.getAttribute("data-status") || "all";
+          renderGrid();
+        });
+      })(statusBtns[i]);
+    }
+
+    el.sortBtn.addEventListener("click", function () {
+      triggerHaptic("tick");
+      openSortModal();
+    });
+
+    el.closeSortBtn.addEventListener("click", closeSortModal);
+    el.sortModal.addEventListener("click", function (ev) {
+      if (ev.target === el.sortModal) closeSortModal();
+    });
+
+    var sortOpts = el.sortModal.querySelectorAll(".sort-option");
+    for (var k = 0; k < sortOpts.length; k++) {
+      (function (opt) {
+        opt.addEventListener("click", function () {
+          triggerHaptic("tick");
+          state.sortBy = opt.getAttribute("data-sort") || "default";
+          var mapLabel = {
+            "default": "ترتيب",
+            "recent": "الأحدث",
+            "progress": "التقدم",
+            "title": "أبجدي"
+          };
+          el.sortLabel.textContent = mapLabel[state.sortBy] || "ترتيب";
+          closeSortModal();
+          renderGrid();
+        });
+      })(sortOpts[k]);
+    }
+
+    el.retryBtn.addEventListener("click", function () {
+      triggerHaptic("click");
+      loadComics();
+    });
+
+    el.reloadBtn.addEventListener("click", function () {
+      triggerHaptic("click");
+      loadLocalState();
+      loadComics();
+      showToast("تم تحديث المكتبة");
+    });
+
+    el.resetFiltersBtn.addEventListener("click", function () {
+      triggerHaptic("click");
+      state.statusFilter = "all";
+      state.genreFilter = "all";
+      state.searchQuery = "";
+      el.searchInput.value = "";
+      el.clearSearchBtn.classList.remove("visible");
+
+      var sBtns = el.statusChips.querySelectorAll(".status-chip");
+      for (var x = 0; x < sBtns.length; x++) {
+        if (sBtns[x].getAttribute("data-status") === "all") sBtns[x].classList.add("active");
+        else sBtns[x].classList.remove("active");
+      }
+      buildGenreChips();
+      renderGrid();
+    });
+
+    el.openOverlayHubBtn.addEventListener("click", function () {
+      triggerHaptic("click");
+      launchComicInOverlay(state.lastComicId || "");
+    });
+
+    el.closeDetailBtn.addEventListener("click", closeDetailModal);
+    el.detailModal.addEventListener("click", function (ev) {
+      if (ev.target === el.detailModal) closeDetailModal();
+    });
+
+    el.sheetOverlayBtn.addEventListener("click", function () {
+      if (!state.activeComic) return;
+      var id = state.activeComic.id;
+      closeDetailModal();
+      launchComicInOverlay(id);
+    });
+
+    el.sheetShareBtn.addEventListener("click", async function () {
+      if (!state.activeComic) return;
+      var c = state.activeComic;
+      var shareText = "أقرأ الآن قصة \"" + c.title + "\" للمؤلف " + c.author + " في تطبيق كوميكس وألعاب أوفرلاي!";
+      triggerHaptic("click");
+      if (window.RosTrickShare && typeof window.RosTrickShare.share === "function") {
+        try {
+          await window.RosTrickShare.share({
+            title: c.title,
+            text: shareText
+          });
+          return;
+        } catch (e) {}
+      }
+      if (navigator.clipboard && typeof navigator.clipboard.writeText === "function") {
+        try {
+          await navigator.clipboard.writeText(shareText);
+          showToast("تم نسخ تفاصيل القصة للمشاركة");
+          return;
+        } catch (e) {}
+      }
+      showToast("المشاركة غير متوفرة في هذا المتصفح");
+    });
+
+    el.sheetResetProgressBtn.addEventListener("click", function () {
+      if (!state.activeComic) return;
+      var id = state.activeComic.id;
+      if (state.progressMap[id]) {
+        delete state.progressMap[id];
+        safeSetStorage(PROGRESS_KEY, state.progressMap);
+      }
+      triggerHaptic("confirm");
+      showToast("تم تصفير تقدم القراءة لهذه القصة");
+      var refreshed = state.activeComic;
+      closeDetailModal();
+      renderAll();
+      openDetailModal(refreshed);
+    });
+
+    el.confirmOverlayPermBtn.addEventListener("click", async function () {
+      closeOverlayPermModal();
+      if (!window.RosTrickOverlay) return;
+      try {
+        var granted = await window.RosTrickOverlay.requestPermission();
+        if (granted) {
+          await createComicOverlayWindow(state.pendingOverlayComicId || "");
+        } else {
+          showToast("لم يتم منح صلاحية النافذة العائمة");
+        }
+      } catch (e) {
+        showToast("تعذر فتح إعدادات الصلاحية");
+      }
+    });
+
+    el.cancelOverlayPermBtn.addEventListener("click", function () {
+      closeOverlayPermModal();
+    });
+    el.overlayPermModal.addEventListener("click", function (ev) {
+      if (ev.target === el.overlayPermModal) closeOverlayPermModal();
+    });
+
+    if (window.RosTrickBack && typeof window.RosTrickBack.onBack === "function") {
+      try {
+        window.RosTrickBack.onBack(function () {
+          if (el.overlayPermModal.classList.contains("open")) {
+            closeOverlayPermModal();
+            return true;
+          }
+          if (el.sortModal.classList.contains("open")) {
+            closeSortModal();
+            return true;
+          }
+          if (el.detailModal.classList.contains("open")) {
+            closeDetailModal();
+            return true;
+          }
+          return false;
+        });
+      } catch (e) {}
+    }
+
+    window.addEventListener("pageshow", function () {
+      loadLocalState();
+      if (state.comics.length > 0) {
+        renderAll();
+      }
+    });
+  }
+
+  loadLocalState();
+  bindEvents();
+  loadComics();
+})();
+</script>
+</body>
+</html>
