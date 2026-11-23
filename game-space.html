@@ -1,0 +1,1331 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>غزاة المجرة - لعبة أركيد نيون</title>
+  <style>
+    :root {
+      --primary: #6C3BFF;
+      --primary-dark: #4A22C9;
+      --accent: #00E5FF;
+      --highlight: #FF3D7F;
+      --control: #B8B5D1;
+      --bg-dark: #0A0A16;
+      --card-bg: rgba(22, 22, 48, 0.85);
+      --card-border: rgba(108, 59, 255, 0.35);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: #FFFFFF;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      padding-top: env(safe-area-inset-top);
+      padding-bottom: env(safe-area-inset-bottom);
+    }
+
+    /* Top Navigation Bar */
+    .app-header {
+      height: 56px;
+      background: rgba(10, 10, 22, 0.95);
+      border-bottom: 1px solid rgba(108, 59, 255, 0.3);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 12px;
+      z-index: 100;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+    }
+
+    .icon-btn {
+      width: 44px;
+      height: 44px;
+      border: none;
+      background: transparent;
+      color: #FFFFFF;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 12px;
+      cursor: pointer;
+      margin-left: 4px;
+      transition: background 0.2s, transform 0.1s;
+    }
+
+    .icon-btn:active {
+      background: rgba(108, 59, 255, 0.25);
+      transform: scale(0.94);
+    }
+
+    .icon-btn svg {
+      width: 24px;
+      height: 24px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .app-title-container {
+      display: flex;
+      align-items: center;
+    }
+
+    .app-title {
+      font-size: 1.15rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, var(--accent), var(--highlight));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      letter-spacing: 0.5px;
+      margin-right: 8px;
+    }
+
+    /* Main Container */
+    .main-layout {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      width: 100%;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    /* HUD Bar */
+    .hud-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 16px;
+      background: var(--card-bg);
+      border-bottom: 1px solid var(--card-border);
+      font-size: 0.85rem;
+      font-weight: 700;
+    }
+
+    .hud-stat {
+      display: flex;
+      align-items: center;
+    }
+
+    .hud-label {
+      color: var(--control);
+      margin-left: 6px;
+    }
+
+    .hud-value {
+      color: var(--accent);
+      font-size: 1.05rem;
+      font-family: monospace;
+    }
+
+    .hud-value.highlight {
+      color: var(--highlight);
+    }
+
+    /* Shield Meter */
+    .shield-container {
+      width: 70px;
+      height: 10px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 5px;
+      overflow: hidden;
+      border: 1px solid rgba(0, 229, 255, 0.4);
+      margin-right: 6px;
+    }
+
+    .shield-fill {
+      height: 100%;
+      width: 100%;
+      background: linear-gradient(90deg, var(--highlight), var(--accent));
+      transition: width 0.3s ease;
+    }
+
+    /* Game Canvas Wrap */
+    .canvas-container {
+      flex: 1;
+      position: relative;
+      background: #04040A;
+      overflow: hidden;
+    }
+
+    canvas {
+      display: block;
+      width: 100%;
+      height: 100%;
+      touch-action: none;
+    }
+
+    /* Overlay Screens */
+    .game-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(10, 10, 22, 0.88);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      text-align: center;
+      z-index: 50;
+      transition: opacity 0.3s ease;
+    }
+
+    .game-overlay.hidden {
+      display: none;
+    }
+
+    .overlay-badge {
+      display: inline-block;
+      padding: 4px 12px;
+      background: rgba(108, 59, 255, 0.25);
+      border: 1px solid var(--primary);
+      border-radius: 20px;
+      color: var(--accent);
+      font-size: 0.8rem;
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+
+    .overlay-title {
+      font-size: 1.8rem;
+      font-weight: 900;
+      margin-bottom: 8px;
+      color: #FFFFFF;
+      text-shadow: 0 0 15px rgba(108, 59, 255, 0.6);
+    }
+
+    .overlay-desc {
+      color: var(--control);
+      font-size: 0.95rem;
+      line-height: 1.5;
+      margin-bottom: 24px;
+      max-width: 320px;
+    }
+
+    .score-summary-box {
+      background: rgba(22, 22, 48, 0.9);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 16px;
+      width: 100%;
+      max-width: 280px;
+      margin-bottom: 24px;
+    }
+
+    .score-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 6px 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .score-row:last-child {
+      border-bottom: none;
+    }
+
+    .btn-main {
+      min-height: 48px;
+      width: 100%;
+      max-width: 280px;
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      color: #FFFFFF;
+      border: 1px solid var(--accent);
+      border-radius: 14px;
+      font-size: 1.05rem;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 4px 15px rgba(108, 59, 255, 0.4);
+      margin-bottom: 10px;
+      transition: transform 0.1s, box-shadow 0.2s;
+    }
+
+    .btn-main:active {
+      transform: scale(0.97);
+    }
+
+    .btn-main svg {
+      width: 22px;
+      height: 22px;
+      margin-left: 8px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2;
+    }
+
+    .btn-secondary {
+      min-height: 44px;
+      width: 100%;
+      max-width: 280px;
+      background: rgba(255, 255, 255, 0.08);
+      color: #FFFFFF;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 14px;
+      font-size: 0.95rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      margin-bottom: 8px;
+    }
+
+    .btn-secondary:active {
+      background: rgba(255, 255, 255, 0.15);
+    }
+
+    .btn-secondary svg {
+      width: 18px;
+      height: 18px;
+      margin-left: 6px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2;
+    }
+
+    /* On-Screen Touch Controls */
+    .controls-bar {
+      height: 72px;
+      background: rgba(10, 10, 22, 0.95);
+      border-top: 1px solid rgba(108, 59, 255, 0.3);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 16px;
+    }
+
+    .dpad-group {
+      display: flex;
+      align-items: center;
+    }
+
+    .ctrl-btn {
+      width: 54px;
+      height: 54px;
+      border-radius: 14px;
+      background: rgba(22, 22, 48, 0.9);
+      border: 1px solid var(--card-border);
+      color: var(--accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      margin-left: 8px;
+      transition: background 0.1s;
+    }
+
+    .ctrl-btn:active, .ctrl-btn.active {
+      background: var(--primary);
+      color: #FFFFFF;
+    }
+
+    .ctrl-btn svg {
+      width: 28px;
+      height: 28px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2.5;
+    }
+
+    .fire-btn {
+      width: 64px;
+      height: 54px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, var(--highlight), #D61B5C);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      color: #FFFFFF;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 2px 10px rgba(255, 61, 127, 0.4);
+    }
+
+    .fire-btn:active, .fire-btn.active {
+      transform: scale(0.95);
+      box-shadow: 0 0 15px var(--highlight);
+    }
+
+    .fire-btn svg {
+      width: 26px;
+      height: 26px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2.5;
+    }
+
+    /* Quick Toast */
+    .toast {
+      position: absolute;
+      top: 60px;
+      left: 50%;
+      transform: translateX(-50%) translateY(-20px);
+      background: rgba(0, 229, 255, 0.95);
+      color: #04040A;
+      padding: 8px 18px;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: 800;
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.3s ease;
+      z-index: 200;
+      box-shadow: 0 4px 15px rgba(0, 229, 255, 0.4);
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+  </style>
+<style id="rt-native">html,body{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;-webkit-tap-highlight-color:transparent;overscroll-behavior:none}input,textarea,select,[contenteditable],.rt-selectable,.rt-selectable *{-webkit-user-select:text;user-select:text}img,a{-webkit-user-drag:none}a,button,[role=button]{outline:none}</style>
+</head>
+<body>
+
+  <!-- Top App Header -->
+  <header class="app-header">
+    <div class="app-title-container">
+      <button class="icon-btn" onclick="goBackToGames()" title="رجوع للألعاب" aria-label="رجوع">
+        <svg viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg>
+      </button>
+      <div class="app-title">غزاة المجرة</div>
+    </div>
+    <div class="header-actions">
+      <button class="icon-btn" onclick="toggleAudio()" id="audioBtn" title="الصوت" aria-label="الصوت">
+        <svg id="audioIcon" viewBox="0 0 24 24">
+          <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+          <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+        </svg>
+      </button>
+      <button class="icon-btn" onclick="shareScore()" title="مشاركة النتيجة" aria-label="مشاركة">
+        <svg viewBox="0 0 24 24">
+          <circle cx="18" cy="5" r="3"></circle>
+          <circle cx="6" cy="12" r="3"></circle>
+          <circle cx="18" cy="19" r="3"></circle>
+          <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+          <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+        </svg>
+      </button>
+      <button class="icon-btn" onclick="launchOverlayMode()" title="النافذة العائمة" aria-label="النافذة العائمة">
+        <svg viewBox="0 0 24 24">
+          <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+          <rect x="9" y="9" width="10" height="10" rx="1"></rect>
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Game Container -->
+  <main class="main-layout">
+    <!-- HUD Info Bar -->
+    <div class="hud-bar">
+      <div class="hud-stat">
+        <span class="hud-label">النقاط:</span>
+        <span class="hud-value" id="hudScore">0000</span>
+      </div>
+      <div class="hud-stat">
+        <span class="hud-label">الدرع:</span>
+        <div class="shield-container">
+          <div class="shield-fill" id="shieldFill"></div>
+        </div>
+      </div>
+      <div class="hud-stat">
+        <span class="hud-label">أعلى نتيجة:</span>
+        <span class="hud-value highlight" id="hudHighScore">0000</span>
+      </div>
+    </div>
+
+    <!-- Canvas Wrapper -->
+    <div class="canvas-container">
+      <canvas id="gameCanvas"></canvas>
+
+      <!-- Start Overlay Screen -->
+      <div class="game-overlay" id="startOverlay">
+        <div class="overlay-badge">أركيد نيون</div>
+        <h1 class="overlay-title">غزاة المجرة</h1>
+        <p class="overlay-desc">قد مركبتك الفضائية، دمر أسراب الأعداء ودرون السايبر، واجمع معززات الطاقة لتحقيق أعلى النواقص!</p>
+        
+        <button class="btn-main" onclick="startGame()">
+          <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+          ابدأ اللعب الآن
+        </button>
+        
+        <button class="btn-secondary" onclick="launchOverlayMode()">
+          <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"></rect><rect x="9" y="9" width="10" height="10"></rect></svg>
+          تشغيل كـ Overlay عائم
+        </button>
+      </div>
+
+      <!-- Game Over Overlay Screen -->
+      <div class="game-overlay hidden" id="gameOverOverlay">
+        <div class="overlay-badge" style="border-color:var(--highlight); color:var(--highlight);">انتهت اللعبة</div>
+        <h1 class="overlay-title">تدمرت المركبة!</h1>
+        
+        <div class="score-summary-box">
+          <div class="score-row">
+            <span style="color:var(--control);">النقاط المحققة:</span>
+            <span class="hud-value" id="finalScore">0</span>
+          </div>
+          <div class="score-row">
+            <span style="color:var(--control);">أعلى قياسي:</span>
+            <span class="hud-value highlight" id="finalHighScore">0</span>
+          </div>
+          <div class="score-row">
+            <span style="color:var(--control);">الموجة القتالية:</span>
+            <span class="hud-value" id="finalWave">1</span>
+          </div>
+        </div>
+
+        <button class="btn-main" onclick="restartGame()">
+          <svg viewBox="0 0 24 24"><path d="M23 4v6h-6"></path><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path></svg>
+          إعادة المحاولة
+        </button>
+
+        <button class="btn-secondary" onclick="shareScore()">
+          <svg viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
+          مشاركة النتيجة
+        </button>
+      </div>
+
+      <!-- Pause Overlay Screen -->
+      <div class="game-overlay hidden" id="pauseOverlay">
+        <div class="overlay-badge">مؤقت</div>
+        <h1 class="overlay-title">اللعبة متوقفة</h1>
+        <p class="overlay-desc">خذ استراحة سريعة وعد للقتال!</p>
+
+        <button class="btn-main" onclick="resumeGame()">
+          <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+          استئناف اللعب
+        </button>
+
+        <button class="btn-secondary" onclick="goBackToGames()">
+          <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+          العودة للمكتبة
+        </button>
+      </div>
+    </div>
+
+    <!-- On-Screen Touch Controls -->
+    <div class="controls-bar">
+      <div class="dpad-group">
+        <button class="ctrl-btn" id="btnLeft" aria-label="تحريك لليزار">
+          <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"></polyline></svg>
+        </button>
+        <button class="ctrl-btn" id="btnRight" aria-label="تحريك لليمين">
+          <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+        </button>
+      </div>
+
+      <button class="ctrl-btn" id="btnPause" onclick="togglePause()" aria-label="إيقاف مؤقت">
+        <svg viewBox="0 0 24 24"><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></svg>
+      </button>
+
+      <button class="fire-btn" id="btnFire" aria-label="إطلاق النار">
+        <svg viewBox="0 0 24 24">
+          <polygon points="12 2 15 8 22 9 17 14 18 21 12 17 6 21 7 14 2 9 9 8 12 2"></polygon>
+        </svg>
+      </button>
+    </div>
+  </main>
+
+  <div class="toast" id="toastMsg">تم نسخ الرابط</div>
+
+  <script>
+    // System & Audio Setup
+    var isAudioMuted = false;
+    var audioCtx = null;
+
+    function getAudioCtx() {
+      if (!audioCtx) {
+        var AudioContext = window.AudioContext || window.webkitAudioContext;
+        if (AudioContext) {
+          audioCtx = new AudioContext();
+        }
+      }
+      if (audioCtx && audioCtx.state === 'suspended') {
+        audioCtx.resume();
+      }
+      return audioCtx;
+    }
+
+    function playSound(type) {
+      if (isAudioMuted) return;
+      try {
+        var ctx = getAudioCtx();
+        if (!ctx) return;
+        var osc = ctx.createOscillator();
+        var gain = ctx.createGain();
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        var now = ctx.currentTime;
+
+        if (type === 'shoot') {
+          osc.type = 'sawtooth';
+          osc.frequency.setValueAtTime(850, now);
+          osc.frequency.exponentialRampToValueAtTime(180, now + 0.1);
+          gain.gain.setValueAtTime(0.12, now);
+          gain.gain.exponentialRampToValueAtTime(0.01, now + 0.1);
+          osc.start(now);
+          osc.stop(now + 0.1);
+        } else if (type === 'hit') {
+          osc.type = 'square';
+          osc.frequency.setValueAtTime(140, now);
+          osc.frequency.linearRampToValueAtTime(40, now + 0.15);
+          gain.gain.setValueAtTime(0.2, now);
+          gain.gain.linearRampToValueAtTime(0.01, now + 0.15);
+          osc.start(now);
+          osc.stop(now + 0.15);
+        } else if (type === 'powerup') {
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(350, now);
+          osc.frequency.exponentialRampToValueAtTime(950, now + 0.2);
+          gain.gain.setValueAtTime(0.2, now);
+          gain.gain.linearRampToValueAtTime(0.01, now + 0.2);
+          osc.start(now);
+          osc.stop(now + 0.2);
+        } else if (type === 'over') {
+          osc.type = 'sawtooth';
+          osc.frequency.setValueAtTime(320, now);
+          osc.frequency.linearRampToValueAtTime(60, now + 0.45);
+          gain.gain.setValueAtTime(0.25, now);
+          gain.gain.linearRampToValueAtTime(0.01, now + 0.45);
+          osc.start(now);
+          osc.stop(now + 0.45);
+        }
+      } catch (e) {}
+    }
+
+    function triggerHaptic(type) {
+      if (window.RosTrickDevice && window.RosTrickDevice.haptic) {
+        try {
+          window.RosTrickDevice.haptic(type);
+        } catch(e) {}
+      }
+    }
+
+    function toggleAudio() {
+      isAudioMuted = !isAudioMuted;
+      var btn = document.getElementById('audioIcon');
+      if (isAudioMuted) {
+        btn.innerHTML = '<line x1="1" y1="1" x2="23" y2="23"></line><path d="M9 9v6a3 3 0 0 0 5.12 2.12M15 9.34V4a3 3 0 0 0-5.94-.6"></path>';
+        showToast('تم كتم الصوت');
+      } else {
+        btn.innerHTML = '<polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>';
+        showToast('تم تفعيل الصوت');
+      }
+    }
+
+    function showToast(msg) {
+      var toast = document.getElementById('toastMsg');
+      toast.textContent = msg;
+      toast.classList.add('show');
+      setTimeout(function() {
+        toast.classList.remove('show');
+      }, 2000);
+    }
+
+    // High score management
+    function getHighScore() {
+      try {
+        return parseInt(localStorage.getItem('rostrick_space_highscore') || '0', 10);
+      } catch(e) {
+        return 0;
+      }
+    }
+
+    function setHighScore(val) {
+      try {
+        var current = getHighScore();
+        if (val > current) {
+          localStorage.setItem('rostrick_space_highscore', val.toString());
+          return true;
+        }
+      } catch(e) {}
+      return false;
+    }
+
+    // Canvas Engine Setup
+    var canvas = document.getElementById('gameCanvas');
+    var ctx = canvas.getContext('2d');
+    var animFrameId = null;
+
+    var canvasWidth = 0;
+    var canvasHeight = 0;
+
+    function resizeCanvas() {
+      var rect = canvas.parentElement.getBoundingClientRect();
+      canvas.width = rect.width;
+      canvas.height = rect.height;
+      canvasWidth = rect.width;
+      canvasHeight = rect.height;
+    }
+
+    window.addEventListener('resize', resizeCanvas);
+
+    // Game Objects state
+    var gameState = 'START'; // START, PLAYING, PAUSED, GAMEOVER
+    var score = 0;
+    var highScore = getHighScore();
+    var wave = 1;
+    var lastTime = 0;
+
+    var player = {
+      x: 0,
+      y: 0,
+      width: 44,
+      height: 44,
+      speed: 6.5,
+      shield: 100,
+      maxShield: 100,
+      tripleShotTime: 0
+    };
+
+    var stars = [];
+    var bullets = [];
+    var enemies = [];
+    var particles = [];
+    var powerups = [];
+
+    var keys = { left: false, right: false, fire: false };
+
+    // Initialize Stars Background
+    function initStars() {
+      stars = [];
+      for (var i = 0; i < 45; i++) {
+        stars.push({
+          x: Math.random() * (canvasWidth || 360),
+          y: Math.random() * (canvasHeight || 600),
+          size: Math.random() * 2 + 1,
+          speed: Math.random() * 1.5 + 0.5,
+          alpha: Math.random() * 0.8 + 0.2
+        });
+      }
+    }
+
+    // Reset Game State
+    function initGame() {
+      score = 0;
+      wave = 1;
+      player.x = canvasWidth / 2 - player.width / 2;
+      player.y = canvasHeight - player.height - 25;
+      player.shield = 100;
+      player.tripleShotTime = 0;
+      bullets = [];
+      enemies = [];
+      particles = [];
+      powerups = [];
+      highScore = getHighScore();
+      updateHUD();
+    }
+
+    function updateHUD() {
+      document.getElementById('hudScore').textContent = score.toString().padStart(4, '0');
+      document.getElementById('hudHighScore').textContent = highScore.toString().padStart(4, '0');
+      var pct = Math.max(0, (player.shield / player.maxShield) * 100);
+      document.getElementById('shieldFill').style.width = pct + '%';
+    }
+
+    // Touch and Controls Wiring
+    var btnLeft = document.getElementById('btnLeft');
+    var btnRight = document.getElementById('btnRight');
+    var btnFire = document.getElementById('btnFire');
+
+    function setupControls() {
+      // Button listeners
+      var bindBtn = function(el, keyName) {
+        var startHandler = function(e) {
+          e.preventDefault();
+          keys[keyName] = true;
+          el.classList.add('active');
+        };
+        var endHandler = function(e) {
+          e.preventDefault();
+          keys[keyName] = false;
+          el.classList.remove('active');
+        };
+        el.addEventListener('touchstart', startHandler);
+        el.addEventListener('touchend', endHandler);
+        el.addEventListener('mousedown', startHandler);
+        el.addEventListener('mouseup', endHandler);
+        el.addEventListener('mouseleave', endHandler);
+      };
+
+      bindBtn(btnLeft, 'left');
+      bindBtn(btnRight, 'right');
+      bindBtn(btnFire, 'fire');
+
+      // Drag direct on canvas
+      var isDragging = false;
+      canvas.addEventListener('touchstart', function(e) {
+        if (gameState !== 'PLAYING') return;
+        isDragging = true;
+        var touch = e.touches[0];
+        var rect = canvas.getBoundingClientRect();
+        player.x = touch.clientX - rect.left - player.width / 2;
+      });
+
+      canvas.addEventListener('touchmove', function(e) {
+        if (gameState !== 'PLAYING' || !isDragging) return;
+        var touch = e.touches[0];
+        var rect = canvas.getBoundingClientRect();
+        player.x = touch.clientX - rect.left - player.width / 2;
+      });
+
+      canvas.addEventListener('touchend', function() {
+        isDragging = false;
+      });
+
+      // Keyboard Controls
+      window.addEventListener('keydown', function(e) {
+        if (e.key === 'ArrowLeft' || e.key === 'a' || e.key === 'A') keys.left = true;
+        if (e.key === 'ArrowRight' || e.key === 'd' || e.key === 'D') keys.right = true;
+        if (e.key === ' ' || e.key === 'z' || e.key === 'Z') keys.fire = true;
+        if (e.key === 'p' || e.key === 'P') togglePause();
+      });
+
+      window.addEventListener('keyup', function(e) {
+        if (e.key === 'ArrowLeft' || e.key === 'a' || e.key === 'A') keys.left = false;
+        if (e.key === 'ArrowRight' || e.key === 'd' || e.key === 'D') keys.right = false;
+        if (e.key === ' ' || e.key === 'z' || e.key === 'Z') keys.fire = false;
+      });
+    }
+
+    // Shooting Mechanism
+    var lastShootTime = 0;
+    function tryShoot(timestamp) {
+      if (timestamp - lastShootTime < 180) return; // cooldown
+      lastShootTime = timestamp;
+
+      playSound('shoot');
+      triggerHaptic('tick');
+
+      var pX = player.x + player.width / 2;
+      var pY = player.y;
+
+      if (player.tripleShotTime > 0) {
+        bullets.push({ x: pX, y: pY, vx: 0, vy: -11, color: '#00E5FF' });
+        bullets.push({ x: pX - 10, y: pY + 4, vx: -2.5, vy: -10.5, color: '#FF3D7F' });
+        bullets.push({ x: pX + 10, y: pY + 4, vx: 2.5, vy: -10.5, color: '#FF3D7F' });
+      } else {
+        bullets.push({ x: pX, y: pY, vx: 0, vy: -11, color: '#00E5FF' });
+      }
+    }
+
+    // Spawning Enemies
+    var lastEnemySpawn = 0;
+    function spawnEnemy(timestamp) {
+      var interval = Math.max(700, 1600 - wave * 100);
+      if (timestamp - lastEnemySpawn < interval) return;
+      lastEnemySpawn = timestamp;
+
+      var r = Math.random();
+      var type = 'scout';
+      var hp = 1;
+      var width = 34;
+      var height = 34;
+      var speed = 2.2 + wave * 0.25;
+      var color = '#FF3D7F';
+
+      if (r > 0.65) {
+        type = 'fighter';
+        hp = 2;
+        width = 42;
+        height = 42;
+        speed = 1.6 + wave * 0.2;
+        color = '#6C3BFF';
+      } else if (r > 0.90) {
+        type = 'boss';
+        hp = 5 + wave;
+        width = 54;
+        height = 54;
+        speed = 1.0 + wave * 0.15;
+        color = '#FFD60A';
+      }
+
+      var x = Math.random() * (canvasWidth - width);
+      enemies.push({
+        x: x,
+        y: -height,
+        width: width,
+        height: height,
+        vx: (Math.random() - 0.5) * 1.5,
+        vy: speed,
+        hp: hp,
+        maxHp: hp,
+        type: type,
+        color: color
+      });
+    }
+
+    // Particle FX
+    function createExplosion(x, y, color, count) {
+      count = count || 12;
+      for (var i = 0; i < count; i++) {
+        var angle = Math.random() * Math.PI * 2;
+        var speed = Math.random() * 4 + 1;
+        particles.push({
+          x: x,
+          y: y,
+          vx: Math.cos(angle) * speed,
+          vy: Math.sin(angle) * speed,
+          size: Math.random() * 3.5 + 1.5,
+          color: color,
+          alpha: 1,
+          life: 25 + Math.random() * 15
+        });
+      }
+    }
+
+    // Powerups Spawn
+    function maybeSpawnPowerup(x, y) {
+      if (Math.random() > 0.28) return; // 28% drop rate
+      var type = Math.random() > 0.4 ? 'shield' : 'triple';
+      powerups.push({
+        x: x,
+        y: y,
+        width: 24,
+        height: 24,
+        vy: 2.0,
+        type: type
+      });
+    }
+
+    // Main Game Loop Update
+    function update(timestamp) {
+      // 1. Stars Scroll
+      for (var s = 0; s < stars.length; s++) {
+        var star = stars[s];
+        star.y += star.speed;
+        if (star.y > canvasHeight) {
+          star.y = 0;
+          star.x = Math.random() * canvasWidth;
+        }
+      }
+
+      if (gameState !== 'PLAYING') return;
+
+      // 2. Triple Shot Timer
+      if (player.tripleShotTime > 0) {
+        player.tripleShotTime--;
+      }
+
+      // 3. Movement
+      if (keys.left) player.x -= player.speed;
+      if (keys.right) player.x += player.speed;
+
+      // Boundary clamp
+      if (player.x < 0) player.x = 0;
+      if (player.x > canvasWidth - player.width) player.x = canvasWidth - player.width;
+
+      // Fire
+      if (keys.fire) {
+        tryShoot(timestamp);
+      }
+
+      // 4. Update Bullets
+      for (var b = bullets.length - 1; b >= 0; b--) {
+        var bullet = bullets[b];
+        bullet.x += bullet.vx;
+        bullet.y += bullet.vy;
+        if (bullet.y < -20 || bullet.x < -20 || bullet.x > canvasWidth + 20) {
+          bullets.splice(b, 1);
+        }
+      }
+
+      // 5. Spawn & Update Enemies
+      spawnEnemy(timestamp);
+
+      for (var e = enemies.length - 1; e >= 0; e--) {
+        var enemy = enemies[e];
+        enemy.x += enemy.vx;
+        enemy.y += enemy.vy;
+
+        // Bounce walls
+        if (enemy.x <= 0 || enemy.x >= canvasWidth - enemy.width) {
+          enemy.vx *= -1;
+        }
+
+        // Check Collision with Player
+        if (
+          player.x < enemy.x + enemy.width &&
+          player.x + player.width > enemy.x &&
+          player.y < enemy.y + enemy.height &&
+          player.y + player.height > enemy.y
+        ) {
+          player.shield -= 25;
+          createExplosion(enemy.x + enemy.width / 2, enemy.y + enemy.height / 2, enemy.color, 16);
+          playSound('hit');
+          triggerHaptic('confirm');
+          enemies.splice(e, 1);
+          updateHUD();
+
+          if (player.shield <= 0) {
+            gameOver();
+          }
+          continue;
+        }
+
+        // Off-screen bottom
+        if (enemy.y > canvasHeight + 40) {
+          enemies.splice(e, 1);
+          continue;
+        }
+
+        // Bullet collisions
+        for (var bIdx = bullets.length - 1; bIdx >= 0; bIdx--) {
+          var bObj = bullets[bIdx];
+          if (
+            bObj.x > enemy.x &&
+            bObj.x < enemy.x + enemy.width &&
+            bObj.y > enemy.y &&
+            bObj.y < enemy.y + enemy.height
+          ) {
+            enemy.hp--;
+            bullets.splice(bIdx, 1);
+            createExplosion(bObj.x, bObj.y, '#00E5FF', 5);
+
+            if (enemy.hp <= 0) {
+              playSound('hit');
+              triggerHaptic('tick');
+              score += enemy.type === 'boss' ? 50 : (enemy.type === 'fighter' ? 25 : 10);
+              createExplosion(enemy.x + enemy.width / 2, enemy.y + enemy.height / 2, enemy.color, 18);
+              maybeSpawnPowerup(enemy.x + enemy.width / 2, enemy.y + enemy.height / 2);
+
+              enemies.splice(e, 1);
+
+              if (score > wave * 250) {
+                wave++;
+              }
+              updateHUD();
+            }
+            break;
+          }
+        }
+      }
+
+      // 6. Update Powerups
+      for (var p = powerups.length - 1; p >= 0; p--) {
+        var pw = powerups[p];
+        pw.y += pw.vy;
+
+        // Collision with player
+        if (
+          player.x < pw.x + pw.width &&
+          player.x + player.width > pw.x &&
+          player.y < pw.y + pw.height &&
+          player.y + player.height > pw.y
+        ) {
+          playSound('powerup');
+          triggerHaptic('confirm');
+          if (pw.type === 'shield') {
+            player.shield = Math.min(player.maxShield, player.shield + 30);
+            showToast('+30 درع حماية');
+          } else if (pw.type === 'triple') {
+            player.tripleShotTime = 300; // ~5 seconds
+            showToast('إطلاق ثلاثي محصن!');
+          }
+          updateHUD();
+          powerups.splice(p, 1);
+          continue;
+        }
+
+        if (pw.y > canvasHeight + 30) {
+          powerups.splice(p, 1);
+        }
+      }
+
+      // 7. Update Particles
+      for (var pt = particles.length - 1; pt >= 0; pt--) {
+        var part = particles[pt];
+        part.x += part.vx;
+        part.y += part.vy;
+        part.life--;
+        part.alpha = part.life / 30;
+        if (part.life <= 0) {
+          particles.splice(pt, 1);
+        }
+      }
+    }
+
+    // Render Loop
+    function render() {
+      ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+
+      // Render Starfield
+      for (var s = 0; s < stars.length; s++) {
+        var star = stars[s];
+        ctx.fillStyle = 'rgba(255, 255, 255, ' + star.alpha + ')';
+        ctx.beginPath();
+        ctx.arc(star.x, star.y, star.size, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      if (gameState === 'START') return;
+
+      // Render Powerups
+      for (var p = 0; p < powerups.length; p++) {
+        var pw = powerups[p];
+        ctx.save();
+        ctx.shadowBlur = 10;
+        ctx.shadowColor = pw.type === 'shield' ? '#00E5FF' : '#FF3D7F';
+        ctx.fillStyle = pw.type === 'shield' ? '#00E5FF' : '#FF3D7F';
+        ctx.beginPath();
+        ctx.arc(pw.x + pw.width / 2, pw.y + pw.height / 2, pw.width / 2, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.restore();
+      }
+
+      // Render Player Ship
+      if (player.shield > 0) {
+        ctx.save();
+        ctx.translate(player.x + player.width / 2, player.y + player.height / 2);
+
+        // Ship glow & body
+        ctx.shadowBlur = 12;
+        ctx.shadowColor = player.tripleShotTime > 0 ? '#FF3D7F' : '#00E5FF';
+
+        // Wings
+        ctx.fillStyle = '#6C3BFF';
+        ctx.beginPath();
+        ctx.moveTo(0, -player.height / 2);
+        ctx.lineTo(player.width / 2, player.height / 2);
+        ctx.lineTo(0, player.height / 3);
+        ctx.lineTo(-player.width / 2, player.height / 2);
+        ctx.closePath();
+        ctx.fill();
+
+        // Cockpit
+        ctx.fillStyle = player.tripleShotTime > 0 ? '#FF3D7F' : '#00E5FF';
+        ctx.beginPath();
+        ctx.arc(0, -2, 6, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Engine flame
+        ctx.fillStyle = '#FFD60A';
+        ctx.beginPath();
+        ctx.moveTo(-6, player.height / 2);
+        ctx.lineTo(0, player.height / 2 + 10 + Math.random() * 5);
+        ctx.lineTo(6, player.height / 2);
+        ctx.closePath();
+        ctx.fill();
+
+        ctx.restore();
+      }
+
+      // Render Enemies
+      for (var e = 0; e < enemies.length; e++) {
+        var enemy = enemies[e];
+        ctx.save();
+        ctx.translate(enemy.x + enemy.width / 2, enemy.y + enemy.height / 2);
+        ctx.shadowBlur = 10;
+        ctx.shadowColor = enemy.color;
+        ctx.fillStyle = enemy.color;
+
+        if (enemy.type === 'scout') {
+          // Diamond / Scout
+          ctx.beginPath();
+          ctx.moveTo(0, enemy.height / 2);
+          ctx.lineTo(enemy.width / 2, 0);
+          ctx.lineTo(0, -enemy.height / 2);
+          ctx.lineTo(-enemy.width / 2, 0);
+          ctx.closePath();
+          ctx.fill();
+        } else if (enemy.type === 'fighter') {
+          // Fighter Shape
+          ctx.beginPath();
+          ctx.moveTo(0, enemy.height / 2);
+          ctx.lineTo(enemy.width / 2, -enemy.height / 2);
+          ctx.lineTo(0, -enemy.height / 4);
+          ctx.lineTo(-enemy.width / 2, -enemy.height / 2);
+          ctx.closePath();
+          ctx.fill();
+        } else {
+          // Boss Heavy Ship
+          ctx.fillRect(-enemy.width / 2, -enemy.height / 2, enemy.width, enemy.height);
+          ctx.fillStyle = '#101828';
+          ctx.fillRect(-enemy.width / 4, -enemy.height / 4, enemy.width / 2, enemy.height / 2);
+        }
+
+        ctx.restore();
+      }
+
+      // Render Bullets
+      for (var b = 0; b < bullets.length; b++) {
+        var bullet = bullets[b];
+        ctx.save();
+        ctx.shadowBlur = 8;
+        ctx.shadowColor = bullet.color;
+        ctx.fillStyle = bullet.color;
+        ctx.beginPath();
+        ctx.arc(bullet.x, bullet.y, 4, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.restore();
+      }
+
+      // Render Particles
+      for (var pt = 0; pt < particles.length; pt++) {
+        var part = particles[pt];
+        ctx.save();
+        ctx.globalAlpha = part.alpha;
+        ctx.fillStyle = part.color;
+        ctx.beginPath();
+        ctx.arc(part.x, part.y, part.size, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.restore();
+      }
+    }
+
+    // Loop driver
+    function gameLoop(timestamp) {
+      update(timestamp);
+      render();
+      animFrameId = requestAnimationFrame(gameLoop);
+    }
+
+    // State Transitions
+    function startGame() {
+      resizeCanvas();
+      initStars();
+      initGame();
+      gameState = 'PLAYING';
+      document.getElementById('startOverlay').classList.add('hidden');
+      document.getElementById('gameOverOverlay').classList.add('hidden');
+      document.getElementById('pauseOverlay').classList.add('hidden');
+    }
+
+    function gameOver() {
+      gameState = 'GAMEOVER';
+      playSound('over');
+      triggerHaptic('reject');
+
+      var isNewRecord = setHighScore(score);
+      highScore = getHighScore();
+
+      document.getElementById('finalScore').textContent = score;
+      document.getElementById('finalHighScore').textContent = highScore;
+      document.getElementById('finalWave').textContent = wave;
+
+      if (isNewRecord) {
+        showToast('رقم قياسي جديد!');
+      }
+
+      document.getElementById('gameOverOverlay').classList.remove('hidden');
+    }
+
+    function restartGame() {
+      startGame();
+    }
+
+    function togglePause() {
+      if (gameState === 'PLAYING') {
+        gameState = 'PAUSED';
+        document.getElementById('pauseOverlay').classList.remove('hidden');
+      } else if (gameState === 'PAUSED') {
+        resumeGame();
+      }
+    }
+
+    function resumeGame() {
+      gameState = 'PLAYING';
+      document.getElementById('pauseOverlay').classList.add('hidden');
+    }
+
+    // Native RosTrick Integration Functions
+    function goBackToGames() {
+      window.location.href = 'games.html';
+    }
+
+    function launchOverlayMode() {
+      if (window.RosTrickOverlay) {
+        try {
+          RosTrickOverlay.canDraw().then(function(can) {
+            if (!can) {
+              RosTrickOverlay.requestPermission();
+            }
+            window.location.href = 'overlay-hub.html?section=games&game=game-space.html';
+          }).catch(function() {
+            window.location.href = 'overlay-hub.html?section=games';
+          });
+        } catch(e) {
+          window.location.href = 'overlay-hub.html?section=games';
+        }
+      } else {
+        window.location.href = 'overlay-hub.html?section=games';
+      }
+    }
+
+    function shareScore() {
+      var shareText = 'حققت ' + score + ' نقطة في لعبة غزاة المجرة! هل تحداني؟';
+      if (window.RosTrickShare && window.RosTrickShare.share) {
+        try {
+          window.RosTrickShare.share({
+            title: 'غزاة المجرة - النتيجة القياسية',
+            text: shareText,
+            url: window.location.href
+          });
+          return;
+        } catch(e) {}
+      }
+
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(shareText).then(function() {
+          showToast('تم نسخ نتيجة التحدي!');
+        }).catch(function() {
+          showToast('نتيجة التحدي: ' + score);
+        });
+      } else {
+        showToast('نتيجة التحدي: ' + score);
+      }
+    }
+
+    // Handle RosTrick Back Button
+    if (window.RosTrickBack && window.RosTrickBack.onBack) {
+      window.RosTrickBack.onBack(function() {
+        if (gameState === 'PLAYING') {
+          togglePause();
+          return true;
+        }
+        return false;
+      });
+    }
+
+    // On Load
+    window.addEventListener('DOMContentLoaded', function() {
+      resizeCanvas();
+      initStars();
+      setupControls();
+      updateHUD();
+      animFrameId = requestAnimationFrame(gameLoop);
+    });
+  </script>
+</body>
+</html>
