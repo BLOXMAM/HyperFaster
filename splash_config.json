@@ -4,11 +4,11 @@
   "logoUploadedPath": "",
   "customHtml": "",
   "gradientColors": [
-    "#1D1E2C",
-    "#D90429"
+    "#1A0E3D",
+    "#6C3BFF"
   ],
-  "spinnerColor": "#D90429",
-  "dotsColor": "#FFB703",
+  "spinnerColor": "#6C3BFF",
+  "dotsColor": "#00E5FF",
   "fontMode": "google",
   "fontGoogleName": "cairo",
   "fontCustomUrl": "",
