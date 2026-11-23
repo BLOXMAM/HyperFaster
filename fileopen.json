@@ -2,7 +2,7 @@
   "rules": [
     {
       "type": "application/pdf",
-      "page": "pdf_links.html"
+      "page": "pdf-reader.html"
     }
   ]
 }
