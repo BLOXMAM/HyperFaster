@@ -1,31 +1,7 @@
 [
   {
-    "file": "puzzle-game.html",
-    "title": "لعبة الألغاز الكلاسيكية",
-    "icon": "fa-solid fa-file",
-    "hidden": false,
-    "searchEnabled": true,
-    "searchNames": []
-  },
-  {
     "file": "overlay-info.html",
     "title": "الوضع العائم",
-    "icon": "fa-solid fa-file",
-    "hidden": false,
-    "searchEnabled": true,
-    "searchNames": []
-  },
-  {
-    "file": "puzzle-view.html",
-    "title": "اللعبة",
-    "icon": "fa-solid fa-file",
-    "hidden": false,
-    "searchEnabled": true,
-    "searchNames": []
-  },
-  {
-    "file": "overlay_hub.html",
-    "title": "التحكم بالطبقة العائمة",
     "icon": "fa-solid fa-file",
     "hidden": false,
     "searchEnabled": true,
@@ -96,40 +72,16 @@
     "searchNames": []
   },
   {
-    "file": "pdf_links.html",
-    "title": "pdf_links",
+    "file": "overlay_hub.html",
+    "title": "overlay_hub",
     "icon": "fa-solid fa-file",
     "hidden": true,
     "searchEnabled": true,
     "searchNames": []
   },
   {
-    "file": "play.html",
-    "title": "play",
-    "icon": "fa-solid fa-file",
-    "hidden": true,
-    "searchEnabled": true,
-    "searchNames": []
-  },
-  {
-    "file": "product.html",
-    "title": "product",
-    "icon": "fa-solid fa-file",
-    "hidden": true,
-    "searchEnabled": true,
-    "searchNames": []
-  },
-  {
-    "file": "products.html",
-    "title": "products",
-    "icon": "fa-solid fa-file",
-    "hidden": true,
-    "searchEnabled": true,
-    "searchNames": []
-  },
-  {
-    "file": "reader.html",
-    "title": "reader",
+    "file": "puzzle-game.html",
+    "title": "puzzle-game",
     "icon": "fa-solid fa-file",
     "hidden": true,
     "searchEnabled": true,
