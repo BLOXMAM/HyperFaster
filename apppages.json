@@ -106,5 +106,9 @@
   "game-puzzle.html": {
     "op": "add",
     "timestamp": 1795413999538
+  },
+  "game-snake.html": {
+    "op": "add",
+    "timestamp": 1795414086082
   }
 }
