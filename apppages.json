@@ -82,5 +82,9 @@
   "comics.html": {
     "op": "add",
     "timestamp": 1795409333094
+  },
+  "comic-reader.html": {
+    "op": "add",
+    "timestamp": 1795413350086
   }
 }
