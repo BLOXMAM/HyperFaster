@@ -1,13 +1,5 @@
 [
   {
-    "file": "game_tap.html",
-    "title": "لعبة الضربة الخاطفة",
-    "icon": "fa-solid fa-file",
-    "hidden": false,
-    "searchEnabled": true,
-    "searchNames": []
-  },
-  {
     "file": "admin.html",
     "title": "admin",
     "icon": "fa-solid fa-file",
@@ -34,6 +26,14 @@
   {
     "file": "game_puzzle.html",
     "title": "game_puzzle",
+    "icon": "fa-solid fa-file",
+    "hidden": true,
+    "searchEnabled": true,
+    "searchNames": []
+  },
+  {
+    "file": "game_tap.html",
+    "title": "game_tap",
     "icon": "fa-solid fa-file",
     "hidden": true,
     "searchEnabled": true,
