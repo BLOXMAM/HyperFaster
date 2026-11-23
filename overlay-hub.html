@@ -1,0 +1,1159 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
+  <meta name="rostrick-statusbar" content="color=#0B091A; icons=light; overlay=false">
+  <title>النافذة العائمة</title>
+  <style>
+    :root {
+      --primary: #6C3BFF;
+      --primary-dark: #4A22C9;
+      --accent: #00E5FF;
+      --highlight: #FF3D7F;
+      --control: #B8B5D1;
+      --bg: #0B091A;
+      --card-bg: #161233;
+      --card-bg-hover: #211B4B;
+      --border: rgba(108, 59, 255, 0.35);
+      --border-accent: rgba(0, 229, 255, 0.5);
+      --text-main: #FFFFFF;
+      --text-muted: #A09CC2;
+      --success: #00E676;
+      --warning: #FFAB00;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    .rt-selectable {
+      user-select: text;
+      -webkit-user-select: text;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text-main);
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      padding-top: env(safe-area-inset-top, 0px);
+      padding-bottom: env(safe-area-inset-bottom, 0px);
+      overflow-x: hidden;
+    }
+
+    /* Header Bar */
+    .app-bar {
+      height: 60px;
+      background: linear-gradient(180deg, rgba(22, 18, 51, 0.98) 0%, rgba(11, 9, 26, 0.95) 100%);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 16px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(10px);
+    }
+
+    .nav-btn {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      background: rgba(108, 59, 255, 0.15);
+      border: 1px solid rgba(108, 59, 255, 0.3);
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+
+    .nav-btn:active {
+      transform: scale(0.92);
+      background: var(--primary-dark);
+      border-color: var(--accent);
+    }
+
+    .app-bar-title {
+      display: flex;
+      align-items: center;
+    }
+
+    .app-bar-title svg {
+      margin-left: 8px;
+    }
+
+    .app-bar-title h1 {
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--text-main);
+      letter-spacing: 0.3px;
+    }
+
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 600;
+      background: rgba(255, 61, 127, 0.15);
+      border: 1px solid rgba(255, 61, 127, 0.4);
+      color: var(--highlight);
+    }
+
+    .status-badge.active {
+      background: rgba(0, 230, 118, 0.15);
+      border-color: rgba(0, 230, 118, 0.4);
+      color: var(--success);
+    }
+
+    .status-badge .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background-color: currentColor;
+      margin-left: 6px;
+      box-shadow: 0 0 8px currentColor;
+    }
+
+    /* Horizontal Tab Bar */
+    .tabs-bar {
+      display: flex;
+      background-color: #120E2B;
+      padding: 8px 12px;
+      border-bottom: 1px solid var(--border);
+      overflow-x: auto;
+      white-space: nowrap;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .tab-item {
+      display: inline-flex;
+      align-items: center;
+      padding: 10px 14px;
+      border-radius: 12px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--control);
+      background: transparent;
+      border: 1px solid transparent;
+      margin-left: 8px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      min-height: 44px;
+    }
+
+    .tab-item svg {
+      margin-left: 6px;
+      fill: currentColor;
+    }
+
+    .tab-item.active {
+      color: #FFFFFF;
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+      border-color: var(--accent);
+      box-shadow: 0 4px 15px rgba(108, 59, 255, 0.4);
+    }
+
+    /* Main Container */
+    .content-area {
+      flex: 1;
+      padding: 16px;
+      max-width: 720px;
+      width: 100%;
+      margin: 0 auto;
+    }
+
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+      animation: fadeIn 0.25s ease-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Cards */
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 16px;
+      margin-bottom: 16px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 4px;
+      height: 100%;
+      background: var(--accent);
+      border-radius: 2px;
+    }
+
+    .card-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--accent);
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .card-subtitle {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-bottom: 14px;
+      line-height: 1.5;
+    }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 48px;
+      padding: 10px 18px;
+      border-radius: 12px;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      border: none;
+      outline: none;
+      transition: all 0.2s ease;
+      text-decoration: none;
+      width: 100%;
+      margin-bottom: 10px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+
+    .btn:active {
+      transform: scale(0.97);
+    }
+
+    .btn svg {
+      margin-left: 8px;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+      color: #FFFFFF;
+      border: 1px solid rgba(0, 229, 255, 0.3);
+    }
+
+    .btn-accent {
+      background: linear-gradient(135deg, #00B0FF 0%, #00E5FF 100%);
+      color: #0B091A;
+    }
+
+    .btn-highlight {
+      background: linear-gradient(135deg, #FF3D7F 0%, #D81B60 100%);
+      color: #FFFFFF;
+    }
+
+    .btn-outline {
+      background: rgba(22, 18, 51, 0.8);
+      border: 1px solid var(--border);
+      color: var(--text-main);
+    }
+
+    .btn-group {
+      display: flex;
+    }
+
+    .btn-group .btn {
+      flex: 1;
+    }
+
+    .btn-group .btn:first-child {
+      margin-left: 6px;
+    }
+
+    .btn-group .btn:last-child {
+      margin-right: 6px;
+    }
+
+    /* Viewer Display Areas */
+    .viewer-box {
+      background: #080614;
+      border: 1px dashed var(--border);
+      border-radius: 14px;
+      padding: 14px;
+      text-align: center;
+      margin-bottom: 16px;
+      position: relative;
+      min-height: 200px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .comic-panel-img {
+      max-width: 100%;
+      max-height: 220px;
+      border-radius: 8px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+      border: 2px solid var(--primary);
+    }
+
+    .comic-caption {
+      margin-top: 10px;
+      font-size: 13px;
+      color: var(--text-muted);
+      background: rgba(22, 18, 51, 0.9);
+      padding: 8px 14px;
+      border-radius: 8px;
+      border: 1px solid rgba(108, 59, 255, 0.2);
+      width: 100%;
+    }
+
+    /* PDF Mock Box */
+    .pdf-preview-box {
+      width: 100%;
+      max-width: 300px;
+      background: #FFFFFF;
+      color: #1A1A1A;
+      border-radius: 8px;
+      padding: 16px;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.4);
+      margin-bottom: 12px;
+      text-align: right;
+      transform-origin: center center;
+      transition: transform 0.2s ease;
+    }
+
+    .pdf-header-dummy {
+      font-size: 15px;
+      font-weight: 800;
+      color: #4A22C9;
+      border-bottom: 2px solid #6C3BFF;
+      padding-bottom: 6px;
+      margin-bottom: 10px;
+    }
+
+    .pdf-line {
+      height: 8px;
+      background: #E0E0E0;
+      border-radius: 4px;
+      margin-bottom: 8px;
+    }
+
+    .pdf-line.short { width: 50%; }
+    .pdf-line.medium { width: 75%; }
+
+    /* Interactive Game Canvas */
+    .game-container {
+      position: relative;
+      width: 100%;
+      height: 260px;
+      background: #05030D;
+      border: 2px solid var(--primary);
+      border-radius: 14px;
+      overflow: hidden;
+      touch-action: none;
+    }
+
+    #miniGameCanvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    .game-overlay-hud {
+      position: absolute;
+      top: 10px;
+      left: 12px;
+      right: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      pointer-events: none;
+      z-index: 10;
+    }
+
+    .game-score-badge {
+      background: rgba(11, 9, 26, 0.85);
+      border: 1px solid var(--accent);
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--accent);
+    }
+
+    .game-start-screen {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(11, 9, 26, 0.88);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      text-align: center;
+      z-index: 20;
+    }
+
+    /* Simulated Floating Overlay Container for Fallback */
+    .simulated-overlay {
+      position: fixed;
+      bottom: 80px;
+      left: 16px;
+      width: 240px;
+      background: rgba(22, 18, 51, 0.95);
+      border: 2px solid var(--accent);
+      border-radius: 14px;
+      box-shadow: 0 10px 30px rgba(0, 229, 255, 0.3);
+      z-index: 999;
+      display: none;
+      backdrop-filter: blur(8px);
+      overflow: hidden;
+    }
+
+    .sim-header {
+      background: var(--primary-dark);
+      padding: 8px 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .sim-title {
+      font-size: 12px;
+      font-weight: 700;
+      color: #FFF;
+      display: flex;
+      align-items: center;
+    }
+
+    .sim-close {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: var(--highlight);
+      color: #FFF;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      border: none;
+      font-weight: bold;
+    }
+
+    .sim-body {
+      padding: 12px;
+      font-size: 12px;
+      color: var(--text-main);
+      text-align: center;
+    }
+
+    .custom-range {
+      width: 100%;
+      height: 6px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 3px;
+      outline: none;
+      margin: 10px 0;
+      accent-color: var(--accent);
+    }
+
+    /* Notification Toast */
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: #181236;
+      border: 1px solid var(--accent);
+      color: #FFF;
+      padding: 12px 20px;
+      border-radius: 30px;
+      font-size: 13px;
+      font-weight: 600;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+      z-index: 1000;
+      opacity: 0;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      pointer-events: none;
+    }
+
+    .toast.show {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+    }
+
+    .toast svg {
+      margin-left: 8px;
+    }
+  </style>
+<style id="rt-native">html,body{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;-webkit-tap-highlight-color:transparent;overscroll-behavior:none}input,textarea,select,[contenteditable],.rt-selectable,.rt-selectable *{-webkit-user-select:text;user-select:text}img,a{-webkit-user-drag:none}a,button,[role=button]{outline:none}</style>
+</head>
+<body>
+
+  <!-- App Bar Header -->
+  <header class="app-bar">
+    <a href="home.html" class="nav-btn" aria-label="الرجوع للرئيسية">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="19" y1="12" x2="5" y2="12"></line>
+        <polyline points="12 19 19 12 12 5"></polyline>
+      </svg>
+    </a>
+
+    <div class="app-bar-title">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2">
+        <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+        <rect x="7" y="7" width="10" height="10" rx="1" ry="1"></rect>
+      </svg>
+      <h1>مركز النافذة العائمة</h1>
+    </div>
+
+    <div id="overlayStatusBadge" class="status-badge">
+      <span class="dot"></span>
+      <span id="overlayStatusText">جاري الفحص...</span>
+    </div>
+  </header>
+
+  <!-- Top Tabs Bar -->
+  <nav class="tabs-bar" id="tabsBar">
+    <button class="tab-item active" data-tab="hub" onclick="switchTab('hub')">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/></svg>
+      لوحة التحكم
+    </button>
+    <button class="tab-item" data-tab="comic" onclick="switchTab('comic')">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+      قارئ مصغر
+    </button>
+    <button class="tab-item" data-tab="pdf" onclick="switchTab('pdf')">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+      أداة PDF
+    </button>
+    <button class="tab-item" data-tab="game" onclick="switchTab('game')">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M6 12h4m-2-2v4"/><circle cx="17" cy="10" r="1" fill="currentColor"/><circle cx="15" cy="13" r="1" fill="currentColor"/></svg>
+      لعبة فورية
+    </button>
+  </nav>
+
+  <!-- Main Content Areas -->
+  <main class="content-area">
+
+    <!-- Tab 1: Control Center / Launch Hub -->
+    <section id="tab-hub" class="tab-content active">
+      <div class="card">
+        <div class="card-title">
+          <span>حالة إذن النافذة العائمة</span>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <p class="card-subtitle">
+          تسمح لك النافذة العائمة (Overlay) بمتابعة الكوميكس وقراءة PDF وممارسة الألعاب المصغرة أثناء تصفح تطبيق آخر.
+        </p>
+        
+        <div id="permissionMessage" style="margin-bottom: 14px; font-size: 13px; color: var(--control); background: rgba(0,0,0,0.2); padding: 10px; border-radius: 8px;">
+          جاري التحقق من إمكانيات النظام...
+        </div>
+
+        <button id="reqPermissionBtn" class="btn btn-primary" onclick="requestOverlayPermission()">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          طلب إذن الظهور فوق التطبيقات
+        </button>
+      </div>
+
+      <div class="card">
+        <div class="card-title">إطلاق النافذة العائمة الموحدة</div>
+        <p class="card-subtitle">اختر الوضع المطلوب لإطلاقه مباشرة في نافذة عائمة فوق الشاشة:</p>
+
+        <button class="btn btn-accent" onclick="launchNativeOverlay('comic')">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+          تشغيل قارئ الكوميكس العائم
+        </button>
+
+        <button class="btn btn-primary" onclick="launchNativeOverlay('pdf')">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          تشغيل أداة PDF العائمة
+        </button>
+
+        <button class="btn btn-highlight" onclick="launchNativeOverlay('game')">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="17" cy="10" r="1" fill="currentColor"/></svg>
+          تشغيل اللعبة المصغرة العائمة
+        </button>
+      </div>
+
+      <div class="card">
+        <div class="card-title">روابط الأقسام الكاملة</div>
+        <div class="btn-group">
+          <a href="comics.html" class="btn btn-outline">مكتبة الكوميكس</a>
+          <a href="pdf-reader.html" class="btn btn-outline">قارئ PDF</a>
+          <a href="games.html" class="btn btn-outline">صالة الألعاب</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Tab 2: Mini Comic Reader -->
+    <section id="tab-comic" class="tab-content">
+      <div class="card">
+        <div class="card-title">
+          <span id="comicTitle">صقر المدار: فجر النيون</span>
+          <span style="font-size: 12px; color: var(--accent);" id="comicPageNum">صفحة 1 / 4</span>
+        </div>
+
+        <div class="viewer-box">
+          <img id="comicImg" class="comic-panel-img" src="" alt="لوحة الكوميكس">
+          <div id="comicCaption" class="comic-caption rt-selectable">في مدينة تتحكم بها الأبراج الرقمية، ينطلق صقر المدار...</div>
+        </div>
+
+        <div class="btn-group">
+          <button class="btn btn-outline" onclick="prevComicPage()">الصفحة السابقة</button>
+          <button class="btn btn-primary" onclick="nextComicPage()">الصفحة التالية</button>
+        </div>
+
+        <button class="btn btn-accent" onclick="launchNativeOverlay('comic')">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          تثبيت القارئ كـ Overlay
+        </button>
+        
+        <a href="comic-reader.html?id=comic-01" class="btn btn-outline">فتح القارئ الكامل بملء الشاشة</a>
+      </div>
+    </section>
+
+    <!-- Tab 3: Quick PDF Tool -->
+    <section id="tab-pdf" class="tab-content">
+      <div class="card">
+        <div class="card-title">
+          <span id="pdfTitle">saqr-almadar-01.pdf</span>
+          <span style="font-size:12px; color:var(--accent);" id="pdfZoomLabel">تكبير: 100%</span>
+        </div>
+
+        <div class="viewer-box" style="overflow: hidden;">
+          <div id="pdfMockCanvas" class="pdf-preview-box">
+            <div class="pdf-header-dummy" id="pdfDocHeader">وثيقة رقمية - صفحة 1</div>
+            <div class="pdf-line"></div>
+            <div class="pdf-line medium"></div>
+            <div class="pdf-line"></div>
+            <div class="pdf-line short"></div>
+            <div style="margin-top: 15px; font-size: 11px; color: #555;" class="rt-selectable">
+              محتوى معروض في القارئ السريع المدمج مع دعم التكبير والافتراض الرقمي.
+            </div>
+          </div>
+        </div>
+
+        <label style="font-size: 12px; color: var(--control);">درجة التكبير والتصغير:</label>
+        <input type="range" class="custom-range" min="80" max="150" value="100" id="pdfZoomSlider" oninput="adjustPdfZoom(this.value)">
+
+        <div class="btn-group">
+          <button class="btn btn-outline" onclick="changePdfPage(-1)">الصفحة السابقة</button>
+          <button class="btn btn-outline" onclick="changePdfPage(1)">الصفحة التالية</button>
+        </div>
+
+        <button class="btn btn-accent" onclick="launchNativeOverlay('pdf')">
+          تثبيت أداة PDF في النافذة العائمة
+        </button>
+        
+        <a href="pdf-reader.html" class="btn btn-outline">الذهاب إلى القارئ المتقدم</a>
+      </div>
+    </section>
+
+    <!-- Tab 4: Instant Arcade Mini-Game -->
+    <section id="tab-game" class="tab-content">
+      <div class="card">
+        <div class="card-title">
+          <span>غزاة السايبر المصغرة</span>
+          <span style="font-size:12px; color:var(--highlight);" id="gameHighscore">أعلى نتيجة: 0</span>
+        </div>
+        <p class="card-subtitle">اضغط على الأهداف النيون المتساقطة قبل وصولها للقاع!</p>
+
+        <div class="game-container">
+          <div class="game-overlay-hud">
+            <span class="game-score-badge" id="gameCurrentScore">النقاط: 0</span>
+            <span class="game-score-badge" style="color:var(--highlight);" id="gameTimeLeft">الوقت: 30s</span>
+          </div>
+
+          <div id="gameStartOverlay" class="game-start-screen">
+            <h3 style="color:var(--accent); font-size: 18px; margin-bottom: 8px;">جاهز للتحدي؟</h3>
+            <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 16px;">لعبة سريعة مصممة خصيصاً للشاشات العائمة</p>
+            <button class="btn btn-highlight" style="width: auto; padding: 10px 28px;" onclick="startMiniGame()">بدء اللعب الآن</button>
+          </div>
+
+          <canvas id="miniGameCanvas"></canvas>
+        </div>
+
+        <div style="margin-top: 14px;" class="btn-group">
+          <button class="btn btn-accent" onclick="launchNativeOverlay('game')">
+            تشغيل اللعبة كـ Overlay
+          </button>
+          <a href="games.html" class="btn btn-outline">جميع الألعاب</a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Simulated Floating Window for non-supported browsers or fallback -->
+  <div id="simulatedOverlay" class="simulated-overlay">
+    <div class="sim-header">
+      <span class="sim-title" id="simTitle">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-left: 4px;"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        معاينة النافذة العائمة
+      </span>
+      <button class="sim-close" onclick="closeSimulatedOverlay()">✕</button>
+    </div>
+    <div class="sim-body" id="simBody">
+      هذه محاكاة تفاعلية للنافذة العائمة خارج التطبيق الأصلي.
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div id="toast" class="toast">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+    <span id="toastMessage">تم تنفيذ العملية</span>
+  </div>
+
+  <script>
+    // State Variables
+    var currentTab = 'hub';
+    var isNativeOverlaySupported = false;
+    var overlayPermissionGranted = false;
+
+    // Sample Comic Data
+    var currentComicIndex = 0;
+    var comicPages = [
+      {
+        art: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 200'><rect width='300' height='200' fill='%23101828'/><polygon points='150,20 185,90 270,90 200,135 225,210 150,165 75,210 100,135 30,90 115,90' fill='%23ff3b30'/><circle cx='150' cy='110' r='35' fill='%2300e5ff'/><text x='150' y='115' font-size='16' fill='%23000' text-anchor='middle' font-weight='bold'>لوحة 1</text></svg>",
+        caption: "اللوحة الأولى: صقر المدار يستعد للانطلاق فوق الأبراج الساكنة."
+      },
+      {
+        art: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 200'><rect width='300' height='200' fill='%231a1a2e'/><circle cx='150' cy='100' r='70' fill='%236c3bff'/><path d='M80 150 Q150 50 220 150' stroke='%2300e5ff' stroke-width='6' fill='none'/><text x='150' y='105' font-size='16' fill='%23fff' text-anchor='middle' font-weight='bold'>لوحة 2</text></svg>",
+        caption: "اللوحة الثانية: طاقة النيون تخترق الحواجز الرقمية في المدينة."
+      },
+      {
+        art: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 200'><rect width='300' height='200' fill='%230f3460'/><rect x='40' y='40' width='220' height='120' rx='10' fill='%23ff2e63'/><text x='150' y='110' font-size='16' fill='%23fff' text-anchor='middle' font-weight='bold'>لوحة 3</text></svg>",
+        caption: "اللوحة الثالثة: مواجهة حاسمة مع أنظمة حماية الشبكة."
+      },
+      {
+        art: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 200'><rect width='300' height='200' fill='%23003049'/><polygon points='150,30 250,170 50,170' fill='%23fcbf49'/><text x='150' y='125' font-size='16' fill='%23000' text-anchor='middle' font-weight='bold'>لوحة 4</text></svg>",
+        caption: "اللوحة الرابعة: عودة الأمل إلى سكان الأحياء السفلية."
+      }
+    ];
+
+    // PDF State
+    var pdfCurrentPage = 1;
+
+    // Game Engine State
+    var gameCanvas, ctx;
+    var gameActive = false;
+    var gameScore = 0;
+    var gameTime = 30;
+    var gameTimerId = null;
+    var targets = [];
+    var highscore = 0;
+
+    // DOM Ready Initialization
+    document.addEventListener('DOMContentLoaded', function() {
+      // 1. Parse URL Parameter `section`
+      var urlParams = new URLSearchParams(window.location.search);
+      var sectionParam = urlParams.get('section');
+      if (sectionParam && ['hub', 'comic', 'pdf', 'game'].indexOf(sectionParam) !== -1) {
+        currentTab = sectionParam;
+      }
+      switchTab(currentTab);
+
+      // 2. Hardware Back Button Handling
+      if (window.RosTrickBack) {
+        window.RosTrickBack.onBack(function() {
+          if (document.getElementById('simulatedOverlay').style.display === 'block') {
+            closeSimulatedOverlay();
+            return true;
+          }
+          if (currentTab !== 'hub') {
+            switchTab('hub');
+            return true;
+          }
+          return false; // let system navigate back to home.html
+        });
+      }
+
+      // 3. Load Highscore from localStorage
+      try {
+        var savedScore = localStorage.getItem('rostrick_space_highscore');
+        if (savedScore) {
+          highscore = parseInt(savedScore, 10) || 0;
+        }
+      } catch (e) {}
+      document.getElementById('gameHighscore').textContent = 'أعلى نتيجة: ' + highscore;
+
+      // 4. Check Native Overlay Status
+      checkOverlaySupport();
+
+      // 5. Load external JSON data if available
+      loadExternalData();
+
+      // 6. Setup Mini Comic Page
+      updateComicView();
+
+      // 7. Setup Game Canvas
+      gameCanvas = document.getElementById('miniGameCanvas');
+      if (gameCanvas) {
+        ctx = gameCanvas.getContext('2d');
+        resizeCanvas();
+        gameCanvas.addEventListener('pointerdown', handleGameClick);
+      }
+    });
+
+    // Check RosTrickOverlay Bridge Status
+    function checkOverlaySupport() {
+      var statusBadge = document.getElementById('overlayStatusBadge');
+      var statusText = document.getElementById('overlayStatusText');
+      var permMsg = document.getElementById('permissionMessage');
+
+      if (window.RosTrickOverlay && typeof window.RosTrickOverlay.canDraw === 'function') {
+        isNativeOverlaySupported = true;
+        window.RosTrickOverlay.canDraw().then(function(canDraw) {
+          overlayPermissionGranted = canDraw;
+          if (canDraw) {
+            statusBadge.classList.add('active');
+            statusText.textContent = 'مفعل وجاهز';
+            permMsg.textContent = 'إذن النافذة العائمة ممنوح بنجاح. يمكنك إطلاق أي أداة عائمة فوق التطبيقات.';
+            permMsg.style.color = 'var(--success)';
+          } else {
+            statusBadge.classList.remove('active');
+            statusText.textContent = 'يتطلب إذناً';
+            permMsg.textContent = 'ميزة الظهور فوق التطبيقات تتطلب منح إذن النظام أولاً.';
+            permMsg.style.color = 'var(--warning)';
+          }
+        }).catch(function() {
+          setFallbackOverlayStatus();
+        });
+      } else {
+        setFallbackOverlayStatus();
+      }
+    }
+
+    function setFallbackOverlayStatus() {
+      isNativeOverlaySupported = false;
+      var statusBadge = document.getElementById('overlayStatusBadge');
+      var statusText = document.getElementById('overlayStatusText');
+      var permMsg = document.getElementById('permissionMessage');
+
+      statusBadge.classList.remove('active');
+      statusText.textContent = 'وضع المعاينة';
+      permMsg.textContent = 'يعمل التطبيق الآن في المتصفح. سيتم إطلاق محاكاة عائمة داخلية للمعاينة.';
+      permMsg.style.color = 'var(--control)';
+    }
+
+    // Request Native Permission
+    function requestOverlayPermission() {
+      if (window.RosTrickOverlay && typeof window.RosTrickOverlay.requestPermission === 'function') {
+        window.RosTrickOverlay.requestPermission().then(function(res) {
+          showToast(res ? 'تم منح الإذن بنجاح' : 'لم يتم منح الإذن');
+          checkOverlaySupport();
+        }).catch(function() {
+          showToast('تعذر فتح إعدادات النظام');
+        });
+      } else {
+        showToast('إذن النظام متوفر داخل التطبيق الأصلي فقط');
+      }
+    }
+
+    // Tab Switching Logic
+    function switchTab(tabId) {
+      currentTab = tabId;
+
+      var tabs = document.querySelectorAll('.tab-item');
+      tabs.forEach(function(btn) {
+        if (btn.getAttribute('data-tab') === tabId) {
+          btn.classList.add('active');
+        } else {
+          btn.classList.remove('active');
+        }
+      });
+
+      var contents = document.querySelectorAll('.tab-content');
+      contents.forEach(function(content) {
+        if (content.id === 'tab-' + tabId) {
+          content.classList.add('active');
+        } else {
+          content.classList.remove('active');
+        }
+      });
+
+      if (tabId === 'game') {
+        setTimeout(resizeCanvas, 50);
+      }
+    }
+
+    // Load External Comics Data safely
+    function loadExternalData() {
+      fetch('comics.json')
+        .then(function(res) { return res.json(); })
+        .then(function(data) {
+          if (Array.isArray(data) && data.length > 0) {
+            var firstComic = data[0];
+            document.getElementById('comicTitle').textContent = firstComic.title || 'كوميكس مختار';
+            if (firstComic.pages && firstComic.pages.length > 0) {
+              comicPages = firstComic.pages;
+              currentComicIndex = 0;
+              updateComicView();
+            }
+          }
+        })
+        .catch(function(err) {
+          // Fallback static data is already loaded
+        });
+    }
+
+    // Mini Comic Navigation
+    function updateComicView() {
+      var page = comicPages[currentComicIndex];
+      if (!page) return;
+      document.getElementById('comicImg').src = page.art;
+      document.getElementById('comicCaption').textContent = page.caption;
+      document.getElementById('comicPageNum').textContent = 'صفحة ' + (currentComicIndex + 1) + ' / ' + comicPages.length;
+    }
+
+    function prevComicPage() {
+      if (currentComicIndex > 0) {
+        currentComicIndex--;
+        updateComicView();
+      } else {
+        showToast('أنت في الصفحة الأولى');
+      }
+    }
+
+    function nextComicPage() {
+      if (currentComicIndex < comicPages.length - 1) {
+        currentComicIndex++;
+        updateComicView();
+      } else {
+        showToast('وصلت لآخر صفحة');
+      }
+    }
+
+    // PDF Zoom & Navigation Controls
+    function adjustPdfZoom(val) {
+      document.getElementById('pdfZoomLabel').textContent = 'تكبير: ' + val + '%';
+      var scale = val / 100;
+      document.getElementById('pdfMockCanvas').style.transform = 'scale(' + scale + ')';
+    }
+
+    function changePdfPage(dir) {
+      pdfCurrentPage += dir;
+      if (pdfCurrentPage < 1) pdfCurrentPage = 1;
+      document.getElementById('pdfDocHeader').textContent = 'وثيقة رقمية - صفحة ' + pdfCurrentPage;
+      showToast('انتقلت إلى الصفحة ' + pdfCurrentPage);
+    }
+
+    // Launch Floating Window (Native RosTrickOverlay with Fallback)
+    function launchNativeOverlay(mode) {
+      if (window.RosTrickDevice && window.RosTrickDevice.haptic) {
+        window.RosTrickDevice.haptic('click');
+      }
+
+      if (window.RosTrickOverlay && isNativeOverlaySupported) {
+        window.RosTrickOverlay.canDraw().then(function(canDraw) {
+          if (!canDraw) {
+            window.RosTrickOverlay.requestPermission();
+            showToast('الرجاء تفعيل الإذن أولاً');
+            return;
+          }
+
+          var overlayOptions = {
+            id: 'hub_overlay_' + mode,
+            url: 'overlay-hub.html?section=' + mode,
+            x: 20,
+            y: 100,
+            w: 280,
+            h: 360,
+            gravity: 'tr',
+            touchable: true,
+            focusable: false
+          };
+
+          window.RosTrickOverlay.create(overlayOptions).then(function() {
+            showToast('تم إطلاق النافذة العائمة');
+          }).catch(function(err) {
+            showSimulatedOverlay(mode);
+          });
+        });
+      } else {
+        showSimulatedOverlay(mode);
+      }
+    }
+
+    // Fallback Simulated Floating Card inside HTML
+    function showSimulatedOverlay(mode) {
+      var simBox = document.getElementById('simulatedOverlay');
+      var simTitle = document.getElementById('simTitle');
+      var simBody = document.getElementById('simBody');
+
+      if (mode === 'comic') {
+        simTitle.innerHTML = '⚡ قارئ عائم مصغر';
+        simBody.innerHTML = '<p style="color:var(--accent); font-weight:bold; margin-bottom:6px;">' + (comicPages[currentComicIndex].caption || 'كوميكس') + '</p><p>صفحة ' + (currentComicIndex + 1) + '</p>';
+      } else if (mode === 'pdf') {
+        simTitle.innerHTML = '📄 أداة PDF عائمة';
+        simBody.innerHTML = '<p style="color:var(--accent);">مستند: saqr-almadar-01.pdf</p><p style="margin-top:4px;">صفحة ' + pdfCurrentPage + '</p>';
+      } else if (mode === 'game') {
+        simTitle.innerHTML = '🎮 لعبة عائمة';
+        simBody.innerHTML = '<p style="color:var(--highlight); font-weight:bold;">نقاط اللعبة: ' + gameScore + '</p><p>جاهز للتحدي الخفيف</p>';
+      } else {
+        simTitle.innerHTML = '✨ نافذة عائمة';
+        simBody.innerHTML = 'معاينة وضع Overlay الناجحة.';
+      }
+
+      simBox.style.display = 'block';
+      showToast('تم فتح محاكاة النافذة العائمة');
+    }
+
+    function closeSimulatedOverlay() {
+      document.getElementById('simulatedOverlay').style.display = 'none';
+    }
+
+    // Canvas Mini Arcade Game Implementation
+    function resizeCanvas() {
+      if (!gameCanvas) return;
+      var rect = gameCanvas.getBoundingClientRect();
+      gameCanvas.width = rect.width;
+      gameCanvas.height = rect.height;
+    }
+
+    function startMiniGame() {
+      document.getElementById('gameStartOverlay').style.display = 'none';
+      gameActive = true;
+      gameScore = 0;
+      gameTime = 30;
+      targets = [];
+      document.getElementById('gameCurrentScore').textContent = 'النقاط: 0';
+      document.getElementById('gameTimeLeft').textContent = 'الوقت: 30s';
+
+      if (gameTimerId) clearInterval(gameTimerId);
+      gameTimerId = setInterval(function() {
+        gameTime--;
+        document.getElementById('gameTimeLeft').textContent = 'الوقت: ' + gameTime + 's';
+        if (gameTime <= 0) {
+          endMiniGame();
+        }
+      }, 1000);
+
+      requestAnimationFrame(gameLoop);
+    }
+
+    function endMiniGame() {
+      gameActive = false;
+      if (gameTimerId) clearInterval(gameTimerId);
+      
+      if (gameScore > highscore) {
+        highscore = gameScore;
+        try {
+          localStorage.setItem('rostrick_space_highscore', highscore.toString());
+        } catch (e) {}
+        document.getElementById('gameHighscore').textContent = 'أعلى نتيجة: ' + highscore;
+        showToast('رقم قياسي جديد: ' + highscore);
+      } else {
+        showToast('انتهت اللعبة! مجموعك: ' + gameScore);
+      }
+
+      var startOverlay = document.getElementById('gameStartOverlay');
+      startOverlay.querySelector('h3').textContent = 'انتهت اللعبة!';
+      startOverlay.querySelector('p').textContent = 'احرزت ' + gameScore + ' نقطة';
+      startOverlay.style.display = 'flex';
+    }
+
+    function gameLoop() {
+      if (!gameActive || !ctx) return;
+
+      ctx.clearRect(0, 0, gameCanvas.width, gameCanvas.height);
+
+      // Spawn Targets
+      if (Math.random() < 0.05 && targets.length < 5) {
+        targets.push({
+          x: Math.random() * (gameCanvas.width - 40) + 20,
+          y: -20,
+          radius: 18 + Math.random() * 10,
+          speed: 1.5 + Math.random() * 2.5,
+          color: Math.random() > 0.3 ? '#00E5FF' : '#FF3D7F'
+        });
+      }
+
+      // Update and Draw Targets
+      for (var i = targets.length - 1; i >= 0; i--) {
+        var t = targets[i];
+        t.y += t.speed;
+
+        ctx.beginPath();
+        ctx.arc(t.x, t.y, t.radius, 0, Math.PI * 2);
+        ctx.fillStyle = t.color;
+        ctx.shadowColor = t.color;
+        ctx.shadowBlur = 12;
+        ctx.fill();
+        ctx.shadowBlur = 0;
+
+        // Remove if off bottom
+        if (t.y - t.radius > gameCanvas.height) {
+          targets.splice(i, 1);
+        }
+      }
+
+      requestAnimationFrame(gameLoop);
+    }
+
+    function handleGameClick(e) {
+      if (!gameActive) return;
+
+      var rect = gameCanvas.getBoundingClientRect();
+      var clickX = e.clientX - rect.left;
+      var clickY = e.clientY - rect.top;
+
+      for (var i = targets.length - 1; i >= 0; i--) {
+        var t = targets[i];
+        var dist = Math.hypot(clickX - t.x, clickY - t.y);
+        if (dist <= t.radius + 10) {
+          targets.splice(i, 1);
+          gameScore += 10;
+          document.getElementById('gameCurrentScore').textContent = 'النقاط: ' + gameScore;
+          if (window.RosTrickDevice && window.RosTrickDevice.haptic) {
+            window.RosTrickDevice.haptic('tick');
+          }
+          break;
+        }
+      }
+    }
+
+    // Helper Toast Display
+    function showToast(msg) {
+      var toast = document.getElementById('toast');
+      document.getElementById('toastMessage').textContent = msg;
+      toast.classList.add('show');
+      setTimeout(function() {
+        toast.classList.remove('show');
+      }, 2500);
+    }
+  </script>
+</body>
+</html>
